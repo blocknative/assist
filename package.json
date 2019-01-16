@@ -1,0 +1,60 @@
+{
+  "name": "assist",
+  "version": "0.2.0",
+  "description": "Blocknative Assist js library for Dapp developers",
+  "main": "lib/assist.min.js",
+  "scripts": {
+    "build": "node build.js",
+    "lint": "eslint --fix",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blocknative/assist.git"
+  },
+  "keywords": [
+    "dapp",
+    "ethereum"
+  ],
+  "author": "Block Native",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blocknative/assist/issues"
+  },
+  "homepage": "https://github.com/blocknative/assist#readme",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "bluebird": "^3.5.3",
+    "bowser": "^2.0.0-beta.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/runtime": "^7.1.5",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "dom-testing-library": "^3.16.2",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-prettier": "^3.0.0",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "jest-css-modules": "^1.1.0",
+    "jest-dom": "^3.0.0",
+    "prettier": "^1.15.2",
+    "regenerator-runtime": "^0.13.1",
+    "rollup": "^0.67.3",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-eslint": "^5.0.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-string": "^2.0.2",
+    "rollup-plugin-uglify": "^6.0.0",
+    "web3": "^1.0.0-beta.37"
+  }
+}

@@ -1,0 +1,40 @@
+export let state = {
+  version: null,
+  validApiKey: 'unknown',
+  supportedNetwork: 'unknown',
+  config: null,
+  userAgent: null,
+  mobileDevice: null,
+  validBrowser: null,
+  legacyWeb3: null,
+  modernWeb3: null,
+  web3Version: null,
+  web3Instance: null,
+  currentProvider: null,
+  web3Wallet: null,
+  legacyWallet: null,
+  modernWallet: null,
+  accessToAccounts: null,
+  accountAddress: null,
+  walletLoggedIn: null,
+  walletEnabled: null,
+  walletEnableCalled: null,
+  walletEnableCanceled: null,
+  accountBalance: null,
+  minimumBalance: null,
+  correctNetwork: null,
+  userCurrentNetworkId: null,
+  socket: null,
+  pendingSocketConnection: null,
+  socketConnection: null,
+  transactionQueue: [],
+  transactionAwaitingApproval: false,
+  iframe: null,
+  iframeDocument: null,
+  iframeWindow: null,
+  connectionId: null
+}
+
+export function updateState(newState) {
+  state = Object.assign({}, state, newState)
+}
