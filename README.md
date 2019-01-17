@@ -7,8 +7,8 @@ Takes care of onboarding your users, transaction support and smart contract anal
 ### CDN
 
 ```html
-<script src="https://blocknative-alpha.s3.amazonaws.com/assist.js"></script>
-<script src="https://blocknative-alpha.s3.amazonaws.com/assist.min.js"></script>
+<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.js"></script>
+<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.min.js"></script>
 ```
 
 ## Documentation
