@@ -1,6 +1,6 @@
 # assist.js
 
-Takes care of onboarding your users, transaction support and smart contract analytics with minimal setup. Supports web3 versions 0.2 and 1.0.
+Takes care of onboarding your users, transaction support and smart contract analytics with minimal setup. Supports web3 versions 0.20 and 1.0.
 
 ## Installation
 
