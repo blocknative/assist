@@ -23,10 +23,12 @@ export function handleEvent(eventObj, clickHandlers) {
     }
   }
 
-  // Show UI
-  eventToUI[categoryCode] &&
-    eventToUI[categoryCode][eventCode] &&
-    eventToUI[categoryCode][eventCode](eventObj, clickHandlers)
+  // Show UI unless we're in headless mode
+  if (state.config && !state.config.headlessMode) {
+    eventToUI[categoryCode] &&
+      eventToUI[categoryCode][eventCode] &&
+      eventToUI[categoryCode][eventCode](eventObj, clickHandlers)
+  }
 }
 
 // Create event log to be sent to server

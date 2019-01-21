@@ -49,7 +49,7 @@ test('Fails if we try to decorate without a web3 instance', () => {
     '0x0000000000000000000000000000000000000000'
   )
   try {
-    const decoratedContract = assist.Contract(contract)
+    assist.Contract(contract)
   } catch (e) {
     expect(e.eventCode).toBe('initFail')
   }
