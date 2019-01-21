@@ -33,7 +33,7 @@ export function handleEvent(eventObj, clickHandlers) {
 
 // Create event log to be sent to server
 export function createEventLog(eventObj) {
-  const { dappId, networkId } = state.config
+  const { dappId, networkId, headlessMode } = state.config
   const { userAgent, version } = state
   const newUser = getItem('_assist_newUser') === 'true'
   return JSON.stringify(
@@ -45,6 +45,7 @@ export function createEventLog(eventObj) {
         version,
         userAgent,
         newUser,
+        headlessMode,
         blockchain: {
           system: 'ethereum',
           network: networkName(networkId)
