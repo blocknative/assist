@@ -4,7 +4,7 @@ Takes care of onboarding your users, keeping them informed about transaction sta
 
 ## Preview
 
-![Assist's UI elements](https://i.imgur.com/F6bJVWG.png)
+![Assist's UI elements](https://i.imgur.com/UlJ8F7m.jpg)
 
 ☝️ A collection of Assist's UI elements.
 
