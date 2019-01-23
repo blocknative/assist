@@ -1,14 +1,24 @@
 # assist.js
 
-Takes care of onboarding your users, transaction support and smart contract analytics with minimal setup. Supports web3 versions 0.2 and 1.0.
+Takes care of onboarding your users, keeping them informed about transaction status and comprehensive usage analytics with minimal setup. Supports web3 versions 0.20 and 1.0.
+
+## Preview
+
+![Assist's UI elements](https://i.imgur.com/UlJ8F7m.jpg)
+
+☝️ A collection of Assist's UI elements.
+
+👇 Assist's transaction notifications in action.
+
+![Assist's transaction notifications](https://media.giphy.com/media/ZgSzBEev0pEym34rb1/giphy.gif)
 
 ## Installation
 
 ### CDN
 
 ```html
-<script src="https://blocknative-alpha.s3.amazonaws.com/assist.js"></script>
-<script src="https://blocknative-alpha.s3.amazonaws.com/assist.min.js"></script>
+<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.js"></script>
+<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.min.js"></script>
 ```
 
 ## Documentation
@@ -19,13 +29,13 @@ A JavaScript Object that is passed to the `init` function.
 
 ```javascript
 const config = {
-
   networkId: Number, // The network id of the Ethereum network your Dapp is working with (REQUIRED)
   dappId: String, // The api key supplied to you by Blocknative (REQUIRED)
   web3: Object, // The instantiated version of web3 that the Dapp is using
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp
-  messages: { // See custom transaction messages section below for more details
+  messages: {
+    // See custom transaction messages section below for more details
     txPending: Function, // Transaction is pending and awaiting confirmation
     txSent: Function, // Transaction has been sent to the network
     txSendFail: Function, // Transaction failed to be sent to the network
@@ -140,12 +150,14 @@ const assistLib = assist.init(assistConfig)
 #### Example
 
 ```javascript
-da.onboard().then(success => {
-  // User has been successfully onboarded and is ready to transact
-}).catch(error => {
-  // The user exited onboarding before completion
-  console.log(error.msg) // Will let you know what stage of onboarding the user was up to when they exited
-})
+da.onboard()
+  .then(success => {
+    // User has been successfully onboarded and is ready to transact
+  })
+  .catch(error => {
+    // The user exited onboarding before completion
+    console.log(error.msg) // Will let you know what stage of onboarding the user was up to when they exited
+  })
 ```
 
 ### `Contract(contractInstance)`
@@ -171,7 +183,7 @@ mydecoratedContract.myMethod().call()
 
 #### Parameters
 
-`txObject` - `Object`: Transaction object (**Required**)  
+`txObject` - `Object`: Transaction object (**Required**)
 `callback` - `Function`: Optional error first style callback if you don't want to use promises
 
 #### Returns
@@ -184,11 +196,13 @@ mydecoratedContract.myMethod().call()
 #### Example
 
 ```javascript
-da.Transaction(txObject).then(txHash => {
-  // Transaction has been sent to the network
-}).catch(error => {
-  console.log(error.msg) // => 'User has insufficient funds'
-})
+da.Transaction(txObject)
+  .then(txHash => {
+    // Transaction has been sent to the network
+  })
+  .catch(error => {
+    console.log(error.msg) // => 'User has insufficient funds'
+  })
 ```
 
 ### `getState()`
@@ -240,7 +254,7 @@ state = {
 ```javascript
 da.getState().then(state => {
   if (state.validBrowser) {
-    console.log("valid browser")
+    console.log('valid browser')
   }
 })
 ```
