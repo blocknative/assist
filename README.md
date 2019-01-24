@@ -1,6 +1,8 @@
 # assist.js
 
-Takes care of onboarding your users, keeping them informed about transaction status and comprehensive usage analytics with minimal setup. Supports web3 versions 0.20 and 1.0.
+Takes care of onboarding your users, keeping them informed about
+transaction status and comprehensive usage analytics with minimal
+setup. Supports web3 versions 0.20 and 1.0.
 
 ## Preview
 
@@ -12,13 +14,104 @@ Takes care of onboarding your users, keeping them informed about transaction sta
 
 ![Assist's transaction notifications](https://media.giphy.com/media/ZgSzBEev0pEym34rb1/giphy.gif)
 
-## Installation
 
-### CDN
+## Getting Started
 
+To integrate `assist.js` into your dapp, you'll need to do 4 things:
+
+1. Install the widget
+2. Initialize the library
+3. Call `onboard`
+4. Decorate your contracts
+
+### Install the widget
+
+Our widget is currently hosted on S3.
+The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
+The current version 0.2.0.
+There are minified and non-minified versions.
+Put this script at the top of your `<head>`
+ 
 ```html
-<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.js"></script>
-<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.min.js"></script>
+<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.js"
+  integrity="sha384-wtXu8HYQaAoqqmGxbJa799ue405EZi/uNhmblOFpOQOAcL0Tk5wUCYfbELA4OvP6"
+  crossorigin="anonymous"></script>
+
+<!-- OR... -->
+
+<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.min.js"
+  integrity="sha384-1pabeMrnax5diGU6TvH3LqKx5EOLvgHy7gv0Kyh7l+qMr/YsQ82W2eXWXcAW6gfz"
+  crossorigin="anonymous"></script>
+```
+
+A module will be available on NPM in the coming weeks.
+
+### Initialize the library
+
+Full documentation of the `config` object is below, but the minimum required `config`
+is as follows:
+
+```javascript
+var bncAssistConfig = {
+  dappId: dappId,       // [String] The dapp ID supplied to you by Blocknative when you sign up for an account
+  networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployd on.
+                        //           See below for instructions on how to setup for local blockchains.
+};
+
+var assistInstance = assist.init(bncAssistConfig);
+```
+
+### Call `onboard` 
+
+At some point in your dapp's workflow, you'll want to ensure users have the proper environment.
+This is done by calling `onboard`. Some dapps will call `onboard` immediately upon any page
+load. Others may wait until loading certain pages or until a certain button is clicked.
+In any event, it is as simple as calling:
+
+```javascript
+assistInstance.onboard()
+  .then(function(success) {
+    // User has been successfully onboarded and is ready to transact
+  })
+  .catch(function(error) {
+    // The user exited onboarding before completion
+    // Will let you know what stage of onboarding the user was up to when they exited
+    console.log(error.msg);
+  })
+```
+
+### Decorate your contracts
+
+The first three steps in the getting started flow will get your users onboarded. This step adds
+transaction support in order to help guide your users through a series of issues that can arise
+when signing transactions.
+
+Using our decorated contracts will also enable some transaction-level metrics tracking to give
+you insights into things like:
+
+- How many transactions fail because a user doesn't have enough Ether
+- How many transactions are started but rejected by the user
+
+Decorating your contracts is simple:
+
+```javascript
+var myContract = new web3.eth.Contract(abi, address);
+var myDecoratedContract = assistInstance.Contract(myContract)
+
+// and then replace `myContract` with `myDecoratedContract`
+// throughout your app
+// ...
+
+```
+
+You can then use `myDecoratedContract` instead of `myContract`.
+
+To speed things up, you can replace the contract after saving the original:
+
+```javascript
+var myContract = new web3.eth.Contract(abi, address);
+var originalMyContract = myContract;
+myContract = assistInstance.Contract(myContract)
 ```
 
 ## Documentation
@@ -28,7 +121,7 @@ Takes care of onboarding your users, keeping them informed about transaction sta
 A JavaScript Object that is passed to the `init` function.
 
 ```javascript
-const config = {
+var config = {
   networkId: Number, // The network id of the Ethereum network your Dapp is working with (REQUIRED)
   dappId: String, // The api key supplied to you by Blocknative (REQUIRED)
   web3: Object, // The instantiated version of web3 that the Dapp is using
@@ -62,7 +155,8 @@ const config = {
 
 ### Custom Transaction Messages
 
-The functions provided to the `messages` object in the config, will be called with the following object so that a custom string can be returned:
+The functions provided to the `messages` object in the config, will be
+called with the following object so that a custom string can be returned:
 
 ```javascript
 {
@@ -84,12 +178,11 @@ The functions provided to the `messages` object in the config, will be called wi
 #### Example
 
 ```javascript
-const config = {
+var config = {
   //...
   messages: {
-    txConfirmed: data => {
-      const { contract } = data
-      if (contract.methodName === 'contribute') {
+    txConfirmed: function(data) {
+      if (data.contract.methodName === 'contribute') {
         return 'Congratulations! You are now a contributor to the campaign'
       }
     }
@@ -101,11 +194,16 @@ const config = {
 
 The available ids for the `networkId` property of the config object:
 
-- `5777`: local - any number that isn't listed below will be treated as a local network
-- `1`: main
-- `3`: ropsten
-- `4`: rinkeby
-- `42`: kovan (not supported)
+- `1`: mainnet
+- `3`: ropsten testnet
+- `4`: rinkeby testnet
+
+*The kovan testnet is not supported.*
+
+#### Local networks
+
+When you are running locally (e.g. using ganache), set `networkId` to `0`.
+This represents a local network.
 
 ### Errors
 
@@ -135,7 +233,7 @@ The initialized version of the assist library
 #### Example
 
 ```javascript
-const assistLib = assist.init(assistConfig)
+var assistLib = assist.init(assistConfig)
 ```
 
 ### `onboard()`
@@ -151,10 +249,10 @@ const assistLib = assist.init(assistConfig)
 
 ```javascript
 da.onboard()
-  .then(success => {
+  .then(function(success) {
     // User has been successfully onboarded and is ready to transact
   })
-  .catch(error => {
+  .catch(function(error) {
     // The user exited onboarding before completion
     console.log(error.msg) // Will let you know what stage of onboarding the user was up to when they exited
   })
@@ -252,11 +350,12 @@ state = {
 #### Example
 
 ```javascript
-da.getState().then(state => {
-  if (state.validBrowser) {
-    console.log('valid browser')
-  }
-})
+da.getState()
+  .then(function(state) {
+    if (state.validBrowser) {
+      console.log('valid browser')
+    }
+  })
 ```
 
 ## Contribute
