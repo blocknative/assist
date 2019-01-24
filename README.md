@@ -114,7 +114,7 @@ var originalMyContract = myContract;
 myContract = assistInstance.Contract(myContract)
 ```
 
-## Documentation
+## API Reference 
 
 ### Config
 
