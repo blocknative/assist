@@ -32,8 +32,7 @@ export let state = {
   iframe: null,
   iframeDocument: null,
   iframeWindow: null,
-  connectionId: null,
-  headlessMode: false
+  connectionId: null
 }
 
 export function updateState(newState) {
