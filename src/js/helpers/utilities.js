@@ -185,3 +185,14 @@ export const timeouts = {
   autoRemoveNotification: 4000,
   pollForReceipt: 1000
 }
+
+export function stepToImageKey(step) {
+  switch (step) {
+    case 0:
+      return 'welcome'
+    case 6:
+      return 'complete'
+    default:
+      return null
+  }
+}
