@@ -54,14 +54,11 @@ export function prepareForTransaction(categoryCode, originalResolve) {
         { eventCode: 'mobileBlocked', categoryCode },
         {
           onClose: () =>
-            setTimeout(
-              () =>
-                reject({
-                  eventCode: 'mobileBlocked',
-                  msg: 'User is on mobile device'
-                }),
-              timeouts.changeUI
-            )
+            setTimeout(() => {
+              const errorObj = new Error('User is on mobile device')
+              errorObj.eventCode = 'mobileBlocked'
+              reject(errorObj)
+            }, timeouts.changeUI)
         }
       )
       return
@@ -76,14 +73,11 @@ export function prepareForTransaction(categoryCode, originalResolve) {
           },
           {
             onClose: () =>
-              setTimeout(
-                () =>
-                  reject({
-                    eventCode: 'browserFail',
-                    msg: 'User has an invalid browser'
-                  }),
-                timeouts.changeUI
-              )
+              setTimeout(() => {
+                const errorObj = new Error('User has an invalid browser')
+                errorObj.eventCode = 'browserFail'
+                reject(errorObj)
+              }, timeouts.changeUI)
           }
         )
         return
@@ -94,8 +88,8 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       if (previouslyWelcomed !== 'true' && previouslyWelcomed !== 'null') {
         try {
           await welcomeUser(categoryCode)
-        } catch (error) {
-          reject(error)
+        } catch (errorObj) {
+          reject(errorObj)
           return
         }
       }
@@ -103,8 +97,8 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       if (!state.web3Wallet) {
         try {
           await getWeb3Wallet(categoryCode)
-        } catch (error) {
-          reject(error)
+        } catch (errorObj) {
+          reject(errorObj)
           return
         }
       }
@@ -117,8 +111,8 @@ export function prepareForTransaction(categoryCode, originalResolve) {
     if (state.legacyWallet && !state.accessToAccounts) {
       try {
         await legacyAccountAccess(categoryCode, originalResolve)
-      } catch (error) {
-        reject(error)
+      } catch (errorObj) {
+        reject(errorObj)
         return
       }
     }
@@ -126,8 +120,8 @@ export function prepareForTransaction(categoryCode, originalResolve) {
     if (state.modernWallet && !state.accessToAccounts) {
       try {
         await modernAccountAccess(categoryCode, originalResolve)
-      } catch (error) {
-        reject(error)
+      } catch (errorObj) {
+        reject(errorObj)
         return
       }
     }
@@ -135,8 +129,8 @@ export function prepareForTransaction(categoryCode, originalResolve) {
     if (!state.correctNetwork) {
       try {
         await getCorrectNetwork(categoryCode)
-      } catch (error) {
-        reject(error)
+      } catch (errorObj) {
+        reject(errorObj)
         return
       }
     }
@@ -146,8 +140,8 @@ export function prepareForTransaction(categoryCode, originalResolve) {
     if (!state.minimumBalance) {
       try {
         await getMinimumBalance(categoryCode, originalResolve)
-      } catch (error) {
-        reject(error)
+      } catch (errorObj) {
+        reject(errorObj)
         return
       }
     }
@@ -171,14 +165,11 @@ function welcomeUser(categoryCode) {
       },
       {
         onClose: () =>
-          setTimeout(
-            () =>
-              reject({
-                eventCode: 'welcomeUser',
-                msg: 'User is being welcomed'
-              }),
-            timeouts.changeUI
-          ),
+          setTimeout(() => {
+            const errorObj = new Error('User is being welcomed')
+            errorObj.eventCode = 'welcomeUser'
+            reject(errorObj)
+          }, timeouts.changeUI),
         onClick: () => {
           storeItem('_assist_welcomed', 'true')
           closeModal()
@@ -201,14 +192,13 @@ function getWeb3Wallet(categoryCode) {
       },
       {
         onClose: () =>
-          setTimeout(
-            () =>
-              reject({
-                eventCode: 'walletFail',
-                msg: 'User does not have a web3 wallet installed'
-              }),
-            timeouts.changeUI
-          ),
+          setTimeout(() => {
+            const errorObj = new Error(
+              'User does not have a web3 wallet installed'
+            )
+            errorObj.eventCode = 'walletFail'
+            reject(errorObj)
+          }, timeouts.changeUI),
         onClick: () => {
           window.location.reload()
         }
@@ -308,14 +298,11 @@ function legacyAccountAccess(categoryCode, originalResolve) {
       },
       {
         onClose: () =>
-          setTimeout(
-            () =>
-              reject({
-                eventCode: 'walletLogin',
-                msg: 'User needs to login to their account'
-              }),
-            timeouts.changeUI
-          ),
+          setTimeout(() => {
+            const errorObj = new Error('User needs to login to their account')
+            errorObj.eventCode = 'walletLogin'
+            reject(errorObj)
+          }, timeouts.changeUI),
         onClick: async () => {
           if (state.accessToAccounts) {
             closeModal()
@@ -363,14 +350,11 @@ function enableWallet(categoryCode, originalResolve) {
             },
             {
               onClose: () =>
-                setTimeout(
-                  () =>
-                    reject({
-                      eventCode: 'walletEnable',
-                      msg: 'User needs to enable wallet'
-                    }),
-                  timeouts.changeUI
-                ),
+                setTimeout(() => {
+                  const errorObj = new Error('User needs to enable wallet')
+                  errorObj.eventCode = 'walletEnable'
+                  reject(errorObj)
+                }, timeouts.changeUI),
               onClick: async () => {
                 await checkAccountAccess()
                 if (state.accessToAccounts || !state.walletLoggedIn) {
@@ -435,14 +419,11 @@ function enableWallet(categoryCode, originalResolve) {
         },
         {
           onClose: () =>
-            setTimeout(
-              () =>
-                reject({
-                  eventCode: 'walletEnable',
-                  msg: 'User needs to enable wallet'
-                }),
-              timeouts.changeUI
-            ),
+            setTimeout(() => {
+              const errorObj = new Error('User needs to enable wallet')
+              errorObj.eventCode = 'walletEnable'
+              reject(errorObj)
+            }, timeouts.changeUI),
           onClick: async () => {
             await checkAccountAccess()
             if (state.accessToAccounts || !state.walletLoggedIn) {
@@ -499,14 +480,11 @@ function enableWallet(categoryCode, originalResolve) {
         },
         {
           onClose: () =>
-            setTimeout(
-              () =>
-                reject({
-                  eventCode: 'walletEnable',
-                  msg: 'User needs to enable wallet'
-                }),
-              timeouts.changeUI
-            ),
+            setTimeout(() => {
+              const errorObj = new Error('User needs to enable wallet')
+              errorObj.eventCode = 'walletEnable'
+              reject(errorObj)
+            }, timeouts.changeUI),
           onClick: async () => {
             await checkAccountAccess()
             if (state.accessToAccounts || !state.walletLoggedIn) {
@@ -561,14 +539,11 @@ function unlockWallet(categoryCode, originalResolve) {
       },
       {
         onClose: () =>
-          setTimeout(
-            () =>
-              reject({
-                eventCode: 'walletLoginEnable',
-                msg: 'User needs to login to wallet'
-              }),
-            timeouts.changeUI
-          ),
+          setTimeout(() => {
+            const errorObj = new Error('User needs to login to wallet')
+            errorObj.eventCode = 'walletLoginEnable'
+            reject(errorObj)
+          }, timeouts.changeUI),
         onClick: async () => {
           await checkAccountAccess()
           if (state.walletLoggedIn) {
@@ -603,21 +578,21 @@ function modernAccountAccess(categoryCode, originalResolve) {
       try {
         await enableWallet(categoryCode, originalResolve)
         resolve()
-      } catch (error) {
-        reject(error)
+      } catch (errorObj) {
+        reject(errorObj)
       }
     } else {
       try {
         await unlockWallet(categoryCode, originalResolve)
-      } catch (error) {
-        reject(error)
+      } catch (errorObj) {
+        reject(errorObj)
         return
       }
 
       try {
         await enableWallet(categoryCode, originalResolve)
-      } catch (error) {
-        reject(error)
+      } catch (errorObj) {
+        reject(errorObj)
         return
       }
       resolve()
@@ -636,14 +611,11 @@ function getCorrectNetwork(categoryCode) {
       },
       {
         onClose: () =>
-          setTimeout(
-            () =>
-              reject({
-                eventCode: 'networkFail',
-                msg: 'User is on the wrong network'
-              }),
-            timeouts.changeUI
-          ),
+          setTimeout(() => {
+            const errorObj = new Error('User is on the wrong network')
+            errorObj.eventCode = 'networkFail'
+            reject(errorObj)
+          }, timeouts.changeUI),
         onClick: async () => {
           await checkNetwork()
           if (!state.correctNetwork) {
@@ -670,15 +642,13 @@ function getMinimumBalance(categoryCode, originalResolve) {
       },
       {
         onClose: () =>
-          setTimeout(
-            () =>
-              reject({
-                eventCode: 'nsfFail',
-                msg:
-                  'User does not have the minimum balance specified in the config'
-              }),
-            timeouts.changeUI
-          ),
+          setTimeout(() => {
+            const errorObj = new Error(
+              'User does not have the minimum balance specified in the config'
+            )
+            errorObj.eventCode = 'nsfFail'
+            reject(errorObj)
+          }, timeouts.changeUI),
         onClick: async () => {
           await checkMinimumBalance()
           if (state.minimumBalance || !state.accessToAccounts) {

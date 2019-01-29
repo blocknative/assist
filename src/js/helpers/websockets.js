@@ -15,8 +15,8 @@ export function openWebsocketConnection() {
   let socket
   try {
     socket = new WebSocket('wss://api.blocknative.com/v0')
-  } catch (error) {
-    assistLog(error)
+  } catch (errorObj) {
+    assistLog(errorObj)
   }
 
   socket.addEventListener('message', handleSocketMessage)
@@ -63,9 +63,9 @@ export function handleSocketMessage(msg) {
         reason
       })
 
-      const error = new Error(reason)
-      error.eventCode = 'initFail'
-      throw error
+      const errorObj = new Error(reason)
+      errorObj.eventCode = 'initFail'
+      throw errorObj
     }
 
     if (
@@ -80,9 +80,9 @@ export function handleSocketMessage(msg) {
         reason
       })
 
-      const error = new Error(reason)
-      error.eventCode = 'initFail'
-      throw error
+      const errorObj = new Error(reason)
+      errorObj.eventCode = 'initFail'
+      throw errorObj
     }
   }
 
