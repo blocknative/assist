@@ -127,6 +127,7 @@ var config = {
   web3: Object, // The instantiated version of web3 that the Dapp is using
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp
+  messages: {
     // See custom transaction messages section below for more details
     txPending: Function, // Transaction is pending and awaiting confirmation
     txSent: Function, // Transaction has been sent to the network
@@ -137,7 +138,7 @@ var config = {
     txRepeat: Function, // Warning to user that they might be repeating a transaction
     txAwaitingApproval: Function, // Warning to user that they have a previous transaction awaiting approval
     txConfirmReminder: Function, // A warning to the user that their transaction is still awaiting approval
-    txConfirmReminder: Function, // A warning to the user that their transaction is still awaiting approval (after 20 second timeout)
+    txConfirmed: Function // Transaction is confirmed
   },
   images: {
     welcome: {
