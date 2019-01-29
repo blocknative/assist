@@ -76,7 +76,7 @@ test('Does not allow sending transactions without a valid API key', async () => 
   const res = assist.Transaction({ some: 'property' })
   res.catch(e => {
     expect(e.eventCode).toBe('initFail')
-    expect(e.msg).toBe('Your api key is not valid')
+    expect(e.message).toBe('Your api key is not valid')
   })
 })
 
@@ -86,7 +86,7 @@ test('Does not allow sending transactions on the wrong network', async () => {
   const res = assist.Transaction({ some: 'property' })
   res.catch(e => {
     expect(e.eventCode).toBe('initFail')
-    expect(e.msg).toBe('This network is not supported')
+    expect(e.message).toBe('This network is not supported')
   })
 })
 
