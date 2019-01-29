@@ -100,6 +100,12 @@ function init(config) {
   // ONBOARD FUNCTION //
 
   function onboard() {
+    if (state.config.headlessMode) {
+      return Promise.resolve(
+        'Assist is in headless mode and onboarding is disabled.'
+      )
+    }
+
     if (!state.validApiKey) {
       return Promise.reject({
         eventCode: 'initFail',
