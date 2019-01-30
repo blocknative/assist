@@ -26,6 +26,7 @@ To integrate `assist.js` into your dapp, you'll need to do 4 things:
 
 ### Install the widget
 
+#### Script Tag
 Our widget is currently hosted on S3.
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
 The current version 0.2.0.
@@ -44,7 +45,11 @@ Put this script at the top of your `<head>`
   crossorigin="anonymous"></script>
 ```
 
-A module will be available on NPM in the coming weeks.
+#### npm
+
+```
+npm i bnc-assist
+```
 
 ### Initialize the library
 
