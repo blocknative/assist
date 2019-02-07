@@ -40,8 +40,8 @@ function sendTransaction(
     // Prepare for transaction
     try {
       await prepareForTransaction('activePreflight')
-    } catch (error) {
-      reject(error)
+    } catch (errorObj) {
+      reject(errorObj)
       return
     }
 
@@ -69,10 +69,11 @@ function sendTransaction(
           minimum: state.config.minimumBalance
         }
       })
-      reject({
-        eventCode: 'nsfFail',
-        msg: 'User has insufficient funds to complete transaction'
-      })
+      const errorObj = new Error(
+        'User has insufficient funds to complete transaction'
+      )
+      errorObj.eventCode = 'nsfFail'
+      reject(errorObj)
       return
     }
 
@@ -195,9 +196,9 @@ function sendTransaction(
             )
           })
         })
-        .catch(async error => {
+        .catch(async errorObj => {
           rejected = handleTxError(
-            error,
+            errorObj,
             { transactionParams, categoryCode, contractEventObj },
             reject,
             callback
@@ -221,9 +222,9 @@ function sendTransaction(
             callback
           )
         })
-        .on('error', async error => {
+        .on('error', async errorObj => {
           rejected = handleTxError(
-            error,
+            errorObj,
             { transactionParams, categoryCode, contractEventObj },
             reject,
             callback
@@ -315,8 +316,17 @@ async function handleTxError(error, meta, reject, callback) {
 
   updateState({ transactionAwaitingApproval: false })
 
-  callback && callback('User denied transaction signature')
-  reject('User denied transaction signature')
+  const errorObj = new Error(
+    errorMsg === 'transaction underpriced'
+      ? 'Transaction is underpriced'
+      : 'User denied transaction signature'
+  )
+  errorObj.eventCode =
+    errorMsg === 'transaction underpriced' ? 'txUnderpriced' : 'txSendFail'
+
+  callback && callback(errorObj)
+  reject(errorObj)
+
   return true // rejected
 }
 

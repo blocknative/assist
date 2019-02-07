@@ -74,15 +74,15 @@ export function assistLog(log) {
 }
 
 export function handleError(categoryCode, propagateError) {
-  return error => {
-    const { message } = error
+  return errorObj => {
+    const { message } = errorObj
     handleEvent({
       eventCode: 'errorLog',
       categoryCode,
-      reason: message || error
+      reason: message || errorObj
     })
 
-    propagateError && propagateError(error)
+    propagateError && propagateError(errorObj)
   }
 }
 
