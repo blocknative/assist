@@ -124,7 +124,7 @@ myContract = assistInstance.Contract(myContract)
 
 ### Config
 
-A JavaScript Object that is passed to the `init` function. Default values are in [square brackets] where they are set by Assist.js.
+A JavaScript Object that is passed to the `init` function. Default values are in [square brackets] where they are set by assist.js.
 
 ```javascript
 var config = {
