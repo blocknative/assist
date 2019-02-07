@@ -34,7 +34,7 @@ jobs:
       - run: mkdir /home/circleci/project/deploy-temp/${VERSION}
       - run: mv /home/circleci/project/lib/*.js /home/circleci/project/deploy-temp/${VERSION}/
       - run: mv /home/circleci/project/lib/* /home/circleci/project/deploy-temp/
-      - run: aws s3 sync /home/circleci/project/deploy-temp s3://bnc-assist-test --delete --content-type "text/javascript" --content-encoding "gzip"
+      - run: aws s3 sync /home/circleci/project/deploy-temp s3://bnc-assist-test --delete --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000"
 workflows:
   version: 2
   test_build:
