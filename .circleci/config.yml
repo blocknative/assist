@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/node:8.15-browsers
     steps:
@@ -16,8 +16,34 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+  deploy:
+    docker:
+      - image: circleci/node:8.15-browsers
+    steps:
+      - checkout
+      - run: sudo apt update && sudo apt install awscli
+      - run: yarn
+      - run: yarn build
+      - run: gzip -9 /home/circleci/project/lib/assist.js
+      - run: gzip -9 /home/circleci/project/lib/assist.min.js
+      - run: mv /home/circleci/project/lib/assist.js.gz /home/circleci/project/lib/assist.js
+      - run: mv /home/circleci/project/lib/assist.min.js.gz /home/circleci/project/lib/assist.min.js
+      - run: ls -al
+      - run: echo export VERSION=`awk '/version/{gsub(/("|",)/,"",$2);print $2};' package.json | sed 's/\./-/g'` >> $BASH_ENV
+      - run: mkdir /home/circleci/project/deploy-temp
+      - run: mkdir /home/circleci/project/deploy-temp/${VERSION}
+      - run: mv /home/circleci/project/lib/*.js /home/circleci/project/deploy-temp/${VERSION}/
+      - run: mv /home/circleci/project/lib/* /home/circleci/project/deploy-temp/
+      - run: aws s3 sync /home/circleci/project/deploy-temp s3://bnc-assist-test --delete --content-type "text/javascript" --content-encoding "gzip"
 workflows:
   version: 2
-  build_and_deploy:
+  test_build:
     jobs:
-      - build
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - develop
