@@ -6,6 +6,7 @@
 import * as events from '../../js/helpers/events'
 import eventToUi from '../../js/views/event-to-ui'
 import * as utils from '../../js/helpers/utilities'
+import * as stateHelper from '../../js/helpers/state'
 
 // This function tries to send something to the websocket, so we mock it
 events.lib.logEvent = jest.fn()
@@ -26,6 +27,7 @@ for (const key in eventToUi) {
 
 test('Calls the correct UI handler function when an event is received from the server', () => {
   // AFAIK there are no other functions which call notification UI events
+  stateHelper.state.config = { headlessMode: false }
   let eventObj
   for (const key in uiMockFunctions) {
     for (const func of uiMockFunctions[key]) {
@@ -38,6 +40,24 @@ test('Calls the correct UI handler function when an event is received from the s
       expect(
         eventToUi[eventObj.categoryCode][eventObj.eventCode]
       ).toHaveBeenCalledTimes(1)
+    }
+  }
+})
+
+test('Does not call the UI handler when we are in headless mode', () => {
+  stateHelper.state.config = { headlessMode: true }
+  let eventObj
+  for (const key in uiMockFunctions) {
+    for (const func of uiMockFunctions[key]) {
+      eventObj = {
+        categoryCode: key,
+        eventCode: func,
+        transaction: { hash: '0x' }
+      }
+      events.handleEvent(eventObj)
+      expect(
+        eventToUi[eventObj.categoryCode][eventObj.eventCode]
+      ).toHaveBeenCalledTimes(0)
     }
   }
 })

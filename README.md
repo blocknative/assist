@@ -26,9 +26,10 @@ To integrate `assist.js` into your dapp, you'll need to do 4 things:
 
 ### Install the widget
 
+#### Script Tag
 Our widget is currently hosted on S3.
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version 0.2.0.
+The current version 0.2.1.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
  
@@ -44,7 +45,11 @@ Put this script at the top of your `<head>`
   crossorigin="anonymous"></script>
 ```
 
-A module will be available on NPM in the coming weeks.
+#### npm
+
+```
+npm i bnc-assist
+```
 
 ### Initialize the library
 
@@ -127,6 +132,7 @@ var config = {
   web3: Object, // The instantiated version of web3 that the Dapp is using
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp
+  headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection
   messages: {
     // See custom transaction messages section below for more details
     txPending: Function, // Transaction is pending and awaiting confirmation
