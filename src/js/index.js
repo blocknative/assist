@@ -17,7 +17,7 @@ import {
 import styles from '../css/styles.css'
 
 // Library Version - if changing, also need to change in package.json
-const version = '0.2.0'
+const version = '0.2.1'
 
 function init(config) {
   updateState({ version })
@@ -100,6 +100,68 @@ function init(config) {
   // ONBOARD FUNCTION //
 
   function onboard() {
+    if (state.config.headlessMode) {
+      return new Promise(async (resolve, reject) => {
+        await checkUserEnvironment.catch(reject)
+
+        if (state.mobileDevice) {
+          const error = new Error('User is on a mobile device')
+          error.eventCode = 'mobileBlocked'
+          reject(error)
+        }
+
+        if (!state.validBrowser) {
+          const error = new Error('User has an invalid browser')
+          error.eventCode = 'browserFail'
+          reject(error)
+        }
+
+        if (!state.web3Wallet) {
+          const error = new Error('User does not have a web3 wallet installed')
+          error.eventCode = 'walletFail'
+          reject(error)
+        }
+
+        if (!state.accessToAccounts) {
+          if (state.legacyWallet) {
+            const error = new Error('User needs to login to their account')
+            error.eventCode = 'walletLogin'
+            reject(error)
+          }
+
+          if (state.modernWallet) {
+            if (!state.walletLoggedIn) {
+              const error = new Error('User needs to login to wallet')
+              error.eventCode = 'walletLoginEnable'
+              reject(error)
+            }
+
+            if (!state.walletEnabled) {
+              const error = new Error('User needs to enable wallet')
+              error.eventCode = 'walletEnable'
+              reject(error)
+            }
+          }
+        }
+
+        if (!state.correctNetwork) {
+          const error = new Error('User is on the wrong network')
+          error.eventCode = 'networkFail'
+          reject(error)
+        }
+
+        if (!state.minimumBalance) {
+          const error = new Error(
+            'User does not have the minimum balance specified in the config'
+          )
+          error.eventCode = 'nsfFail'
+          reject(error)
+        }
+
+        resolve('User is ready to transact')
+      })
+    }
+
     if (!state.validApiKey) {
       const errorObj = new Error('Your api key is not valid')
       errorObj.eventCode = 'initFail'
