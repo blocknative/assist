@@ -74,15 +74,15 @@ export function assistLog(log) {
 }
 
 export function handleError(categoryCode, propagateError) {
-  return error => {
-    const { message } = error
+  return errorObj => {
+    const { message } = errorObj
     handleEvent({
       eventCode: 'errorLog',
       categoryCode,
-      reason: message || error
+      reason: message || errorObj
     })
 
-    propagateError && propagateError(error)
+    propagateError && propagateError(errorObj)
   }
 }
 
@@ -184,4 +184,15 @@ export const timeouts = {
   showElement: 120,
   autoRemoveNotification: 4000,
   pollForReceipt: 1000
+}
+
+export function stepToImageKey(step) {
+  switch (step) {
+    case 0:
+      return 'welcome'
+    case 6:
+      return 'complete'
+    default:
+      return null
+  }
 }

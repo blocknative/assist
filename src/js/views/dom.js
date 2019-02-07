@@ -1,5 +1,10 @@
 import { state } from '../helpers/state'
-import { capitalize, timeString, timeouts } from '../helpers/utilities'
+import {
+  capitalize,
+  timeString,
+  timeouts,
+  stepToImageKey
+} from '../helpers/utilities'
 import {
   onboardHeading,
   onboardDescription,
@@ -199,18 +204,18 @@ export function onboardMain(type, step) {
       : onboardButton[step][type]
 
   const defaultImages = imageSrc[step]
+
   const { images } = state.config
-  let devImages
-  if (images && images[step]) {
-    devImages = images[step]
-  }
+  const stepKey = stepToImageKey(step)
+  const devImages = images && images[stepKey]
 
   return `
     <img
       src="${(devImages && devImages.src) || defaultImages.src}" 
       class="bn-onboard-img" 
       alt="Blocknative" 
-      srcset="${(devImages && devImages.srcset) || defaultImages.srcset}"/>
+      srcset="${(devImages && devImages.srcset && `${devImages.srcset} 2x`) ||
+        defaultImages.srcset}"/>
     <br>
     <h1 class="h4">${heading}</h1>
     <p>${description}</p>

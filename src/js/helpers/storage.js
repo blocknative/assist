@@ -4,7 +4,7 @@ export function getItem(item) {
   let storageItem
   try {
     storageItem = window.localStorage && window.localStorage.getItem(item)
-  } catch (error) {
+  } catch (errorObj) {
     return 'null'
   }
   return storageItem
@@ -13,7 +13,7 @@ export function getItem(item) {
 export function storeItem(item, value) {
   try {
     window.localStorage && window.localStorage.setItem(item, value)
-  } catch (error) {
+  } catch (errorObj) {
     return 'null'
   }
   return 'success'
@@ -22,7 +22,7 @@ export function storeItem(item, value) {
 export function removeItem(item) {
   try {
     window.localStorage && window.localStorage.removeItem(item)
-  } catch (error) {
+  } catch (errorObj) {
     return 'null'
   }
   return 'success'

@@ -132,6 +132,7 @@ var config = {
   web3: Object, // The instantiated version of web3 that the Dapp is using
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp
+  headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection
   messages: {
     // See custom transaction messages section below for more details
     txPending: Function, // Transaction is pending and awaiting confirmation
@@ -161,7 +162,7 @@ var config = {
 ### Custom Transaction Messages
 
 The functions provided to the `messages` object in the config, will be
-called with the following object so that a custom string can be returned:
+called with the following object so that a custom message string can be returned:
 
 ```javascript
 {
@@ -174,6 +175,7 @@ called with the following object so that a custom string can be returned:
     value: String // The value of the transaction (wei)
   },
   contract: {
+    // This object will be undefined if it is not a contract transaction
     methodName: String, // The name of the method that was called
     parameters: Array // The parameters that the method was called with
   }
@@ -207,19 +209,18 @@ The available ids for the `networkId` property of the config object:
 
 #### Local networks
 
-When you are running locally (e.g. using ganache), set `networkId` to `0`.
-This represents a local network.
+When you are running locally (e.g. using ganache), set `networkId` in the config to the network id that the local network is set to. Any number that is not `1`, `3`, `4` and `42` is valid and will be recognized as a local network. If using the Ganache CLI you can set the network id via the `--networkId` option.
 
 ### Errors
 
-All errors are called with `eventCode` and `msg` properties
+All errors are called with `eventCode` and `message` properties
 
 #### Example
 
 ```javascript
 {
   eventCode: 'initFail',
-  msg: 'A api key is required to run assist'
+  message: 'A api key is required to run assist'
 }
 ```
 
@@ -248,7 +249,7 @@ var assistLib = assist.init(assistConfig)
 `Promise`
 
 - resolves with onboard success message if user has been successfully onboarded
-- rejects with an error msg if the user exits onboarding before completion. The error will detail the stage of onboarding the user was up to when they exited
+- rejects with an error message if the user exits onboarding before completion. The error will detail the stage of onboarding the user was up to when they exited
 
 #### Example
 
@@ -259,7 +260,7 @@ da.onboard()
   })
   .catch(function(error) {
     // The user exited onboarding before completion
-    console.log(error.msg) // Will let you know what stage of onboarding the user was up to when they exited
+    console.log(error.message) // Will let you know what stage of onboarding the user was up to when they exited
   })
 ```
 
@@ -294,7 +295,7 @@ mydecoratedContract.myMethod().call()
 `Promise` or `PromiEvent` (`web3.js 1.0`)
 
 - resolves with transaction hash
-- rejects with an error msg
+- rejects with an error message
 
 #### Example
 
@@ -304,7 +305,7 @@ da.Transaction(txObject)
     // Transaction has been sent to the network
   })
   .catch(error => {
-    console.log(error.msg) // => 'User has insufficient funds'
+    console.log(error.message) // => 'User has insufficient funds'
   })
 ```
 
@@ -318,17 +319,18 @@ da.Transaction(txObject)
 
 ```javascript
 state = {
+  version: String,
+  validApiKey: Boolean,
+  supportedNetwork: Boolean,
   config: Object,
+  userAgent: String,
+  mobileDevice: Boolean,
+  validBrowser: Boolean,
   legacyWeb3: Boolean,
   modernWeb3: Boolean,
   web3Version: String,
-  web3: Object,
-  userAgent: String,
-  validKey: Boolean,
-  newUser: Boolean,
-  userWelcomed: Boolean,
+  web3Instance: Object,
   currentProvider: String,
-  validBrowser: Boolean,
   web3Wallet: Boolean,
   legacyWallet: Boolean,
   modernWallet: Boolean,
@@ -337,18 +339,21 @@ state = {
   walletEnabled: Boolean,
   walletEnableCalled: Boolean,
   walletEnableCanceled: Boolean,
+  accountBalance: String,
+  correctNetwork: Boolean,
+  minimumBalance: String,
   correctNetwork: Boolean,
   userCurrentNetworkId: Number,
-  minimumBalance: String,
   socket: Object,
+  pendingSocketConnection: Boolean,
   socketConnection: Boolean,
   accountAddress: String,
-  accountBalance: String,
   transactionQueue: Array,
   transactionAwaitingApproval: Boolean,
   iframe: Object,
   iframeDocument: Object,
-  iframeWindow: Object
+  iframeWindow: Object,
+  connectionId: String
 }
 ```
 

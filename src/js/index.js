@@ -34,9 +34,9 @@ function init(config) {
       reason
     })
 
-    const error = new Error(reason)
-    error.eventCode = 'initFail'
-    throw error
+    const errorObj = new Error(reason)
+    errorObj.eventCode = 'initFail'
+    throw errorObj
   } else {
     updateState({ config })
   }
@@ -55,9 +55,9 @@ function init(config) {
       validApiKey: false
     })
 
-    const error = new Error('API key is required')
-    error.eventCode = 'initFail'
-    throw error
+    const errorObj = new Error('API key is required')
+    errorObj.eventCode = 'initFail'
+    throw errorObj
   }
 
   if (web3) {
@@ -100,18 +100,78 @@ function init(config) {
   // ONBOARD FUNCTION //
 
   function onboard() {
-    if (!state.validApiKey) {
-      return Promise.reject({
-        eventCode: 'initFail',
-        msg: 'Your api key is not valid'
+    if (state.config.headlessMode) {
+      return new Promise(async (resolve, reject) => {
+        await checkUserEnvironment.catch(reject)
+
+        if (state.mobileDevice) {
+          const error = new Error('User is on a mobile device')
+          error.eventCode = 'mobileBlocked'
+          reject(error)
+        }
+
+        if (!state.validBrowser) {
+          const error = new Error('User has an invalid browser')
+          error.eventCode = 'browserFail'
+          reject(error)
+        }
+
+        if (!state.web3Wallet) {
+          const error = new Error('User does not have a web3 wallet installed')
+          error.eventCode = 'walletFail'
+          reject(error)
+        }
+
+        if (!state.accessToAccounts) {
+          if (state.legacyWallet) {
+            const error = new Error('User needs to login to their account')
+            error.eventCode = 'walletLogin'
+            reject(error)
+          }
+
+          if (state.modernWallet) {
+            if (!state.walletLoggedIn) {
+              const error = new Error('User needs to login to wallet')
+              error.eventCode = 'walletLoginEnable'
+              reject(error)
+            }
+
+            if (!state.walletEnabled) {
+              const error = new Error('User needs to enable wallet')
+              error.eventCode = 'walletEnable'
+              reject(error)
+            }
+          }
+        }
+
+        if (!state.correctNetwork) {
+          const error = new Error('User is on the wrong network')
+          error.eventCode = 'networkFail'
+          reject(error)
+        }
+
+        if (!state.minimumBalance) {
+          const error = new Error(
+            'User does not have the minimum balance specified in the config'
+          )
+          error.eventCode = 'nsfFail'
+          reject(error)
+        }
+
+        resolve('User is ready to transact')
       })
     }
 
+    if (!state.validApiKey) {
+      const errorObj = new Error('Your api key is not valid')
+      errorObj.eventCode = 'initFail'
+      return Promise.reject(errorObj)
+    }
+
     if (!state.supportedNetwork) {
-      return Promise.reject({
-        eventCode: 'initFail',
-        msg: 'This network is not supported'
-      })
+      const errorObj = new Error('This network is not supported')
+      errorObj.eventCode = 'initFail'
+      return Promise.reject(errorObj)
     }
 
     // If user is on mobile, warn that it isn't supported
@@ -120,11 +180,11 @@ function init(config) {
         handleEvent(
           { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
           {
-            onClose: () =>
-              reject({
-                eventCode: 'mobileBlocked',
-                msg: 'User is on a mobile device'
-              })
+            onClose: () => {
+              const errorObj = new Error('User is on a mobile device')
+              errorObj.eventCode = 'mobileBlocked'
+              reject(errorObj)
+            }
           }
         )
 
@@ -142,15 +202,15 @@ function init(config) {
 
   function Contract(contractObj) {
     if (!state.validApiKey) {
-      const error = new Error('Your API key is not valid')
-      error.eventCode = 'initFail'
-      throw error
+      const errorObj = new Error('Your API key is not valid')
+      errorObj.eventCode = 'initFail'
+      throw errorObj
     }
 
     if (!state.supportedNetwork) {
-      const error = new Error('This network is not supported')
-      error.eventCode = 'initFail'
-      throw error
+      const errorObj = new Error('This network is not supported')
+      errorObj.eventCode = 'initFail'
+      throw errorObj
     }
 
     // if user is on mobile, and mobile is allowed by Dapp then just pass the contract back
@@ -163,11 +223,11 @@ function init(config) {
       if (window.web3) {
         configureWeb3()
       } else {
-        const error = new Error(
+        const errorObj = new Error(
           'A web3 instance is needed to decorate contract'
         )
-        error.eventCode = 'initFail'
-        throw error
+        errorObj.eventCode = 'initFail'
+        throw errorObj
       }
     }
 
@@ -196,7 +256,7 @@ function init(config) {
           const { callback, args } = separateArgs(allArgs)
 
           const result = await promisify(method.call)(...args).catch(
-            error => callback && callback(error)
+            errorObj => callback && callback(errorObj)
           )
           if (result) {
             callback && callback(null, result)
@@ -226,7 +286,7 @@ function init(config) {
               methodName: name,
               parameters: args
             }
-          ).catch(error => callback && callback(error))
+          ).catch(errorObj => callback && callback(errorObj))
         }
 
         originalContract[name].getData = method.getData
@@ -245,17 +305,15 @@ function init(config) {
 
   function Transaction(txObject, callback) {
     if (!state.validApiKey) {
-      return Promise.reject({
-        eventCode: 'initFail',
-        msg: 'Your api key is not valid'
-      })
+      const errorObj = new Error('Your api key is not valid')
+      errorObj.eventCode = 'initFail'
+      return Promise.reject(errorObj)
     }
 
     if (!state.supportedNetwork) {
-      return Promise.reject({
-        eventCode: 'initFail',
-        msg: 'This network is not supported'
-      })
+      const errorObj = new Error('This network is not supported')
+      errorObj.eventCode = 'initFail'
+      return Promise.reject(errorObj)
     }
 
     // Check if we have an instance of web3
@@ -278,9 +336,9 @@ function init(config) {
         txObject,
         sendMethod,
         callback
-      ).catch(error => {
-        reject(error)
-        callback && callback(error)
+      ).catch(errorObj => {
+        reject(errorObj)
+        callback && callback(errorObj)
       })
       resolve(txPromiseObj)
     })
