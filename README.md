@@ -19,10 +19,11 @@ setup. Supports web3 versions 0.20 and 1.0.
 
 To integrate `assist.js` into your dapp, you'll need to do 4 things:
 
-1. Install the widget
-2. Initialize the library
-3. Call `onboard`
-4. Decorate your contracts
+1. Create a free account and get an API key from [blocknative.com](https://blocknative.com)
+2. Install the widget
+3. Initialize the library
+4. Call `onboard`
+5. Decorate your contracts
 
 ### Install the widget
 
@@ -32,7 +33,7 @@ The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
 The current version 0.2.1.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
- 
+
 ```html
 <script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.js"
   integrity="sha384-wtXu8HYQaAoqqmGxbJa799ue405EZi/uNhmblOFpOQOAcL0Tk5wUCYfbELA4OvP6"
@@ -51,7 +52,7 @@ Put this script at the top of your `<head>`
 npm i bnc-assist
 ```
 
-### Initialize the library
+### Initialize the Library
 
 Full documentation of the `config` object is below, but the minimum required `config`
 is as follows:
@@ -66,7 +67,7 @@ var bncAssistConfig = {
 var assistInstance = assist.init(bncAssistConfig);
 ```
 
-### Call `onboard` 
+### Call `onboard`
 
 At some point in your dapp's workflow, you'll want to ensure users have the proper environment.
 This is done by calling `onboard`. Some dapps will call `onboard` immediately upon any page
@@ -85,7 +86,7 @@ assistInstance.onboard()
   })
 ```
 
-### Decorate your contracts
+### Decorate Your Contracts
 
 The first three steps in the getting started flow will get your users onboarded. This step adds
 transaction support in order to help guide your users through a series of issues that can arise
@@ -119,20 +120,20 @@ var originalMyContract = myContract;
 myContract = assistInstance.Contract(myContract)
 ```
 
-## API Reference 
+## API Reference
 
 ### Config
 
-A JavaScript Object that is passed to the `init` function.
+A JavaScript Object that is passed to the `init` function. Default values are in [square brackets] where they are set by Assist.js.
 
 ```javascript
 var config = {
   networkId: Number, // The network id of the Ethereum network your Dapp is working with (REQUIRED)
   dappId: String, // The api key supplied to you by Blocknative (REQUIRED)
   web3: Object, // The instantiated version of web3 that the Dapp is using
-  mobileBlocked: Boolean, // Defines if the Dapp works on mobile
-  minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp
-  headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection
+  mobileBlocked: Boolean, // Defines if the Dapp works on mobile [false]
+  minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp [0]
+  headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
   messages: {
     // See custom transaction messages section below for more details
     txPending: Function, // Transaction is pending and awaiting confirmation
@@ -207,7 +208,7 @@ The available ids for the `networkId` property of the config object:
 
 *The kovan testnet is not supported.*
 
-#### Local networks
+#### Local Networks
 
 When you are running locally (e.g. using ganache), set `networkId` in the config to the network id that the local network is set to. Any number that is not `1`, `3`, `4` and `42` is valid and will be recognized as a local network. If using the Ganache CLI you can set the network id via the `--networkId` option.
 
@@ -223,6 +224,22 @@ All errors are called with `eventCode` and `message` properties
   message: 'A api key is required to run assist'
 }
 ```
+
+### Headless Mode
+
+By default, assist will create UI elements in your application at certain times to guide users. You can disable this feature and run assist in "headless mode" by setting `headlessMode: true` in the config. This still enables you to collect analytics, but won't change the underlying behaviour of your application at all.
+
+### Mobile Dapps
+
+By default assist's UI elements are responsive and support mobile displays, however some dapps don't work effectively in mobile viewports or with mobile web3 providers like Status.im or Coinbase Wallet. setting `mobileBlocked: true` in the config will detect mobile user agents and direct them to use a desktop browser instead.
+
+### Minimum Balance
+
+By supplying an amount of wei to the `minimumBalance` option of the config, developers can limit access to their dapp to users who have at least this much ETH in their wallet.
+
+### Repeat Transactions
+
+Assist will detect transactions which look to be repeated. We notify users of repeat transactions when we see sequential transactions with the same `to` address and the same `value`.
 
 ## API
 
@@ -370,7 +387,7 @@ da.getState()
 
 ## Contribute
 
-### Installing dependencies
+### Installing Dependencies
 
 #### NPM
 
