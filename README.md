@@ -29,7 +29,7 @@ To integrate `assist.js` into your dapp, you'll need to do 4 things:
 #### Script Tag
 Our widget is currently hosted on S3.
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version 0.2.0.
+The current version 0.2.1.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
  
