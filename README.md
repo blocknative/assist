@@ -132,6 +132,7 @@ var config = {
   web3: Object, // The instantiated version of web3 that the Dapp is using
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp
+  headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection
   messages: {
     // See custom transaction messages section below for more details
     txPending: Function, // Transaction is pending and awaiting confirmation
