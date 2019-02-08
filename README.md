@@ -59,7 +59,7 @@ is as follows:
 
 ```javascript
 var bncAssistConfig = {
-  dappId: dappId,       // [String] The dapp ID supplied to you by Blocknative when you sign up for an account
+  dappId: dappId,       // [String] The API key supplied to you by Blocknative when you sign up for an account
   networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployd on.
                         //           See below for instructions on how to setup for local blockchains.
 };
@@ -129,7 +129,7 @@ A JavaScript Object that is passed to the `init` function. Default values are in
 ```javascript
 var config = {
   networkId: Number, // The network id of the Ethereum network your Dapp is working with (REQUIRED)
-  dappId: String, // The api key supplied to you by Blocknative (REQUIRED)
+  dappId: String, // The API key supplied to you by Blocknative (REQUIRED)
   web3: Object, // The instantiated version of web3 that the Dapp is using
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile [false]
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp [0]
@@ -221,7 +221,7 @@ All errors are called with `eventCode` and `message` properties
 ```javascript
 {
   eventCode: 'initFail',
-  message: 'A api key is required to run assist'
+  message: 'An API key is required to run assist'
 }
 ```
 
