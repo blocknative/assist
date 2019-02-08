@@ -102,7 +102,7 @@ function init(config) {
   function onboard() {
     if (state.config.headlessMode) {
       return new Promise(async (resolve, reject) => {
-        await checkUserEnvironment.catch(reject)
+        await checkUserEnvironment().catch(reject)
 
         if (state.mobileDevice) {
           const error = new Error('User is on a mobile device')
