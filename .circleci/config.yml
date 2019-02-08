@@ -34,7 +34,7 @@ jobs:
       - run: mkdir /home/circleci/project/deploy-temp/${VERSION}
       - run: mv /home/circleci/project/lib/*.js /home/circleci/project/deploy-temp/${VERSION}/
       - run: mv /home/circleci/project/lib/* /home/circleci/project/deploy-temp/
-      - run: aws s3 sync /home/circleci/project/deploy-temp s3://staging.assist.blocknative.com --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000"
+      - run: aws s3 sync /home/circleci/project/deploy-temp s3://staging.assist.blocknative.com --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 workflows:
   version: 2
   test_build:
