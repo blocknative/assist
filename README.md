@@ -28,22 +28,17 @@ To integrate `assist.js` into your dapp, you'll need to do 4 things:
 ### Install the widget
 
 #### Script Tag
-Our widget is currently hosted on S3.
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version 0.2.1.
+The current version 0.3.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.js"
-  integrity="sha384-wtXu8HYQaAoqqmGxbJa799ue405EZi/uNhmblOFpOQOAcL0Tk5wUCYfbELA4OvP6"
-  crossorigin="anonymous"></script>
+<script src="https://assist.blocknative.com/0-3-0/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://s3.amazonaws.com/bnc-assist/0-2-0/assist.min.js"
-  integrity="sha384-1pabeMrnax5diGU6TvH3LqKx5EOLvgHy7gv0Kyh7l+qMr/YsQ82W2eXWXcAW6gfz"
-  crossorigin="anonymous"></script>
+<script src="https://assist.blocknative.com/0-3-0/assist.min.js"></script>
 ```
 
 #### npm
