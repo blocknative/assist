@@ -39,6 +39,22 @@ The current version is 0.3.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
+
+To integrate `assist.js` into your dapp, you'll need to do 4 things:
+
+1. Install the widget
+2. Initialize the library
+3. Call `onboard`
+4. Decorate your contracts
+
+### Install the widget
+
+Our widget is currently hosted on S3.
+The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
+The current version 0.2.0.
+There are minified and non-minified versions.
+Put this script at the top of your `<head>`
+ 
 ```html
 <script src="https://assist.blocknative.com/0-3-0/assist.js"></script>
 
@@ -55,6 +71,7 @@ is as follows:
 ```javascript
 var bncAssistConfig = {
   dappId: dappId,       // [String] The API key supplied to you by Blocknative when you sign up for an account
+
   networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployd on.
                         //           See below for instructions on how to setup for local blockchains.
 };
@@ -167,6 +184,7 @@ var config = {
 
 The functions provided to the `messages` object in the config, will be
 called with the following object so that a custom message string can be returned:
+
 
 ```javascript
 {
