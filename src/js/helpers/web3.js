@@ -2,6 +2,9 @@ import { promisify } from 'bluebird'
 import { state, updateState } from './state'
 import { formatNumber, handleError, timeouts } from './utilities'
 
+const errorObj = new Error('undefined version of web3')
+errorObj.eventCode = 'initFail'
+
 export const web3Functions = {
   networkId: version => {
     switch (version) {
@@ -10,7 +13,7 @@ export const web3Functions = {
       case '1.0':
         return state.web3Instance.eth.net.getId
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   },
   nonce: version => {
@@ -20,7 +23,7 @@ export const web3Functions = {
       case '1.0':
         return state.web3Instance.eth.getTransactionCount
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   },
   bigNumber: version => {
@@ -32,7 +35,7 @@ export const web3Functions = {
         return value =>
           Promise.resolve(state.web3Instance.utils.toBN(formatNumber(value)))
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   },
   gasPrice: version => {
@@ -42,7 +45,7 @@ export const web3Functions = {
       case '1.0':
         return state.web3Instance.eth.getGasPrice
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   },
   contractGas: version => {
@@ -54,7 +57,7 @@ export const web3Functions = {
         return (contractMethod, parameters, txObject) =>
           contractMethod(...parameters).estimateGas(txObject)
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   },
   transactionGas: version => {
@@ -64,7 +67,7 @@ export const web3Functions = {
       case '1.0':
         return state.web3Instance.eth.estimateGas
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   },
   balance: version => {
@@ -74,7 +77,7 @@ export const web3Functions = {
       case '1.0':
         return state.web3Instance.eth.getBalance
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   },
   accounts: version => {
@@ -84,7 +87,7 @@ export const web3Functions = {
       case '1.0':
         return state.web3Instance.eth.getAccounts
       default:
-        return () => Promise.reject('undefined version of web3')
+        return () => Promise.reject(errorObj)
     }
   }
 }

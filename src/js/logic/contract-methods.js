@@ -26,11 +26,11 @@ export function modernMethod(method, methodABI, allArgs) {
               categoryCode: 'activePreflight'
             },
             {
-              onClose: () =>
-                reject({
-                  eventCode: 'mobileBlocked',
-                  msg: 'User is on a mobile device'
-                })
+              onClose: () => {
+                const errorObj = new Error('User is on a mobile device')
+                errorObj.eventCode = 'mobileBlocked'
+                reject(errorObj)
+              }
             }
           )
 
@@ -66,14 +66,11 @@ export function modernMethod(method, methodABI, allArgs) {
               },
               {
                 onClose: () =>
-                  setTimeout(
-                    () =>
-                      reject({
-                        eventCode: 'networkFail',
-                        msg: 'User is on the wrong network'
-                      }),
-                    timeouts.changeUI
-                  ),
+                  setTimeout(() => {
+                    const errorObj = new Error('User is on the wrong network')
+                    errorObj.eventCode = 'networkFail'
+                    reject(errorObj)
+                  }, timeouts.changeUI),
                 onClick: async () => {
                   await checkNetwork()
                   if (!state.correctNetwork) {
@@ -107,7 +104,7 @@ export async function legacyMethod(method, methodABI, allArgs) {
 
   if (constant) {
     const result = await promisify(method.call)(...args).catch(
-      error => callback && callback(error)
+      errorObj => callback && callback(errorObj)
     )
 
     handleEvent({
@@ -131,6 +128,6 @@ export async function legacyMethod(method, methodABI, allArgs) {
         methodName: name,
         parameters: args
       }
-    ).catch(error => callback && callback(error))
+    ).catch(errorObj => callback && callback(errorObj))
   }
 }

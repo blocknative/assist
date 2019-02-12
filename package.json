@@ -1,6 +1,6 @@
 {
-  "name": "assist",
-  "version": "0.2.0",
+  "name": "bnc-assist",
+  "version": "0.3.0",
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
@@ -17,13 +17,14 @@
     "ethereum"
   ],
   "author": "Block Native",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/blocknative/assist/issues"
   },
   "homepage": "https://github.com/blocknative/assist#readme",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "babel-eslint": "^10.0.1",
     "bluebird": "^3.5.3",
     "bowser": "^2.0.0-beta.3"
   },
