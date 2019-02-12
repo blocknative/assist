@@ -17,7 +17,7 @@ setup. Supports web3 versions 0.20 and 1.0.
 
 ## Getting Started
 
-To integrate `assist.js` into your dapp, you'll need to do 4 things:
+To integrate `assist.js` into your dapp, you'll need to do 5 things:
 
 1. Create a free account and get an API key from [blocknative.com](https://blocknative.com)
 2. Install the widget
@@ -27,9 +27,15 @@ To integrate `assist.js` into your dapp, you'll need to do 4 things:
 
 ### Install the widget
 
+#### npm
+
+```
+npm i bnc-assist
+```
+
 #### Script Tag
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version 0.3.0.
+The current version is 0.3.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
@@ -39,12 +45,6 @@ Put this script at the top of your `<head>`
 <!-- OR... -->
 
 <script src="https://assist.blocknative.com/0-3-0/assist.min.js"></script>
-```
-
-#### npm
-
-```
-npm i bnc-assist
 ```
 
 ### Initialize the Library
@@ -64,8 +64,9 @@ var assistInstance = assist.init(bncAssistConfig);
 
 ### Call `onboard`
 
-At some point in your dapp's workflow, you'll want to ensure users have the proper environment.
-This is done by calling `onboard`. Some dapps will call `onboard` immediately upon any page
+At some point in your dapp's workflow, you'll want to ensure users are within an environment which
+will allow them to make transactions, such as a browser with MetaMask, unlocked wallet, etc.
+This is done by calling `onboard`. Some dapps might want to call `onboard` immediately upon any page
 load. Others may wait until loading certain pages or until a certain button is clicked.
 In any event, it is as simple as calling:
 
@@ -73,6 +74,12 @@ In any event, it is as simple as calling:
 assistInstance.onboard()
   .then(function(success) {
     // User has been successfully onboarded and is ready to transact
+    // This means we can be sure of the follwing user properties:
+    //  - They are using a compatible browser
+    //  - They have a web3-enabled wallet installed
+    //  - The wallet is connected to the config-specified networkId
+    //  - The wallet is unlocked and contains at least `minimumBalance` in wei
+    //  - They have connected their wallet to the dapp, congruent with EIP1102
   })
   .catch(function(error) {
     // The user exited onboarding before completion
@@ -87,16 +94,17 @@ The first three steps in the getting started flow will get your users onboarded.
 transaction support in order to help guide your users through a series of issues that can arise
 when signing transactions.
 
-Using our decorated contracts will also enable some transaction-level metrics tracking to give
-you insights into things like:
+Using our decorated contracts will also enable some anonymised transaction-level metrics to give
+you insights into things including but not limited to:
 
 - How many transactions fail because a user doesn't have enough Ether
 - How many transactions are started but rejected by the user
+- How many users come to your dapp without a web3 wallet
 
 Decorating your contracts is simple:
 
 ```javascript
-var myContract = new web3.eth.Contract(abi, address);
+var myContract = new web3.eth.Contract(abi, address)
 var myDecoratedContract = assistInstance.Contract(myContract)
 
 // and then replace `myContract` with `myDecoratedContract`
@@ -110,8 +118,8 @@ You can then use `myDecoratedContract` instead of `myContract`.
 To speed things up, you can replace the contract after saving the original:
 
 ```javascript
-var myContract = new web3.eth.Contract(abi, address);
-var originalMyContract = myContract;
+var myContract = new web3.eth.Contract(abi, address)
+var originalMyContract = myContract
 myContract = assistInstance.Contract(myContract)
 ```
 
@@ -209,7 +217,7 @@ When you are running locally (e.g. using ganache), set `networkId` in the config
 
 ### Errors
 
-All errors are called with `eventCode` and `message` properties
+All errors are called with `eventCode` and `message` properties.
 
 #### Example
 
@@ -218,6 +226,20 @@ All errors are called with `eventCode` and `message` properties
   eventCode: 'initFail',
   message: 'An API key is required to run assist'
 }
+```
+
+#### Error Codes
+
+The following are the possible error codes from assist.js.
+
+```
+initFail          - initialization of the library failed
+mobileBlocked     - mobile browsers are blocked from accessing this dapp
+browserFail       - browser is not compatible with web3.js wallets
+walletFail        - user does not have a web3-enabled wallet installed
+walletEnableFail  - user has not logged into their wallet
+networkFail       - user's web3 wallet is not connected to the correct network
+nsfFail           - user does not have enough funds in their wallet
 ```
 
 ### Headless Mode
