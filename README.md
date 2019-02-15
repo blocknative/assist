@@ -56,11 +56,11 @@ There are minified and non-minified versions.
 Put this script at the top of your `<head>`
  
 ```html
-<script src="https://assist.blocknative.com/0-3-0/assist.js"></script>
+<script src="https://assist.blocknative.com/0-3-1/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-3-0/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-3-1/assist.min.js"></script>
 ```
 
 ### Initialize the Library
