@@ -22,6 +22,7 @@ export function createIframe(browserDocument, style) {
   iframe.style.width = '100%'
   iframe.style.border = 'none'
   iframe.style.pointerEvents = 'none'
+  iframe.style['z-index'] = 999
   const iWindow = iframe.contentWindow
   const iDocument = iWindow.document
   iDocument.open()
