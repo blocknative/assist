@@ -35,7 +35,7 @@ npm i bnc-assist
 
 #### Script Tag
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.3.0.
+The current version is 0.3.1.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
@@ -56,11 +56,11 @@ There are minified and non-minified versions.
 Put this script at the top of your `<head>`
  
 ```html
-<script src="https://assist.blocknative.com/0-3-0/assist.js"></script>
+<script src="https://assist.blocknative.com/0-3-1/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-3-0/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-3-1/assist.min.js"></script>
 ```
 
 ### Initialize the Library
