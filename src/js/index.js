@@ -232,7 +232,13 @@ function init(config) {
     }
 
     const { legacyWeb3 } = state
-    const abi = contractObj.abi || contractObj._jsonInterface
+
+    const abi =
+      contractObj.abi ||
+      contractObj._jsonInterface ||
+      Object.keys(contractObj.abiModel.abi.methods).map(
+        key => contractObj.abiModel.abi.methods[key].abiItem
+      )
 
     const modifiedContractObject = abi.reduce((originalContract, methodABI) => {
       const { name, type } = methodABI
