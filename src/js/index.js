@@ -17,7 +17,7 @@ import {
 import styles from '../css/styles.css'
 
 // Library Version - if changing, also need to change in package.json
-const version = '0.3.0'
+const version = '0.3.2'
 
 function init(config) {
   updateState({ version })
