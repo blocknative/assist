@@ -2,7 +2,7 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports web3 versions 0.20 and 1.0.
+setup. Supports web3 versions 0.20 and 1.0 (up to version `1.0.0-beta-37`).
 
 ## Preview
 
