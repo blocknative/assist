@@ -240,71 +240,78 @@ function init(config) {
         key => contractObj.abiModel.abi.methods[key].abiItem
       )
 
-    const modifiedContractObject = abi.reduce((originalContract, methodABI) => {
-      const { name, type } = methodABI
+    const contractClone = Object.create(Object.getPrototypeOf(contractObj))
+    const contractKeys = Object.keys(contractObj)
 
-      // If the method is not a function then do nothing to it
-      if (type !== 'function') {
-        return originalContract
-      }
-
-      // Save the original method to a variable
-      const method = legacyWeb3
-        ? originalContract[name]
-        : originalContract.methods[name]
-
-      // Replace the methods with our decorated ones
+    const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
       if (legacyWeb3) {
-        originalContract[name] = (...args) =>
-          legacyMethod(method, methodABI, args)
+        const methodABI = abi.find(method => method.name === key)
+        // if the key doesn't point to a method, just copy it over
+        if (!methodABI) {
+          newContractObj[key] = contractObj[key]
+        } else {
+          const { name } = methodABI
+          const method = contractObj[key]
 
-        originalContract[name].call = async (...allArgs) => {
-          const { callback, args } = separateArgs(allArgs)
+          newContractObj[name] = (...args) =>
+            legacyMethod(method, methodABI, args)
 
-          const result = await promisify(method.call)(...args).catch(
-            errorObj => callback && callback(errorObj)
-          )
-          if (result) {
-            callback && callback(null, result)
+          newContractObj[name].call = async (...allArgs) => {
+            const { callback, args } = separateArgs(allArgs)
+            const result = await promisify(method.call)(...args).catch(
+              errorObj => callback && callback(errorObj)
+            )
+
+            if (result) {
+              callback && callback(null, result)
+            }
+
+            handleEvent({
+              eventCode: 'contractQuery',
+              categoryCode: 'activeContract',
+              contract: {
+                methodName: name,
+                parameters: args,
+                result: JSON.stringify(result)
+              }
+            })
           }
 
-          handleEvent({
-            eventCode: 'contractQuery',
-            categoryCode: 'activeContract',
-            contract: {
-              methodName: name,
-              parameters: args,
-              result: JSON.stringify(result)
-            }
-          })
+          newContractObj[name].sendTransaction = async (...allArgs) => {
+            const { callback, txObject, args } = separateArgs(allArgs)
+            await sendTransaction(
+              'activeContract',
+              txObject,
+              promisify(method.sendTransaction),
+              callback,
+              method,
+              {
+                methodName: name,
+                parameters: args
+              }
+            ).catch(errorObj => callback && callback(errorObj))
+          }
+
+          newContractObj[name].getData = contractObj[name].getData
         }
-
-        originalContract[name].sendTransaction = async (...allArgs) => {
-          const { callback, txObject, args } = separateArgs(allArgs)
-
-          await sendTransaction(
-            'activeContract',
-            txObject,
-            promisify(method.sendTransaction),
-            callback,
-            method,
-            {
-              methodName: name,
-              parameters: args
-            }
-          ).catch(errorObj => callback && callback(errorObj))
-        }
-
-        originalContract[name].getData = method.getData
       } else {
-        originalContract.methods[name] = (...args) =>
-          modernMethod(method, methodABI, args)
+        if (key !== 'methods') {
+          newContractObj[key] = contractObj[key]
+        } else {
+          newContractObj.methods = abi.reduce((obj, methodABI) => {
+            const { name } = methodABI
+            const method = contractObj.methods[name]
+
+            obj[name] = (...args) => modernMethod(method, methodABI, args)
+            return obj
+          }, {})
+        }
       }
 
-      return originalContract
-    }, contractObj)
+      return newContractObj
+    }, contractClone)
 
-    return modifiedContractObject
+    return delegatedContractObj
   }
 
   // TRANSACTION FUNCTION //
