@@ -16,7 +16,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-  deploy:
+  deploy_stage:
     docker:
       - image: circleci/node:8.15-browsers
     steps:
@@ -35,15 +35,45 @@ jobs:
       - run: mv /home/circleci/project/lib/*.js /home/circleci/project/deploy-temp/${VERSION}/
       - run: mv /home/circleci/project/lib/* /home/circleci/project/deploy-temp/
       - run: aws s3 sync /home/circleci/project/deploy-temp s3://staging.assist.blocknative.com --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+  deploy_prod:
+    docker:
+      - image: circleci/node:8.15-browsers
+    steps:
+      - checkout
+      - run: sudo apt update && sudo apt install awscli
+      - run: yarn
+      - run: yarn build
+      - run: yarn global add npm-cli-login
+      - run: NPM_USER='$NPM_USERNAME' NPM_EMAIL='$NPM_EMAIL' NPM_PASS='$NPM_PASSWORD' npm-cli-login
+      - run: npm publish --dry-run
+      - run: gzip -9 /home/circleci/project/lib/assist.js
+      - run: gzip -9 /home/circleci/project/lib/assist.min.js
+      - run: mv /home/circleci/project/lib/assist.js.gz /home/circleci/project/lib/assist.js
+      - run: mv /home/circleci/project/lib/assist.min.js.gz /home/circleci/project/lib/assist.min.js
+      - run: ls -al
+      - run: echo export VERSION=`awk '/version/{gsub(/("|",)/,"",$2);print $2};' package.json | sed 's/\./-/g'` >> $BASH_ENV
+      - run: mkdir /home/circleci/project/deploy-temp
+      - run: mkdir /home/circleci/project/deploy-temp/${VERSION}
+      - run: mv /home/circleci/project/lib/*.js /home/circleci/project/deploy-temp/${VERSION}/
+      - run: mv /home/circleci/project/lib/* /home/circleci/project/deploy-temp/
+      - run: aws s3 sync /home/circleci/project/deploy-temp s3://assist.blocknative.com --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 workflows:
   version: 2
   test_build:
     jobs:
       - test
-      - deploy:
+      - deploy_stage:
           requires:
             - test
           filters:
             branches:
               only:
                 - develop
+      - deploy_prod:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+
