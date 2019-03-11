@@ -35,32 +35,16 @@ npm i bnc-assist
 
 #### Script Tag
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.3.4.
-There are minified and non-minified versions.
-Put this script at the top of your `<head>`
-
-
-To integrate `assist.js` into your dapp, you'll need to do 4 things:
-
-1. Install the widget
-2. Initialize the library
-3. Call `onboard`
-4. Decorate your contracts
-
-### Install the widget
-
-Our widget is currently hosted on S3.
-The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version 0.3.4.
+The current version is 0.3.5.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
  
 ```html
-<script src="https://assist.blocknative.com/0-3-4/assist.js"></script>
+<script src="https://assist.blocknative.com/0-3-5/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-3-4/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-3-5/assist.min.js"></script>
 ```
 
 ### Initialize the Library
