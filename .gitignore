@@ -1,3 +1,4 @@
 /node_modules
 .DS_Store
-/lib
+/lib/assist.min.js
+/lib/assist.js
