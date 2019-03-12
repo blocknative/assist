@@ -175,6 +175,11 @@ export function hasSufficientBalance(
   return new Promise(async (resolve, reject) => {
     const version = state.web3Version && state.web3Version.slice(0, 3)
 
+    // Sometimes value is in exponent notation and needs to be formatted
+    if (txObject.value) {
+      txObject.value = formatNumber(txObject.value)
+    }
+
     const transactionValue = txObject.value
       ? await web3Functions
           .bigNumber(version)(txObject.value)
