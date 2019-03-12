@@ -22,6 +22,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
     'no-nested-ternary': 'off',
-    'import/no-cycle': 'off'
+    'import/no-cycle': 'off',
+    'no-lonely-if': 'off'
   }
 }

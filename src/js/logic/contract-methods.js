@@ -8,13 +8,10 @@ import { addOnboardWarning } from '../views/dom'
 
 export function modernMethod(method, methodABI, allArgs) {
   const { name, constant } = methodABI
-
-  // Get callback from args if there is one present
   const { callback, args } = separateArgs(allArgs)
-
-  const returnObject = method(...args)
   const key = constant ? 'call' : 'send'
-  const returnObjectMethod = returnObject[key]
+  const innerMethod = method(...args)[key]
+  const returnObject = {}
 
   returnObject[key] = (...innerArgs) =>
     new Promise(async (resolve, reject) => {
@@ -37,7 +34,7 @@ export function modernMethod(method, methodABI, allArgs) {
           return
         }
 
-        const txPromise = returnObjectMethod(...innerArgs)
+        const txPromise = innerMethod(...innerArgs)
 
         txPromise
           .then(result => {
@@ -86,7 +83,7 @@ export function modernMethod(method, methodABI, allArgs) {
         const txPromiseObj = await sendTransaction(
           'activeContract',
           innerArgs[0],
-          returnObjectMethod,
+          innerMethod,
           callback,
           method,
           { methodName: name, parameters: args }
@@ -95,6 +92,7 @@ export function modernMethod(method, methodABI, allArgs) {
         resolve(txPromiseObj)
       }
     })
+
   return returnObject
 }
 
