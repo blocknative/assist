@@ -137,52 +137,52 @@ export function onboardWarningMsg(type) {
 
 export const imageSrc = {
   blockNativeLogo: {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/fJxOtIj.png',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/UhcCuKF.png 2x'
+    src: 'https://assist.blocknative.com/images/fJxOtIj.png',
+    srcset: 'https://assist.blocknative.com/images/UhcCuKF.png 2x'
   },
   mobile: {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/EcUxQVJ.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/GS6owd9.jpg 2x'
+    src: 'https://assist.blocknative.com/images/EcUxQVJ.jpg',
+    srcset: 'https://assist.blocknative.com/images/GS6owd9.jpg 2x'
   },
   browser: {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/riXzN0X.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/xpWtOVX.jpg 2x'
+    src: 'https://assist.blocknative.com/images/riXzN0X.jpg',
+    srcset: 'https://assist.blocknative.com/images/xpWtOVX.jpg 2x'
   },
   chromeLogo: {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/XAwAAmL.png',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/maxXVIH.png 2x'
+    src: 'https://assist.blocknative.com/images/XAwAAmL.png',
+    srcset: 'https://assist.blocknative.com/images/maxXVIH.png 2x'
   },
   firefoxLogo: {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/WjOSJTh.png',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/kodZvyO.png 2x'
+    src: 'https://assist.blocknative.com/images/WjOSJTh.png',
+    srcset: 'https://assist.blocknative.com/images/kodZvyO.png 2x'
   },
   '0': {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/XUPOg7L.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/s8euD9T.jpg 2x'
+    src: 'https://assist.blocknative.com/images/XUPOg7L.jpg',
+    srcset: 'https://assist.blocknative.com/images/s8euD9T.jpg 2x'
   },
   '1': {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/EgcXT0z.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/4zplgXa.jpg 2x'
+    src: 'https://assist.blocknative.com/images/EgcXT0z.jpg',
+    srcset: 'https://assist.blocknative.com/images/4zplgXa.jpg 2x'
   },
   '2': {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/tKkRH5L.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/BEhzPx6.jpg 2x'
+    src: 'https://assist.blocknative.com/images/tKkRH5L.jpg',
+    srcset: 'https://assist.blocknative.com/images/BEhzPx6.jpg 2x'
   },
   '3': {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/HuDHbXP.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/XLBqwPO.jpg 2x'
+    src: 'https://assist.blocknative.com/images/HuDHbXP.jpg',
+    srcset: 'https://assist.blocknative.com/images/XLBqwPO.jpg 2x'
   },
   '4': {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/0VBtqGV.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/t7WS9Sc.jpg 2x'
+    src: 'https://assist.blocknative.com/images/0VBtqGV.jpg',
+    srcset: 'https://assist.blocknative.com/images/t7WS9Sc.jpg 2x'
   },
   '5': {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/1TWEHRY.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/jfdXqIU.jpg 2x'
+    src: 'https://assist.blocknative.com/images/1TWEHRY.jpg',
+    srcset: 'https://assist.blocknative.com/images/jfdXqIU.jpg 2x'
   },
   '6': {
-    src: 'https://s3.amazonaws.com/bnc-assist/images/8ptZott.jpg',
-    srcset: 'https://s3.amazonaws.com/bnc-assist/images/elR9xQ8.jpg 2x'
+    src: 'https://assist.blocknative.com/images/8ptZott.jpg',
+    srcset: 'https://assist.blocknative.com/images/elR9xQ8.jpg 2x'
   }
 }
 

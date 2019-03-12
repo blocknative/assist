@@ -314,7 +314,7 @@ b {
   width: 16px;
   height: 16px;
   display: inline-block;
-  background-image: url('https://s3.amazonaws.com/bnc-assist/images/jJu8b0B.png');
+  background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
   vertical-align: sub;
 }
 
@@ -345,7 +345,7 @@ img.bn-onboard-img {
   height: 16px;
   display: block;
   margin: 6px;
-  background-image: url('https://s3.amazonaws.com/bnc-assist/images/jJu8b0B.png');
+  background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
   background-position: -49px 0px;
 }
 
@@ -457,11 +457,11 @@ img.bn-onboard-img {
   float: left;
   width: 18px;
   height: 18px;
-  background-image: url('https://s3.amazonaws.com/bnc-assist/images/jJu8b0B.png');
+  background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
 }
 
 .bn-progress .bn-status-icon {
-  background-image: url('https://s3.amazonaws.com/bnc-assist/images/mqCAjXV.gif');
+  background-image: url('https://assist.blocknative.com/images/mqCAjXV.gif');
   background-size: 18px 18px;
 }
 .bn-complete .bn-status-icon {
@@ -472,12 +472,12 @@ img.bn-onboard-img {
 }
 
 .bn-notification:hover .bn-status-icon {
-  background-image: url('https://s3.amazonaws.com/bnc-assist/images/jJu8b0B.png') !important;
+  background-image: url('https://assist.blocknative.com/images/jJu8b0B.png') !important;
   background-size: 82px 36px;
   background-position: 0px 19px !important;
 }
 .bn-notification:hover .bn-status-icon:hover {
-  background-image: url('https://s3.amazonaws.com/bnc-assist/images/jJu8b0B.png') !important;
+  background-image: url('https://assist.blocknative.com/images/jJu8b0B.png') !important;
   background-size: 82px 36px;
   background-position: -18px 19px !important;
   cursor: pointer;
@@ -491,7 +491,7 @@ img.bn-onboard-img {
   width: 15px;
   height: 16px;
   display: inline-block;
-  background-image: url('https://s3.amazonaws.com/bnc-assist/images/jJu8b0B.png');
+  background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
   background-position: -66px 0px;
   vertical-align: sub;
 }
@@ -515,7 +515,7 @@ a#bn-transaction-branding {
   display: inline-block;
   width: 18px;
   height: 25px;
-  background: transparent url('https://s3.amazonaws.com/bnc-assist/images/fJxOtIj.png') no-repeat
+  background: transparent url('https://assist.blocknative.com/images/fJxOtIj.png') no-repeat
     center left;
   -webkit-transition: width 0.2s ease-out;
   -moz-transition: width 0.2s ease-out;
@@ -535,21 +535,21 @@ a#bn-transaction-branding:hover {
   .bn-onboard-list-sprite,
   .bn-onboard-close-x,
   .bn-clock {
-    background-image: url('https://s3.amazonaws.com/bnc-assist/images/6mvOkII.png');
+    background-image: url('https://assist.blocknative.com/images/6mvOkII.png');
     /* Translate the @2x sprite's dimensions back to 1x */
     background-size: 82px 36px;
   }
   .bn-progress .bn-status-icon {
-    background-image: url('https://s3.amazonaws.com/bnc-assist/images/joHkLGC.gif');
+    background-image: url('https://assist.blocknative.com/images/joHkLGC.gif');
     background-size: 18px 18px;
   }
   .bn-notification:hover .bn-status-icon {
-    background-image: url('https://s3.amazonaws.com/bnc-assist/images/6mvOkII.png') !important;
+    background-image: url('https://assist.blocknative.com/images/6mvOkII.png') !important;
     background-size: 82px 36px;
   }
 
   a#bn-transaction-branding {
-    background-image: url('https://s3.amazonaws.com/bnc-assist/images/UhcCuKF.png');
+    background-image: url('https://assist.blocknative.com/images/UhcCuKF.png');
     background-size: 75px 25px;
   }
 }
