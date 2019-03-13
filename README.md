@@ -2,7 +2,9 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports web3 versions 0.20 and 1.0 (up to version `1.0.0-beta-37`).
+setup. Supports `web3.js` versions 0.20 and 1.0.
+
+_note: 1.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
 ## Preview
 
