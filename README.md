@@ -2,7 +2,9 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports web3 versions 0.20 and 1.0.
+setup. Supports `web3.js` versions 0.20 and 1.0.
+
+_note: 1.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
 ## Preview
 
@@ -19,7 +21,7 @@ setup. Supports web3 versions 0.20 and 1.0.
 
 To integrate `assist.js` into your dapp, you'll need to do 5 things:
 
-1. Create a free account and get an API key from [blocknative.com](https://blocknative.com)
+1. Create a free account and get an API key from [account.blocknative.com](https://account.blocknative.com)
 2. Install the widget
 3. Initialize the library
 4. Call `onboard`
@@ -35,32 +37,16 @@ npm i bnc-assist
 
 #### Script Tag
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.3.1.
-There are minified and non-minified versions.
-Put this script at the top of your `<head>`
-
-
-To integrate `assist.js` into your dapp, you'll need to do 4 things:
-
-1. Install the widget
-2. Initialize the library
-3. Call `onboard`
-4. Decorate your contracts
-
-### Install the widget
-
-Our widget is currently hosted on S3.
-The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version 0.2.0.
+The current version is 0.4.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
  
 ```html
-<script src="https://assist.blocknative.com/0-3-1/assist.js"></script>
+<script src="https://assist.blocknative.com/0-4-0/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-3-1/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-4-0/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -70,7 +56,7 @@ is as follows:
 
 ```javascript
 var bncAssistConfig = {
-  dappId: dappId,       // [String] The API key supplied to you by Blocknative when you sign up for an account
+  dappId: apiKey,       // [String] The API key created on https://account.blocknative.com
 
   networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployd on.
                         //           See below for instructions on how to setup for local blockchains.

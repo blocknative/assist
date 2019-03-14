@@ -144,6 +144,7 @@ export function eventCodeToStep(eventCode) {
     case 'walletEnable':
       return 3
     case 'networkFail':
+    case 'contractQueryFail':
       return 4
     case 'nsfFail':
       return 5

@@ -235,20 +235,6 @@ function checkAccountAccess() {
 
 export function checkNetwork() {
   return new Promise(async (resolve, reject) => {
-    // if on local host and we can't get networkID
-    setTimeout(() => {
-      if (
-        !state.userCurrentNetworkId ||
-        state.userCurrentNetworkId === 'localhost'
-      ) {
-        updateState({
-          correctNetwork: false,
-          userCurrentNetworkId: 'localhost'
-        })
-        resolve && resolve()
-      }
-    }, timeouts.localHostNetworkCheck)
-
     const networkId = await getNetworkId().catch(handleError('web3', reject))
 
     updateState({
