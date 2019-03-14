@@ -46,9 +46,9 @@ jobs:
       - run: sudo apt update && sudo apt install awscli
       - run: yarn
       - run: yarn build
-      # - run: yarn global add npm-cli-login
-      # - run: NPM_USER='$NPM_USERNAME' NPM_EMAIL='$NPM_EMAIL' NPM_PASS='$NPM_PASSWORD' npm-cli-login
-      # - run: npm publish --dry-run
+      - run: sudo npm i -g add npm-cli-login
+      - run: NPM_USER=$NPM_USERNAME NPM_EMAIL=$NPM_EMAIL NPM_PASS=$NPM_PASSWORD npm-cli-login
+      - run: npm publish --dry-run
       - run: gzip -9 /home/circleci/project/lib/assist.js
       - run: gzip -9 /home/circleci/project/lib/assist.min.js
       - run: mv /home/circleci/project/lib/assist.js.gz /home/circleci/project/lib/assist.js
