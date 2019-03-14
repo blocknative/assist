@@ -21,7 +21,7 @@ _note: 1.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacti
 
 To integrate `assist.js` into your dapp, you'll need to do 5 things:
 
-1. Create a free account and get an API key from [blocknative.com](https://blocknative.com)
+1. Create a free account and get an API key from [account.blocknative.com](https://account.blocknative.com)
 2. Install the widget
 3. Initialize the library
 4. Call `onboard`
@@ -42,11 +42,11 @@ There are minified and non-minified versions.
 Put this script at the top of your `<head>`
  
 ```html
-<script src="https://assist.blocknative.com/0-3-5/assist.js"></script>
+<script src="https://assist.blocknative.com/0-4-0/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-3-5/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-4-0/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -56,7 +56,7 @@ is as follows:
 
 ```javascript
 var bncAssistConfig = {
-  dappId: dappId,       // [String] The API key supplied to you by Blocknative when you sign up for an account
+  dappId: apiKey,       // [String] The API key created on https://account.blocknative.com
 
   networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployd on.
                         //           See below for instructions on how to setup for local blockchains.

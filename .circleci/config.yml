@@ -37,7 +37,7 @@ jobs:
       - run: mkdir /home/circleci/project/deploy-temp/${VERSION}
       - run: mv /home/circleci/project/lib/*.js /home/circleci/project/deploy-temp/${VERSION}/
       - run: mv /home/circleci/project/lib/* /home/circleci/project/deploy-temp/
-      - run: aws s3 sync /home/circleci/project/deploy-temp s3://staging.assist.blocknative.com --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+      - run: aws s3 sync /home/circleci/project/deploy-temp/${VERSION}/ s3://staging.assist.blocknative.com/${VERSION}/ --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
   deploy_prod:
     docker:
       - image: circleci/node:8.15-browsers
@@ -46,9 +46,9 @@ jobs:
       - run: sudo apt update && sudo apt install awscli
       - run: yarn
       - run: yarn build
-      - run: yarn global add npm-cli-login
-      - run: NPM_USER='$NPM_USERNAME' NPM_EMAIL='$NPM_EMAIL' NPM_PASS='$NPM_PASSWORD' npm-cli-login
-      - run: npm publish --dry-run
+      # - run: yarn global add npm-cli-login
+      # - run: NPM_USER='$NPM_USERNAME' NPM_EMAIL='$NPM_EMAIL' NPM_PASS='$NPM_PASSWORD' npm-cli-login
+      # - run: npm publish --dry-run
       - run: gzip -9 /home/circleci/project/lib/assist.js
       - run: gzip -9 /home/circleci/project/lib/assist.min.js
       - run: mv /home/circleci/project/lib/assist.js.gz /home/circleci/project/lib/assist.js
@@ -59,7 +59,7 @@ jobs:
       - run: mkdir /home/circleci/project/deploy-temp/${VERSION}
       - run: mv /home/circleci/project/lib/*.js /home/circleci/project/deploy-temp/${VERSION}/
       - run: mv /home/circleci/project/lib/* /home/circleci/project/deploy-temp/
-      - run: aws s3 sync /home/circleci/project/deploy-temp s3://assist.blocknative.com --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+      - run: aws s3 sync /home/circleci/project/deploy-temp/${VERSION}/ s3://assist.blocknative.com/${VERSION}/ --content-type "text/javascript" --content-encoding "gzip" --cache-control "max-age=31536000" --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 workflows:
   version: 2
   test_build:
