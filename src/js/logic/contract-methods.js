@@ -24,6 +24,7 @@ export function modernMethod(method, methodABI, allArgs) {
               onClose: () => {
                 const errorObj = new Error('User is on a mobile device')
                 errorObj.eventCode = 'mobileBlocked'
+                callback && callback(errorObj)
                 reject(errorObj)
               }
             }
