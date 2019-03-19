@@ -66,7 +66,6 @@ const eventToUI = {
     txFailed: notificationsUI
   },
   activeContract: {
-    contractQueryFail: onboardingUI,
     txAwaitingApproval: notificationsUI,
     txSent: notificationsUI,
     txPending: notificationsUI,
