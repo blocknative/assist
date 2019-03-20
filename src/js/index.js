@@ -92,6 +92,27 @@ function init(config) {
     getState
   }
 
+  getState().then(state => {
+    handleEvent({
+      eventCode: 'initState',
+      categoryCode: 'initialize',
+      state: {
+        accessToAccounts: state.accessToAccounts,
+        correctNetwork: state.correctNetwork,
+        legacyWallet: state.legacyWallet,
+        legacyWeb3: state.legacyWeb3,
+        minimumBalance: state.minimumBalance,
+        mobileDevice: state.mobileDevice,
+        modernWallet: state.modernWallet,
+        modernWeb3: state.modernWeb3,
+        walletEnabled: state.walletEnabled,
+        walletLoggedIn: state.walletLoggedIn,
+        web3Wallet: state.web3Wallet,
+        validBrowser: state.validBrowser
+      }
+    })
+  })
+
   // return the API
   return intializedAssist
 
