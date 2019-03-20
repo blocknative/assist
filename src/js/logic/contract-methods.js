@@ -2,9 +2,7 @@ import { promisify } from 'bluebird'
 import { state } from '../helpers/state'
 import { handleEvent } from '../helpers/events'
 import sendTransaction from './send-transaction'
-import { separateArgs, timeouts } from '../helpers/utilities'
-import { checkNetwork } from './user'
-import { addOnboardWarning } from '../views/dom'
+import { separateArgs } from '../helpers/utilities'
 
 export function modernMethod(method, methodABI, allArgs) {
   const { name, constant } = methodABI
@@ -26,6 +24,7 @@ export function modernMethod(method, methodABI, allArgs) {
               onClose: () => {
                 const errorObj = new Error('User is on a mobile device')
                 errorObj.eventCode = 'mobileBlocked'
+                callback && callback(errorObj)
                 reject(errorObj)
               }
             }
@@ -50,32 +49,19 @@ export function modernMethod(method, methodABI, allArgs) {
             callback && callback(null, result)
             resolve(result)
           })
-          .catch(() => {
-            handleEvent(
-              {
-                eventCode: 'contractQueryFail',
-                categoryCode: 'activeContract',
-                contract: {
-                  methodName: name,
-                  parameters: args
-                },
-                reason: 'User is on the incorrect network'
+          .catch(error => {
+            handleEvent({
+              eventCode: 'contractQueryFail',
+              categoryCode: 'activeContract',
+              contract: {
+                methodName: name,
+                parameters: args
               },
-              {
-                onClose: () =>
-                  setTimeout(() => {
-                    const errorObj = new Error('User is on the wrong network')
-                    errorObj.eventCode = 'networkFail'
-                    reject(errorObj)
-                  }, timeouts.changeUI),
-                onClick: async () => {
-                  await checkNetwork()
-                  if (!state.correctNetwork) {
-                    addOnboardWarning('network')
-                  }
-                }
-              }
-            )
+              reason: error.msg
+            })
+
+            callback && callback(error)
+            reject(error)
           })
       }
 
@@ -87,7 +73,10 @@ export function modernMethod(method, methodABI, allArgs) {
           callback,
           method,
           { methodName: name, parameters: args }
-        ).catch(reject)
+        ).catch(error => {
+          callback && callback(error)
+          reject(error)
+        })
 
         resolve(txPromiseObj)
       }
