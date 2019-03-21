@@ -41,7 +41,7 @@ function init(config) {
     updateState({ config })
   }
 
-  const { web3, dappId, mobileBlocked } = config
+  const { web3, dappId, mobileBlocked, headlessMode } = config
 
   // Check that an api key has been provided to the config object
   if (!dappId) {
@@ -68,7 +68,7 @@ function init(config) {
   getUserAgent()
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
-  if (!state.iframe) {
+  if (!state.iframe && !headlessMode) {
     createIframe(document, styles)
   }
 
