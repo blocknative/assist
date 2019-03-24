@@ -4,15 +4,16 @@ import { handleEvent } from '../helpers/events'
 import sendTransaction from './send-transaction'
 import { separateArgs } from '../helpers/utilities'
 
-export function modernMethod(method, methodABI, allArgs) {
+export function modernMethod(method, methodABI, args) {
   const { name, constant } = methodABI
-  const { callback, args } = separateArgs(allArgs)
   const key = constant ? 'call' : 'send'
   const innerMethod = method(...args)[key]
   const returnObject = {}
 
   returnObject[key] = (...innerArgs) =>
     new Promise(async (resolve, reject) => {
+      const { callback, txObject } = separateArgs(innerArgs, 0)
+
       if (key === 'call') {
         if (state.mobileDevice && state.config.mobileBlocked) {
           handleEvent(
@@ -33,7 +34,7 @@ export function modernMethod(method, methodABI, allArgs) {
           return
         }
 
-        const txPromise = innerMethod(...innerArgs)
+        const txPromise = innerMethod(txObject)
 
         txPromise
           .then(result => {
@@ -68,7 +69,7 @@ export function modernMethod(method, methodABI, allArgs) {
       if (key === 'send') {
         const txPromiseObj = await sendTransaction(
           'activeContract',
-          innerArgs[0],
+          txObject,
           innerMethod,
           callback,
           method,
@@ -86,13 +87,21 @@ export function modernMethod(method, methodABI, allArgs) {
 }
 
 export async function legacyMethod(method, methodABI, allArgs) {
-  const { callback, txObject, args } = separateArgs(allArgs)
-  const { name, constant } = methodABI
+  const { name, constant, inputs } = methodABI
+  const argsLength = inputs.length
+  const { callback, txObject, args, defaultBlock } = separateArgs(
+    allArgs,
+    argsLength
+  )
 
   if (constant) {
-    const result = await promisify(method.call)(...args).catch(
-      errorObj => callback && callback(errorObj)
-    )
+    const result = await promisify(method.call)(
+      ...args,
+      txObject,
+      defaultBlock
+    ).catch(errorObj => {
+      callback && callback(errorObj)
+    })
 
     handleEvent({
       eventCode: 'contractQuery',

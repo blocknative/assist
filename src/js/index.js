@@ -271,17 +271,24 @@ function init(config) {
         if (!methodABI) {
           newContractObj[key] = contractObj[key]
         } else {
-          const { name } = methodABI
+          const { name, inputs } = methodABI
           const method = contractObj[key]
+          const argsLength = inputs.length
 
           newContractObj[name] = (...args) =>
             legacyMethod(method, methodABI, args)
 
           newContractObj[name].call = async (...allArgs) => {
-            const { callback, args } = separateArgs(allArgs)
-            const result = await promisify(method.call)(...args).catch(
-              errorObj => callback && callback(errorObj)
+            const { callback, args, txObject, defaultBlock } = separateArgs(
+              allArgs,
+              argsLength
             )
+
+            const result = await promisify(method.call)(
+              ...args,
+              txObject,
+              defaultBlock
+            ).catch(errorObj => callback && callback(errorObj))
 
             if (result) {
               callback && callback(null, result)
@@ -299,7 +306,11 @@ function init(config) {
           }
 
           newContractObj[name].sendTransaction = async (...allArgs) => {
-            const { callback, txObject, args } = separateArgs(allArgs)
+            const { callback, txObject, args } = separateArgs(
+              allArgs,
+              argsLength
+            )
+
             await sendTransaction(
               'activeContract',
               txObject,
