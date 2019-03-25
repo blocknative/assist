@@ -19,18 +19,18 @@ const uiMockFunctions = {
 }
 
 // mock all the functions in the eventToUi object
-for (const key in eventToUi) {
-  for (const func in eventToUi[key]) {
+Object.keys(eventToUi).forEach(key => {
+  Object.keys(eventToUi[key]).forEach(func => {
     eventToUi[key][func] = jest.fn()
-  }
-}
+  })
+})
 
 test('Calls the correct UI handler function when an event is received from the server', () => {
   // AFAIK there are no other functions which call notification UI events
   stateHelper.state.config = { headlessMode: false }
   let eventObj
-  for (const key in uiMockFunctions) {
-    for (const func of uiMockFunctions[key]) {
+  Object.keys(uiMockFunctions).forEach(key => {
+    Object.values(uiMockFunctions[key]).forEach(func => {
       eventObj = {
         categoryCode: key,
         eventCode: func,
@@ -40,15 +40,15 @@ test('Calls the correct UI handler function when an event is received from the s
       expect(
         eventToUi[eventObj.categoryCode][eventObj.eventCode]
       ).toHaveBeenCalledTimes(1)
-    }
-  }
+    })
+  })
 })
 
 test('Does not call the UI handler when we are in headless mode', () => {
   stateHelper.state.config = { headlessMode: true }
   let eventObj
-  for (const key in uiMockFunctions) {
-    for (const func of uiMockFunctions[key]) {
+  Object.keys(uiMockFunctions).forEach(key => {
+    Object.values(uiMockFunctions[key]).forEach(func => {
       eventObj = {
         categoryCode: key,
         eventCode: func,
@@ -58,25 +58,26 @@ test('Does not call the UI handler when we are in headless mode', () => {
       expect(
         eventToUi[eventObj.categoryCode][eventObj.eventCode]
       ).toHaveBeenCalledTimes(0)
-    }
-  }
+    })
+  })
 })
 
 test('Logs the event if it has not come from the server', () => {
   let eventObj
   let count = 0
-  for (const key in eventToUi) {
-    for (const func in eventToUi[key]) {
+  Object.keys(eventToUi).forEach(key => {
+    Object.keys(eventToUi[key]).forEach(func => {
       // make sure we're not sending any events which could look like they've come from the server
-      if (serverEvents.indexOf(func) !== -1) continue
-      eventObj = {
-        categoryCode: key,
-        eventCode: func,
-        transaction: { hash: '0x' }
+      if (serverEvents.indexOf(func) === -1) {
+        eventObj = {
+          categoryCode: key,
+          eventCode: func,
+          transaction: { hash: '0x' }
+        }
+        events.handleEvent(eventObj)
+        count += 1
+        expect(events.lib.logEvent).toHaveBeenCalledTimes(count)
       }
-      events.handleEvent(eventObj)
-      count++
-      expect(events.lib.logEvent).toHaveBeenCalledTimes(count)
-    }
-  }
+    })
+  })
 })

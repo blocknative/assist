@@ -98,7 +98,6 @@ test('Does not create an iframe in headless mode', async () => {
   expect(iframeMock.createIframe).toHaveBeenCalledTimes(0)
 })
 
-
 // reset the mock call count
 beforeEach(() => {
   events.handleEvent.mockClear()
