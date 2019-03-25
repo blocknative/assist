@@ -131,7 +131,7 @@ function sendTransaction(
       txPromise = sendTransactionMethod(txObject)
     }
 
-    resolve({ txPromise })
+    resolve(txPromise)
 
     handleEvent(
       addContractEventObj(

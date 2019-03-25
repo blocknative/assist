@@ -75,6 +75,10 @@ export function separateArgs(allArgs, argsLength) {
   }
 }
 
+export function getOverloadedMethodKeys(inputs) {
+  return inputs.map(input => input.type).join(',')
+}
+
 export function assistLog(log) {
   console.log('Assist:', log) // eslint-disable-line no-console
 }
