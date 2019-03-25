@@ -53,20 +53,30 @@ export function timeString(time) {
   return seconds >= 60 ? `${Math.floor(seconds / 60)} min` : `${seconds} sec`
 }
 
-export function separateArgs(args) {
-  const argsCopy = [...args]
-  const callbackIndex = argsCopy.findIndex(arg => typeof arg === 'function')
-  const callback = callbackIndex > -1 && argsCopy.splice(callbackIndex, 1)[0]
+export function separateArgs(allArgs, argsLength) {
+  const allArgsCopy = [...allArgs]
+  const args = argsLength ? allArgsCopy.splice(0, argsLength) : []
+  const callback =
+    typeof allArgsCopy[allArgsCopy.length - 1] === 'function' &&
+    allArgsCopy.splice(allArgsCopy.length - 1, 1)[0]
 
-  const txObjectIndex = argsCopy.findIndex(arg => typeof arg === 'object')
   const txObject =
-    txObjectIndex > -1 ? argsCopy.splice(txObjectIndex, 1)[0] : undefined
+    typeof allArgsCopy[0] === 'object' && allArgsCopy[0] !== null
+      ? allArgsCopy.splice(0, 1)[0]
+      : {}
+
+  const defaultBlock = allArgsCopy[0] && allArgsCopy[0]
 
   return {
     callback,
-    args: argsCopy,
-    txObject
+    args,
+    txObject,
+    defaultBlock
   }
+}
+
+export function getOverloadedMethodKeys(inputs) {
+  return inputs.map(input => input.type).join(',')
 }
 
 export function assistLog(log) {
