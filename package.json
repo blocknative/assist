@@ -5,7 +5,7 @@
   "main": "lib/assist.min.js",
   "scripts": {
     "build": "node build.js",
-    "lint": "eslint --fix",
+    "lint": "eslint . --fix",
     "test": "jest"
   },
   "repository": {
