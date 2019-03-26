@@ -22,6 +22,21 @@ import network2x from '../../images/jfdXqIU.jpg'
 import complete from '../../images/8ptZott.jpg'
 import complete2x from '../../images/elR9xQ8.jpg'
 
+import blockNativeLogo from '../../images/fJxOtIj.png'
+import blockNativeLogo2x from '../../images/UhcCuKF.png'
+
+import mobile from '../../images/EcUxQVJ.jpg'
+import mobile2x from '../../images/GS6owd9.jpg'
+
+import browserFail from '../../images/riXzN0X.jpg'
+import browserFail2x from '../../images/xpWtOVX.jpg'
+
+import chromeLogo from '../../images/XAwAAmL.png'
+import chromeLogo2x from '../../images/maxXVIH.png'
+
+import firefoxLogo from '../../images/kodZvyO.png'
+import firefoxLogo2x from '../../images/WjOSJTh.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -158,24 +173,24 @@ export function onboardWarningMsg(type) {
 
 export const imageSrc = {
   blockNativeLogo: {
-    src: 'https://assist.blocknative.com/images/fJxOtIj.png',
-    srcset: 'https://assist.blocknative.com/images/UhcCuKF.png'
+    src: blockNativeLogo,
+    srcset: blockNativeLogo2x
   },
   mobile: {
-    src: 'https://assist.blocknative.com/images/EcUxQVJ.jpg',
-    srcset: 'https://assist.blocknative.com/images/GS6owd9.jpg'
+    src: mobile,
+    srcset: mobile2x
   },
   browser: {
-    src: 'https://assist.blocknative.com/images/riXzN0X.jpg',
-    srcset: 'https://assist.blocknative.com/images/xpWtOVX.jpg'
+    src: browserFail,
+    srcset: browserFail2x
   },
   chromeLogo: {
-    src: 'https://assist.blocknative.com/images/XAwAAmL.png',
-    srcset: 'https://assist.blocknative.com/images/maxXVIH.png'
+    src: chromeLogo,
+    srcset: chromeLogo2x
   },
   firefoxLogo: {
-    src: 'https://assist.blocknative.com/images/WjOSJTh.png',
-    srcset: 'https://assist.blocknative.com/images/kodZvyO.png'
+    src: firefoxLogo,
+    srcset: firefoxLogo2x
   },
   '0': {
     src: welcome,
