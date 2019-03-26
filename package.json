@@ -53,6 +53,7 @@
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-eslint": "^5.0.0",
+    "rollup-plugin-img": "^1.1.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-uglify": "^6.0.0",

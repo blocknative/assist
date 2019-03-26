@@ -1,6 +1,27 @@
 import { state } from '../helpers/state'
 import { capitalize, networkName } from '../helpers/utilities'
 
+import welcome from '../../images/XUPOg7L.jpg'
+import welcome2x from '../../images/s8euD9T.jpg'
+
+import browser from '../../images/EgcXT0z.jpg'
+import browser2x from '../../images/4zplgXa.jpg'
+
+import metamask from '../../images/tKkRH5L.jpg'
+import metamask2x from '../../images/BEhzPx6.jpg'
+
+import login from '../../images/HuDHbXP.jpg'
+import login2x from '../../images/XLBqwPO.jpg'
+
+import connect from '../../images/0VBtqGV.jpg'
+import connect2x from '../../images/t7WS9Sc.jpg'
+
+import network from '../../images/1TWEHRY.jpg'
+import network2x from '../../images/jfdXqIU.jpg'
+
+import complete from '../../images/8ptZott.jpg'
+import complete2x from '../../images/elR9xQ8.jpg'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -138,51 +159,51 @@ export function onboardWarningMsg(type) {
 export const imageSrc = {
   blockNativeLogo: {
     src: 'https://assist.blocknative.com/images/fJxOtIj.png',
-    srcset: 'https://assist.blocknative.com/images/UhcCuKF.png 2x'
+    srcset: 'https://assist.blocknative.com/images/UhcCuKF.png'
   },
   mobile: {
     src: 'https://assist.blocknative.com/images/EcUxQVJ.jpg',
-    srcset: 'https://assist.blocknative.com/images/GS6owd9.jpg 2x'
+    srcset: 'https://assist.blocknative.com/images/GS6owd9.jpg'
   },
   browser: {
     src: 'https://assist.blocknative.com/images/riXzN0X.jpg',
-    srcset: 'https://assist.blocknative.com/images/xpWtOVX.jpg 2x'
+    srcset: 'https://assist.blocknative.com/images/xpWtOVX.jpg'
   },
   chromeLogo: {
     src: 'https://assist.blocknative.com/images/XAwAAmL.png',
-    srcset: 'https://assist.blocknative.com/images/maxXVIH.png 2x'
+    srcset: 'https://assist.blocknative.com/images/maxXVIH.png'
   },
   firefoxLogo: {
     src: 'https://assist.blocknative.com/images/WjOSJTh.png',
-    srcset: 'https://assist.blocknative.com/images/kodZvyO.png 2x'
+    srcset: 'https://assist.blocknative.com/images/kodZvyO.png'
   },
   '0': {
-    src: 'https://assist.blocknative.com/images/XUPOg7L.jpg',
-    srcset: 'https://assist.blocknative.com/images/s8euD9T.jpg 2x'
+    src: welcome,
+    srcset: welcome2x
   },
   '1': {
-    src: 'https://assist.blocknative.com/images/EgcXT0z.jpg',
-    srcset: 'https://assist.blocknative.com/images/4zplgXa.jpg 2x'
+    src: browser,
+    srcset: browser2x
   },
   '2': {
-    src: 'https://assist.blocknative.com/images/tKkRH5L.jpg',
-    srcset: 'https://assist.blocknative.com/images/BEhzPx6.jpg 2x'
+    src: metamask,
+    srcset: metamask2x
   },
   '3': {
-    src: 'https://assist.blocknative.com/images/HuDHbXP.jpg',
-    srcset: 'https://assist.blocknative.com/images/XLBqwPO.jpg 2x'
+    src: login,
+    srcset: login2x
   },
   '4': {
-    src: 'https://assist.blocknative.com/images/0VBtqGV.jpg',
-    srcset: 'https://assist.blocknative.com/images/t7WS9Sc.jpg 2x'
+    src: connect,
+    srcset: connect2x
   },
   '5': {
-    src: 'https://assist.blocknative.com/images/1TWEHRY.jpg',
-    srcset: 'https://assist.blocknative.com/images/jfdXqIU.jpg 2x'
+    src: network,
+    srcset: network2x
   },
   '6': {
-    src: 'https://assist.blocknative.com/images/8ptZott.jpg',
-    srcset: 'https://assist.blocknative.com/images/elR9xQ8.jpg 2x'
+    src: complete,
+    srcset: complete2x
   }
 }
 
