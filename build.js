@@ -29,7 +29,7 @@ const defaultPlugins = [
     }
   }),
   eslint({
-    exclude: ['src/css/**', 'node_modules/**', 'src/images/**']
+    exclude: ['src/css/**', 'node_modules/**', 'lib/images/**']
   }),
   babel({
     exclude: 'node_modules/**',
