@@ -34,8 +34,8 @@ import browserFail2x from '../../../lib/images/xpWtOVX.jpg'
 import chromeLogo from '../../../lib/images/XAwAAmL.png'
 import chromeLogo2x from '../../../lib/images/maxXVIH.png'
 
-import firefoxLogo from '../../../lib/images/kodZvyO.png'
-import firefoxLogo2x from '../../../lib/images/WjOSJTh.png'
+import firefoxLogo from '../../../lib/images/WjOSJTh.png'
+import firefoxLogo2x from '../../../lib/images/kodZvyO.png'
 
 export const notSupported = {
   mobileNotSupported: {
