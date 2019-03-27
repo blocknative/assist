@@ -119,6 +119,7 @@ export function extractMessageFromError(message) {
 
 export function eventCodeToType(eventCode) {
   switch (eventCode) {
+    case 'txRequest':
     case 'txPending':
     case 'txSent':
       return 'progress'

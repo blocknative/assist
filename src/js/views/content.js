@@ -187,6 +187,7 @@ export const imageSrc = {
 }
 
 export const transactionMsgs = {
+  txRequest: () => `Your transaction is awaiting approval`,
   txPending: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has started`,
   txSent: ({ transaction }) =>

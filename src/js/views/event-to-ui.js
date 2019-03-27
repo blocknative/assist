@@ -56,6 +56,7 @@ const eventToUI = {
   },
   activeTransaction: {
     txAwaitingApproval: notificationsUI,
+    txRequest: notificationsUI,
     txSent: notificationsUI,
     txPending: notificationsUI,
     txSendFail: notificationsUI,
@@ -67,6 +68,7 @@ const eventToUI = {
   },
   activeContract: {
     txAwaitingApproval: notificationsUI,
+    txRequest: notificationsUI,
     txSent: notificationsUI,
     txPending: notificationsUI,
     txSendFail: notificationsUI,
@@ -168,7 +170,8 @@ function notificationsUI(eventObj) {
     existingNotifications = true
     notificationsList = getByQuery('.bn-notifications')
 
-    const pendingNotificationToRemove = getById(`${id}-progress`)
+    const pendingNotificationToRemove =
+      getById(`${id}-progress`) || getById('txRequest-progress')
 
     // if pending notification with the same id, we can remove it to be replaced with new status
     if (pendingNotificationToRemove) {
