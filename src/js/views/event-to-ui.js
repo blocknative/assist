@@ -79,6 +79,14 @@ const eventToUI = {
 }
 
 function notSupportedUI(eventObj, handlers) {
+  const existingModal = state.iframeDocument.querySelector(
+    '.bn-onboard-modal-shade'
+  )
+
+  if (existingModal) {
+    return
+  }
+
   const { eventCode } = eventObj
   const modal = createElement(
     'div',
