@@ -1,3 +1,5 @@
+/* eslint import/no-extraneous-dependencies: 0 */
+
 const rollup = require('rollup')
 const babel = require('rollup-plugin-babel')
 const { eslint } = require('rollup-plugin-eslint')
