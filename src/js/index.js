@@ -17,7 +17,10 @@ import { getOverloadedMethodKeys } from './helpers/utilities'
 import { createIframe } from './helpers/iframe'
 import {
   getTransactionQueueFromStorage,
-  storeTransactionQueue
+  storeTransactionQueue,
+  storeItem,
+  removeItem,
+  getItem
 } from './helpers/storage'
 import styles from '../css/styles.css'
 
@@ -117,6 +120,12 @@ function init(config) {
       }
     })
   })
+
+  const onboardingInProgress = getItem('onboarding') === 'true'
+
+  if (onboardingInProgress) {
+    onboard().catch(() => {})
+  }
 
   // return the API
   return intializedAssist
@@ -219,7 +228,14 @@ function init(config) {
     }
 
     return new Promise(async (resolve, reject) => {
-      const ready = await prepareForTransaction('onboard').catch(reject)
+      storeItem('onboarding', 'true')
+
+      const ready = await prepareForTransaction('onboard').catch(error => {
+        removeItem('onboarding')
+        reject(error)
+      })
+
+      removeItem('onboarding')
       resolve(ready)
     })
   }
