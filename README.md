@@ -142,8 +142,9 @@ var config = {
   headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
   messages: {
     // See custom transaction messages section below for more details
-    txPending: Function, // Transaction is pending and awaiting confirmation
+    txRequest: Function, // Transaction request has been initiated and is awaiting user approval
     txSent: Function, // Transaction has been sent to the network
+    txPending: Function, // Transaction is pending and detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
     txStall: Function, // Transaction was sent but not received in the mempool after 30 secs
     txFailed: Function, // Transaction failed
