@@ -1,41 +1,41 @@
 import { state } from '../helpers/state'
 import { capitalize, networkName } from '../helpers/utilities'
 
-import welcome from '../../images/XUPOg7L.jpg'
-import welcome2x from '../../images/s8euD9T.jpg'
+import welcome from '../../../lib/images/XUPOg7L.jpg'
+import welcome2x from '../../../lib/images/s8euD9T.jpg'
 
-import browser from '../../images/EgcXT0z.jpg'
-import browser2x from '../../images/4zplgXa.jpg'
+import browser from '../../../lib/images/EgcXT0z.jpg'
+import browser2x from '../../../lib/images/4zplgXa.jpg'
 
-import metamask from '../../images/tKkRH5L.jpg'
-import metamask2x from '../../images/BEhzPx6.jpg'
+import metamask from '../../../lib/images/tKkRH5L.jpg'
+import metamask2x from '../../../lib/images/BEhzPx6.jpg'
 
-import login from '../../images/HuDHbXP.jpg'
-import login2x from '../../images/XLBqwPO.jpg'
+import login from '../../../lib/images/HuDHbXP.jpg'
+import login2x from '../../../lib/images/XLBqwPO.jpg'
 
-import connect from '../../images/0VBtqGV.jpg'
-import connect2x from '../../images/t7WS9Sc.jpg'
+import connect from '../../../lib/images/0VBtqGV.jpg'
+import connect2x from '../../../lib/images/t7WS9Sc.jpg'
 
-import network from '../../images/1TWEHRY.jpg'
-import network2x from '../../images/jfdXqIU.jpg'
+import network from '../../../lib/images/1TWEHRY.jpg'
+import network2x from '../../../lib/images/jfdXqIU.jpg'
 
-import complete from '../../images/8ptZott.jpg'
-import complete2x from '../../images/elR9xQ8.jpg'
+import complete from '../../../lib/images/8ptZott.jpg'
+import complete2x from '../../../lib/images/elR9xQ8.jpg'
 
-import blockNativeLogo from '../../images/fJxOtIj.png'
-import blockNativeLogo2x from '../../images/UhcCuKF.png'
+import blockNativeLogo from '../../../lib/images/fJxOtIj.png'
+import blockNativeLogo2x from '../../../lib/images/UhcCuKF.png'
 
-import mobile from '../../images/EcUxQVJ.jpg'
-import mobile2x from '../../images/GS6owd9.jpg'
+import mobile from '../../../lib/images/EcUxQVJ.jpg'
+import mobile2x from '../../../lib/images/GS6owd9.jpg'
 
-import browserFail from '../../images/riXzN0X.jpg'
-import browserFail2x from '../../images/xpWtOVX.jpg'
+import browserFail from '../../../lib/images/riXzN0X.jpg'
+import browserFail2x from '../../../lib/images/xpWtOVX.jpg'
 
-import chromeLogo from '../../images/XAwAAmL.png'
-import chromeLogo2x from '../../images/maxXVIH.png'
+import chromeLogo from '../../../lib/images/XAwAAmL.png'
+import chromeLogo2x from '../../../lib/images/maxXVIH.png'
 
-import firefoxLogo from '../../images/kodZvyO.png'
-import firefoxLogo2x from '../../images/WjOSJTh.png'
+import firefoxLogo from '../../../lib/images/kodZvyO.png'
+import firefoxLogo2x from '../../../lib/images/WjOSJTh.png'
 
 export const notSupported = {
   mobileNotSupported: {
