@@ -235,7 +235,8 @@ export const transactionMsgs = {
     `Your transaction ID: ${transaction.nonce} has failed`,
   nsfFail: () => 'You have insufficient funds to complete this transaction',
   txRepeat: () => 'This could be a repeat transaction',
-  txAwaitingApproval: () => 'You have a previous transaction awaiting your confirmation',
+  txAwaitingApproval: () =>
+    'You have a previous transaction awaiting your confirmation',
   txConfirmReminder: () =>
     'Please confirm your transaction to continue (hint: the transaction window may be behind your browser)',
   txConfirmed: ({ transaction }) =>
