@@ -309,14 +309,14 @@ function init(config) {
           methodAbiArray.length > 1 &&
           methodAbiArray.map(abi => getOverloadedMethodKeys(abi.inputs))
 
-        const { name, inputs, payable } = methodAbiArray[0]
+        const { name, inputs, constant } = methodAbiArray[0]
         const method = contractObj[name]
         const argsLength = inputs.length
 
         newContractObj[name] = (...args) =>
-          payable
-            ? legacySend(method, name, args, argsLength)
-            : legacyCall(method, name, args, argsLength)
+          constant
+            ? legacyCall(method, name, args, argsLength)
+            : legacySend(method, name, args, argsLength)
 
         newContractObj[name].call = (...args) =>
           legacyCall(method, name, args, argsLength)
@@ -331,9 +331,9 @@ function init(config) {
             const method = contractObj[name][key]
 
             newContractObj[name][key] = (...args) =>
-              payable
-                ? legacySend(method, name, args, argsLength)
-                : legacyCall(method, name, args, argsLength)
+              constant
+                ? legacyCall(method, name, args, argsLength)
+                : legacySend(method, name, args, argsLength)
 
             newContractObj[name][key].call = (...args) =>
               legacyCall(method, name, args, argsLength)
@@ -355,7 +355,7 @@ function init(config) {
         const overloadedRegex = /[A-z]+\([a-z*A-Z*0-9*,*]+\)/g
 
         newContractObj.methods = abi.reduce((obj, methodAbi) => {
-          const { name, type, payable } = methodAbi
+          const { name, type, constant } = methodAbi
 
           // if not function, do nothing with it
           if (type !== 'function') {
@@ -378,18 +378,18 @@ function init(config) {
           )
 
           obj[name] = (...args) =>
-            payable
-              ? modernSend(method, name, args)
-              : modernCall(method, name, args)
+            constant
+              ? modernCall(method, name, args)
+              : modernSend(method, name, args)
 
           if (overloadedMethodKeys.length > 0) {
             overloadedMethodKeys.forEach(key => {
               const method = contractObj.methods[key]
 
               obj[key] = (...args) =>
-                payable
-                  ? modernSend(method, name, args)
-                  : modernCall(method, name, args)
+                constant
+                  ? modernCall(method, name, args)
+                  : modernSend(method, name, args)
             })
           }
 
