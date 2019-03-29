@@ -103,6 +103,9 @@ export function handleSocketMessage(msg) {
     const { transaction } = event
     if (transaction.status) {
       const txObj = getTransactionObj(transaction.hash)
+
+      if (!txObj) return
+
       switch (transaction.status) {
         case 'pending':
           nowInTxPool(transaction.hash)
