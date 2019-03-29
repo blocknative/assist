@@ -4,8 +4,8 @@
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
-    "build": "node build.js",
-    "lint": "eslint . --fix",
+    "build": "yarn lint && yarn test && node build.js",
+    "lint": "eslint src/ --fix",
     "test": "jest"
   },
   "husky": {
