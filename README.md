@@ -1,10 +1,10 @@
-# assist.js
+# Assist.js
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
 setup. Supports `web3.js` versions 0.20 and 1.0.
 
-_note: 1.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
+_note: `web3.js` 1.0.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
 ## Preview
 
@@ -16,10 +16,9 @@ _note: 1.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacti
 
 ![Assist's transaction notifications](https://media.giphy.com/media/ZgSzBEev0pEym34rb1/giphy.gif)
 
-
 ## Getting Started
 
-To integrate `assist.js` into your dapp, you'll need to do 5 things:
+To integrate Assist.js into your dapp, you'll need to do 5 things:
 
 1. Create a free account and get an API key from [account.blocknative.com](https://account.blocknative.com)
 2. Install the widget
@@ -31,22 +30,29 @@ To integrate `assist.js` into your dapp, you'll need to do 5 things:
 
 #### npm
 
-```
+```bash
 npm i bnc-assist
 ```
 
+#### Yarn
+
+```bash
+yarn add bnc-assist
+```
+
 #### Script Tag
+
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.4.0.
+The current version is 0.5.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
- 
+
 ```html
-<script src="https://assist.blocknative.com/0-4-0/assist.js"></script>
+<script src="https://assist.blocknative.com/0-5-0/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-4-0/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-5-0/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -87,7 +93,7 @@ assistInstance.onboard()
   .catch(function(error) {
     // The user exited onboarding before completion
     // Will let you know what stage of onboarding the user was up to when they exited
-    console.log(error.msg);
+    console.log(error.message);
   })
 ```
 
@@ -97,7 +103,7 @@ The first three steps in the getting started flow will get your users onboarded.
 transaction support in order to help guide your users through a series of issues that can arise
 when signing transactions.
 
-Using our decorated contracts will also enable some anonymised transaction-level metrics to give
+Using our decorated contracts will also enable some anonymized transaction-level metrics to give
 you insights into things including but not limited to:
 
 - How many transactions fail because a user doesn't have enough Ether
@@ -118,39 +124,38 @@ var myDecoratedContract = assistInstance.Contract(myContract)
 
 You can then use `myDecoratedContract` instead of `myContract`.
 
-To speed things up, you can replace the contract after saving the original:
+To speed things up, you can decorate the contract inline:
 
 ```javascript
-var myContract = new web3.eth.Contract(abi, address)
-var originalMyContract = myContract
-myContract = assistInstance.Contract(myContract)
+var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
 ```
 
 ## API Reference
 
 ### Config
 
-A JavaScript Object that is passed to the `init` function. Default values are in [square brackets] where they are set by assist.js.
+A JavaScript Object that is passed to the `init` function. Default values are in [square brackets] where they are set by Assist.js.
 
 ```javascript
 var config = {
-  networkId: Number, // The network id of the Ethereum network your Dapp is working with (REQUIRED)
+  networkId: Number, // The network id of the Ethereum network your dapp is working with (REQUIRED)
   dappId: String, // The API key supplied to you by Blocknative (REQUIRED)
-  web3: Object, // The instantiated version of web3 that the Dapp is using
-  mobileBlocked: Boolean, // Defines if the Dapp works on mobile [false]
-  minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp [0]
+  web3: Object, // The instantiated version of web3 that the dapp is using
+  mobileBlocked: Boolean, // Defines if the dapp works on mobile [false]
+  minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the dapp [0]
   headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
   messages: {
     // See custom transaction messages section below for more details
-    txPending: Function, // Transaction is pending and awaiting confirmation
+    txRequest: Function, // Transaction request has been initiated and is awaiting user approval
     txSent: Function, // Transaction has been sent to the network
+    txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
     txStall: Function, // Transaction was sent but not received in the mempool after 30 secs
     txFailed: Function, // Transaction failed
     nsfFail: Function, // User doesn't have enough funds to complete transaction
     txRepeat: Function, // Warning to user that they might be repeating a transaction
-    txAwaitingApproval: Function, // Warning to user that they have a previous transaction awaiting approval
-    txConfirmReminder: Function, // A warning to the user that their transaction is still awaiting approval
+    txAwaitingApproval: Function, // Warning to the user that they have a previous transaction awaiting approval
+    txConfirmReminder: Function, // A warning to the user that their current transaction is still awaiting approval
     txConfirmed: Function // Transaction is confirmed
   },
   images: {
@@ -170,7 +175,6 @@ var config = {
 
 The functions provided to the `messages` object in the config, will be
 called with the following object so that a custom message string can be returned:
-
 
 ```javascript
 {
@@ -228,13 +232,13 @@ All errors are called with `eventCode` and `message` properties.
 ```javascript
 {
   eventCode: 'initFail',
-  message: 'An API key is required to run assist'
+  message: 'An API key is required to run Assist'
 }
 ```
 
 #### Error Codes
 
-The following are the possible error codes from assist.js.
+The following are the possible error codes from Assist.js.
 
 ```
 initFail          - initialization of the library failed
@@ -248,15 +252,15 @@ nsfFail           - user does not have enough funds in their wallet
 
 ### Headless Mode
 
-By default, assist will create UI elements in your application at certain times to guide users. You can disable this feature and run assist in "headless mode" by setting `headlessMode: true` in the config. This still enables you to collect analytics, but won't change the underlying behaviour of your application at all.
+By default, Assist will create UI elements in your application at certain times to guide users. You can disable this feature and run Assist in "headless mode" by setting `headlessMode: true` in the config. This still enables you to collect analytics, but won't change the underlying behaviour of your application at all.
 
 ### Mobile Dapps
 
-By default assist's UI elements are responsive and support mobile displays, however some dapps don't work effectively in mobile viewports or with mobile web3 providers like Status.im or Coinbase Wallet. setting `mobileBlocked: true` in the config will detect mobile user agents and direct them to use a desktop browser instead.
+Assist doesn't currently support mobile dapp browsers. If your dapp also _doesn't_ support mobile browsers, setting `mobileBlocked: true` in the config will detect mobile user agents and show UI that will direct them to use a desktop browser instead. If your dapp _does_ support mobile devices then Assist will be disabled and your transactions and contracts will work as normal. However if you call the `onboard` function when a user is on a mobile device, Assist will show a mobile not supported UI as onboarding isn't supported on mobile. So it is advised to check if a user is on a mobile device before calling `onboard`. Calling `getState` and referring to the `mobileDevice` property is an easy way of doing that.
 
 ### Minimum Balance
 
-By supplying an amount of wei to the `minimumBalance` option of the config, developers can limit access to their dapp to users who have at least this much ETH in their wallet.
+By supplying an amount of wei to the `minimumBalance` option of the config, developers can limit access to their dapp to users who have at least this much Ether in their wallet.
 
 ### Repeat Transactions
 
@@ -268,16 +272,16 @@ Assist will detect transactions which look to be repeated. We notify users of re
 
 #### Parameters
 
-`config` - `Object`: Config object to configure and setup assist (**Required**)
+`config` - `Object`: Config object to configure and setup Assist (**Required**)
 
 #### Returns
 
-The initialized version of the assist library
+The initialized version of the Assist library
 
 #### Example
 
 ```javascript
-var assistLib = assist.init(assistConfig)
+var assistInstance = assist.init(assistConfig)
 ```
 
 ### `onboard()`
@@ -292,7 +296,7 @@ var assistLib = assist.init(assistConfig)
 #### Example
 
 ```javascript
-da.onboard()
+assistInstance.onboard()
   .then(function(success) {
     // User has been successfully onboarded and is ready to transact
   })
@@ -316,7 +320,7 @@ A decorated `contract` to be used instead of the original instance
 
 ```javascript
 const myContract = new web3.eth.Contract(abi, address)
-const myDecoratedContract = da.Contract(myContract)
+const myDecoratedContract = assistInstance.Contract(myContract)
 
 mydecoratedContract.myMethod().call()
 ```
@@ -338,7 +342,7 @@ mydecoratedContract.myMethod().call()
 #### Example
 
 ```javascript
-da.Transaction(txObject)
+assistInstance.Transaction(txObject)
   .then(txHash => {
     // Transaction has been sent to the network
   })
@@ -398,7 +402,7 @@ state = {
 #### Example
 
 ```javascript
-da.getState()
+assistInstance.getState()
   .then(function(state) {
     if (state.validBrowser) {
       console.log('valid browser')
@@ -410,7 +414,7 @@ da.getState()
 
 ### Installing Dependencies
 
-#### NPM
+#### npm
 
 `npm i`
 
@@ -420,7 +424,7 @@ da.getState()
 
 ### Tests
 
-#### NPM
+#### npm
 
 `npm test`
 
@@ -430,7 +434,7 @@ da.getState()
 
 ### Building
 
-#### NPM
+#### npm
 
 `npm run build`
 

@@ -85,7 +85,7 @@ export function notSupportedImage(type) {
 	  <img
 	    src="${imageUrl.src}"
 	    alt ="${capitalize(type)}Not Supported"
-	    srcset="${imageUrl.srcset}" />
+	    srcset="${imageUrl.srcset} 2x" />
   `
 }
 
@@ -97,7 +97,7 @@ export function browserLogos() {
       <img
         src="${chromeLogo.src}" 
         alt="Chrome Logo" 
-        srcset="${chromeLogo.srcset}" />
+        srcset="${chromeLogo.srcset} 2x" />
       <br>
       Chrome
       </a>
@@ -105,7 +105,7 @@ export function browserLogos() {
       <img
         src="${firefoxLogo.src}" 
         alt="Firefox Logo" 
-        srcset="${firefoxLogo.src}" />
+        srcset="${firefoxLogo.src} 2x" />
       <br>
       Firefox
       </a>
@@ -122,7 +122,7 @@ export function onboardBranding() {
       <img
         src="${blockNativeLogo.src}" 
         alt="Blocknative" 
-        srcset="${blockNativeLogo.srcset}" />
+        srcset="${blockNativeLogo.srcset} 2x" />
       </a>
       </p>
     </div>
@@ -214,8 +214,8 @@ export function onboardMain(type, step) {
       src="${(devImages && devImages.src) || defaultImages.src}" 
       class="bn-onboard-img" 
       alt="Blocknative" 
-      srcset="${(devImages && devImages.srcset && `${devImages.srcset} 2x`) ||
-        defaultImages.srcset}"/>
+      srcset="${(devImages && devImages.srcset && devImages.srcset) ||
+        defaultImages.srcset} 2x"/>
     <br>
     <h1 class="h4">${heading}</h1>
     <p>${description}</p>

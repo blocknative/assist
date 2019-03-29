@@ -131,7 +131,7 @@ function sendTransaction(
       txPromise = sendTransactionMethod(txObject)
     }
 
-    resolve({ txPromise })
+    resolve(txPromise)
 
     handleEvent(
       addContractEventObj(
@@ -184,15 +184,16 @@ function sendTransaction(
           confirmed = handleTxHash(
             txHash,
             { transactionParams, categoryCode, contractEventObj },
-            reject,
-            callback
+            reject
           )
+
+          callback && callback(null, txHash)
+
           waitForTransactionReceipt(txHash).then(receipt => {
             handleTxReceipt(
               receipt,
               { transactionParams, categoryCode, contractEventObj },
-              reject,
-              callback
+              reject
             )
           })
         })
@@ -200,9 +201,9 @@ function sendTransaction(
           rejected = handleTxError(
             errorObj,
             { transactionParams, categoryCode, contractEventObj },
-            reject,
-            callback
+            reject
           )
+          callback && callback(errorObj)
         })
     } else {
       txPromise
@@ -210,40 +211,39 @@ function sendTransaction(
           confirmed = handleTxHash(
             txHash,
             { transactionParams, categoryCode, contractEventObj },
-            reject,
-            callback
+            reject
           )
+          callback && callback(null, txHash)
         })
         .on('receipt', async receipt => {
           handleTxReceipt(
             receipt,
             { transactionParams, categoryCode, contractEventObj },
-            reject,
-            callback
+            reject
           )
         })
         .on('error', async errorObj => {
           rejected = handleTxError(
             errorObj,
             { transactionParams, categoryCode, contractEventObj },
-            reject,
-            callback
+            reject
           )
+          callback && callback(errorObj)
         })
     }
   })
 }
 
-async function handleTxHash(txHash, meta, reject, callback) {
+async function handleTxHash(txHash, meta, reject) {
   const nonce = await inferNonce().catch(reject)
   const { transactionParams, categoryCode, contractEventObj } = meta
 
   onResult(transactionParams, nonce, categoryCode, contractEventObj, txHash)
-  callback && callback(null, txHash)
+
   return true // confirmed
 }
 
-async function handleTxReceipt(receipt, meta, reject, callback) {
+async function handleTxReceipt(receipt, meta, reject) {
   const { transactionHash } = receipt
   const txObj = getTransactionObj(transactionHash)
   const nonce = await inferNonce().catch(reject)
@@ -271,8 +271,6 @@ async function handleTxReceipt(receipt, meta, reject, callback) {
     )
   )
 
-  callback && callback(null, receipt)
-
   updateState({
     transactionQueue: removeTransactionFromQueue(
       (txObj && txObj.transaction.nonce) || nonce
@@ -280,7 +278,7 @@ async function handleTxReceipt(receipt, meta, reject, callback) {
   })
 }
 
-async function handleTxError(error, meta, reject, callback) {
+async function handleTxError(error, meta, reject) {
   const { message } = error
   let errorMsg
   try {
@@ -291,6 +289,7 @@ async function handleTxError(error, meta, reject, callback) {
 
   const nonce = await inferNonce().catch(reject)
   const { transactionParams, categoryCode, contractEventObj } = meta
+
   handleEvent(
     addContractEventObj(
       {
@@ -324,7 +323,6 @@ async function handleTxError(error, meta, reject, callback) {
   errorObj.eventCode =
     errorMsg === 'transaction underpriced' ? 'txUnderpriced' : 'txSendFail'
 
-  callback && callback(errorObj)
   reject(errorObj)
 
   return true // rejected

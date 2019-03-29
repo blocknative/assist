@@ -3,6 +3,7 @@ import da from '../../js/index'
 import * as events from '../../js/helpers/events'
 import * as websocket from '../../js/helpers/websockets'
 import * as stateMock from '../../js/helpers/state'
+import * as iframeMock from '../../js/helpers/iframe'
 import abi from '../res/abi'
 
 jest.mock('../../js/helpers/web3')
@@ -88,6 +89,13 @@ test('Does not allow sending transactions on the wrong network', async () => {
     expect(e.eventCode).toBe('initFail')
     expect(e.message).toBe('This network is not supported')
   })
+})
+
+test('Does not create an iframe in headless mode', async () => {
+  const web3 = new Web3('ws://example.com')
+  stateMock.state.validApiKey = true
+  da.init({ dappId: 'something', web3, headlessMode: true })
+  expect(iframeMock.createIframe).toHaveBeenCalledTimes(0)
 })
 
 // reset the mock call count

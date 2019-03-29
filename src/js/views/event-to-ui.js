@@ -23,7 +23,8 @@ import {
   formatTime,
   eventCodeToStep,
   eventCodeToType,
-  timeouts
+  timeouts,
+  assistLog
 } from '../helpers/utilities'
 
 const eventToUI = {
@@ -56,6 +57,7 @@ const eventToUI = {
   },
   activeTransaction: {
     txAwaitingApproval: notificationsUI,
+    txRequest: notificationsUI,
     txSent: notificationsUI,
     txPending: notificationsUI,
     txSendFail: notificationsUI,
@@ -66,8 +68,8 @@ const eventToUI = {
     txFailed: notificationsUI
   },
   activeContract: {
-    contractQueryFail: onboardingUI,
     txAwaitingApproval: notificationsUI,
+    txRequest: notificationsUI,
     txSent: notificationsUI,
     txPending: notificationsUI,
     txSendFail: notificationsUI,
@@ -80,6 +82,14 @@ const eventToUI = {
 }
 
 function notSupportedUI(eventObj, handlers) {
+  const existingModal = state.iframeDocument.querySelector(
+    '.bn-onboard-modal-shade'
+  )
+
+  if (existingModal) {
+    return
+  }
+
   const { eventCode } = eventObj
   const modal = createElement(
     'div',
@@ -119,6 +129,32 @@ const notificationsNoRepeat = [
   'txConfirmReminder'
 ]
 
+function getCustomTxMsg(eventCode, data) {
+  const msgFunc =
+    state.config.messages &&
+    typeof state.config.messages[eventCode] === 'function' &&
+    state.config.messages[eventCode]
+
+  if (!msgFunc) return undefined
+
+  try {
+    const customMsg = msgFunc(data)
+    if (typeof customMsg === 'string') {
+      return customMsg
+    }
+    assistLog('Custom transaction message callback must return a string')
+
+    return undefined
+  } catch (error) {
+    assistLog(
+      `An error was thrown from custom transaction callback message for the ${eventCode} event: `
+    )
+    assistLog(error)
+
+    return undefined
+  }
+}
+
 function notificationsUI(eventObj) {
   const { transaction = {}, contract = {} } = eventObj
   let { eventCode } = eventObj
@@ -131,14 +167,8 @@ function notificationsUI(eventObj) {
   const id = (transaction && transaction.hash) || eventCode
   const timeStamp = formatTime(Date.now())
   const message =
-    state.config.messages &&
-    typeof state.config.messages[eventCode] === 'function' &&
-    state.config.messages[eventCode]({ transaction, contract })
-      ? state.config.messages[eventCode]({
-          transaction,
-          contract
-        })
-      : transactionMsgs[eventCode]({ transaction, contract })
+    getCustomTxMsg(eventCode, { transaction, contract }) ||
+    transactionMsgs[eventCode]({ transaction, contract })
 
   const startTime = transaction && transaction.startTime
   const hasTimer =
@@ -161,7 +191,8 @@ function notificationsUI(eventObj) {
     existingNotifications = true
     notificationsList = getByQuery('.bn-notifications')
 
-    const pendingNotificationToRemove = getById(`${id}-progress`)
+    const pendingNotificationToRemove =
+      getById(`${id}-progress`) || getById('txRequest-progress')
 
     // if pending notification with the same id, we can remove it to be replaced with new status
     if (pendingNotificationToRemove) {

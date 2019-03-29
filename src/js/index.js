@@ -2,22 +2,30 @@ import '@babel/polyfill'
 import { promisify } from 'bluebird'
 import { state, updateState } from './helpers/state'
 import { handleEvent } from './helpers/events'
-import { legacyMethod, modernMethod } from './logic/contract-methods'
+import {
+  legacyCall,
+  legacySend,
+  modernSend,
+  modernCall
+} from './logic/contract-methods'
 import { openWebsocketConnection } from './helpers/websockets'
 import { getUserAgent } from './helpers/browser'
 import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
-import { separateArgs } from './helpers/utilities'
+import { getOverloadedMethodKeys } from './helpers/utilities'
 import { createIframe } from './helpers/iframe'
 import {
   getTransactionQueueFromStorage,
-  storeTransactionQueue
+  storeTransactionQueue,
+  storeItem,
+  removeItem,
+  getItem
 } from './helpers/storage'
 import styles from '../css/styles.css'
 
 // Library Version - if changing, also need to change in package.json
-const version = '0.4.0'
+const version = '0.5.0'
 
 function init(config) {
   updateState({ version })
@@ -41,7 +49,7 @@ function init(config) {
     updateState({ config })
   }
 
-  const { web3, dappId, mobileBlocked } = config
+  const { web3, dappId, mobileBlocked, headlessMode } = config
 
   // Check that an api key has been provided to the config object
   if (!dappId) {
@@ -68,7 +76,7 @@ function init(config) {
   getUserAgent()
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
-  if (!state.iframe) {
+  if (!state.iframe && !headlessMode) {
     createIframe(document, styles)
   }
 
@@ -90,6 +98,33 @@ function init(config) {
     Contract,
     Transaction,
     getState
+  }
+
+  getState().then(state => {
+    handleEvent({
+      eventCode: 'initState',
+      categoryCode: 'initialize',
+      state: {
+        accessToAccounts: state.accessToAccounts,
+        correctNetwork: state.correctNetwork,
+        legacyWallet: state.legacyWallet,
+        legacyWeb3: state.legacyWeb3,
+        minimumBalance: state.minimumBalance,
+        mobileDevice: state.mobileDevice,
+        modernWallet: state.modernWallet,
+        modernWeb3: state.modernWeb3,
+        walletEnabled: state.walletEnabled,
+        walletLoggedIn: state.walletLoggedIn,
+        web3Wallet: state.web3Wallet,
+        validBrowser: state.validBrowser
+      }
+    })
+  })
+
+  const onboardingInProgress = getItem('onboarding') === 'true'
+
+  if (onboardingInProgress) {
+    onboard().catch(() => {})
   }
 
   // return the API
@@ -193,7 +228,14 @@ function init(config) {
     }
 
     return new Promise(async (resolve, reject) => {
-      const ready = await prepareForTransaction('onboard').catch(reject)
+      storeItem('onboarding', 'true')
+
+      const ready = await prepareForTransaction('onboard').catch(error => {
+        removeItem('onboarding')
+        reject(error)
+      })
+
+      removeItem('onboarding')
       resolve(ready)
     })
   }
@@ -243,69 +285,116 @@ function init(config) {
     const contractClone = Object.create(Object.getPrototypeOf(contractObj))
     const contractKeys = Object.keys(contractObj)
 
+    const seenMethods = []
+
     const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
       if (legacyWeb3) {
-        const methodABI = abi.find(method => method.name === key)
-        // if the key doesn't point to a method, just copy it over
-        if (!methodABI) {
+        // if we have seen this key, then we have already dealt with it
+        if (seenMethods.includes(key)) {
+          return newContractObj
+        }
+
+        seenMethods.push(key)
+
+        const methodAbiArray = abi.filter(method => method.name === key)
+
+        // if the key doesn't point to a method or is an event, just copy it over
+        if (!methodAbiArray[0] || methodAbiArray[0].type === 'event') {
           newContractObj[key] = contractObj[key]
-        } else {
-          const { name } = methodABI
-          const method = contractObj[key]
 
-          newContractObj[name] = (...args) =>
-            legacyMethod(method, methodABI, args)
+          return newContractObj
+        }
 
-          newContractObj[name].call = async (...allArgs) => {
-            const { callback, args } = separateArgs(allArgs)
-            const result = await promisify(method.call)(...args).catch(
-              errorObj => callback && callback(errorObj)
-            )
+        const overloadedMethodKeys =
+          methodAbiArray.length > 1 &&
+          methodAbiArray.map(abi => getOverloadedMethodKeys(abi.inputs))
 
-            if (result) {
-              callback && callback(null, result)
-            }
+        const { name, inputs, constant } = methodAbiArray[0]
+        const method = contractObj[name]
+        const argsLength = inputs.length
 
-            handleEvent({
-              eventCode: 'contractQuery',
-              categoryCode: 'activeContract',
-              contract: {
-                methodName: name,
-                parameters: args,
-                result: JSON.stringify(result)
-              }
-            })
-          }
+        newContractObj[name] = (...args) =>
+          constant
+            ? legacyCall(method, name, args, argsLength)
+            : legacySend(method, name, args, argsLength)
 
-          newContractObj[name].sendTransaction = async (...allArgs) => {
-            const { callback, txObject, args } = separateArgs(allArgs)
-            await sendTransaction(
-              'activeContract',
-              txObject,
-              promisify(method.sendTransaction),
-              callback,
-              method,
-              {
-                methodName: name,
-                parameters: args
-              }
-            ).catch(errorObj => callback && callback(errorObj))
-          }
+        newContractObj[name].call = (...args) =>
+          legacyCall(method, name, args, argsLength)
 
-          newContractObj[name].getData = contractObj[name].getData
+        newContractObj[name].sendTransaction = (...args) =>
+          legacySend(method, name, args, argsLength)
+
+        newContractObj[name].getData = contractObj[name].getData
+
+        if (overloadedMethodKeys) {
+          overloadedMethodKeys.forEach(key => {
+            const method = contractObj[name][key]
+
+            newContractObj[name][key] = (...args) =>
+              constant
+                ? legacyCall(method, name, args, argsLength)
+                : legacySend(method, name, args, argsLength)
+
+            newContractObj[name][key].call = (...args) =>
+              legacyCall(method, name, args, argsLength)
+
+            newContractObj[name][key].sendTransaction = (...args) =>
+              legacySend(method, name, args, argsLength)
+
+            newContractObj[name][key].getData = contractObj[name][key].getData
+          })
         }
       } else {
         if (key !== 'methods') {
           newContractObj[key] = contractObj[key]
-        } else {
-          newContractObj.methods = abi.reduce((obj, methodABI) => {
-            const { name } = methodABI
-            const method = contractObj.methods[name]
 
-            obj[name] = (...args) => modernMethod(method, methodABI, args)
-            return obj
-          }, {})
+          return newContractObj
         }
+
+        const methodsKeys = Object.keys(contractObj[key])
+        const overloadedRegex = /[A-z]+\([a-z*A-Z*0-9*,*]+\)/g
+
+        newContractObj.methods = abi.reduce((obj, methodAbi) => {
+          const { name, type, constant } = methodAbi
+
+          // if not function, do nothing with it
+          if (type !== 'function') {
+            return obj
+          }
+
+          // if we have seen this key, then we have already dealt with it
+          if (seenMethods.includes(name)) {
+            return obj
+          }
+
+          seenMethods.push(name)
+
+          const method = contractObj.methods[name]
+
+          const overloadedMethodKeys = methodsKeys.filter(
+            methodKey =>
+              methodKey.split('(')[0] === name &&
+              overloadedRegex.test(methodKey)
+          )
+
+          obj[name] = (...args) =>
+            constant
+              ? modernCall(method, name, args)
+              : modernSend(method, name, args)
+
+          if (overloadedMethodKeys.length > 0) {
+            overloadedMethodKeys.forEach(key => {
+              const method = contractObj.methods[key]
+
+              obj[key] = (...args) =>
+                constant
+                  ? modernCall(method, name, args)
+                  : modernSend(method, name, args)
+            })
+          }
+
+          return obj
+        }, {})
       }
 
       return newContractObj
