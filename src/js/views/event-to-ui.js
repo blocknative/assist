@@ -23,7 +23,8 @@ import {
   formatTime,
   eventCodeToStep,
   eventCodeToType,
-  timeouts
+  timeouts,
+  assistLog
 } from '../helpers/utilities'
 
 const eventToUI = {
@@ -128,6 +129,32 @@ const notificationsNoRepeat = [
   'txConfirmReminder'
 ]
 
+function getCustomTxMsg(eventCode, data) {
+  const msgFunc =
+    state.config.messages &&
+    typeof state.config.messages[eventCode] === 'function' &&
+    state.config.messages[eventCode]
+
+  if (!msgFunc) return undefined
+
+  try {
+    const customMsg = msgFunc(data)
+    if (typeof customMsg === 'string') {
+      return customMsg
+    }
+    assistLog('Custom transaction message callback must return a string')
+
+    return undefined
+  } catch (error) {
+    assistLog(
+      `An error was thrown from custom transaction callback message for the ${eventCode} event: `
+    )
+    assistLog(error)
+
+    return undefined
+  }
+}
+
 function notificationsUI(eventObj) {
   const { transaction = {}, contract = {} } = eventObj
   let { eventCode } = eventObj
@@ -140,14 +167,8 @@ function notificationsUI(eventObj) {
   const id = (transaction && transaction.hash) || eventCode
   const timeStamp = formatTime(Date.now())
   const message =
-    state.config.messages &&
-    typeof state.config.messages[eventCode] === 'function' &&
-    state.config.messages[eventCode]({ transaction, contract })
-      ? state.config.messages[eventCode]({
-          transaction,
-          contract
-        })
-      : transactionMsgs[eventCode]({ transaction, contract })
+    getCustomTxMsg(eventCode, { transaction, contract }) ||
+    transactionMsgs[eventCode]({ transaction, contract })
 
   const startTime = transaction && transaction.startTime
   const hasTimer =
