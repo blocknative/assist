@@ -452,7 +452,33 @@ function init(config) {
 function getState() {
   return new Promise(async (resolve, reject) => {
     await checkUserEnvironment().catch(reject)
-    resolve(state)
+    const {
+      mobileDevice,
+      validBrowser,
+      currentProvider,
+      web3Wallet,
+      accessToAccounts,
+      walletLoggedIn,
+      walletEnabled,
+      accountAddress,
+      accountBalance,
+      userCurrentNetworkId,
+      correctNetwork
+    } = state
+
+    resolve({
+      mobileDevice,
+      validBrowser,
+      currentProvider,
+      web3Wallet,
+      accessToAccounts,
+      walletLoggedIn,
+      walletEnabled,
+      accountAddress,
+      accountBalance,
+      userCurrentNetworkId,
+      correctNetwork
+    })
   })
 }
 
