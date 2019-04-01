@@ -462,6 +462,7 @@ function getState() {
       walletEnabled,
       accountAddress,
       accountBalance,
+      minimumBalance,
       userCurrentNetworkId,
       correctNetwork
     } = state
@@ -476,6 +477,7 @@ function getState() {
       walletEnabled,
       accountAddress,
       accountBalance,
+      minimumBalance,
       userCurrentNetworkId,
       correctNetwork
     })

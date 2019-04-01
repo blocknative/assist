@@ -365,11 +365,11 @@ state = {
   accessToAccounts: Boolean, // Dapp has access to accounts
   walletLoggedIn: Boolean, // User is logged in to wallet
   walletEnabled: Boolean, // User has enabled EIP 1102 compliant wallet
+  accountAddress: String, // Address of the user's selected account
   accountBalance: String, // User account balance
   minimumBalance: String, // User has the minimum balance specified in the config
-  correctNetwork: Boolean, // User is on the network specified in the config
   userCurrentNetworkId: Number, // Network id of the network the user is currently on
-  accountAddress: String, // Address of the user's selected account
+  correctNetwork: Boolean, // User is on the network specified in the config
 }
 ```
 
