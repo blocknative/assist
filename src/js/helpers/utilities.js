@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4'
 import { state } from './state'
 import { handleEvent } from './events'
 
@@ -29,13 +30,12 @@ export function nowInTxPool(txHash) {
   txObj.transaction.inTxPool = true
 }
 
-export function isDuplicateTransaction(txObject) {
+export function isDuplicateTransaction({ value, to }) {
   const { transactionQueue } = state
-  return transactionQueue.filter(
-    txObj =>
-      txObj.transaction.value === txObject.value &&
-      txObj.transaction.to === txObject.to
-  )[0]
+
+  return transactionQueue.find(
+    txObj => txObj.transaction.value === value && txObj.transaction.to === to
+  )
 }
 
 // Nice time format
@@ -94,6 +94,10 @@ export function handleError(categoryCode, propagateError) {
 
     propagateError && propagateError(errorObj)
   }
+}
+
+export function createTransactionId() {
+  return uuid()
 }
 
 export function capitalize(str) {
