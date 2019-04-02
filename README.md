@@ -361,41 +361,18 @@ assistInstance.Transaction(txObject)
 
 ```javascript
 state = {
-  version: String,
-  validApiKey: Boolean,
-  supportedNetwork: Boolean,
-  config: Object,
-  userAgent: String,
-  mobileDevice: Boolean,
-  validBrowser: Boolean,
-  legacyWeb3: Boolean,
-  modernWeb3: Boolean,
-  web3Version: String,
-  web3Instance: Object,
-  currentProvider: String,
-  web3Wallet: Boolean,
-  legacyWallet: Boolean,
-  modernWallet: Boolean,
-  accessToAccounts: Boolean,
-  walletLoggedIn: Boolean,
-  walletEnabled: Boolean,
-  walletEnableCalled: Boolean,
-  walletEnableCanceled: Boolean,
-  accountBalance: String,
-  correctNetwork: Boolean,
-  minimumBalance: String,
-  correctNetwork: Boolean,
-  userCurrentNetworkId: Number,
-  socket: Object,
-  pendingSocketConnection: Boolean,
-  socketConnection: Boolean,
-  accountAddress: String,
-  transactionQueue: Array,
-  transactionAwaitingApproval: Boolean,
-  iframe: Object,
-  iframeDocument: Object,
-  iframeWindow: Object,
-  connectionId: String
+  mobileDevice: Boolean, // User is on a mobile device
+  validBrowser: Boolean, // User is on a valid web3 browser
+  currentProvider: String, // Current provider being used to connect to the network
+  web3Wallet: Boolean, // User has a web3Wallet installed
+  accessToAccounts: Boolean, // Dapp has access to accounts
+  walletLoggedIn: Boolean, // User is logged in to wallet
+  walletEnabled: Boolean, // User has enabled EIP 1102 compliant wallet
+  accountAddress: String, // Address of the user's selected account
+  accountBalance: String, // User account balance
+  minimumBalance: String, // User has the minimum balance specified in the config
+  userCurrentNetworkId: Number, // Network id of the network the user is currently on
+  correctNetwork: Boolean, // User is on the network specified in the config
 }
 ```
 
