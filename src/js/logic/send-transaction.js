@@ -4,7 +4,8 @@ import { prepareForTransaction } from './user'
 import {
   hasSufficientBalance,
   getNonce,
-  waitForTransactionReceipt
+  waitForTransactionReceipt,
+  getTransactionParams
 } from '../helpers/web3'
 import {
   isDuplicateTransaction,
@@ -14,7 +15,8 @@ import {
   addTransactionToQueue,
   timeouts,
   extractMessageFromError,
-  handleError
+  handleError,
+  createTransactionId
 } from '../helpers/utilities'
 
 function inferNonce() {
@@ -37,31 +39,40 @@ function sendTransaction(
   contractEventObj
 ) {
   return new Promise(async (resolve, reject) => {
-    // Prepare for transaction
-    try {
-      await prepareForTransaction('activePreflight')
-    } catch (errorObj) {
-      reject(errorObj)
-      return
-    }
+    // Make sure user is onboarded and ready to transact
+    await prepareForTransaction('activePreflight').catch(reject)
 
     // make sure that we have from address in txObject
     if (!txObject.from) {
       txObject.from = state.accountAddress
     }
 
-    // Get the total transaction cost and see if there is enough balance
-    const { sufficientBalance, transactionParams } = await hasSufficientBalance(
+    const transactionId = createTransactionId()
+
+    const transactionParams = await getTransactionParams(
       txObject,
       contractMethod,
       contractEventObj
+    ).catch(reject)
+
+    const transactionEventObj = {
+      id: transactionId,
+      gas: transactionParams.gas.toString(),
+      gasPrice: transactionParams.gasPrice.toString(),
+      value: transactionParams.value.toString(),
+      to: txObject.to,
+      from: txObject.from
+    }
+
+    const sufficientBalance = await hasSufficientBalance(
+      transactionParams
     ).catch(reject)
 
     if (!sufficientBalance) {
       handleEvent({
         eventCode: 'nsfFail',
         categoryCode: 'activePreflight',
-        transaction: transactionParams,
+        transaction: transactionEventObj,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -77,43 +88,36 @@ function sendTransaction(
       return
     }
 
-    const duplicateTransaction = isDuplicateTransaction(transactionParams)
+    const duplicateTransaction = isDuplicateTransaction(transactionEventObj)
+
     if (duplicateTransaction) {
-      handleEvent(
-        addContractEventObj(
-          {
-            eventCode: 'txRepeat',
-            categoryCode: 'activePreflight',
-            transaction: transactionParams,
-            wallet: {
-              provider: state.currentProvider,
-              address: state.accountAddress,
-              balance: state.accountBalance,
-              minimum: state.config.minimumBalance
-            }
-          },
-          contractEventObj
-        )
-      )
+      handleEvent({
+        eventCode: 'txRepeat',
+        categoryCode: 'activePreflight',
+        transaction: transactionEventObj,
+        contract: contractEventObj,
+        wallet: {
+          provider: state.currentProvider,
+          address: state.accountAddress,
+          balance: state.accountBalance,
+          minimum: state.config.minimumBalance
+        }
+      })
     }
 
     if (state.transactionAwaitingApproval) {
-      handleEvent(
-        addContractEventObj(
-          {
-            eventCode: 'txAwaitingApproval',
-            categoryCode: 'activePreflight',
-            transaction: transactionParams,
-            wallet: {
-              provider: state.currentProvider,
-              address: state.accountAddress,
-              balance: state.accountBalance,
-              minimum: state.config.minimumBalance
-            }
-          },
-          contractEventObj
-        )
-      )
+      handleEvent({
+        eventCode: 'txAwaitingApproval',
+        categoryCode: 'activePreflight',
+        transaction: transactionEventObj,
+        contract: contractEventObj,
+        wallet: {
+          provider: state.currentProvider,
+          address: state.accountAddress,
+          balance: state.accountBalance,
+          minimum: state.config.minimumBalance
+        }
+      })
     }
 
     let txPromise
@@ -133,22 +137,18 @@ function sendTransaction(
 
     resolve(txPromise)
 
-    handleEvent(
-      addContractEventObj(
-        {
-          eventCode: 'txRequest',
-          categoryCode,
-          transaction: transactionParams,
-          wallet: {
-            provider: state.currentProvider,
-            address: state.accountAddress,
-            balance: state.accountBalance,
-            minimum: state.config.minimumBalance
-          }
-        },
-        contractEventObj
-      )
-    )
+    handleEvent({
+      eventCode: 'txRequest',
+      categoryCode,
+      transaction: transactionEventObj,
+      contract: contractEventObj,
+      wallet: {
+        provider: state.currentProvider,
+        address: state.accountAddress,
+        balance: state.accountBalance,
+        minimum: state.config.minimumBalance
+      }
+    })
 
     updateState({ transactionAwaitingApproval: true })
 
@@ -158,41 +158,40 @@ function sendTransaction(
     // Check if user has confirmed transaction after 20 seconds
     setTimeout(async () => {
       const nonce = await inferNonce().catch(reject)
+
       if (!checkTransactionQueue(nonce) && !rejected && !confirmed) {
-        handleEvent(
-          addContractEventObj(
-            {
-              eventCode: 'txConfirmReminder',
-              categoryCode,
-              transaction: transactionParams,
-              wallet: {
-                provider: state.currentProvider,
-                address: state.accountAddress,
-                balance: state.accountBalance,
-                minimum: state.config.minimumBalance
-              }
-            },
-            contractEventObj
-          )
-        )
+        handleEvent({
+          eventCode: 'txConfirmReminder',
+          categoryCode,
+          transaction: transactionEventObj,
+          contract: contractEventObj,
+          wallet: {
+            provider: state.currentProvider,
+            address: state.accountAddress,
+            balance: state.accountBalance,
+            minimum: state.config.minimumBalance
+          }
+        })
       }
     }, timeouts.txConfirmReminder)
 
     if (state.legacyWeb3) {
       txPromise
-        .then(async txHash => {
-          confirmed = handleTxHash(
+        .then(txHash => {
+          confirmed = true
+
+          handleTxHash(
             txHash,
-            { transactionParams, categoryCode, contractEventObj },
+            { transactionEventObj, categoryCode, contractEventObj },
             reject
           )
 
           callback && callback(null, txHash)
 
-          waitForTransactionReceipt(txHash).then(receipt => {
+          return waitForTransactionReceipt(txHash).then(receipt => {
             handleTxReceipt(
               receipt,
-              { transactionParams, categoryCode, contractEventObj },
+              { transactionEventObj, categoryCode, contractEventObj },
               reject
             )
           })
@@ -200,7 +199,7 @@ function sendTransaction(
         .catch(async errorObj => {
           rejected = handleTxError(
             errorObj,
-            { transactionParams, categoryCode, contractEventObj },
+            { transactionEventObj, categoryCode, contractEventObj },
             reject
           )
           callback && callback(errorObj)
@@ -208,9 +207,11 @@ function sendTransaction(
     } else {
       txPromise
         .on('transactionHash', async txHash => {
-          confirmed = handleTxHash(
+          confirmed = true
+
+          handleTxHash(
             txHash,
-            { transactionParams, categoryCode, contractEventObj },
+            { transactionEventObj, categoryCode, contractEventObj },
             reject
           )
           callback && callback(null, txHash)
@@ -218,14 +219,16 @@ function sendTransaction(
         .on('receipt', async receipt => {
           handleTxReceipt(
             receipt,
-            { transactionParams, categoryCode, contractEventObj },
+            { transactionEventObj, categoryCode, contractEventObj },
             reject
           )
         })
         .on('error', async errorObj => {
-          rejected = handleTxError(
+          rejected = true
+
+          handleTxError(
             errorObj,
-            { transactionParams, categoryCode, contractEventObj },
+            { transactionEventObj, categoryCode, contractEventObj },
             reject
           )
           callback && callback(errorObj)
@@ -236,40 +239,34 @@ function sendTransaction(
 
 async function handleTxHash(txHash, meta, reject) {
   const nonce = await inferNonce().catch(reject)
-  const { transactionParams, categoryCode, contractEventObj } = meta
+  const { transactionEventObj, categoryCode, contractEventObj } = meta
 
-  onResult(transactionParams, nonce, categoryCode, contractEventObj, txHash)
-
-  return true // confirmed
+  onResult(transactionEventObj, nonce, categoryCode, contractEventObj, txHash)
 }
 
 async function handleTxReceipt(receipt, meta, reject) {
   const { transactionHash } = receipt
   const txObj = getTransactionObj(transactionHash)
   const nonce = await inferNonce().catch(reject)
-  const { transactionParams, categoryCode, contractEventObj } = meta
+  const { transactionEventObj, categoryCode, contractEventObj } = meta
 
-  handleEvent(
-    addContractEventObj(
-      {
-        eventCode: 'txConfirmedClient',
-        categoryCode,
-        transaction:
-          (txObj && txObj.transaction) ||
-          Object.assign({}, transactionParams, {
-            hash: transactionHash,
-            nonce
-          }),
-        wallet: {
-          provider: state.currentProvider,
-          address: state.accountAddress,
-          balance: state.accountBalance,
-          minimum: state.config.minimumBalance
-        }
-      },
-      contractEventObj
-    )
-  )
+  handleEvent({
+    eventCode: 'txConfirmedClient',
+    categoryCode,
+    transaction:
+      (txObj && txObj.transaction) ||
+      Object.assign({}, transactionEventObj, {
+        hash: transactionHash,
+        nonce
+      }),
+    contract: contractEventObj,
+    wallet: {
+      provider: state.currentProvider,
+      address: state.accountAddress,
+      balance: state.accountBalance,
+      minimum: state.config.minimumBalance
+    }
+  })
 
   updateState({
     transactionQueue: removeTransactionFromQueue(
@@ -288,30 +285,24 @@ async function handleTxError(error, meta, reject) {
   }
 
   const nonce = await inferNonce().catch(reject)
-  const { transactionParams, categoryCode, contractEventObj } = meta
+  const { transactionEventObj, categoryCode, contractEventObj } = meta
 
-  handleEvent(
-    addContractEventObj(
-      {
-        eventCode:
-          errorMsg === 'transaction underpriced'
-            ? 'txUnderpriced'
-            : 'txSendFail',
-        categoryCode,
-        transaction: Object.assign({}, transactionParams, {
-          nonce
-        }),
-        reason: 'User denied transaction signature',
-        wallet: {
-          provider: state.currentProvider,
-          address: state.accountAddress,
-          balance: state.accountBalance,
-          minimum: state.config.minimumBalance
-        }
-      },
-      contractEventObj
-    )
-  )
+  handleEvent({
+    eventCode:
+      errorMsg === 'transaction underpriced' ? 'txUnderpriced' : 'txSendFail',
+    categoryCode,
+    transaction: Object.assign({}, transactionEventObj, {
+      nonce
+    }),
+    contract: contractEventObj,
+    reason: 'User denied transaction signature',
+    wallet: {
+      provider: state.currentProvider,
+      address: state.accountAddress,
+      balance: state.accountBalance,
+      minimum: state.config.minimumBalance
+    }
+  })
 
   updateState({ transactionAwaitingApproval: false })
 
@@ -328,22 +319,15 @@ async function handleTxError(error, meta, reject) {
   return true // rejected
 }
 
-function addContractEventObj(eventObj, contractEventObj) {
-  if (contractEventObj) {
-    return Object.assign({}, eventObj, { contract: contractEventObj })
-  }
-  return eventObj
-}
-
 // On result handler
 function onResult(
-  transactionParams,
+  transactionEventObj,
   nonce,
   categoryCode,
   contractEventObj,
   hash
 ) {
-  const transaction = Object.assign({}, transactionParams, {
+  const transaction = Object.assign({}, transactionEventObj, {
     hash,
     nonce,
     startTime: Date.now(),
@@ -351,22 +335,18 @@ function onResult(
     inTxPool: false
   })
 
-  handleEvent(
-    addContractEventObj(
-      {
-        eventCode: 'txSent',
-        categoryCode,
-        transaction,
-        wallet: {
-          provider: state.currentProvider,
-          address: state.accountAddress,
-          balance: state.accountBalance,
-          minimum: state.config.minimumBalance
-        }
-      },
-      contractEventObj
-    )
-  )
+  handleEvent({
+    eventCode: 'txSent',
+    categoryCode,
+    transaction,
+    contract: contractEventObj,
+    wallet: {
+      provider: state.currentProvider,
+      address: state.accountAddress,
+      balance: state.accountBalance,
+      minimum: state.config.minimumBalance
+    }
+  })
 
   updateState({
     transactionQueue: addTransactionToQueue({
@@ -384,22 +364,18 @@ function onResult(
       !transactionObj.transaction.inTxPool &&
       state.socketConnection
     ) {
-      handleEvent(
-        addContractEventObj(
-          {
-            eventCode: 'txStall',
-            categoryCode,
-            transaction,
-            wallet: {
-              provider: state.currentProvider,
-              address: state.accountAddress,
-              balance: state.accountBalance,
-              minimum: state.config.minimumBalance
-            }
-          },
-          contractEventObj
-        )
-      )
+      handleEvent({
+        eventCode: 'txStall',
+        categoryCode,
+        transaction,
+        contract: contractEventObj,
+        wallet: {
+          provider: state.currentProvider,
+          address: state.accountAddress,
+          balance: state.accountBalance,
+          minimum: state.config.minimumBalance
+        }
+      })
     }
   }, timeouts.txStall)
 }

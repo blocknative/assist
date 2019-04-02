@@ -120,15 +120,6 @@ function onboardingUI(eventObj, handlers) {
   openModal(modal, handlers)
 }
 
-const notificationsNoRepeat = [
-  'nsfFail',
-  'txSendFail',
-  'txStall',
-  'txRepeat',
-  'txAwaitingApproval',
-  'txConfirmReminder'
-]
-
 function getCustomTxMsg(eventCode, data) {
   const msgFunc =
     state.config.messages &&
@@ -155,22 +146,17 @@ function getCustomTxMsg(eventCode, data) {
   }
 }
 
-function notificationsUI(eventObj) {
-  const { transaction = {}, contract = {} } = eventObj
-  let { eventCode } = eventObj
+const notificationsNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
 
-  // replace eventCode to get the same messages if it's a client confirm
-  if (eventCode === 'txConfirmedClient') {
-    eventCode = 'txConfirmed'
-  }
+function notificationsUI(eventObj) {
+  const { transaction = {}, contract = {}, eventCode } = eventObj
+  const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
-  const id = (transaction && transaction.hash) || eventCode
   const timeStamp = formatTime(Date.now())
   const message =
     getCustomTxMsg(eventCode, { transaction, contract }) ||
     transactionMsgs[eventCode]({ transaction, contract })
 
-  const startTime = transaction && transaction.startTime
   const hasTimer =
     eventCode === 'txPending' ||
     eventCode === 'txSent' ||
@@ -179,11 +165,8 @@ function notificationsUI(eventObj) {
     hasTimer || eventCode === 'txConfirmed' || eventCode === 'txFailed'
 
   let blockNativeBrand
-
   let existingNotifications
-
   let notificationsList
-
   let notificationsScroll
   let notificationsContainer = getById('blocknative-notifications')
 
@@ -191,12 +174,20 @@ function notificationsUI(eventObj) {
     existingNotifications = true
     notificationsList = getByQuery('.bn-notifications')
 
-    const pendingNotificationToRemove =
-      getById(`${id}-progress`) || getById('txRequest-progress')
+    const notificationWithSameId = getById(id)
+    const keepTxRepeatNotification =
+      notificationWithSameId &&
+      notificationWithSameId.classList.contains('bn-txRepeat') &&
+      eventCode === 'txRequest'
 
-    // if pending notification with the same id, we can remove it to be replaced with new status
-    if (pendingNotificationToRemove) {
-      removeNotification(pendingNotificationToRemove)
+    // stop txRequest notification from replacing txRepeat notification
+    if (keepTxRepeatNotification) {
+      return
+    }
+
+    // if notification with the same id  we can remove it to be replaced with new status
+    if (notificationWithSameId) {
+      removeNotification(notificationWithSameId)
     }
 
     // remove all notifications we don't want to repeat
@@ -220,7 +211,7 @@ function notificationsUI(eventObj) {
     'li',
     `bn-notification bn-${type} bn-${eventCode}`,
     notificationContent(type, message, { startTime, showTime, timeStamp }),
-    `${id}-${type}`
+    id
   )
 
   notificationsList.appendChild(notification)
@@ -240,7 +231,7 @@ function notificationsUI(eventObj) {
   let intervalId
   if (hasTimer) {
     setTimeout(() => {
-      intervalId = startTimerInterval(`${id}-${type}`, startTime)
+      intervalId = startTimerInterval(id, startTime)
     }, timeouts.changeUI)
   }
 
