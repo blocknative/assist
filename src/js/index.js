@@ -22,7 +22,7 @@ import {
   removeItem,
   getItem
 } from './helpers/storage'
-import styles from '../css/styles.css'
+import assistStyles from '../css/styles.css'
 
 // Library Version - if changing, also need to change in package.json
 const version = '0.5.1'
@@ -49,7 +49,7 @@ function init(config) {
     updateState({ config })
   }
 
-  const { web3, dappId, mobileBlocked, headlessMode } = config
+  const { web3, dappId, mobileBlocked, headlessMode, style } = config
 
   // Check that an api key has been provided to the config object
   if (!dappId) {
@@ -77,7 +77,7 @@ function init(config) {
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
   if (!state.iframe && !headlessMode) {
-    createIframe(document, styles)
+    createIframe(document, assistStyles, style)
   }
 
   // Check if on mobile and mobile is blocked

@@ -167,6 +167,9 @@ var config = {
       src: String, // Image URL for complete onboard modal
       srcset: String // Image URL(s) for complete onboard modal
     }
+  },
+  style: {
+    darkMode: Boolean // Set Assist UI to dark mode
   }
 }
 ```
