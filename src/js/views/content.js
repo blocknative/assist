@@ -25,6 +25,9 @@ import complete2x from '../../../lib/images/elR9xQ8.jpg'
 import blockNativeLogo from '../../../lib/images/fJxOtIj.png'
 import blockNativeLogo2x from '../../../lib/images/UhcCuKF.png'
 
+import blockNativeLogoLight from '../../../lib/images/bn-branding-white.png'
+import blockNativeLogoLight2x from '../../../lib/images/bn-branding-white@2x.png'
+
 import mobile from '../../../lib/images/EcUxQVJ.jpg'
 import mobile2x from '../../../lib/images/GS6owd9.jpg'
 
@@ -175,6 +178,10 @@ export const imageSrc = {
   blockNativeLogo: {
     src: blockNativeLogo,
     srcset: blockNativeLogo2x
+  },
+  blockNativeLogoLight: {
+    src: blockNativeLogoLight,
+    srcset: blockNativeLogoLight2x
   },
   mobile: {
     src: mobile,

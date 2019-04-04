@@ -114,15 +114,18 @@ export function browserLogos() {
 }
 
 export function onboardBranding() {
-  const { blockNativeLogo } = imageSrc
+  const { blockNativeLogo, blockNativeLogoLight } = imageSrc
+  const { darkMode } = state.config.style
   return `
     <div class="bn-onboarding-branding">
       <p>Powered by
       <a href="https://www.blocknative.com/" target="_blank">
       <img
-        src="${blockNativeLogo.src}" 
+        src="${darkMode ? blockNativeLogoLight.src : blockNativeLogo.src}" 
         alt="Blocknative" 
-        srcset="${blockNativeLogo.srcset} 2x" />
+        srcset="${
+          darkMode ? blockNativeLogoLight.srcset : blockNativeLogo.srcset
+        } 2x" />
       </a>
       </p>
     </div>
