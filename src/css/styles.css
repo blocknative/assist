@@ -1094,6 +1094,10 @@ input[type='button'].bn-btn-block {
   color: #26c6da;
 }
 
+.bn-btn-primary.bn-btn-outline:focus {
+  color: white;
+}
+
 .bn-btn-success.bn-btn-outline {
   color: #5cb85c;
 }
