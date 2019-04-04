@@ -134,13 +134,15 @@ export function onboardBranding() {
 
 export function notSupportedModal(type) {
   const info = notSupported[`${type}NotSupported`]
+  const { darkMode } = state.config.style
+
   return `
     <div id="bn-${type}-not-supported" class="bn-onboard">
       <div class="bn-onboard-modal bn-onboard-alert">
         <a href="#" class="bn-onboard-close">
           <span class="bn-onboard-close-x"></span>
         </a>
-        ${notSupportedImage(type)}
+        ${notSupportedImage(`${type}${darkMode ? 'Light' : ''}`)}
         <br><br>
         <h1 class="h4">${info.heading}</h1>
         <p>${info.description()}</p>
