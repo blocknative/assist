@@ -76,7 +76,11 @@ function init(config) {
   getUserAgent()
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
-  if (!state.iframe && !headlessMode) {
+  if (
+    !state.iframe &&
+    !headlessMode &&
+    (!state.mobileDevice || mobileBlocked)
+  ) {
     createIframe(document, styles)
   }
 
