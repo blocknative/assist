@@ -15,6 +15,18 @@ p {
   color: #ededed;
 }
 
+.bn-onboard-basic .bn-onboard-main {
+  background: #152128;
+}
+
+.bn-onboard-basic .bn-onboard-sidebar {
+  background: #2c3943;
+}
+
+.bn-active {
+  color: #ededed;
+}
+
 .bn-notification {
   background: #152128;
   box-shadow: -1px -1px 8px 0px rgba(237, 237, 237, 0.1);
