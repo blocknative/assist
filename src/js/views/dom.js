@@ -105,7 +105,7 @@ export function browserLogos() {
       <img
         src="${firefoxLogo.src}" 
         alt="Firefox Logo" 
-        srcset="${firefoxLogo.src} 2x" />
+        srcset="${firefoxLogo.srcset} 2x" />
       <br>
       Firefox
       </a>
