@@ -35,6 +35,7 @@ function sendTransaction(
   txObject = {},
   sendTransactionMethod,
   callback,
+  inlineCustomMsgs,
   contractMethod,
   contractEventObj
 ) {
@@ -73,6 +74,8 @@ function sendTransaction(
         eventCode: 'nsfFail',
         categoryCode: 'activePreflight',
         transaction: transactionEventObj,
+        contract: contractEventObj,
+        inlineCustomMsgs,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -96,6 +99,7 @@ function sendTransaction(
         categoryCode: 'activePreflight',
         transaction: transactionEventObj,
         contract: contractEventObj,
+        inlineCustomMsgs,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -111,6 +115,7 @@ function sendTransaction(
         categoryCode: 'activePreflight',
         transaction: transactionEventObj,
         contract: contractEventObj,
+        inlineCustomMsgs,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -142,6 +147,7 @@ function sendTransaction(
       categoryCode,
       transaction: transactionEventObj,
       contract: contractEventObj,
+      inlineCustomMsgs,
       wallet: {
         provider: state.currentProvider,
         address: state.accountAddress,
@@ -165,6 +171,7 @@ function sendTransaction(
           categoryCode,
           transaction: transactionEventObj,
           contract: contractEventObj,
+          inlineCustomMsgs,
           wallet: {
             provider: state.currentProvider,
             address: state.accountAddress,
@@ -182,7 +189,12 @@ function sendTransaction(
 
           handleTxHash(
             txHash,
-            { transactionEventObj, categoryCode, contractEventObj },
+            {
+              transactionEventObj,
+              categoryCode,
+              contractEventObj,
+              inlineCustomMsgs
+            },
             reject
           )
 
@@ -191,7 +203,12 @@ function sendTransaction(
           return waitForTransactionReceipt(txHash).then(receipt => {
             handleTxReceipt(
               receipt,
-              { transactionEventObj, categoryCode, contractEventObj },
+              {
+                transactionEventObj,
+                categoryCode,
+                contractEventObj,
+                inlineCustomMsgs
+              },
               reject
             )
           })
@@ -199,7 +216,12 @@ function sendTransaction(
         .catch(async errorObj => {
           rejected = handleTxError(
             errorObj,
-            { transactionEventObj, categoryCode, contractEventObj },
+            {
+              transactionEventObj,
+              categoryCode,
+              contractEventObj,
+              inlineCustomMsgs
+            },
             reject
           )
           callback && callback(errorObj)
@@ -211,7 +233,12 @@ function sendTransaction(
 
           handleTxHash(
             txHash,
-            { transactionEventObj, categoryCode, contractEventObj },
+            {
+              transactionEventObj,
+              categoryCode,
+              contractEventObj,
+              inlineCustomMsgs
+            },
             reject
           )
           callback && callback(null, txHash)
@@ -219,7 +246,12 @@ function sendTransaction(
         .on('receipt', async receipt => {
           handleTxReceipt(
             receipt,
-            { transactionEventObj, categoryCode, contractEventObj },
+            {
+              transactionEventObj,
+              categoryCode,
+              contractEventObj,
+              inlineCustomMsgs
+            },
             reject
           )
         })
@@ -228,7 +260,12 @@ function sendTransaction(
 
           handleTxError(
             errorObj,
-            { transactionEventObj, categoryCode, contractEventObj },
+            {
+              transactionEventObj,
+              categoryCode,
+              contractEventObj,
+              inlineCustomMsgs
+            },
             reject
           )
           callback && callback(errorObj)
@@ -239,16 +276,33 @@ function sendTransaction(
 
 async function handleTxHash(txHash, meta, reject) {
   const nonce = await inferNonce().catch(reject)
-  const { transactionEventObj, categoryCode, contractEventObj } = meta
+  const {
+    transactionEventObj,
+    categoryCode,
+    contractEventObj,
+    inlineCustomMsgs
+  } = meta
 
-  onResult(transactionEventObj, nonce, categoryCode, contractEventObj, txHash)
+  onResult(
+    transactionEventObj,
+    nonce,
+    categoryCode,
+    contractEventObj,
+    txHash,
+    inlineCustomMsgs
+  )
 }
 
 async function handleTxReceipt(receipt, meta, reject) {
   const { transactionHash } = receipt
   const txObj = getTransactionObj(transactionHash)
   const nonce = await inferNonce().catch(reject)
-  const { transactionEventObj, categoryCode, contractEventObj } = meta
+  const {
+    transactionEventObj,
+    categoryCode,
+    contractEventObj,
+    inlineCustomMsgs
+  } = meta
 
   handleEvent({
     eventCode: 'txConfirmedClient',
@@ -260,6 +314,7 @@ async function handleTxReceipt(receipt, meta, reject) {
         nonce
       }),
     contract: contractEventObj,
+    inlineCustomMsgs,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -285,7 +340,12 @@ async function handleTxError(error, meta, reject) {
   }
 
   const nonce = await inferNonce().catch(reject)
-  const { transactionEventObj, categoryCode, contractEventObj } = meta
+  const {
+    transactionEventObj,
+    categoryCode,
+    contractEventObj,
+    inlineCustomMsgs
+  } = meta
 
   handleEvent({
     eventCode:
@@ -294,6 +354,7 @@ async function handleTxError(error, meta, reject) {
     transaction: Object.assign({}, transactionEventObj, {
       nonce
     }),
+    inlineCustomMsgs,
     contract: contractEventObj,
     reason: 'User denied transaction signature',
     wallet: {
@@ -325,7 +386,8 @@ function onResult(
   nonce,
   categoryCode,
   contractEventObj,
-  hash
+  hash,
+  inlineCustomMsgs
 ) {
   const transaction = Object.assign({}, transactionEventObj, {
     hash,
@@ -340,6 +402,7 @@ function onResult(
     categoryCode,
     transaction,
     contract: contractEventObj,
+    inlineCustomMsgs,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -369,6 +432,7 @@ function onResult(
         categoryCode,
         transaction,
         contract: contractEventObj,
+        inlineCustomMsgs,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,

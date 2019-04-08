@@ -53,25 +53,49 @@ export function timeString(time) {
   return seconds >= 60 ? `${Math.floor(seconds / 60)} min` : `${seconds} sec`
 }
 
+function last(arr) {
+  return [...arr].reverse()[0]
+}
+
+function takeLast(arr) {
+  // mutates original array
+  return arr.splice(arr.length - 1, 1)[0]
+}
+
+function first(arr) {
+  return arr[0]
+}
+
+function takeFirst(arr) {
+  // mutates original arr
+  return arr.splice(0, 1)[0]
+}
+
 export function separateArgs(allArgs, argsLength) {
   const allArgsCopy = [...allArgs]
   const args = argsLength ? allArgsCopy.splice(0, argsLength) : []
+
+  const inlineCustomMsgs =
+    typeof last(allArgsCopy) === 'object' &&
+    last(allArgsCopy).messages &&
+    takeLast(allArgsCopy).messages
+
   const callback =
-    typeof allArgsCopy[allArgsCopy.length - 1] === 'function' &&
-    allArgsCopy.splice(allArgsCopy.length - 1, 1)[0]
+    typeof last(allArgsCopy) === 'function' && takeLast(allArgsCopy)
 
   const txObject =
-    typeof allArgsCopy[0] === 'object' && allArgsCopy[0] !== null
-      ? allArgsCopy.splice(0, 1)[0]
+    typeof first(allArgsCopy) === 'object' && first(allArgsCopy) !== null
+      ? takeFirst(allArgsCopy)
       : {}
 
-  const defaultBlock = allArgsCopy[0] && allArgsCopy[0]
+  const defaultBlock = first(allArgsCopy)
 
   return {
     callback,
     args,
     txObject,
-    defaultBlock
+    defaultBlock,
+    inlineCustomMsgs
   }
 }
 

@@ -120,11 +120,13 @@ function onboardingUI(eventObj, handlers) {
   openModal(modal, handlers)
 }
 
-function getCustomTxMsg(eventCode, data) {
+function getCustomTxMsg(eventCode, data, inlineCustomMsgs = {}) {
   const msgFunc =
-    state.config.messages &&
-    typeof state.config.messages[eventCode] === 'function' &&
-    state.config.messages[eventCode]
+    typeof inlineCustomMsgs[eventCode] === 'function'
+      ? inlineCustomMsgs[eventCode]
+      : state.config.messages &&
+        typeof state.config.messages[eventCode] === 'function' &&
+        state.config.messages[eventCode]
 
   if (!msgFunc) return undefined
 
@@ -148,13 +150,17 @@ function getCustomTxMsg(eventCode, data) {
 
 const notificationsNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
 
-function notificationsUI(eventObj) {
-  const { transaction = {}, contract = {}, eventCode } = eventObj
+function notificationsUI({
+  transaction = {},
+  contract = {},
+  inlineCustomMsgs,
+  eventCode
+}) {
   const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
   const timeStamp = formatTime(Date.now())
   const message =
-    getCustomTxMsg(eventCode, { transaction, contract }) ||
+    getCustomTxMsg(eventCode, { transaction, contract }, inlineCustomMsgs) ||
     transactionMsgs[eventCode]({ transaction, contract })
 
   const hasTimer =

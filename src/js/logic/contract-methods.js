@@ -69,13 +69,17 @@ export function modernSend(method, name, args) {
 
   returnObject.send = (...innerArgs) =>
     new Promise(async (resolve, reject) => {
-      const { callback, txObject } = separateArgs(innerArgs, 0)
+      const { callback, txObject, inlineCustomMsgs } = separateArgs(
+        innerArgs,
+        0
+      )
 
       const txPromiseObj = sendTransaction(
         'activeContract',
         txObject,
         innerMethod,
         callback,
+        inlineCustomMsgs,
         method,
         { methodName: name, parameters: args }
       ).catch(error => {
@@ -135,13 +139,17 @@ export async function legacyCall(method, name, allArgs, argsLength) {
 }
 
 export async function legacySend(method, name, allArgs, argsLength) {
-  const { callback, txObject, args } = separateArgs(allArgs, argsLength)
+  const { callback, txObject, args, inlineCustomMsgs } = separateArgs(
+    allArgs,
+    argsLength
+  )
 
   await sendTransaction(
     'activeContract',
     txObject,
     promisify(method.sendTransaction),
     callback,
+    inlineCustomMsgs,
     method,
     {
       methodName: name,
