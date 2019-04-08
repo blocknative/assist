@@ -287,6 +287,10 @@ export function getByQuery(query) {
   return state.iframeDocument.querySelector(query)
 }
 
+export function getAllByQuery(query) {
+  return state.iframeDocument.querySelectorAll(query)
+}
+
 export function createTransactionBranding() {
   const blockNativeBrand = createElement(
     'a',
@@ -382,25 +386,12 @@ export function removeNotification(notification) {
   removeElement(notificationsList, notification)
 }
 
-export function removeAllNotifications(queries) {
-  const notificationsToRemove = queries.reduce((allNotifications, query) => {
-    if (query) {
-      const newNotifications = Array.from(
-        state.iframeDocument.querySelectorAll(query)
-      )
-      return [...allNotifications, ...newNotifications]
+export function removeAllNotifications(notifications) {
+  notifications.forEach(notification => {
+    if (notification) {
+      removeNotification(notification)
     }
-    return allNotifications
-  }, [])
-  if (notificationsToRemove.length > 0) {
-    notificationsToRemove.forEach(notification => {
-      if (notification) {
-        setTimeout(() => {
-          removeNotification(notification)
-        }, timeouts.removeElement)
-      }
-    })
-  }
+  })
 }
 
 export function checkIfNotifications() {
