@@ -7,6 +7,7 @@ import {
   onboardModal,
   getById,
   getByQuery,
+  getAllByQuery,
   removeNotification,
   createTransactionBranding,
   notificationContent,
@@ -146,7 +147,7 @@ function getCustomTxMsg(eventCode, data) {
   }
 }
 
-const notificationsNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
+const eventCodesNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
 
 function notificationsUI(eventObj) {
   const { transaction = {}, contract = {}, eventCode } = eventObj
@@ -174,26 +175,29 @@ function notificationsUI(eventObj) {
     existingNotifications = true
     notificationsList = getByQuery('.bn-notifications')
 
-    const notificationWithSameId = getById(id)
-    const keepTxRepeatNotification =
-      notificationWithSameId &&
-      notificationWithSameId.classList.contains('bn-txRepeat') &&
-      eventCode === 'txRequest'
-
-    // stop txRequest notification from replacing txRepeat notification
-    if (keepTxRepeatNotification) {
-      return
-    }
-
-    // if notification with the same id  we can remove it to be replaced with new status
-    if (notificationWithSameId) {
-      removeNotification(notificationWithSameId)
-    }
-
     // remove all notifications we don't want to repeat
     removeAllNotifications(
-      notificationsNoRepeat.map(eventCode => `.bn-${eventCode}`)
+      eventCodesNoRepeat.reduce(
+        (acc, eventCode) => [
+          ...acc,
+          ...Array.from(getAllByQuery(`.bn-${eventCode}`))
+        ],
+        []
+      )
     )
+
+    // We want to keep the txRepeat notification if the new notification is a txRequest or txConfirmReminder
+    const keepTxRepeatNotification =
+      eventCode === 'txRequest' || eventCode === 'txConfirmReminder'
+
+    const notificationsWithSameId = keepTxRepeatNotification
+      ? Array.from(getAllByQuery(`.bn-${id}`)).filter(
+          n => !n.classList.contains('bn-txRepeat')
+        )
+      : Array.from(getAllByQuery(`.bn-${id}`))
+
+    // if notification with the same id we can remove it to be replaced with new status
+    removeAllNotifications(notificationsWithSameId)
   } else {
     existingNotifications = false
     notificationsContainer = createElement(
@@ -209,9 +213,8 @@ function notificationsUI(eventObj) {
 
   const notification = createElement(
     'li',
-    `bn-notification bn-${type} bn-${eventCode}`,
-    notificationContent(type, message, { startTime, showTime, timeStamp }),
-    id
+    `bn-notification bn-${type} bn-${eventCode} bn-${id}`,
+    notificationContent(type, message, { startTime, showTime, timeStamp })
   )
 
   notificationsList.appendChild(notification)
