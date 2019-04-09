@@ -8,16 +8,18 @@ import {
   getById,
   getByQuery,
   getAllByQuery,
+  offsetElement,
   removeNotification,
   createTransactionBranding,
   notificationContent,
   showElement,
-  setContainerHeight,
+  setNotificationsHeight,
   startTimerInterval,
-  removeAllNotifications
+  removeAllNotifications,
+  positionElement
 } from './dom'
 
-import { setupIframe } from '../helpers/iframe'
+import { showIframe } from '../helpers/iframe'
 
 import { transactionMsgs } from './content'
 import {
@@ -177,20 +179,28 @@ function notificationsUI({
   let notificationsScroll
   let notificationsContainer = getById('blocknative-notifications')
 
+  const position =
+    (state.config.style && state.config.style.notificationsPosition) || ''
+
   if (notificationsContainer) {
     existingNotifications = true
     notificationsList = getByQuery('.bn-notifications')
 
-    // remove all notifications we don't want to repeat
-    removeAllNotifications(
-      eventCodesNoRepeat.reduce(
-        (acc, eventCode) => [
-          ...acc,
-          ...Array.from(getAllByQuery(`.bn-${eventCode}`))
-        ],
-        []
-      )
+    const notificationsNoRepeat = eventCodesNoRepeat.reduce(
+      (acc, eventCode) => [
+        ...acc,
+        ...Array.from(getAllByQuery(`.bn-${eventCode}`))
+      ],
+      []
     )
+
+    // remove all notifications we don't want to repeat
+    removeAllNotifications(notificationsNoRepeat)
+
+    // due to delay in removing many notifications, need to make sure container size is right
+    if (notificationsNoRepeat.length > 4) {
+      setTimeout(setNotificationsHeight, timeouts.changeUI)
+    }
 
     // We want to keep the txRepeat notification if the new notification is a txRequest or txConfirmReminder
     const keepTxRepeatNotification =
@@ -206,36 +216,50 @@ function notificationsUI({
     removeAllNotifications(notificationsWithSameId)
   } else {
     existingNotifications = false
-    notificationsContainer = createElement(
-      'div',
-      null,
-      null,
-      'blocknative-notifications'
+    notificationsContainer = positionElement(
+      offsetElement(
+        createElement('div', null, null, 'blocknative-notifications')
+      )
     )
+
     blockNativeBrand = createTransactionBranding()
     notificationsList = createElement('ul', 'bn-notifications')
     notificationsScroll = createElement('div', 'bn-notifications-scroll')
+    if (position === 'topRight') {
+      notificationsScroll.style.float = 'right'
+    }
+    showIframe()
   }
 
-  const notification = createElement(
-    'li',
-    `bn-notification bn-${type} bn-${eventCode} bn-${id}`,
-    notificationContent(type, message, { startTime, showTime, timeStamp })
+  const notification = offsetElement(
+    createElement(
+      'li',
+      `bn-notification bn-${type} bn-${eventCode} bn-${id} ${
+        position.includes('Left') ? 'bn-right-border' : ''
+      }`,
+      notificationContent(type, message, { startTime, showTime, timeStamp })
+    )
   )
 
   notificationsList.appendChild(notification)
 
   if (!existingNotifications) {
     notificationsScroll.appendChild(notificationsList)
-    notificationsContainer.appendChild(notificationsScroll)
-    notificationsContainer.appendChild(blockNativeBrand)
+
+    if (position.includes('top')) {
+      notificationsContainer.appendChild(blockNativeBrand)
+      notificationsContainer.appendChild(notificationsScroll)
+    } else {
+      notificationsContainer.appendChild(notificationsScroll)
+      notificationsContainer.appendChild(blockNativeBrand)
+    }
     state.iframeDocument.body.appendChild(notificationsContainer)
     showElement(notificationsContainer, timeouts.showElement)
   }
 
-  setupIframe(notificationsList)
-  setContainerHeight()
   showElement(notification, timeouts.showElement)
+
+  setNotificationsHeight()
 
   let intervalId
   if (hasTimer) {
@@ -248,13 +272,14 @@ function notificationsUI({
   dismissButton.onclick = () => {
     intervalId && clearInterval(intervalId)
     removeNotification(notification)
+    setNotificationsHeight()
   }
 
   if (type === 'complete') {
-    setTimeout(
-      () => removeNotification(notification),
-      timeouts.autoRemoveNotification
-    )
+    setTimeout(() => {
+      removeNotification(notification)
+      setNotificationsHeight()
+    }, timeouts.autoRemoveNotification)
   }
 }
 

@@ -406,22 +406,13 @@ img.bn-onboard-img {
 
 #blocknative-notifications {
   position: fixed;
-  z-index: 999;
-  bottom: 10px;
-  right: 10px;
   opacity: 0;
-  transform: translateX(600px);
+  padding: 10px;
   transition: opacity 150ms ease-in-out, transform 300ms ease-in-out;
 }
 
 ::-webkit-scrollbar {
   display: none;
-}
-
-.bn-notifications-scroll {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  padding-top: 3rem;
 }
 
 .bn-notification {
@@ -434,21 +425,38 @@ img.bn-onboard-img {
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   width: 320px; /* something to consider (changed from max-width) */
   margin-left: 10px; /* keeps notification from bumping edge on mobile.*/
-  transform: translateX(600px);
   opacity: 0;
   transition: transform 350ms ease-in-out, opacity 300ms linear;
   font-family: 'Source Sans Pro', 'Open Sans', 'Helvetica Neue', Arial,
     sans-serif;
 }
 
+ul.bn-notifications {
+  list-style-type: none;
+}
+
 .bn-notification.bn-progress {
-  border-left: 2px solid #ffc137;
+  border-color: #ffc137;
+  border-width: 0px 0px 0px 2px;
+  border-style: solid;
 }
 .bn-notification.bn-complete {
-  border-left: 2px solid #7ed321;
+  border-color: #7ed321;
+  border-width: 0px 0px 0px 2px;
+  border-style: solid;
 }
 .bn-notification.bn-failed {
-  border-left: 2px solid #ff3f4a;
+  border-color: #ff3f4a;
+  border-width: 0px 0px 0px 2px;
+  border-style: solid;
+}
+
+li.bn-notification.bn-right-border {
+  border-width: 0px 2px 0px 0px;
+}
+
+li.bn-notification.bn-right-border .bn-notification-info {
+  margin: 0px 10px 0px 5px;
 }
 
 .bn-status-icon {
@@ -457,6 +465,10 @@ img.bn-onboard-img {
   height: 18px;
   background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
   border-radius: 50%;
+}
+
+.bn-float-right {
+  float: right;
 }
 
 .bn-progress .bn-status-icon {
@@ -508,8 +520,7 @@ img.bn-onboard-img {
 }
 
 a#bn-transaction-branding {
-  float: right;
-  margin-right: 10px;
+  margin: 0 10px;
   padding-top: 10px;
   display: inline-block;
   width: 18px;
@@ -590,6 +601,10 @@ a#bn-transaction-branding:hover {
   transition: opacity 0.25s ease-out 100ms;
 }
 
+div.progress-tooltip.bn-left {
+  left: -180;
+}
+
 .progress-tooltip-inner {
   max-width: 200px;
   padding: 3px 8px;
@@ -612,6 +627,11 @@ a#bn-transaction-branding:hover {
   border-top-color: #000;
   border-style: solid;
   content: '';
+}
+
+div.progress-tooltip.bn-left::after {
+  left: initial;
+  right: 4px;
 }
 
 .bn-status-icon:hover .progress-tooltip {
