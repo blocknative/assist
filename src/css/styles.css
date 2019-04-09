@@ -1,7 +1,6 @@
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
-
 	1. Reset
 	2. Fonts
 	3. Onboarding
@@ -135,13 +134,10 @@ table {
 }
 
 /* Colors and Fonts 
-
 Red:#FF3F4A;
 Yellow:;#FFC137
 Green:#7ED321;
-
 Font sizes based on https://www.modularscale.com/?16&px&1.125
-
 */
 
 h1,
@@ -243,14 +239,13 @@ b {
 }
 
 .bn-onboard {
-  padding: 10px;
+  border-radius: 2px;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
 }
 
 .bn-onboard-modal {
   background: #fff;
   border-radius: 2px;
-  border: 1px solid #efefef;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   position: relative;
 }
@@ -272,6 +267,7 @@ b {
   background: #fff;
   -webkit-flex-grow: 1;
   flex-grow: 1;
+  border-radius: 0 2px 2px 0;
 }
 
 .bn-onboard-basic .bn-onboard-sidebar {
@@ -280,6 +276,7 @@ b {
   background: #eeeeee;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
+  border-radius: 2px 0 0 2px;
 }
 .bn-onboard-advanced {
   padding: 15px 20px;
@@ -329,6 +326,7 @@ img.bn-onboard-img {
   display: block;
   max-width: 100%;
   height: auto;
+  border-radius: 4px;
 }
 
 .bn-onboard-close {
@@ -458,6 +456,7 @@ img.bn-onboard-img {
   width: 18px;
   height: 18px;
   background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
+  border-radius: 50%;
 }
 
 .bn-progress .bn-status-icon {
@@ -515,8 +514,9 @@ a#bn-transaction-branding {
   display: inline-block;
   width: 18px;
   height: 25px;
-  background: transparent url('https://assist.blocknative.com/images/fJxOtIj.png') no-repeat
-    center left;
+  background: transparent
+    url('https://assist.blocknative.com/images/fJxOtIj.png') no-repeat center
+    left;
   -webkit-transition: width 0.2s ease-out;
   -moz-transition: width 0.2s ease-out;
   -o-transition: width 0.2s ease-out;
@@ -737,26 +737,26 @@ fieldset[disabled] .bn-btn-default.focus {
 }
 .bn-btn-primary {
   color: #ffffff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  background-color: #26c6da;
+  border-color: #26c6da;
 }
 .bn-btn-primary:focus,
 .bn-btn-primary.focus {
   color: #ffffff;
-  background-color: #286090;
+  background-color: #26c6da;
   border-color: #122b40;
 }
 .bn-btn-primary:hover {
   color: #ffffff;
-  background-color: #286090;
-  border-color: #204d74;
+  background-color: #26c6da;
+  border-color: #26c6da;
 }
 .bn-btn-primary:active,
 .bn-btn-primary.active,
 .open > .dropdown-toggle.bn-btn-primary {
   color: #ffffff;
   background-color: #286090;
-  border-color: #204d74;
+  border-color: #26c6da;
 }
 .bn-btn-primary:active:hover,
 .bn-btn-primary.active:hover,
@@ -768,7 +768,7 @@ fieldset[disabled] .bn-btn-default.focus {
 .bn-btn-primary.active.focus,
 .open > .dropdown-toggle.bn-btn-primary.focus {
   color: #ffffff;
-  background-color: #204d74;
+  background-color: #26c6da;
   border-color: #122b40;
 }
 .bn-btn-primary:active,
@@ -1085,13 +1085,17 @@ input[type='button'].bn-btn-block {
 }
 
 .bn-btn-outline {
-  background-color: transparent;
+  background-color: white;
   color: inherit;
   transition: all 0.5s;
 }
 
 .bn-btn-primary.bn-btn-outline {
-  color: #428bca;
+  color: #26c6da;
+}
+
+.bn-btn-primary.bn-btn-outline:focus {
+  color: white;
 }
 
 .bn-btn-success.bn-btn-outline {

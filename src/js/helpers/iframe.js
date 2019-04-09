@@ -1,12 +1,19 @@
 import { updateState, state } from './state'
 import { getById } from '../views/dom'
 
-export function createIframe(browserDocument, style) {
+import darkModeStyles from '../../css/dark-mode.css'
+
+export function createIframe(browserDocument, assistStyles, style = {}) {
+  const { darkMode } = style
+
   const initialIframeContent = `
     <html>
       <head>
         <style>
-          ${style}
+          ${assistStyles}
+        </style>
+        <style>
+          ${darkMode ? darkModeStyles : ''}
         </style>
       </head>
       <body></body>

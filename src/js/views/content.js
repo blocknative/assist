@@ -25,11 +25,20 @@ import complete2x from '../../../lib/images/elR9xQ8.jpg'
 import blockNativeLogo from '../../../lib/images/fJxOtIj.png'
 import blockNativeLogo2x from '../../../lib/images/UhcCuKF.png'
 
+import blockNativeLogoLight from '../../../lib/images/bn-branding-white.png'
+import blockNativeLogoLight2x from '../../../lib/images/bn-branding-white@2x.png'
+
 import mobile from '../../../lib/images/EcUxQVJ.jpg'
 import mobile2x from '../../../lib/images/GS6owd9.jpg'
 
+import mobileLight from '../../../lib/images/mobile-not-supported-white.png'
+import mobileLight2x from '../../../lib/images/mobile-not-supported-white@2x.png'
+
 import browserFail from '../../../lib/images/riXzN0X.jpg'
 import browserFail2x from '../../../lib/images/xpWtOVX.jpg'
+
+import browserFailLight from '../../../lib/images/browser-not-supported-white.png'
+import browserFailLight2x from '../../../lib/images/browser-not-supported-white@2x.png'
 
 import chromeLogo from '../../../lib/images/XAwAAmL.png'
 import chromeLogo2x from '../../../lib/images/maxXVIH.png'
@@ -176,6 +185,10 @@ export const imageSrc = {
     src: blockNativeLogo,
     srcset: blockNativeLogo2x
   },
+  blockNativeLogoLight: {
+    src: blockNativeLogoLight,
+    srcset: blockNativeLogoLight2x
+  },
   mobile: {
     src: mobile,
     srcset: mobile2x
@@ -183,6 +196,14 @@ export const imageSrc = {
   browser: {
     src: browserFail,
     srcset: browserFail2x
+  },
+  mobileLight: {
+    src: mobileLight,
+    srcset: mobileLight2x
+  },
+  browserLight: {
+    src: browserFailLight,
+    srcset: browserFailLight2x
   },
   chromeLogo: {
     src: chromeLogo,

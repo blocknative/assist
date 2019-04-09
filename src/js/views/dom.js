@@ -114,15 +114,18 @@ export function browserLogos() {
 }
 
 export function onboardBranding() {
-  const { blockNativeLogo } = imageSrc
+  const { blockNativeLogo, blockNativeLogoLight } = imageSrc
+  const { darkMode } = state.config.style
   return `
     <div class="bn-onboarding-branding">
       <p>Powered by
       <a href="https://www.blocknative.com/" target="_blank">
       <img
-        src="${blockNativeLogo.src}" 
+        src="${darkMode ? blockNativeLogoLight.src : blockNativeLogo.src}" 
         alt="Blocknative" 
-        srcset="${blockNativeLogo.srcset} 2x" />
+        srcset="${
+          darkMode ? blockNativeLogoLight.srcset : blockNativeLogo.srcset
+        } 2x" />
       </a>
       </p>
     </div>
@@ -131,13 +134,15 @@ export function onboardBranding() {
 
 export function notSupportedModal(type) {
   const info = notSupported[`${type}NotSupported`]
+  const { darkMode } = state.config.style
+
   return `
     <div id="bn-${type}-not-supported" class="bn-onboard">
       <div class="bn-onboard-modal bn-onboard-alert">
         <a href="#" class="bn-onboard-close">
           <span class="bn-onboard-close-x"></span>
         </a>
-        ${notSupportedImage(type)}
+        ${notSupportedImage(`${type}${darkMode ? 'Light' : ''}`)}
         <br><br>
         <h1 class="h4">${info.heading}</h1>
         <p>${info.description()}</p>
