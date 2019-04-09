@@ -28,6 +28,7 @@ export function createIframe(browserDocument, assistStyles, style = {}) {
   iframe.style.border = 'none'
   iframe.style.pointerEvents = 'none'
   iframe.style.overflow = 'hidden'
+  iframe.style.transition = 'height 250ms ease-in-out'
   const iWindow = iframe.contentWindow
   const iDocument = iWindow.document
   iDocument.open()
