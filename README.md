@@ -171,6 +171,9 @@ var config = {
   style: {
     darkMode: Boolean // Set Assist UI to dark mode
   }
+  style: {
+    notificationsPosition: String // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+  }
 }
 ```
 
