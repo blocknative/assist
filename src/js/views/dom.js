@@ -3,7 +3,8 @@ import {
   capitalize,
   timeString,
   timeouts,
-  stepToImageKey
+  stepToImageKey,
+  first
 } from '../helpers/utilities'
 import {
   onboardHeading,
@@ -299,7 +300,7 @@ export function getByQuery(query) {
 }
 
 export function getAllByQuery(query) {
-  return state.iframeDocument.querySelectorAll(query)
+  return Array.from(state.iframeDocument.querySelectorAll(query))
 }
 
 export function createTransactionBranding() {
@@ -354,8 +355,13 @@ export function notificationContent(type, message, time = {}) {
 }
 
 // Start clock
-export function startTimerInterval(notificationId, startTime) {
-  const notification = getById(notificationId)
+export function startTimerInterval(notificationId, eventCode, startTime) {
+  const notification = first(
+    getAllByQuery(`.bn-${notificationId}`).filter(n =>
+      n.classList.contains(`bn-${eventCode}`)
+    )
+  )
+
   if (!notification) {
     return null
   }
