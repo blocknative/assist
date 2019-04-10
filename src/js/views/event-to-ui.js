@@ -7,16 +7,19 @@ import {
   onboardModal,
   getById,
   getByQuery,
+  getAllByQuery,
+  offsetElement,
   removeNotification,
   createTransactionBranding,
   notificationContent,
   showElement,
-  setContainerHeight,
+  setNotificationsHeight,
   startTimerInterval,
-  removeAllNotifications
+  removeAllNotifications,
+  positionElement
 } from './dom'
 
-import { setupIframe } from '../helpers/iframe'
+import { showIframe } from '../helpers/iframe'
 
 import { transactionMsgs } from './content'
 import {
@@ -120,20 +123,13 @@ function onboardingUI(eventObj, handlers) {
   openModal(modal, handlers)
 }
 
-const notificationsNoRepeat = [
-  'nsfFail',
-  'txSendFail',
-  'txStall',
-  'txRepeat',
-  'txAwaitingApproval',
-  'txConfirmReminder'
-]
-
-function getCustomTxMsg(eventCode, data) {
+function getCustomTxMsg(eventCode, data, inlineCustomMsgs = {}) {
   const msgFunc =
-    state.config.messages &&
-    typeof state.config.messages[eventCode] === 'function' &&
-    state.config.messages[eventCode]
+    typeof inlineCustomMsgs[eventCode] === 'function'
+      ? inlineCustomMsgs[eventCode]
+      : state.config.messages &&
+        typeof state.config.messages[eventCode] === 'function' &&
+        state.config.messages[eventCode]
 
   if (!msgFunc) return undefined
 
@@ -155,22 +151,21 @@ function getCustomTxMsg(eventCode, data) {
   }
 }
 
-function notificationsUI(eventObj) {
-  const { transaction = {}, contract = {} } = eventObj
-  let { eventCode } = eventObj
+const eventCodesNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
 
-  // replace eventCode to get the same messages if it's a client confirm
-  if (eventCode === 'txConfirmedClient') {
-    eventCode = 'txConfirmed'
-  }
+function notificationsUI({
+  transaction = {},
+  contract = {},
+  inlineCustomMsgs,
+  eventCode
+}) {
+  const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
-  const id = (transaction && transaction.hash) || eventCode
   const timeStamp = formatTime(Date.now())
   const message =
-    getCustomTxMsg(eventCode, { transaction, contract }) ||
+    getCustomTxMsg(eventCode, { transaction, contract }, inlineCustomMsgs) ||
     transactionMsgs[eventCode]({ transaction, contract })
 
-  const startTime = transaction && transaction.startTime
   const hasTimer =
     eventCode === 'txPending' ||
     eventCode === 'txSent' ||
@@ -179,68 +174,97 @@ function notificationsUI(eventObj) {
     hasTimer || eventCode === 'txConfirmed' || eventCode === 'txFailed'
 
   let blockNativeBrand
-
   let existingNotifications
-
   let notificationsList
-
   let notificationsScroll
   let notificationsContainer = getById('blocknative-notifications')
+
+  const position =
+    (state.config.style && state.config.style.notificationsPosition) || ''
 
   if (notificationsContainer) {
     existingNotifications = true
     notificationsList = getByQuery('.bn-notifications')
 
-    const pendingNotificationToRemove =
-      getById(`${id}-progress`) || getById('txRequest-progress')
-
-    // if pending notification with the same id, we can remove it to be replaced with new status
-    if (pendingNotificationToRemove) {
-      removeNotification(pendingNotificationToRemove)
-    }
+    const notificationsNoRepeat = eventCodesNoRepeat.reduce(
+      (acc, eventCode) => [
+        ...acc,
+        ...Array.from(getAllByQuery(`.bn-${eventCode}`))
+      ],
+      []
+    )
 
     // remove all notifications we don't want to repeat
-    removeAllNotifications(
-      notificationsNoRepeat.map(eventCode => `.bn-${eventCode}`)
-    )
+    removeAllNotifications(notificationsNoRepeat)
+
+    // due to delay in removing many notifications, need to make sure container size is right
+    if (notificationsNoRepeat.length > 4) {
+      setTimeout(setNotificationsHeight, timeouts.changeUI)
+    }
+
+    // We want to keep the txRepeat notification if the new notification is a txRequest or txConfirmReminder
+    const keepTxRepeatNotification =
+      eventCode === 'txRequest' || eventCode === 'txConfirmReminder'
+
+    const notificationsWithSameId = keepTxRepeatNotification
+      ? Array.from(getAllByQuery(`.bn-${id}`)).filter(
+          n => !n.classList.contains('bn-txRepeat')
+        )
+      : Array.from(getAllByQuery(`.bn-${id}`))
+
+    // if notification with the same id we can remove it to be replaced with new status
+    removeAllNotifications(notificationsWithSameId)
   } else {
     existingNotifications = false
-    notificationsContainer = createElement(
-      'div',
-      null,
-      null,
-      'blocknative-notifications'
+    notificationsContainer = positionElement(
+      offsetElement(
+        createElement('div', null, null, 'blocknative-notifications')
+      )
     )
+
     blockNativeBrand = createTransactionBranding()
     notificationsList = createElement('ul', 'bn-notifications')
     notificationsScroll = createElement('div', 'bn-notifications-scroll')
+    if (position === 'topRight') {
+      notificationsScroll.style.float = 'right'
+    }
+    showIframe()
   }
 
-  const notification = createElement(
-    'li',
-    `bn-notification bn-${type} bn-${eventCode}`,
-    notificationContent(type, message, { startTime, showTime, timeStamp }),
-    `${id}-${type}`
+  const notification = offsetElement(
+    createElement(
+      'li',
+      `bn-notification bn-${type} bn-${eventCode} bn-${id} ${
+        position.includes('Left') ? 'bn-right-border' : ''
+      }`,
+      notificationContent(type, message, { startTime, showTime, timeStamp })
+    )
   )
 
   notificationsList.appendChild(notification)
 
   if (!existingNotifications) {
     notificationsScroll.appendChild(notificationsList)
-    notificationsContainer.appendChild(notificationsScroll)
-    notificationsContainer.appendChild(blockNativeBrand)
+
+    if (position.includes('top')) {
+      notificationsContainer.appendChild(blockNativeBrand)
+      notificationsContainer.appendChild(notificationsScroll)
+    } else {
+      notificationsContainer.appendChild(notificationsScroll)
+      notificationsContainer.appendChild(blockNativeBrand)
+    }
     state.iframeDocument.body.appendChild(notificationsContainer)
     showElement(notificationsContainer, timeouts.showElement)
   }
 
-  setupIframe(notificationsList)
-  setContainerHeight()
   showElement(notification, timeouts.showElement)
+
+  setNotificationsHeight()
 
   let intervalId
   if (hasTimer) {
     setTimeout(() => {
-      intervalId = startTimerInterval(`${id}-${type}`, startTime)
+      intervalId = startTimerInterval(id, eventCode, startTime)
     }, timeouts.changeUI)
   }
 
@@ -248,13 +272,14 @@ function notificationsUI(eventObj) {
   dismissButton.onclick = () => {
     intervalId && clearInterval(intervalId)
     removeNotification(notification)
+    setNotificationsHeight()
   }
 
   if (type === 'complete') {
-    setTimeout(
-      () => removeNotification(notification),
-      timeouts.autoRemoveNotification
-    )
+    setTimeout(() => {
+      removeNotification(notification)
+      setNotificationsHeight()
+    }, timeouts.autoRemoveNotification)
   }
 }
 

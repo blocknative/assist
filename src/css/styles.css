@@ -1,7 +1,6 @@
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
-
 	1. Reset
 	2. Fonts
 	3. Onboarding
@@ -135,13 +134,10 @@ table {
 }
 
 /* Colors and Fonts 
-
 Red:#FF3F4A;
 Yellow:;#FFC137
 Green:#7ED321;
-
 Font sizes based on https://www.modularscale.com/?16&px&1.125
-
 */
 
 h1,
@@ -243,14 +239,13 @@ b {
 }
 
 .bn-onboard {
-  padding: 10px;
+  border-radius: 2px;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
 }
 
 .bn-onboard-modal {
   background: #fff;
   border-radius: 2px;
-  border: 1px solid #efefef;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   position: relative;
 }
@@ -272,6 +267,7 @@ b {
   background: #fff;
   -webkit-flex-grow: 1;
   flex-grow: 1;
+  border-radius: 0 2px 2px 0;
 }
 
 .bn-onboard-basic .bn-onboard-sidebar {
@@ -280,6 +276,7 @@ b {
   background: #eeeeee;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
+  border-radius: 2px 0 0 2px;
 }
 .bn-onboard-advanced {
   padding: 15px 20px;
@@ -329,6 +326,7 @@ img.bn-onboard-img {
   display: block;
   max-width: 100%;
   height: auto;
+  border-radius: 4px;
 }
 
 .bn-onboard-close {
@@ -408,22 +406,13 @@ img.bn-onboard-img {
 
 #blocknative-notifications {
   position: fixed;
-  z-index: 999;
-  bottom: 10px;
-  right: 10px;
   opacity: 0;
-  transform: translateX(600px);
+  padding: 10px;
   transition: opacity 150ms ease-in-out, transform 300ms ease-in-out;
 }
 
 ::-webkit-scrollbar {
   display: none;
-}
-
-.bn-notifications-scroll {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  padding-top: 3rem;
 }
 
 .bn-notification {
@@ -436,21 +425,38 @@ img.bn-onboard-img {
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   width: 320px; /* something to consider (changed from max-width) */
   margin-left: 10px; /* keeps notification from bumping edge on mobile.*/
-  transform: translateX(600px);
   opacity: 0;
   transition: transform 350ms ease-in-out, opacity 300ms linear;
   font-family: 'Source Sans Pro', 'Open Sans', 'Helvetica Neue', Arial,
     sans-serif;
 }
 
+ul.bn-notifications {
+  list-style-type: none;
+}
+
 .bn-notification.bn-progress {
-  border-left: 2px solid #ffc137;
+  border-color: #ffc137;
+  border-width: 0px 0px 0px 2px;
+  border-style: solid;
 }
 .bn-notification.bn-complete {
-  border-left: 2px solid #7ed321;
+  border-color: #7ed321;
+  border-width: 0px 0px 0px 2px;
+  border-style: solid;
 }
 .bn-notification.bn-failed {
-  border-left: 2px solid #ff3f4a;
+  border-color: #ff3f4a;
+  border-width: 0px 0px 0px 2px;
+  border-style: solid;
+}
+
+li.bn-notification.bn-right-border {
+  border-width: 0px 2px 0px 0px;
+}
+
+li.bn-notification.bn-right-border .bn-notification-info {
+  margin: 0px 10px 0px 5px;
 }
 
 .bn-status-icon {
@@ -458,6 +464,11 @@ img.bn-onboard-img {
   width: 18px;
   height: 18px;
   background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
+  border-radius: 50%;
+}
+
+.bn-float-right {
+  float: right;
 }
 
 .bn-progress .bn-status-icon {
@@ -509,14 +520,14 @@ img.bn-onboard-img {
 }
 
 a#bn-transaction-branding {
-  float: right;
-  margin-right: 10px;
+  margin: 0 10px;
   padding-top: 10px;
   display: inline-block;
   width: 18px;
   height: 25px;
-  background: transparent url('https://assist.blocknative.com/images/fJxOtIj.png') no-repeat
-    center left;
+  background: transparent
+    url('https://assist.blocknative.com/images/fJxOtIj.png') no-repeat center
+    left;
   -webkit-transition: width 0.2s ease-out;
   -moz-transition: width 0.2s ease-out;
   -o-transition: width 0.2s ease-out;
@@ -590,6 +601,10 @@ a#bn-transaction-branding:hover {
   transition: opacity 0.25s ease-out 100ms;
 }
 
+div.progress-tooltip.bn-left {
+  left: -180;
+}
+
 .progress-tooltip-inner {
   max-width: 200px;
   padding: 3px 8px;
@@ -612,6 +627,11 @@ a#bn-transaction-branding:hover {
   border-top-color: #000;
   border-style: solid;
   content: '';
+}
+
+div.progress-tooltip.bn-left::after {
+  left: initial;
+  right: 4px;
 }
 
 .bn-status-icon:hover .progress-tooltip {
@@ -737,26 +757,26 @@ fieldset[disabled] .bn-btn-default.focus {
 }
 .bn-btn-primary {
   color: #ffffff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  background-color: #26c6da;
+  border-color: #26c6da;
 }
 .bn-btn-primary:focus,
 .bn-btn-primary.focus {
   color: #ffffff;
-  background-color: #286090;
+  background-color: #26c6da;
   border-color: #122b40;
 }
 .bn-btn-primary:hover {
   color: #ffffff;
-  background-color: #286090;
-  border-color: #204d74;
+  background-color: #26c6da;
+  border-color: #26c6da;
 }
 .bn-btn-primary:active,
 .bn-btn-primary.active,
 .open > .dropdown-toggle.bn-btn-primary {
   color: #ffffff;
   background-color: #286090;
-  border-color: #204d74;
+  border-color: #26c6da;
 }
 .bn-btn-primary:active:hover,
 .bn-btn-primary.active:hover,
@@ -768,7 +788,7 @@ fieldset[disabled] .bn-btn-default.focus {
 .bn-btn-primary.active.focus,
 .open > .dropdown-toggle.bn-btn-primary.focus {
   color: #ffffff;
-  background-color: #204d74;
+  background-color: #26c6da;
   border-color: #122b40;
 }
 .bn-btn-primary:active,
@@ -1085,13 +1105,17 @@ input[type='button'].bn-btn-block {
 }
 
 .bn-btn-outline {
-  background-color: transparent;
+  background-color: white;
   color: inherit;
   transition: all 0.5s;
 }
 
 .bn-btn-primary.bn-btn-outline {
-  color: #428bca;
+  color: #26c6da;
+}
+
+.bn-btn-primary.bn-btn-outline:focus {
+  color: white;
 }
 
 .bn-btn-success.bn-btn-outline {

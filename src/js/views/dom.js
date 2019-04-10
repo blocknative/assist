@@ -3,7 +3,8 @@ import {
   capitalize,
   timeString,
   timeouts,
-  stepToImageKey
+  stepToImageKey,
+  first
 } from '../helpers/utilities'
 import {
   onboardHeading,
@@ -13,7 +14,7 @@ import {
   notSupported,
   onboardWarningMsg
 } from './content'
-import { resizeIframe, resetIframe, setupIframe } from '../helpers/iframe'
+import { showIframe, hideIframe, resizeIframe } from '../helpers/iframe'
 
 export function createElementString(type, className, innerHTML) {
   return `
@@ -45,21 +46,27 @@ export function createElement(el, className, children, id) {
 export function closeModal() {
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
-  state.iframe.style.pointerEvents = 'none'
+
+  const notifications = getById('blocknative-notifications')
+  if (notifications) {
+    resizeIframe({
+      height: notifications.clientHeight,
+      width: notifications.clientWidth
+    })
+  } else {
+    hideIframe()
+  }
+
   setTimeout(() => {
     state.iframeDocument.body.removeChild(modal)
-    const notificationsList = getByQuery('.bn-notifications')
-    if (notificationsList) {
-      setupIframe(notificationsList)
-    }
   }, timeouts.removeElement)
 }
 
 export function openModal(modal, handlers = {}) {
   const { onClick, onClose } = handlers
-  resetIframe()
-  state.iframe.style.pointerEvents = 'all'
   state.iframeDocument.body.appendChild(modal)
+  showIframe()
+  resizeIframe({ height: window.innerHeight, width: window.innerWidth })
 
   const closeButton = state.iframeDocument.querySelector('.bn-onboard-close')
   closeButton.onclick = () => {
@@ -105,7 +112,7 @@ export function browserLogos() {
       <img
         src="${firefoxLogo.src}" 
         alt="Firefox Logo" 
-        srcset="${firefoxLogo.src} 2x" />
+        srcset="${firefoxLogo.srcset} 2x" />
       <br>
       Firefox
       </a>
@@ -114,15 +121,18 @@ export function browserLogos() {
 }
 
 export function onboardBranding() {
-  const { blockNativeLogo } = imageSrc
+  const { blockNativeLogo, blockNativeLogoLight } = imageSrc
+  const { darkMode } = state.config.style
   return `
     <div class="bn-onboarding-branding">
       <p>Powered by
       <a href="https://www.blocknative.com/" target="_blank">
       <img
-        src="${blockNativeLogo.src}" 
+        src="${darkMode ? blockNativeLogoLight.src : blockNativeLogo.src}" 
         alt="Blocknative" 
-        srcset="${blockNativeLogo.srcset} 2x" />
+        srcset="${
+          darkMode ? blockNativeLogoLight.srcset : blockNativeLogo.srcset
+        } 2x" />
       </a>
       </p>
     </div>
@@ -131,13 +141,15 @@ export function onboardBranding() {
 
 export function notSupportedModal(type) {
   const info = notSupported[`${type}NotSupported`]
+  const { darkMode } = state.config.style
+
   return `
     <div id="bn-${type}-not-supported" class="bn-onboard">
       <div class="bn-onboard-modal bn-onboard-alert">
         <a href="#" class="bn-onboard-close">
           <span class="bn-onboard-close-x"></span>
         </a>
-        ${notSupportedImage(type)}
+        ${notSupportedImage(`${type}${darkMode ? 'Light' : ''}`)}
         <br><br>
         <h1 class="h4">${info.heading}</h1>
         <p>${info.description()}</p>
@@ -287,6 +299,10 @@ export function getByQuery(query) {
   return state.iframeDocument.querySelector(query)
 }
 
+export function getAllByQuery(query) {
+  return Array.from(state.iframeDocument.querySelectorAll(query))
+}
+
 export function createTransactionBranding() {
   const blockNativeBrand = createElement(
     'a',
@@ -296,18 +312,28 @@ export function createTransactionBranding() {
   )
   blockNativeBrand.href = 'https://www.blocknative.com/'
   blockNativeBrand.target = '_blank'
+  const position =
+    (state.config.style && state.config.style.notificationsPosition) || ''
+  blockNativeBrand.style.float = position.includes('Left') ? 'initial' : 'right'
+
   return blockNativeBrand
 }
 
 export function notificationContent(type, message, time = {}) {
   const { showTime, startTime, timeStamp } = time
   const elapsedTime = timeString(Date.now() - startTime)
+  const position =
+    (state.config.style && state.config.style.notificationsPosition) || ''
 
   return `
-		<span class="bn-status-icon">
-			${
+		<span class="bn-status-icon ${
+      position.includes('Left') ? 'bn-float-right' : ''
+    }">
+      ${
         type === 'progress'
-          ? `<div class="progress-tooltip">
+          ? `<div class="progress-tooltip ${
+              position.includes('Left') ? 'bn-left' : ''
+            }">
 				<div class="progress-tooltip-inner">
 					You will be notified when this transaction is completed.
 				</div>
@@ -329,8 +355,13 @@ export function notificationContent(type, message, time = {}) {
 }
 
 // Start clock
-export function startTimerInterval(notificationId, startTime) {
-  const notification = getById(notificationId)
+export function startTimerInterval(notificationId, eventCode, startTime) {
+  const notification = first(
+    getAllByQuery(`.bn-${notificationId}`).filter(n =>
+      n.classList.contains(`bn-${eventCode}`)
+    )
+  )
+
   if (!notification) {
     return null
   }
@@ -358,7 +389,7 @@ export function showElement(element, timeout) {
 
 export function hideElement(element) {
   setTimeout(() => {
-    element.style.transform = 'translateX(600px)'
+    element.style.transform = `translateX(${getPolarity()}600px)`
     element.style.opacity = '0'
   }, timeouts.hideElement)
 }
@@ -367,12 +398,35 @@ export function removeElement(parent, element) {
   setTimeout(() => {
     if (parent.contains(element)) {
       parent.removeChild(element)
-      resizeIframe()
       if (parent !== state.iframeDocument.body) {
         checkIfNotifications()
       }
     }
   }, timeouts.removeElement)
+}
+
+function getPolarity() {
+  const position =
+    (state.config.style && state.config.style.notificationsPosition) || ''
+
+  return position.includes('Left') ? '-' : ''
+}
+
+export function offsetElement(el) {
+  el.style.transform = `translate(${getPolarity()}600px)`
+  return el
+}
+
+export function positionElement(el) {
+  const position =
+    (state.config.style && state.config.style.notificationsPosition) || ''
+
+  el.style.left = position.includes('Left') ? '0px' : 'initial'
+  el.style.right = position.includes('Right') || !position ? '0px' : 'initial'
+  el.style.bottom = position.includes('bottom') || !position ? '0px' : 'initial'
+  el.style.top = position.includes('top') ? '0px' : 'initial'
+
+  return el
 }
 
 // Remove notification from DOM
@@ -382,25 +436,12 @@ export function removeNotification(notification) {
   removeElement(notificationsList, notification)
 }
 
-export function removeAllNotifications(queries) {
-  const notificationsToRemove = queries.reduce((allNotifications, query) => {
-    if (query) {
-      const newNotifications = Array.from(
-        state.iframeDocument.querySelectorAll(query)
-      )
-      return [...allNotifications, ...newNotifications]
+export function removeAllNotifications(notifications) {
+  notifications.forEach(notification => {
+    if (notification) {
+      removeNotification(notification)
     }
-    return allNotifications
-  }, [])
-  if (notificationsToRemove.length > 0) {
-    notificationsToRemove.forEach(notification => {
-      if (notification) {
-        setTimeout(() => {
-          removeNotification(notification)
-        }, timeouts.removeElement)
-      }
-    })
-  }
+  })
 }
 
 export function checkIfNotifications() {
@@ -414,8 +455,6 @@ export function checkIfNotifications() {
 
   if (visibleNotifications.length === 0) {
     removeContainer()
-  } else {
-    setContainerHeight()
   }
 }
 
@@ -424,21 +463,36 @@ export function removeContainer() {
   const notificationsContainer = getById('blocknative-notifications')
   hideElement(notificationsContainer)
   removeElement(state.iframeDocument.body, notificationsContainer)
-  resetIframe()
+  resizeIframe({ height: 0, width: 0 })
+  hideIframe()
 }
 
-export function setContainerHeight() {
+export function setNotificationsHeight() {
   const scrollContainer = getByQuery('.bn-notifications-scroll')
+  const maxHeight = window.innerHeight
+  const widgetHeight =
+    scrollContainer.scrollHeight +
+    getById('bn-transaction-branding').clientHeight +
+    16
 
-  const maxHeight =
-    Number(window.innerHeight) -
-    Number(getById('bn-transaction-branding').clientHeight) -
-    13 // needed to have some padding on the top
-  const listHeight = Number(getByQuery('.bn-notifications').clientHeight)
+  const tooBig = widgetHeight > maxHeight
 
-  if (listHeight > maxHeight) {
-    scrollContainer.style.height = maxHeight
+  if (tooBig) {
+    scrollContainer.style['overflow-y'] = 'scroll'
+    scrollContainer.style['overflow-x'] = 'hidden'
+    scrollContainer.style.height =
+      maxHeight - (getById('bn-transaction-branding').clientHeight + 26)
   } else {
+    scrollContainer.style['overflow-y'] = 'initial'
+    scrollContainer.style['overflow-x'] = 'initial'
     scrollContainer.style.height = 'auto'
   }
+
+  const notificationsContainer = getById('blocknative-notifications')
+  const toolTipBuffer = !tooBig ? 50 : 0
+
+  resizeIframe({
+    height: notificationsContainer.clientHeight + toolTipBuffer,
+    width: 371
+  })
 }

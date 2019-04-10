@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4'
 import { state } from './state'
 import { handleEvent } from './events'
 
@@ -29,13 +30,12 @@ export function nowInTxPool(txHash) {
   txObj.transaction.inTxPool = true
 }
 
-export function isDuplicateTransaction(txObject) {
+export function isDuplicateTransaction({ value, to }) {
   const { transactionQueue } = state
-  return transactionQueue.filter(
-    txObj =>
-      txObj.transaction.value === txObject.value &&
-      txObj.transaction.to === txObject.to
-  )[0]
+
+  return transactionQueue.find(
+    txObj => txObj.transaction.value === value && txObj.transaction.to === to
+  )
 }
 
 // Nice time format
@@ -53,25 +53,49 @@ export function timeString(time) {
   return seconds >= 60 ? `${Math.floor(seconds / 60)} min` : `${seconds} sec`
 }
 
+function last(arr) {
+  return [...arr].reverse()[0]
+}
+
+function takeLast(arr) {
+  // mutates original array
+  return arr.splice(arr.length - 1, 1)[0]
+}
+
+export function first(arr) {
+  return arr[0]
+}
+
+function takeFirst(arr) {
+  // mutates original arr
+  return arr.splice(0, 1)[0]
+}
+
 export function separateArgs(allArgs, argsLength) {
   const allArgsCopy = [...allArgs]
   const args = argsLength ? allArgsCopy.splice(0, argsLength) : []
+
+  const inlineCustomMsgs =
+    typeof last(allArgsCopy) === 'object' &&
+    last(allArgsCopy).messages &&
+    takeLast(allArgsCopy).messages
+
   const callback =
-    typeof allArgsCopy[allArgsCopy.length - 1] === 'function' &&
-    allArgsCopy.splice(allArgsCopy.length - 1, 1)[0]
+    typeof last(allArgsCopy) === 'function' && takeLast(allArgsCopy)
 
   const txObject =
-    typeof allArgsCopy[0] === 'object' && allArgsCopy[0] !== null
-      ? allArgsCopy.splice(0, 1)[0]
+    typeof first(allArgsCopy) === 'object' && first(allArgsCopy) !== null
+      ? takeFirst(allArgsCopy)
       : {}
 
-  const defaultBlock = allArgsCopy[0] && allArgsCopy[0]
+  const defaultBlock = first(allArgsCopy)
 
   return {
     callback,
     args,
     txObject,
-    defaultBlock
+    defaultBlock,
+    inlineCustomMsgs
   }
 }
 
@@ -94,6 +118,10 @@ export function handleError(categoryCode, propagateError) {
 
     propagateError && propagateError(errorObj)
   }
+}
+
+export function createTransactionId() {
+  return uuid()
 }
 
 export function capitalize(str) {

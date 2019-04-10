@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.5.0.
+The current version is 0.5.1.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-5-0/assist.js"></script>
+<script src="https://assist.blocknative.com/0-5-1/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-5-0/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-5-1/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -167,19 +167,22 @@ var config = {
       src: String, // Image URL for complete onboard modal
       srcset: String // Image URL(s) for complete onboard modal
     }
+  },
+  style: {
+    darkMode: Boolean, // Set Assist UI to dark mode
+    notificationsPosition: String // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
   }
 }
 ```
 
 ### Custom Transaction Messages
 
-The functions provided to the `messages` object in the config, will be
-called with the following object so that a custom message string can be returned:
+Custom transaction messages can be set to override the default messages `Assist` provides. To do this you provide callback functions for each `eventCode` that you want to override. The callback functions must return a `String` and will be called with the following object to provide context information about the transaction:
 
 ```javascript
 {
   transaction: {
-    to: String, // The address the transaction was going to
+    to: String, // The address the transaction is going to
     gas: String, // Gas (wei)
     gasPrice: String, // Gas price (wei)
     hash: String, // The transaction hash
@@ -194,20 +197,38 @@ called with the following object so that a custom message string can be returned
 }
 ```
 
-#### Example
+You can provide a `messages` object to the `config` to set global message overrides. Each callback can parse the context object that is passed to it and decide what to return or just return a standard message for each `eventCode`:
 
 ```javascript
 var config = {
   //...
   messages: {
+    txSent: function(data) {
+      return 'Your transaction has been sent to the network'
+    },
     txConfirmed: function(data) {
       if (data.contract.methodName === 'contribute') {
         return 'Congratulations! You are now a contributor to the campaign'
       }
     }
+    // ....
   }
 }
 ```
+
+Sometimes you want more granular control over the transaction messages and you have all the relevant information you need to create a custom transaction message at the time of calling the method. In that case you can also add custom transactions messages inline with your transaction calls which take precedent over the messages set globally in the config.
+
+#### Example
+
+```javascript
+// 0.2 style send
+myContract.vote(param1, param2, options, callback, {messages: {txPending: () => `Voting for ${param1} in progress`}})
+
+// 1.0 style send
+myContract.vote(param1, param2).send(options, {messages: {txPending: () => `Voting for ${param1} in progress`}})
+```
+
+The `messages` object _must_ always be the _last_ argument provided to the send method for it to be recognized.
 
 ### Ethereum Network Ids
 
@@ -361,41 +382,18 @@ assistInstance.Transaction(txObject)
 
 ```javascript
 state = {
-  version: String,
-  validApiKey: Boolean,
-  supportedNetwork: Boolean,
-  config: Object,
-  userAgent: String,
-  mobileDevice: Boolean,
-  validBrowser: Boolean,
-  legacyWeb3: Boolean,
-  modernWeb3: Boolean,
-  web3Version: String,
-  web3Instance: Object,
-  currentProvider: String,
-  web3Wallet: Boolean,
-  legacyWallet: Boolean,
-  modernWallet: Boolean,
-  accessToAccounts: Boolean,
-  walletLoggedIn: Boolean,
-  walletEnabled: Boolean,
-  walletEnableCalled: Boolean,
-  walletEnableCanceled: Boolean,
-  accountBalance: String,
-  correctNetwork: Boolean,
-  minimumBalance: String,
-  correctNetwork: Boolean,
-  userCurrentNetworkId: Number,
-  socket: Object,
-  pendingSocketConnection: Boolean,
-  socketConnection: Boolean,
-  accountAddress: String,
-  transactionQueue: Array,
-  transactionAwaitingApproval: Boolean,
-  iframe: Object,
-  iframeDocument: Object,
-  iframeWindow: Object,
-  connectionId: String
+  mobileDevice: Boolean, // User is on a mobile device
+  validBrowser: Boolean, // User is on a valid web3 browser
+  currentProvider: String, // Current provider being used to connect to the network
+  web3Wallet: Boolean, // User has a web3Wallet installed
+  accessToAccounts: Boolean, // Dapp has access to accounts
+  walletLoggedIn: Boolean, // User is logged in to wallet
+  walletEnabled: Boolean, // User has enabled EIP 1102 compliant wallet
+  accountAddress: String, // Address of the user's selected account
+  accountBalance: String, // User account balance
+  minimumBalance: String, // User has the minimum balance specified in the config
+  userCurrentNetworkId: Number, // Network id of the network the user is currently on
+  correctNetwork: Boolean, // User is on the network specified in the config
 }
 ```
 
