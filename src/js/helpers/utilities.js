@@ -62,7 +62,7 @@ function takeLast(arr) {
   return arr.splice(arr.length - 1, 1)[0]
 }
 
-function first(arr) {
+export function first(arr) {
   return arr[0]
 }
 

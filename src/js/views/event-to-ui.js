@@ -264,7 +264,7 @@ function notificationsUI({
   let intervalId
   if (hasTimer) {
     setTimeout(() => {
-      intervalId = startTimerInterval(id, startTime)
+      intervalId = startTimerInterval(id, eventCode, startTime)
     }, timeouts.changeUI)
   }
 
