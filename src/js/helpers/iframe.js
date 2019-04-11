@@ -4,7 +4,7 @@ import { positionElement } from '../views/dom'
 import darkModeStyles from '../../css/dark-mode.css'
 
 export function createIframe(browserDocument, assistStyles, style = {}) {
-  const { darkMode } = style
+  const { darkMode, css } = style
 
   const initialIframeContent = `
     <html>
@@ -14,6 +14,9 @@ export function createIframe(browserDocument, assistStyles, style = {}) {
         </style>
         <style>
           ${darkMode ? darkModeStyles : ''}
+        </style>
+        <style>
+          ${css || ''}
         </style>
       </head>
       <body></body>
@@ -28,7 +31,7 @@ export function createIframe(browserDocument, assistStyles, style = {}) {
   iframe.style.border = 'none'
   iframe.style.pointerEvents = 'none'
   iframe.style.overflow = 'hidden'
-  iframe.style.transition = 'height 250ms ease-in-out'
+  iframe.style.transition = 'height 100ms ease-in-out'
   const iWindow = iframe.contentWindow
   const iDocument = iWindow.document
   iDocument.open()
