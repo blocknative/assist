@@ -122,7 +122,9 @@ export function browserLogos() {
 
 export function onboardBranding() {
   const { blockNativeLogo, blockNativeLogoLight } = imageSrc
-  const { darkMode } = state.config.style
+  const { style } = state.config
+  const darkMode = style && style.darkMode
+
   return `
     <div class="bn-onboarding-branding">
       <p>Powered by
@@ -141,7 +143,8 @@ export function onboardBranding() {
 
 export function notSupportedModal(type) {
   const info = notSupported[`${type}NotSupported`]
-  const { darkMode } = state.config.style
+  const { style } = state.config
+  const darkMode = style && style.darkMode
 
   return `
     <div id="bn-${type}-not-supported" class="bn-onboard">
