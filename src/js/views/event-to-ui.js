@@ -187,10 +187,7 @@ function notificationsUI({
     notificationsList = getByQuery('.bn-notifications')
 
     const notificationsNoRepeat = eventCodesNoRepeat.reduce(
-      (acc, eventCode) => [
-        ...acc,
-        ...Array.from(getAllByQuery(`.bn-${eventCode}`))
-      ],
+      (acc, eventCode) => [...acc, ...getAllByQuery(`.bn-${eventCode}`)],
       []
     )
 
@@ -207,10 +204,10 @@ function notificationsUI({
       eventCode === 'txRequest' || eventCode === 'txConfirmReminder'
 
     const notificationsWithSameId = keepTxRepeatNotification
-      ? Array.from(getAllByQuery(`.bn-${id}`)).filter(
+      ? getAllByQuery(`.bn-${id}`).filter(
           n => !n.classList.contains('bn-txRepeat')
         )
-      : Array.from(getAllByQuery(`.bn-${id}`))
+      : getAllByQuery(`.bn-${id}`)
 
     // if notification with the same id we can remove it to be replaced with new status
     removeAllNotifications(notificationsWithSameId)
