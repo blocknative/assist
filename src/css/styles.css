@@ -150,8 +150,6 @@ p,
 ul,
 ol {
   color: #4a4a4a;
-  font-family: 'Source Sans Pro', 'Open Sans', 'Helvetica Neue', Arial,
-    sans-serif;
 }
 
 h1,
@@ -213,6 +211,11 @@ b {
   font-weight: bold;
 }
 
+body {
+  font-family: 'Source Sans Pro', 'Open Sans', 'Helvetica Neue', Arial,
+  sans-serif;
+}
+
 .clearfix::after {
   display: block;
   content: '';
@@ -232,8 +235,6 @@ b {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Source Sans Pro', 'Open Sans', 'Helvetica Neue', Arial,
-    sans-serif;
   opacity: 0;
   transition: opacity 150ms ease-in-out;
 }
@@ -427,8 +428,6 @@ img.bn-onboard-img {
   margin-left: 10px; /* keeps notification from bumping edge on mobile.*/
   opacity: 0;
   transition: transform 350ms ease-in-out, opacity 300ms linear;
-  font-family: 'Source Sans Pro', 'Open Sans', 'Helvetica Neue', Arial,
-    sans-serif;
 }
 
 ul.bn-notifications {
@@ -575,7 +574,6 @@ a#bn-transaction-branding:hover {
   position: absolute;
   z-index: 1070;
   display: none;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
