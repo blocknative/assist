@@ -409,13 +409,15 @@ function init(config) {
     if (!state.validApiKey) {
       const errorObj = new Error('Your api key is not valid')
       errorObj.eventCode = 'initFail'
-      return Promise.reject(errorObj)
+
+      throw errorObj
     }
 
     if (!state.supportedNetwork) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
-      return Promise.reject(errorObj)
+
+      throw errorObj
     }
 
     // Check if we have an instance of web3
@@ -425,34 +427,28 @@ function init(config) {
 
     // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
     if (state.mobileDevice && !state.config.mobileBlocked) {
-      return state.web3Instance.eth.sendTransaction(txObject)
+      return state.web3Instance.eth.sendTransaction(txObject, callback)
     }
 
     const sendMethod = state.legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
       : state.web3Instance.eth.sendTransaction
 
-    return new Promise(async (resolve, reject) => {
-      const txPromiseObj = await sendTransaction(
-        'activeTransaction',
-        txObject,
-        sendMethod,
-        callback,
-        inlineCustomMsgs
-      ).catch(errorObj => {
-        reject(errorObj)
-        callback && callback(errorObj)
-      })
-      resolve(txPromiseObj)
-    })
+    return sendTransaction(
+      'activeTransaction',
+      txObject,
+      sendMethod,
+      callback,
+      inlineCustomMsgs
+    )
   }
 }
 
 // GETSTATE FUNCTION //
 
 function getState() {
-  return new Promise(async (resolve, reject) => {
-    await checkUserEnvironment().catch(reject)
+  return new Promise(async resolve => {
+    await checkUserEnvironment()
     const {
       mobileDevice,
       validBrowser,

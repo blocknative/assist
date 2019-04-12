@@ -107,19 +107,6 @@ export function assistLog(log) {
   console.log('Assist:', log) // eslint-disable-line no-console
 }
 
-export function handleError(categoryCode, propagateError) {
-  return errorObj => {
-    const { message } = errorObj
-    handleEvent({
-      eventCode: 'errorLog',
-      categoryCode,
-      reason: message || errorObj
-    })
-
-    propagateError && propagateError(errorObj)
-  }
-}
-
 export function createTransactionId() {
   return uuid()
 }
@@ -235,4 +222,28 @@ export function stepToImageKey(step) {
     default:
       return null
   }
+}
+
+export function handleError(handlers = {}) {
+  return errorObj => {
+    const { callback, reject, resolve } = handlers
+
+    if (callback) {
+      callback(errorObj)
+      resolve()
+
+      return
+    }
+
+    reject(errorObj)
+  }
+}
+
+export function handleWeb3Error(errorObj) {
+  const { message } = errorObj
+  handleEvent({
+    eventCode: 'errorLog',
+    categoryCode: 'web3',
+    reason: message || errorObj
+  })
 }
