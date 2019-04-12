@@ -392,8 +392,8 @@ export function showElement(element, timeout) {
 
 export function hideElement(element) {
   setTimeout(() => {
-    element.style.transform = `translateX(${getPolarity()}600px)`
     element.style.opacity = '0'
+    element.style.transform = `translateX(${getPolarity()}600px)`
   }, timeouts.hideElement)
 }
 
@@ -496,6 +496,7 @@ export function setNotificationsHeight() {
 
   resizeIframe({
     height: notificationsContainer.clientHeight + toolTipBuffer,
-    width: 371
+    width: 371,
+    transitionHeight: true
   })
 }
