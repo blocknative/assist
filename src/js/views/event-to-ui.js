@@ -225,7 +225,7 @@ function notificationsUI({
     if (position === 'topRight') {
       notificationsScroll.style.float = 'right'
     }
-    showIframe({ transitionHeight: true })
+    showIframe()
   }
 
   const notification = offsetElement(
