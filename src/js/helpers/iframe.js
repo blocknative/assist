@@ -31,7 +31,6 @@ export function createIframe(browserDocument, assistStyles, style = {}) {
   iframe.style.border = 'none'
   iframe.style.pointerEvents = 'none'
   iframe.style.overflow = 'hidden'
-  iframe.style.transition = 'height 100ms ease-in-out'
   const iWindow = iframe.contentWindow
   const iDocument = iWindow.document
   iDocument.open()
@@ -51,7 +50,13 @@ export function hideIframe() {
   state.iframe.style.pointerEvents = 'none'
 }
 
-export function resizeIframe({ height, width }) {
+export function resizeIframe({ height, width, transitionHeight }) {
+  if (transitionHeight) {
+    state.iframe.style.transition = 'height 200ms ease-in-out'
+  } else {
+    state.iframe.style.transition = 'initial'
+  }
+
   state.iframe.style.height = `${height}px`
   state.iframe.style.width = `${width}px`
 }

@@ -269,13 +269,13 @@ function notificationsUI({
   dismissButton.onclick = () => {
     intervalId && clearInterval(intervalId)
     removeNotification(notification)
-    setNotificationsHeight()
+    setTimeout(setNotificationsHeight, timeouts.changeUI)
   }
 
   if (type === 'complete') {
     setTimeout(() => {
       removeNotification(notification)
-      setNotificationsHeight()
+      setTimeout(setNotificationsHeight, timeouts.changeUI)
     }, timeouts.autoRemoveNotification)
   }
 }
