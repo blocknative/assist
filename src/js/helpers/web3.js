@@ -16,16 +16,6 @@ export const web3Functions = {
         return () => Promise.reject(errorObj)
     }
   },
-  nonce: version => {
-    switch (version) {
-      case '0.2':
-        return promisify(state.web3Instance.eth.getTransactionCount)
-      case '1.0':
-        return state.web3Instance.eth.getTransactionCount
-      default:
-        return () => Promise.reject(errorObj)
-    }
-  },
   bigNumber: version => {
     switch (version) {
       case '0.2':
@@ -162,11 +152,6 @@ export function checkForWallet() {
 export function getNetworkId() {
   const version = state.web3Version && state.web3Version.slice(0, 3)
   return web3Functions.networkId(version)()
-}
-
-export function getNonce(address) {
-  const version = state.web3Version && state.web3Version.slice(0, 3)
-  return web3Functions.nonce(version)(address)
 }
 
 export function getTransactionParams(
