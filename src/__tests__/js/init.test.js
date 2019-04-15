@@ -74,21 +74,25 @@ test('Does not delete any methods from the contract object when decorating', () 
 
 test('Does not allow sending transactions without a valid API key', async () => {
   stateMock.state.validApiKey = false
-  const res = assist.Transaction({ some: 'property' })
-  res.catch(e => {
+
+  try {
+    assist.Transaction({ some: 'property' })
+  } catch (e) {
     expect(e.eventCode).toBe('initFail')
     expect(e.message).toBe('Your api key is not valid')
-  })
+  }
 })
 
 test('Does not allow sending transactions on the wrong network', async () => {
   stateMock.state.validApiKey = true
   stateMock.state.supportedNetwork = false
-  const res = assist.Transaction({ some: 'property' })
-  res.catch(e => {
+
+  try {
+    assist.Transaction({ some: 'property' })
+  } catch (e) {
     expect(e.eventCode).toBe('initFail')
     expect(e.message).toBe('This network is not supported')
-  })
+  }
 })
 
 test('Does not create an iframe in headless mode', async () => {

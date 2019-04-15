@@ -2,7 +2,7 @@ import { promisify } from 'bluebird'
 import { state } from '../helpers/state'
 import { handleEvent } from '../helpers/events'
 import sendTransaction from './send-transaction'
-import { separateArgs } from '../helpers/utilities'
+import { separateArgs, handleError } from '../helpers/utilities'
 
 export function modernCall(method, name, args) {
   const innerMethod = method(...args).call
@@ -22,14 +22,14 @@ export function modernCall(method, name, args) {
             onClose: () => {
               const errorObj = new Error('User is on a mobile device')
               errorObj.eventCode = 'mobileBlocked'
-              callback && callback(errorObj)
-              reject(errorObj)
+
+              handleError({ resolve, reject, callback })(errorObj)
             }
           }
         )
       }
 
-      const result = await innerMethod(txObject).catch(error => {
+      const result = await innerMethod(txObject).catch(errorObj => {
         handleEvent({
           eventCode: 'contractQueryFail',
           categoryCode: 'activeContract',
@@ -37,27 +37,27 @@ export function modernCall(method, name, args) {
             methodName: name,
             parameters: args
           },
-          reason: error.msg
+          reason: errorObj.message || errorObj
         })
 
-        callback && callback(error)
-
-        reject(error)
+        handleError({ resolve, reject, callback })(errorObj)
       })
 
-      handleEvent({
-        eventCode: 'contractQuery',
-        categoryCode: 'activeContract',
-        contract: {
-          methodName: name,
-          parameters: args,
-          result: JSON.stringify(result)
-        }
-      })
+      if (result) {
+        handleEvent({
+          eventCode: 'contractQuery',
+          categoryCode: 'activeContract',
+          contract: {
+            methodName: name,
+            parameters: args,
+            result: JSON.stringify(result)
+          }
+        })
 
-      callback && callback(null, result)
+        callback && callback(null, result)
 
-      resolve(result)
+        resolve(result)
+      }
     })
 
   return returnObject
@@ -67,28 +67,19 @@ export function modernSend(method, name, args) {
   const innerMethod = method(...args).send
   const returnObject = {}
 
-  returnObject.send = (...innerArgs) =>
-    new Promise(async (resolve, reject) => {
-      const { callback, txObject, inlineCustomMsgs } = separateArgs(
-        innerArgs,
-        0
-      )
+  returnObject.send = (...innerArgs) => {
+    const { callback, txObject, inlineCustomMsgs } = separateArgs(innerArgs, 0)
 
-      const txPromiseObj = sendTransaction(
-        'activeContract',
-        txObject,
-        innerMethod,
-        callback,
-        inlineCustomMsgs,
-        method,
-        { methodName: name, parameters: args }
-      ).catch(error => {
-        callback && callback(error)
-        reject(error)
-      })
-
-      resolve(txPromiseObj)
-    })
+    return sendTransaction(
+      'activeContract',
+      txObject,
+      innerMethod,
+      callback,
+      inlineCustomMsgs,
+      method,
+      { methodName: name, parameters: args }
+    )
+  }
 
   return returnObject
 }
@@ -121,7 +112,19 @@ export async function legacyCall(method, name, allArgs, argsLength) {
     ...args,
     txObject,
     defaultBlock
-  ).catch(errorObj => callback && callback(errorObj))
+  ).catch(errorObj => {
+    handleEvent({
+      eventCode: 'contractQueryFail',
+      categoryCode: 'activeContract',
+      contract: {
+        methodName: name,
+        parameters: args
+      },
+      reason: errorObj.message || errorObj
+    })
+
+    callback && callback(errorObj)
+  })
 
   if (result) {
     callback && callback(null, result)
@@ -155,5 +158,5 @@ export async function legacySend(method, name, allArgs, argsLength) {
       methodName: name,
       parameters: args
     }
-  ).catch(errorObj => callback && callback(errorObj))
+  )
 }
