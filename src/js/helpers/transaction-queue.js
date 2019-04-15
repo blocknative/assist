@@ -2,7 +2,10 @@ import { state, updateState } from './state'
 
 export function addTransactionToQueue(txObject) {
   const { transactionQueue } = state
-  return [...transactionQueue, txObject]
+  const newQueueState = [...transactionQueue, txObject]
+  updateState({ transactionQueue: newQueueState })
+
+  return newQueueState
 }
 
 export function removeTransactionFromQueue(id) {
@@ -10,15 +13,16 @@ export function removeTransactionFromQueue(id) {
   const newQueueState = transactionQueue.filter(
     txObj => txObj.transaction.id !== id
   )
-
   updateState({ transactionQueue: newQueueState })
+
+  return newQueueState
 }
 
 export function updateTransactionInQueue(id, update) {
-  const txObject = getTxObjFromQueue(id)
-  txObject.transaction = Object.assign(txObject.transaction, update)
+  const txObj = getTxObjFromQueue(id)
+  txObj.transaction = Object.assign(txObj.transaction, update)
 
-  return txObject
+  return txObj
 }
 
 export function getTxObjFromQueue(id) {
@@ -38,6 +42,7 @@ export function isDuplicateTransaction({ value, to }) {
 
 export function getTransactionsAwaitingApproval() {
   const { transactionQueue } = state
+
   return transactionQueue.filter(
     txObj => txObj.transaction.status === 'awaitingApproval'
   )

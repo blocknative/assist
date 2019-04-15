@@ -105,7 +105,10 @@ export function handleSocketMessage(msg) {
 
     switch (transaction.status) {
       case 'pending':
-        txObj = updateTransactionInQueue(transaction.id, { status: 'pending' })
+        txObj = updateTransactionInQueue(transaction.id, {
+          status: 'pending',
+          nonce: transaction.nonce
+        })
 
         handleEvent({
           eventCode: 'txPending',

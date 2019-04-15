@@ -178,35 +178,35 @@ function sendTransaction(
     if (state.legacyWeb3) {
       txPromise
         .then(hash => {
-          onTxHash(transactionId, hash, categoryCode, inlineCustomMsgs)
+          onTxHash(transactionId, hash, categoryCode)
           callback && callback(null, hash)
 
-          waitForTransactionReceipt(hash).then(receipt => {
-            onTxReceipt(transactionId, receipt, categoryCode, inlineCustomMsgs)
+          waitForTransactionReceipt(hash).then(() => {
+            onTxReceipt(transactionId, categoryCode)
           })
         })
         .catch(async errorObj => {
-          onTxError(transactionId, errorObj, categoryCode, inlineCustomMsgs)
+          onTxError(transactionId, errorObj, categoryCode)
           callback && callback(errorObj)
         })
     } else {
       txPromise
         .on('transactionHash', async hash => {
-          onTxHash(transactionId, hash, categoryCode, inlineCustomMsgs)
+          onTxHash(transactionId, hash, categoryCode)
           callback && callback(null, hash)
         })
-        .on('receipt', async receipt => {
-          onTxReceipt(transactionId, receipt, categoryCode, inlineCustomMsgs)
+        .on('receipt', async () => {
+          onTxReceipt(transactionId, categoryCode)
         })
         .on('error', async errorObj => {
-          onTxError(transactionId, errorObj, categoryCode, inlineCustomMsgs)
+          onTxError(transactionId, errorObj, categoryCode)
           callback && callback(errorObj)
         })
     }
   })
 }
 
-function onTxHash(id, hash, categoryCode, inlineCustomMsgs) {
+function onTxHash(id, hash, categoryCode) {
   const txObj = updateTransactionInQueue(id, {
     status: 'approved',
     hash,
@@ -218,7 +218,7 @@ function onTxHash(id, hash, categoryCode, inlineCustomMsgs) {
     categoryCode,
     transaction: txObj.transaction,
     contract: txObj.contract,
-    inlineCustomMsgs,
+    inlineCustomMsgs: txObj.inlineCustomMsgs,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -243,7 +243,7 @@ function onTxHash(id, hash, categoryCode, inlineCustomMsgs) {
         categoryCode,
         transaction: txObj.transaction,
         contract: txObj.contract,
-        inlineCustomMsgs,
+        inlineCustomMsgs: txObj.inlineCustomMsgs,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -255,7 +255,7 @@ function onTxHash(id, hash, categoryCode, inlineCustomMsgs) {
   }, timeouts.txStall)
 }
 
-async function onTxReceipt(id, categoryCode, inlineCustomMsgs) {
+async function onTxReceipt(id, categoryCode) {
   let txObj = getTxObjFromQueue(id)
 
   if (txObj.transaction.status === 'confirmed') {
@@ -269,7 +269,7 @@ async function onTxReceipt(id, categoryCode, inlineCustomMsgs) {
     categoryCode,
     transaction: txObj.transaction,
     contract: txObj.contract,
-    inlineCustomMsgs,
+    inlineCustomMsgs: txObj.inlineCustomMsgs,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -283,7 +283,7 @@ async function onTxReceipt(id, categoryCode, inlineCustomMsgs) {
   }
 }
 
-function onTxError(id, error, categoryCode, inlineCustomMsgs) {
+function onTxError(id, error, categoryCode) {
   const { message } = error
   let errorMsg
   try {
@@ -292,7 +292,7 @@ function onTxError(id, error, categoryCode, inlineCustomMsgs) {
     errorMsg = 'User denied transaction signature'
   }
 
-  const txObj = updateTransactionInQueue(id, { status: 'failed' })
+  const txObj = updateTransactionInQueue(id, { status: 'rejected' })
 
   handleEvent({
     eventCode:
@@ -300,7 +300,7 @@ function onTxError(id, error, categoryCode, inlineCustomMsgs) {
     categoryCode,
     transaction: txObj.transaction,
     contract: txObj.contract,
-    inlineCustomMsgs,
+    inlineCustomMsgs: txObj.inlineCustomMsgs,
     reason: errorMsg,
     wallet: {
       provider: state.currentProvider,
