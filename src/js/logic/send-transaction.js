@@ -152,7 +152,8 @@ function sendTransaction(
       transaction: Object.assign({}, transactionEventObj, {
         status: 'awaitingApproval'
       }),
-      contract: contractEventObj
+      contract: contractEventObj,
+      inlineCustomMsgs
     })
 
     // Check if user has confirmed transaction after 20 seconds
