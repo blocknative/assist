@@ -1,21 +1,23 @@
 {
   "name": "bnc-assist",
-  "version": "0.4.1",
+  "version": "0.5.3",
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
-    "build": "node build.js",
-    "lint": "eslint --fix",
+    "build": "yarn lint && yarn test && node build.js",
+    "lint": "eslint src/ --fix",
     "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && yarn test"
+    }
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/blocknative/assist.git"
   },
-  "keywords": [
-    "dapp",
-    "ethereum"
-  ],
+  "keywords": ["dapp", "ethereum"],
   "author": "Block Native",
   "license": "MIT",
   "bugs": {
@@ -26,7 +28,8 @@
     "@babel/polyfill": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "bluebird": "^3.5.3",
-    "bowser": "^2.0.0-beta.3"
+    "bowser": "^2.0.0-beta.3",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -43,6 +46,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.3.1",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "jest-css-modules": "^1.1.0",
@@ -53,6 +57,7 @@
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-eslint": "^5.0.0",
+    "rollup-plugin-img": "^1.1.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-uglify": "^6.0.0",

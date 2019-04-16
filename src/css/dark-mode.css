@@ -1,0 +1,50 @@
+.bn-onboard-modal-shade {
+  background: rgba(237, 237, 237, 0.1);
+}
+
+.bn-onboard-modal {
+  background: #152128;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  color: #ededed;
+}
+
+.bn-onboard-basic .bn-onboard-main {
+  background: #152128;
+}
+
+.bn-onboard-basic .bn-onboard-sidebar {
+  background: #2c3943;
+}
+
+.bn-active {
+  color: #ededed;
+}
+
+.bn-notification {
+  background: #152128;
+  box-shadow: -1px -1px 8px 0px rgba(237, 237, 237, 0.1);
+  border: 1px 0px solid rgba(237, 237, 237, 0.1);
+}
+
+.bn-status-icon {
+  transition: background-color 150ms ease-in-out;
+}
+
+.bn-notification:hover .bn-status-icon {
+  background-position: -48px 1px !important;
+  background-color: #152128;
+}
+
+.bn-notification.bn-failed .bn-status-icon:hover,
+.bn-notification.bn-progress .bn-status-icon:hover,
+.bn-notification.bn-complete .bn-status-icon:hover {
+  background-color: #ededed;
+  background-position: -48px 1px !important;
+}

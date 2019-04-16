@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4'
 import { state } from './state'
 import { handleEvent } from './events'
 
@@ -29,13 +30,12 @@ export function nowInTxPool(txHash) {
   txObj.transaction.inTxPool = true
 }
 
-export function isDuplicateTransaction(txObject) {
+export function isDuplicateTransaction({ value, to }) {
   const { transactionQueue } = state
-  return transactionQueue.filter(
-    txObj =>
-      txObj.transaction.value === txObject.value &&
-      txObj.transaction.to === txObject.to
-  )[0]
+
+  return transactionQueue.find(
+    txObj => txObj.transaction.value === value && txObj.transaction.to === to
+  )
 }
 
 // Nice time format
@@ -53,37 +53,62 @@ export function timeString(time) {
   return seconds >= 60 ? `${Math.floor(seconds / 60)} min` : `${seconds} sec`
 }
 
-export function separateArgs(args) {
-  const argsCopy = [...args]
-  const callbackIndex = argsCopy.findIndex(arg => typeof arg === 'function')
-  const callback = callbackIndex > -1 && argsCopy.splice(callbackIndex, 1)[0]
+function last(arr) {
+  return [...arr].reverse()[0]
+}
 
-  const txObjectIndex = argsCopy.findIndex(arg => typeof arg === 'object')
+function takeLast(arr) {
+  // mutates original array
+  return arr.splice(arr.length - 1, 1)[0]
+}
+
+export function first(arr) {
+  return arr[0]
+}
+
+function takeFirst(arr) {
+  // mutates original arr
+  return arr.splice(0, 1)[0]
+}
+
+export function separateArgs(allArgs, argsLength) {
+  const allArgsCopy = [...allArgs]
+  const args = argsLength ? allArgsCopy.splice(0, argsLength) : []
+
+  const inlineCustomMsgs =
+    typeof last(allArgsCopy) === 'object' &&
+    last(allArgsCopy).messages &&
+    takeLast(allArgsCopy).messages
+
+  const callback =
+    typeof last(allArgsCopy) === 'function' && takeLast(allArgsCopy)
+
   const txObject =
-    txObjectIndex > -1 ? argsCopy.splice(txObjectIndex, 1)[0] : undefined
+    typeof first(allArgsCopy) === 'object' && first(allArgsCopy) !== null
+      ? takeFirst(allArgsCopy)
+      : {}
+
+  const defaultBlock = first(allArgsCopy)
 
   return {
     callback,
-    args: argsCopy,
-    txObject
+    args,
+    txObject,
+    defaultBlock,
+    inlineCustomMsgs
   }
+}
+
+export function getOverloadedMethodKeys(inputs) {
+  return inputs.map(input => input.type).join(',')
 }
 
 export function assistLog(log) {
   console.log('Assist:', log) // eslint-disable-line no-console
 }
 
-export function handleError(categoryCode, propagateError) {
-  return errorObj => {
-    const { message } = errorObj
-    handleEvent({
-      eventCode: 'errorLog',
-      categoryCode,
-      reason: message || errorObj
-    })
-
-    propagateError && propagateError(errorObj)
-  }
+export function createTransactionId() {
+  return uuid()
 }
 
 export function capitalize(str) {
@@ -109,6 +134,7 @@ export function extractMessageFromError(message) {
 
 export function eventCodeToType(eventCode) {
   switch (eventCode) {
+    case 'txRequest':
     case 'txPending':
     case 'txSent':
       return 'progress'
@@ -196,4 +222,28 @@ export function stepToImageKey(step) {
     default:
       return null
   }
+}
+
+export function handleError(handlers = {}) {
+  return errorObj => {
+    const { callback, reject, resolve } = handlers
+
+    if (callback) {
+      callback(errorObj)
+      resolve()
+
+      return
+    }
+
+    reject(errorObj)
+  }
+}
+
+export function handleWeb3Error(errorObj) {
+  const { message } = errorObj
+  handleEvent({
+    eventCode: 'errorLog',
+    categoryCode: 'web3',
+    reason: message || errorObj
+  })
 }

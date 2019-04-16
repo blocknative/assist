@@ -13,10 +13,10 @@ import {
   configureWeb3
 } from '../helpers/web3'
 import { getItem, storeItem } from '../helpers/storage'
-import { timeouts, handleError } from '../helpers/utilities'
+import { timeouts, handleWeb3Error } from '../helpers/utilities'
 
 export function checkUserEnvironment() {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async resolve => {
     checkValidBrowser()
 
     checkForWallet()
@@ -33,7 +33,7 @@ export function checkUserEnvironment() {
 
     await checkAccountAccess()
 
-    await checkNetwork().catch(reject)
+    await checkNetwork().catch(handleWeb3Error)
 
     if (state.accessToAccounts && state.correctNetwork) {
       await checkMinimumBalance()
@@ -47,7 +47,8 @@ export function checkUserEnvironment() {
 export function prepareForTransaction(categoryCode, originalResolve) {
   return new Promise(async (resolve, reject) => {
     originalResolve = originalResolve || resolve
-    await checkUserEnvironment().catch(reject)
+
+    await checkUserEnvironment()
 
     if (state.mobileDevice && state.config.mobileBlocked) {
       handleEvent(
@@ -234,8 +235,8 @@ function checkAccountAccess() {
 }
 
 export function checkNetwork() {
-  return new Promise(async (resolve, reject) => {
-    const networkId = await getNetworkId().catch(handleError('web3', reject))
+  return new Promise(async resolve => {
+    const networkId = await getNetworkId().catch(handleWeb3Error)
 
     updateState({
       correctNetwork:

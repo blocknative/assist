@@ -1,6 +1,51 @@
 import { state } from '../helpers/state'
 import { capitalize, networkName } from '../helpers/utilities'
 
+import welcome from '../../../lib/images/XUPOg7L.jpg'
+import welcome2x from '../../../lib/images/s8euD9T.jpg'
+
+import browser from '../../../lib/images/EgcXT0z.jpg'
+import browser2x from '../../../lib/images/4zplgXa.jpg'
+
+import metamask from '../../../lib/images/tKkRH5L.jpg'
+import metamask2x from '../../../lib/images/BEhzPx6.jpg'
+
+import login from '../../../lib/images/HuDHbXP.jpg'
+import login2x from '../../../lib/images/XLBqwPO.jpg'
+
+import connect from '../../../lib/images/0VBtqGV.jpg'
+import connect2x from '../../../lib/images/t7WS9Sc.jpg'
+
+import network from '../../../lib/images/1TWEHRY.jpg'
+import network2x from '../../../lib/images/jfdXqIU.jpg'
+
+import complete from '../../../lib/images/8ptZott.jpg'
+import complete2x from '../../../lib/images/elR9xQ8.jpg'
+
+import blockNativeLogo from '../../../lib/images/fJxOtIj.png'
+import blockNativeLogo2x from '../../../lib/images/UhcCuKF.png'
+
+import blockNativeLogoLight from '../../../lib/images/bn-branding-white.png'
+import blockNativeLogoLight2x from '../../../lib/images/bn-branding-white@2x.png'
+
+import mobile from '../../../lib/images/EcUxQVJ.jpg'
+import mobile2x from '../../../lib/images/GS6owd9.jpg'
+
+import mobileLight from '../../../lib/images/mobile-not-supported-white.png'
+import mobileLight2x from '../../../lib/images/mobile-not-supported-white@2x.png'
+
+import browserFail from '../../../lib/images/riXzN0X.jpg'
+import browserFail2x from '../../../lib/images/xpWtOVX.jpg'
+
+import browserFailLight from '../../../lib/images/browser-not-supported-white.png'
+import browserFailLight2x from '../../../lib/images/browser-not-supported-white@2x.png'
+
+import chromeLogo from '../../../lib/images/XAwAAmL.png'
+import chromeLogo2x from '../../../lib/images/maxXVIH.png'
+
+import firefoxLogo from '../../../lib/images/WjOSJTh.png'
+import firefoxLogo2x from '../../../lib/images/kodZvyO.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -122,7 +167,7 @@ export function onboardWarningMsg(type) {
     case 'network':
       return `You currently have MetaMask set to the ${capitalize(
         networkName(state.userCurrentNetworkId)
-      )} ${state.userCurrentNetworkId === '1' ? 'Ethereum' : 'Test'} Network.`
+      )} ${state.userCurrentNetworkId === 1 ? 'Ethereum' : 'Test'} Network.`
     case 'minimumBalance':
       return `Your current MetaMask account has less than the necessary minimum balance of
         ${state.config.minimumBalance / 1000000000000000000} ${capitalize(
@@ -137,56 +182,69 @@ export function onboardWarningMsg(type) {
 
 export const imageSrc = {
   blockNativeLogo: {
-    src: 'https://assist.blocknative.com/images/fJxOtIj.png',
-    srcset: 'https://assist.blocknative.com/images/UhcCuKF.png 2x'
+    src: blockNativeLogo,
+    srcset: blockNativeLogo2x
+  },
+  blockNativeLogoLight: {
+    src: blockNativeLogoLight,
+    srcset: blockNativeLogoLight2x
   },
   mobile: {
-    src: 'https://assist.blocknative.com/images/EcUxQVJ.jpg',
-    srcset: 'https://assist.blocknative.com/images/GS6owd9.jpg 2x'
+    src: mobile,
+    srcset: mobile2x
   },
   browser: {
-    src: 'https://assist.blocknative.com/images/riXzN0X.jpg',
-    srcset: 'https://assist.blocknative.com/images/xpWtOVX.jpg 2x'
+    src: browserFail,
+    srcset: browserFail2x
+  },
+  mobileLight: {
+    src: mobileLight,
+    srcset: mobileLight2x
+  },
+  browserLight: {
+    src: browserFailLight,
+    srcset: browserFailLight2x
   },
   chromeLogo: {
-    src: 'https://assist.blocknative.com/images/XAwAAmL.png',
-    srcset: 'https://assist.blocknative.com/images/maxXVIH.png 2x'
+    src: chromeLogo,
+    srcset: chromeLogo2x
   },
   firefoxLogo: {
-    src: 'https://assist.blocknative.com/images/WjOSJTh.png',
-    srcset: 'https://assist.blocknative.com/images/kodZvyO.png 2x'
+    src: firefoxLogo,
+    srcset: firefoxLogo2x
   },
   '0': {
-    src: 'https://assist.blocknative.com/images/XUPOg7L.jpg',
-    srcset: 'https://assist.blocknative.com/images/s8euD9T.jpg 2x'
+    src: welcome,
+    srcset: welcome2x
   },
   '1': {
-    src: 'https://assist.blocknative.com/images/EgcXT0z.jpg',
-    srcset: 'https://assist.blocknative.com/images/4zplgXa.jpg 2x'
+    src: browser,
+    srcset: browser2x
   },
   '2': {
-    src: 'https://assist.blocknative.com/images/tKkRH5L.jpg',
-    srcset: 'https://assist.blocknative.com/images/BEhzPx6.jpg 2x'
+    src: metamask,
+    srcset: metamask2x
   },
   '3': {
-    src: 'https://assist.blocknative.com/images/HuDHbXP.jpg',
-    srcset: 'https://assist.blocknative.com/images/XLBqwPO.jpg 2x'
+    src: login,
+    srcset: login2x
   },
   '4': {
-    src: 'https://assist.blocknative.com/images/0VBtqGV.jpg',
-    srcset: 'https://assist.blocknative.com/images/t7WS9Sc.jpg 2x'
+    src: connect,
+    srcset: connect2x
   },
   '5': {
-    src: 'https://assist.blocknative.com/images/1TWEHRY.jpg',
-    srcset: 'https://assist.blocknative.com/images/jfdXqIU.jpg 2x'
+    src: network,
+    srcset: network2x
   },
   '6': {
-    src: 'https://assist.blocknative.com/images/8ptZott.jpg',
-    srcset: 'https://assist.blocknative.com/images/elR9xQ8.jpg 2x'
+    src: complete,
+    srcset: complete2x
   }
 }
 
 export const transactionMsgs = {
+  txRequest: () => `Your transaction is waiting for you to confirm`,
   txPending: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has started`,
   txSent: ({ transaction }) =>
@@ -198,7 +256,8 @@ export const transactionMsgs = {
     `Your transaction ID: ${transaction.nonce} has failed`,
   nsfFail: () => 'You have insufficient funds to complete this transaction',
   txRepeat: () => 'This could be a repeat transaction',
-  txAwaitingApproval: () => 'You have a previous transaction awaiting approval',
+  txAwaitingApproval: () =>
+    'You have a previous transaction waiting for you to confirm',
   txConfirmReminder: () =>
     'Please confirm your transaction to continue (hint: the transaction window may be behind your browser)',
   txConfirmed: ({ transaction }) =>
