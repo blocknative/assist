@@ -37,7 +37,7 @@ function sendTransaction(
       handleError({ resolve, reject, callback })
     )
 
-    // make sure that we have from address in txObject
+    // make sure that we have from address in txOptions
     if (!txOptions.from) {
       txOptions.from = state.accountAddress
     }
@@ -179,6 +179,8 @@ function sendTransaction(
       txPromise
         .then(hash => {
           onTxHash(transactionId, hash, categoryCode)
+
+          resolve(hash)
           callback && callback(null, hash)
 
           waitForTransactionReceipt(hash).then(() => {
@@ -187,12 +189,14 @@ function sendTransaction(
         })
         .catch(async errorObj => {
           onTxError(transactionId, errorObj, categoryCode)
-          callback && callback(errorObj)
+          handleError({ resolve, reject, callback })(errorObj)
         })
     } else {
       txPromise
         .on('transactionHash', async hash => {
           onTxHash(transactionId, hash, categoryCode)
+
+          resolve(hash)
           callback && callback(null, hash)
         })
         .on('receipt', async () => {
@@ -200,7 +204,7 @@ function sendTransaction(
         })
         .on('error', async errorObj => {
           onTxError(transactionId, errorObj, categoryCode)
-          callback && callback(errorObj)
+          handleError({ resolve, reject, callback })(errorObj)
         })
     }
   })
