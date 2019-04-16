@@ -319,7 +319,7 @@ export function waitForTransactionReceipt(txHash) {
         })
         .catch(errorObj => {
           handleWeb3Error(errorObj)
-          resolve(null)
+          return resolve(null)
         })
     }
   })

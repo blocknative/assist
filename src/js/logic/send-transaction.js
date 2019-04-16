@@ -183,7 +183,7 @@ function sendTransaction(
           resolve(hash)
           callback && callback(null, hash)
 
-          waitForTransactionReceipt(hash).then(() => {
+          return waitForTransactionReceipt(hash).then(() => {
             onTxReceipt(transactionId, categoryCode)
           })
         })
