@@ -1,3 +1,5 @@
+/* eslint import/no-extraneous-dependencies: 0 */
+
 const rollup = require('rollup')
 const babel = require('rollup-plugin-babel')
 const { eslint } = require('rollup-plugin-eslint')
@@ -5,10 +7,15 @@ const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 const { uglify } = require('rollup-plugin-uglify')
 const string = require('rollup-plugin-string')
+const image = require('rollup-plugin-img')
 
 const defaultPlugins = [
   string({
     include: '**/*.css'
+  }),
+  image({
+    exclude: ['node_modules/**'],
+    limit: 51200
   }),
   resolve({
     jsnext: true,
@@ -22,7 +29,7 @@ const defaultPlugins = [
     }
   }),
   eslint({
-    exclude: ['src/css/**', 'node_modules/**']
+    exclude: ['src/css/**', 'node_modules/**', 'lib/images/**']
   }),
   babel({
     exclude: 'node_modules/**',
