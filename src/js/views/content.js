@@ -247,8 +247,7 @@ export const transactionMsgs = {
   txRequest: () => `Your transaction is waiting for you to confirm`,
   txPending: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has started`,
-  txSent: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has been sent to the network`,
+  txSent: () => `Your transaction has been sent to the network`,
   txSendFail: () => `You rejected the transaction`,
   txStall: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has stalled`,

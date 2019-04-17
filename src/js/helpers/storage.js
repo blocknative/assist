@@ -31,10 +31,12 @@ export function removeItem(item) {
 export function storeTransactionQueue() {
   const { transactionQueue } = state
   if (transactionQueue.length > 0) {
-    const filteredQueue = transactionQueue.filter(
-      txObj => txObj.transaction.txSent
+    const pendingTransactions = transactionQueue.filter(
+      txObj =>
+        txObj.transaction.status === 'approved' ||
+        txObj.transaction.status === 'pending'
     )
-    storeItem('transactionQueue', JSON.stringify(filteredQueue))
+    storeItem('transactionQueue', JSON.stringify(pendingTransactions))
   }
 }
 
