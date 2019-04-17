@@ -212,6 +212,46 @@ exports[`ui-rendering notificationsUI event activeContract-txStall should trigge
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
+exports[`ui-rendering notificationsUI event activePreflight-nsfFail should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-nsfFail bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>You have insufficient funds to complete this transaction</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration bn-duration-hidden\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">NaN sec</span>
+				</span>
+			</p>
+		</div>
+	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
+`;
+
+exports[`ui-rendering notificationsUI event activePreflight-txRepeat should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txRepeat bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>This could be a repeat transaction</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration bn-duration-hidden\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">NaN sec</span>
+				</span>
+			</p>
+		</div>
+	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
+`;
+
 exports[`ui-rendering notificationsUI event activeTransaction-txAwaitingApproval should trigger correct DOM render 1`] = `
 "
     

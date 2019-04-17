@@ -24,6 +24,8 @@ const mockTransaction = {
 // - nonceExpected should be true when the UI notification displays the transaction ID
 // - startTimeExpected should be true when the UI displays a clock with a timer (eg 5 sec)
 const notificationUIEventsToTest = [
+  ['activePreflight', 'nsfFail', false, false],
+  ['activePreflight', 'txRepeat', false, false],
   ['activeTransaction', 'txAwaitingApproval', false, false],
   ['activeTransaction', 'txRequest', false, false],
   ['activeTransaction', 'txConfirmReminder', false, false],
