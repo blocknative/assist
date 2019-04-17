@@ -162,10 +162,7 @@ function notificationsUI({
 }) {
   if (
     eventCodesRequiresBroadcastedTx.has(eventCode) &&
-    (!transaction.nonce ||
-      !transaction.startTime ||
-      !transaction.txSent ||
-      !transaction.inTxPool)
+    (!transaction.nonce || !transaction.startTime)
   ) {
     throw Error(
       `transaction passed when using eventCode ${eventCode} should have attributes 'nonce', 'startTime', 'txSent', 'inTxPool'`
