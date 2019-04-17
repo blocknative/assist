@@ -82,6 +82,10 @@ export function separateArgs(allArgs, argsLength) {
   }
 }
 
+export function argsEqual(args1, args2) {
+  return JSON.stringify(args1) === JSON.stringify(args2)
+}
+
 export function getOverloadedMethodKeys(inputs) {
   return inputs.map(input => input.type).join(',')
 }
