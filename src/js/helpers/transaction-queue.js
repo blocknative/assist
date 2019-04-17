@@ -1,4 +1,5 @@
 import { state, updateState } from './state'
+import { argsEqual } from './utilities'
 
 export function addTransactionToQueue(txObject) {
   const { transactionQueue } = state
@@ -30,13 +31,22 @@ export function getTxObjFromQueue(id) {
   return transactionQueue.find(txObj => txObj.transaction.id === id)
 }
 
-export function isDuplicateTransaction({ value, to }) {
+export function isDuplicateTransaction({ value, to }, contract = {}) {
   const { transactionQueue } = state
 
   return Boolean(
-    transactionQueue.find(
-      txObj => txObj.transaction.value === value && txObj.transaction.to === to
-    )
+    transactionQueue.find(txObj => {
+      const { methodName, parameters } = contract
+
+      if (
+        methodName === (txObj.contract && txObj.contract.methodName) &&
+        argsEqual(parameters, txObj.contract && txObj.contract.parameters)
+      ) {
+        return txObj.transaction.value === value && txObj.transaction.to === to
+      }
+
+      return false
+    })
   )
 }
 

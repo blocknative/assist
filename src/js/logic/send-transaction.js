@@ -85,7 +85,10 @@ function sendTransaction(
       return
     }
 
-    const duplicateTransaction = isDuplicateTransaction(transactionId)
+    const duplicateTransaction = isDuplicateTransaction(
+      transactionEventObj,
+      contractEventObj
+    )
 
     if (duplicateTransaction) {
       handleEvent({
