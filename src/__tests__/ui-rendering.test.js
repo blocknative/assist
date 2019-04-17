@@ -19,10 +19,11 @@ const mockTransaction = {
   from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 }
 
-// Specify events to test [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>]
-// Setting txShouldBeBroadcasted to true asserts that an error should be thrown if
-// 'nonce', 'startTime', 'txSent' or 'inTxPool' is missing from the passed transaction object
-const eventsToTest = [
+// Specify notificationUI events to test [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>]
+// Enabling nonceExpected/startTimeExpected will set nonce/startTime on the transaction object
+// - nonceExpected should be true when the UI notification displays the transaction ID
+// - startTimeExpected should be true when the UI displays a clock with a timer (eg 5 sec)
+const notificationUIEventsToTest = [
   ['activeTransaction', 'txAwaitingApproval', false, false],
   ['activeTransaction', 'txRequest', false, false],
   ['activeTransaction', 'txConfirmReminder', false, false],
@@ -47,7 +48,7 @@ const eventsToTest = [
 
 describe('ui-rendering', () => {
   describe('notificationsUI', () => {
-    eventsToTest.forEach(eventInfo => {
+    notificationUIEventsToTest.forEach(eventInfo => {
       const [
         categoryCode,
         eventCode,
