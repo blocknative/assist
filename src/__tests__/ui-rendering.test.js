@@ -23,9 +23,16 @@ const mockTransaction = {
 // Setting txShouldBeBroadcasted to true asserts that an error should be thrown if
 // 'nonce', 'startTime', 'txSent' or 'inTxPool' is missing from the passed transaction object
 const eventsToTest = [
-  ['activeTransaction', 'txRequest', false],
+  ['activeTransaction', 'txAwaitingApproval', false, false],
+  ['activeTransaction', 'txRequest', false, false],
+  ['activeTransaction', 'txConfirmReminder', false, false],
+  ['activeTransaction', 'txSendFail', false, false],
+  ['activeTransaction', 'txSent', false, true],
+  ['activeTransaction', 'txStall', true, true],
   ['activeTransaction', 'txPending', true, true],
-  ['activeTransaction', 'txSent', true, true]
+  ['activeTransaction', 'txConfirmed', true, true],
+  ['activeTransaction', 'txConfirmedClient', true, true],
+  ['activeTransaction', 'txFailed', true, true]
 ]
 
 describe('ui-rendering', () => {
@@ -57,7 +64,11 @@ describe('ui-rendering', () => {
 
 // Create an iframe and reset state between each test
 beforeEach(() => {
-  updateState({ config: {} })
+  updateState({
+    config: {},
+    // Add mockTransaction to the queue so 'txConfirmed' and 'txConfirmedClient' events work correctly
+    transactionQueue: [{ transaction: mockTransaction }]
+  })
   createIframe(document, assistStyles)
 })
 

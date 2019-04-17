@@ -61,13 +61,13 @@ const eventToUI = {
   activeTransaction: {
     txAwaitingApproval: notificationsUI,
     txRequest: notificationsUI,
-    txSent: notificationsUI,
-    txPending: notificationsUI,
-    txSendFail: notificationsUI,
     txConfirmReminder: notificationsUI,
+    txSendFail: notificationsUI,
+    txSent: notificationsUI, // startTime after
+    txStall: notificationsUI,
+    txPending: notificationsUI, // nonce after
     txConfirmed: notificationsUI,
     txConfirmedClient: notificationsUI,
-    txStall: notificationsUI,
     txFailed: notificationsUI
   },
   activeContract: {
@@ -152,7 +152,6 @@ function getCustomTxMsg(eventCode, data, inlineCustomMsgs = {}) {
 }
 
 const eventCodesNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
-const eventCodesRequiresBroadcastedTx = new Set(['txSent', 'txPending'])
 
 function notificationsUI({
   transaction = {},
@@ -160,14 +159,6 @@ function notificationsUI({
   inlineCustomMsgs,
   eventCode
 }) {
-  if (
-    eventCodesRequiresBroadcastedTx.has(eventCode) &&
-    (!transaction.nonce || !transaction.startTime)
-  ) {
-    throw Error(
-      `transaction passed when using eventCode ${eventCode} should have attributes 'nonce', 'startTime', 'txSent', 'inTxPool'`
-    )
-  }
   const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
   const timeStamp = formatTime(Date.now())
