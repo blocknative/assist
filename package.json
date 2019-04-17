@@ -5,6 +5,7 @@
   "main": "lib/assist.min.js",
   "scripts": {
     "build": "yarn lint && yarn test && node build.js",
+    "build:dev": "node build.js",
     "lint": "eslint src/ --fix",
     "test": "jest"
   },
@@ -17,7 +18,10 @@
     "type": "git",
     "url": "git+https://github.com/blocknative/assist.git"
   },
-  "keywords": ["dapp", "ethereum"],
+  "keywords": [
+    "dapp",
+    "ethereum"
+  ],
   "author": "Block Native",
   "license": "MIT",
   "bugs": {
@@ -51,6 +55,7 @@
     "jest-cli": "^23.6.0",
     "jest-css-modules": "^1.1.0",
     "jest-dom": "^3.0.0",
+    "mockdate": "^2.0.2",
     "prettier": "^1.15.2",
     "regenerator-runtime": "^0.13.1",
     "rollup": "^0.67.3",
