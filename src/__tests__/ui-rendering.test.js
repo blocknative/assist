@@ -57,7 +57,7 @@ describe('ui-rendering', () => {
         nonceExpected,
         startTimeExpected
       ] = eventInfo
-      // Decide which transaction type to pass with the event
+      // Create a transaction object to be passed with the event
       const transaction = Object.assign({}, mockTransaction)
       if (nonceExpected) transaction.nonce = 1235
       if (startTimeExpected) transaction.startTime = 1262264000000
