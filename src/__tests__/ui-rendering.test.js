@@ -7,7 +7,7 @@ import { createIframe } from '../js/helpers/iframe'
 import { state, updateState } from '../js/helpers/state'
 import assistStyles from '../css/styles.css'
 
-// Make a copy of the initial state
+// Make a copy of the initial state to be passed in as fresh state every test
 const initialState = Object.assign({}, state)
 
 const mockTransaction = {
@@ -88,7 +88,7 @@ describe('ui-rendering', () => {
   })
 })
 
-// Create an iframe and reset state between each test
+// Between each test create a new iframe and reset to initial state
 beforeEach(() => {
   updateState({
     config: {},
