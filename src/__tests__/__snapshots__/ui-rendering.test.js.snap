@@ -60,7 +60,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txSent should trig
 			</div>
 		</span>
 		<div class=\\"bn-notification-info\\">
-			<p>Your transaction ID: 1235 has been sent to the network</p>
+			<p>Your transaction has been sent to the network</p>
 			<p class=\\"bn-notification-meta\\">
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
