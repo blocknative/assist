@@ -10,7 +10,7 @@ import assistStyles from '../css/styles.css'
 // Make a copy of the initial state
 const initialState = Object.assign({}, state)
 
-const mockBareTransaction = {
+const mockTransaction = {
   id: 'cf7fc5a7-1498-419e-8bf9-654d06af5534',
   gas: '54707',
   gasPrice: '1000000000',
@@ -19,30 +19,28 @@ const mockBareTransaction = {
   from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 }
 
-const mockBroadcastTransaction = Object.assign({}, mockBareTransaction, {
-  nonce: 1235,
-  startTime: 1262264000000,
-  txSent: true,
-  inTxPool: true
-})
-
-// Specify events to test here ([categoryCode, eventCode, txShouldBeBroadcasted])
+// Specify events to test [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>]
 // Setting txShouldBeBroadcasted to true asserts that an error should be thrown if
 // 'nonce', 'startTime', 'txSent' or 'inTxPool' is missing from the passed transaction object
 const eventsToTest = [
   ['activeTransaction', 'txRequest', false],
-  ['activeTransaction', 'txPending', true],
-  ['activeTransaction', 'txSent', true]
+  ['activeTransaction', 'txPending', true, true],
+  ['activeTransaction', 'txSent', true, true]
 ]
 
 describe('ui-rendering', () => {
   describe('notificationsUI', () => {
     eventsToTest.forEach(eventInfo => {
-      const [categoryCode, eventCode, txShouldBeBroadcasted] = eventInfo
+      const [
+        categoryCode,
+        eventCode,
+        nonceExpected,
+        startTimeExpected
+      ] = eventInfo
       // Decide which transaction type to pass with the event
-      const transaction = txShouldBeBroadcasted
-        ? mockBroadcastTransaction
-        : mockBareTransaction
+      const transaction = Object.assign({}, mockTransaction)
+      if (nonceExpected) transaction.nonce = 1235
+      if (startTimeExpected) transaction.startTime = 1262264000000
       describe(`event ${categoryCode}-${eventCode}`, () => {
         test('should trigger correct DOM render', () => {
           handleEvent({
@@ -52,17 +50,6 @@ describe('ui-rendering', () => {
           })
           expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
         })
-        if (txShouldBeBroadcasted) {
-          test('should fail if transaction is missing attributes', () => {
-            expect(() => {
-              handleEvent({
-                categoryCode,
-                eventCode,
-                transaction: mockBareTransaction
-              })
-            }).toThrow()
-          })
-        }
       })
     })
   })
