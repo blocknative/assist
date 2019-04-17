@@ -8,7 +8,7 @@ import { state, updateState } from '../js/helpers/state'
 import assistStyles from '../css/styles.css'
 
 // Make a copy of the initial state to be passed in as fresh state every test
-const initialState = Object.assign({}, state)
+const initialState = Object.assign({}, state, { config: {} })
 
 const mockTransaction = {
   id: 'cf7fc5a7-1498-419e-8bf9-654d06af5534',
@@ -19,7 +19,8 @@ const mockTransaction = {
   from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 }
 
-// Specify notificationUI events to test [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>]
+// Specify notificationUI events to test
+// [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>, <customInitialState (optional)>]
 // Enabling nonceExpected/startTimeExpected will set nonce/startTime on the transaction object
 // - nonceExpected should be true when the UI notification displays the transaction ID
 // - startTimeExpected should be true when the UI displays a clock with a timer (eg 5 sec)
@@ -33,8 +34,20 @@ const notificationUIEventsToTest = [
   ['activeTransaction', 'txSent', false, true],
   ['activeTransaction', 'txStall', true, true],
   ['activeTransaction', 'txPending', true, true],
-  ['activeTransaction', 'txConfirmed', true, true],
-  ['activeTransaction', 'txConfirmedClient', true, true],
+  [
+    'activeTransaction',
+    'txConfirmed',
+    true,
+    true,
+    { transactionQueue: [{ transaction: mockTransaction }] }
+  ],
+  [
+    'activeTransaction',
+    'txConfirmedClient',
+    true,
+    true,
+    { transactionQueue: [{ transaction: mockTransaction }] }
+  ],
   ['activeTransaction', 'txFailed', true, true],
   ['activeContract', 'txAwaitingApproval', false, false],
   ['activeContract', 'txRequest', false, false],
@@ -43,25 +56,42 @@ const notificationUIEventsToTest = [
   ['activeContract', 'txSent', false, true],
   ['activeContract', 'txStall', true, true],
   ['activeContract', 'txPending', true, true],
-  ['activeContract', 'txConfirmed', true, true],
-  ['activeContract', 'txConfirmedClient', true, true],
+  [
+    'activeContract',
+    'txConfirmed',
+    true,
+    true,
+    { transactionQueue: [{ transaction: mockTransaction }] }
+  ],
+  [
+    'activeContract',
+    'txConfirmedClient',
+    true,
+    true,
+    { transactionQueue: [{ transaction: mockTransaction }] }
+  ],
   ['activeContract', 'txFailed', true, true]
 ]
 
 describe('ui-rendering', () => {
   describe('notificationsUI', () => {
-    notificationUIEventsToTest.forEach(eventInfo => {
+    notificationUIEventsToTest.forEach(eventSpec => {
       const [
         categoryCode,
         eventCode,
         nonceExpected,
-        startTimeExpected
-      ] = eventInfo
+        startTimeExpected,
+        customInitialState
+      ] = eventSpec
       // Create a transaction object to be passed with the event
       const transaction = Object.assign({}, mockTransaction)
       if (nonceExpected) transaction.nonce = 1235
       if (startTimeExpected) transaction.startTime = 1262264000000
       describe(`event ${categoryCode}-${eventCode}`, () => {
+        // Handle custom state
+        beforeEach(() => {
+          if (customInitialState) updateState(customInitialState)
+        })
         test('should trigger correct DOM render', () => {
           handleEvent({
             categoryCode,
@@ -88,13 +118,9 @@ describe('ui-rendering', () => {
   })
 })
 
-// Between each test create a new iframe and reset to initial state
+// Between each test create a new iframe and reset to clean state
 beforeEach(() => {
-  updateState({
-    config: {},
-    // Add mockTransaction to the queue so 'txConfirmed' and 'txConfirmedClient' events work correctly
-    transactionQueue: [{ transaction: mockTransaction }]
-  })
+  updateState(initialState)
   createIframe(document, assistStyles)
 })
 
