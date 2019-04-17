@@ -156,8 +156,7 @@ var config = {
     txRepeat: Function, // Warning to user that they might be repeating a transaction
     txAwaitingApproval: Function, // Warning to the user that they have a previous transaction awaiting approval
     txConfirmReminder: Function, // A warning to the user that their current transaction is still awaiting approval
-    txConfirmed: Function, // Transaction is confirmed
-    txSpeedUp: Function // The user has re-submitted a transaction with a higher gas price
+    txConfirmed: Function // Transaction is confirmed
   },
   images: {
     welcome: {
