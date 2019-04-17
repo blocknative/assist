@@ -32,7 +32,17 @@ const eventsToTest = [
   ['activeTransaction', 'txPending', true, true],
   ['activeTransaction', 'txConfirmed', true, true],
   ['activeTransaction', 'txConfirmedClient', true, true],
-  ['activeTransaction', 'txFailed', true, true]
+  ['activeTransaction', 'txFailed', true, true],
+  ['activeContract', 'txAwaitingApproval', false, false],
+  ['activeContract', 'txRequest', false, false],
+  ['activeContract', 'txConfirmReminder', false, false],
+  ['activeContract', 'txSendFail', false, false],
+  ['activeContract', 'txSent', false, true],
+  ['activeContract', 'txStall', true, true],
+  ['activeContract', 'txPending', true, true],
+  ['activeContract', 'txConfirmed', true, true],
+  ['activeContract', 'txConfirmedClient', true, true],
+  ['activeContract', 'txFailed', true, true]
 ]
 
 describe('ui-rendering', () => {
