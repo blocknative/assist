@@ -61,13 +61,13 @@ const eventToUI = {
   activeTransaction: {
     txAwaitingApproval: notificationsUI,
     txRequest: notificationsUI,
-    txConfirmReminder: notificationsUI,
+    txSent: notificationsUI,
+    txPending: notificationsUI,
     txSendFail: notificationsUI,
-    txSent: notificationsUI, // startTime after
-    txStall: notificationsUI,
-    txPending: notificationsUI, // nonce after
+    txConfirmReminder: notificationsUI,
     txConfirmed: notificationsUI,
     txConfirmedClient: notificationsUI,
+    txStall: notificationsUI,
     txFailed: notificationsUI
   },
   activeContract: {
