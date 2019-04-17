@@ -7,7 +7,7 @@ import { createIframe } from '../js/helpers/iframe'
 import { state, updateState } from '../js/helpers/state'
 import assistStyles from '../css/styles.css'
 
-// Make a copy of the initial state to be passed in as fresh state every test
+// Create an initial state to be passed in fresh to each test
 const initialState = Object.assign({}, state, { config: {} })
 
 const mockTransaction = {
@@ -19,11 +19,12 @@ const mockTransaction = {
   from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 }
 
-// Specify notificationUI events to test
-// [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>, <customInitialState (optional)>]
-// Enabling nonceExpected/startTimeExpected will set nonce/startTime on the transaction object
-// - nonceExpected should be true when the UI notification displays the transaction ID
-// - startTimeExpected should be true when the UI displays a clock with a timer (eg 5 sec)
+/* Specify notificationUI events to test
+ * [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>, <customInitialState(optional)>]
+ * Enabling nonceExpected/startTimeExpected will set nonce/startTime on the transaction object
+ * - nonceExpected should be true when the UI notification displays the transaction ID
+ * - startTimeExpected should be true when the UI displays a clock with a timer (eg 5 sec)
+ */
 const notificationUIEventsToTest = [
   ['activePreflight', 'nsfFail', false, false],
   ['activePreflight', 'txRepeat', false, false],
@@ -122,8 +123,4 @@ describe('ui-rendering', () => {
 beforeEach(() => {
   updateState(initialState)
   createIframe(document, assistStyles)
-})
-
-afterEach(() => {
-  updateState(Object.assign({}, initialState))
 })
