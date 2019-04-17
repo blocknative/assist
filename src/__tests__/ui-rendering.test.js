@@ -70,6 +70,19 @@ describe('ui-rendering', () => {
           })
           expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
         })
+
+        test('should trigger correct DOM render when passed inlineCustomMsgs', () => {
+          const inlineCustomMsgs = {
+            [eventCode]: () => `${eventCode} inlineCustomMsg msg`
+          }
+          handleEvent({
+            categoryCode,
+            eventCode,
+            transaction,
+            inlineCustomMsgs
+          })
+          expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
+        })
       })
     })
   })
