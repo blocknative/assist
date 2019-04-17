@@ -260,5 +260,9 @@ export const transactionMsgs = {
   txConfirmReminder: () =>
     'Please confirm your transaction to continue (hint: the transaction window may be behind your browser)',
   txConfirmed: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has succeeded`
+    `Your transaction ID: ${transaction.nonce} has succeeded`,
+  txConfirmedClient: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} has succeeded`,
+  txSpeedUp: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} has been sped up`
 }

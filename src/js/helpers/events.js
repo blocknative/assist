@@ -8,9 +8,10 @@ import { getItem } from './storage'
 export function handleEvent(eventObj, clickHandlers) {
   const { eventCode, categoryCode } = eventObj
   const serverEvent =
-    eventCode === 'txPending' ||
+    eventCode === 'txPool' ||
     eventCode === 'txConfirmed' ||
-    eventCode === 'txFailed'
+    eventCode === 'txFailed' ||
+    eventCode === 'txSpeedUp'
 
   // If not a server event then log it
   !serverEvent && lib.logEvent(eventObj)

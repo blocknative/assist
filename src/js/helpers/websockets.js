@@ -100,8 +100,11 @@ export function handleSocketMessage(msg) {
   }
 
   if (event && event.transaction) {
-    const { transaction } = event
+    const { transaction, eventCode } = event
     let txObj
+
+    assistLog({ eventCode })
+    assistLog({ transaction })
 
     switch (transaction.status) {
       case 'pending':
@@ -111,7 +114,7 @@ export function handleSocketMessage(msg) {
         })
 
         handleEvent({
-          eventCode: 'txPending',
+          eventCode,
           categoryCode: 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
