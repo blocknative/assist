@@ -171,7 +171,9 @@ function notificationsUI({
   const hasTimer =
     eventCode === 'txPending' ||
     eventCode === 'txSent' ||
-    eventCode === 'txStall'
+    eventCode === 'txStall' ||
+    eventCode === 'txSpeedUp'
+
   const showTime =
     hasTimer || eventCode === 'txConfirmed' || eventCode === 'txFailed'
 
