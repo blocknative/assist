@@ -1,5 +1,6 @@
+import eventToUI from 'js/views/event-to-ui'
+
 import { state } from './state'
-import eventToUI from '../views/event-to-ui'
 import { networkName, timeouts, getTransactionObj } from './utilities'
 import { openWebsocketConnection } from './websockets'
 import { getItem } from './storage'

@@ -1,12 +1,11 @@
-import { state, updateState } from '../helpers/state'
-import { handleEvent } from '../helpers/events'
-import { prepareForTransaction } from './user'
+import { state, updateState } from 'js/helpers/state'
+import { handleEvent } from 'js/helpers/events'
 import {
   hasSufficientBalance,
   getNonce,
   waitForTransactionReceipt,
   getTransactionParams
-} from '../helpers/web3'
+} from 'js/helpers/web3'
 import {
   isDuplicateTransaction,
   checkTransactionQueue,
@@ -18,7 +17,9 @@ import {
   handleWeb3Error,
   createTransactionId,
   handleError
-} from '../helpers/utilities'
+} from 'js/helpers/utilities'
+
+import { prepareForTransaction } from './user'
 
 function inferNonce() {
   return new Promise(async resolve => {

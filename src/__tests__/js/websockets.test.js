@@ -1,7 +1,7 @@
-import * as events from '../../js/helpers/events'
-import * as websocket from '../../js/helpers/websockets'
-import * as state from '../../js/helpers/state'
-import * as utils from '../../js/helpers/utilities'
+import * as events from 'js/helpers/events'
+import * as websocket from 'js/helpers/websockets'
+import * as state from 'js/helpers/state'
+import * as utils from 'js/helpers/utilities'
 
 utils.getTransactionObj = jest.fn(() => true)
 

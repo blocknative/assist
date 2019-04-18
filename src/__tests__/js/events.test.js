@@ -3,10 +3,10 @@
  * us a value over the websocket
  */
 
-import * as events from '../../js/helpers/events'
-import eventToUi from '../../js/views/event-to-ui'
-import * as utils from '../../js/helpers/utilities'
-import * as stateHelper from '../../js/helpers/state'
+import * as events from 'js/helpers/events'
+import eventToUi from 'js/views/event-to-ui'
+import * as utils from 'js/helpers/utilities'
+import * as stateHelper from 'js/helpers/state'
 
 // This function tries to send something to the websocket, so we mock it
 events.lib.logEvent = jest.fn()
