@@ -17,7 +17,10 @@
     "type": "git",
     "url": "git+https://github.com/blocknative/assist.git"
   },
-  "keywords": ["dapp", "ethereum"],
+  "keywords": [
+    "dapp",
+    "ethereum"
+  ],
   "author": "Block Native",
   "license": "MIT",
   "bugs": {
@@ -58,9 +61,13 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-eslint": "^5.0.0",
     "rollup-plugin-img": "^1.1.0",
+    "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-uglify": "^6.0.0",
     "web3": "^1.0.0-beta.37"
-  }
+  },
+  "eslintIgnore": [
+    "package.json"
+  ]
 }

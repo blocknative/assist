@@ -23,9 +23,7 @@ import {
   getItem
 } from './helpers/storage'
 import assistStyles from '../css/styles.css'
-
-// Library Version - if changing, also need to change in package.json
-const version = '0.5.3'
+import { version } from '../../package.json'
 
 function init(config) {
   updateState({ version })
