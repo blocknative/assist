@@ -9,10 +9,14 @@ const { uglify } = require('rollup-plugin-uglify')
 const string = require('rollup-plugin-string')
 const image = require('rollup-plugin-img')
 const includepaths = require('rollup-plugin-includepaths')
+const json = require('rollup-plugin-json')
 
 const defaultPlugins = [
   includepaths({
     paths: ['src']
+  }),
+  json({
+    include: 'package.json'
   }),
   string({
     include: '**/*.css'
