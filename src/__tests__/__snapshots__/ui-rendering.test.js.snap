@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ui-rendering notificationsUI event activeContract-txAwaitingApproval should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txAwaitingApproval should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txAwaitingApproval bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -20,7 +20,7 @@ exports[`ui-rendering notificationsUI event activeContract-txAwaitingApproval sh
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txAwaitingApproval should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txAwaitingApproval should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txAwaitingApproval bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -40,7 +40,7 @@ exports[`ui-rendering notificationsUI event activeContract-txAwaitingApproval sh
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txConfirmReminder should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txConfirmReminder should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txConfirmReminder bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -60,7 +60,7 @@ exports[`ui-rendering notificationsUI event activeContract-txConfirmReminder sho
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txConfirmReminder should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txConfirmReminder should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txConfirmReminder bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -80,7 +80,7 @@ exports[`ui-rendering notificationsUI event activeContract-txConfirmReminder sho
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txConfirmed should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txConfirmed should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -100,7 +100,7 @@ exports[`ui-rendering notificationsUI event activeContract-txConfirmed should tr
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txConfirmed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txConfirmed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -120,7 +120,7 @@ exports[`ui-rendering notificationsUI event activeContract-txConfirmed should tr
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txConfirmedClient should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txConfirmedClient should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmedClient bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -140,7 +140,7 @@ exports[`ui-rendering notificationsUI event activeContract-txConfirmedClient sho
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txConfirmedClient should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txConfirmedClient should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmedClient bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -160,7 +160,7 @@ exports[`ui-rendering notificationsUI event activeContract-txConfirmedClient sho
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txFailed should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txFailed should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txFailed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -180,7 +180,7 @@ exports[`ui-rendering notificationsUI event activeContract-txFailed should trigg
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txFailed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txFailed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txFailed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -200,7 +200,7 @@ exports[`ui-rendering notificationsUI event activeContract-txFailed should trigg
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txPending should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txPending should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -224,7 +224,7 @@ exports[`ui-rendering notificationsUI event activeContract-txPending should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txPending should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txPending should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -248,7 +248,7 @@ exports[`ui-rendering notificationsUI event activeContract-txPending should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txRequest should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txRequest should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txRequest bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -272,7 +272,7 @@ exports[`ui-rendering notificationsUI event activeContract-txRequest should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txRequest should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txRequest should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txRequest bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -296,7 +296,7 @@ exports[`ui-rendering notificationsUI event activeContract-txRequest should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txSendFail should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txSendFail should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txSendFail bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -316,7 +316,7 @@ exports[`ui-rendering notificationsUI event activeContract-txSendFail should tri
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txSendFail should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txSendFail should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txSendFail bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -336,7 +336,7 @@ exports[`ui-rendering notificationsUI event activeContract-txSendFail should tri
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txSent should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txSent should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txSent bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -360,7 +360,7 @@ exports[`ui-rendering notificationsUI event activeContract-txSent should trigger
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txSent should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txSent should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txSent bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -384,7 +384,7 @@ exports[`ui-rendering notificationsUI event activeContract-txSent should trigger
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txStall should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeContract-txStall should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -404,7 +404,7 @@ exports[`ui-rendering notificationsUI event activeContract-txStall should trigge
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeContract-txStall should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeContract-txStall should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -424,7 +424,7 @@ exports[`ui-rendering notificationsUI event activeContract-txStall should trigge
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activePreflight-nsfFail should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activePreflight-nsfFail should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-nsfFail bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -444,7 +444,7 @@ exports[`ui-rendering notificationsUI event activePreflight-nsfFail should trigg
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activePreflight-nsfFail should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activePreflight-nsfFail should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-nsfFail bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -464,7 +464,7 @@ exports[`ui-rendering notificationsUI event activePreflight-nsfFail should trigg
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activePreflight-txRepeat should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activePreflight-txRepeat should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txRepeat bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -484,7 +484,7 @@ exports[`ui-rendering notificationsUI event activePreflight-txRepeat should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activePreflight-txRepeat should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activePreflight-txRepeat should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txRepeat bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -504,7 +504,7 @@ exports[`ui-rendering notificationsUI event activePreflight-txRepeat should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txAwaitingApproval should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txAwaitingApproval should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txAwaitingApproval bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -524,7 +524,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txAwaitingApproval
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txAwaitingApproval should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txAwaitingApproval should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txAwaitingApproval bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -544,7 +544,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txAwaitingApproval
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txConfirmReminder should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txConfirmReminder should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txConfirmReminder bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -564,7 +564,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txConfirmReminder 
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txConfirmReminder should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txConfirmReminder should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txConfirmReminder bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -584,7 +584,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txConfirmReminder 
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txConfirmed should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txConfirmed should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -604,7 +604,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txConfirmed should
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txConfirmed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txConfirmed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -624,7 +624,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txConfirmed should
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txConfirmedClient should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txConfirmedClient should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmedClient bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -644,7 +644,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txConfirmedClient 
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txConfirmedClient should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txConfirmedClient should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-txConfirmedClient bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -664,7 +664,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txConfirmedClient 
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txFailed should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txFailed should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txFailed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -684,7 +684,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txFailed should tr
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txFailed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txFailed should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txFailed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -704,7 +704,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txFailed should tr
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txPending should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txPending should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -728,7 +728,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txPending should t
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txPending should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txPending should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -752,7 +752,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txPending should t
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txRequest should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txRequest should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txRequest bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -776,7 +776,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txRequest should t
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txRequest should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txRequest should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txRequest bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -800,7 +800,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txRequest should t
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txSendFail should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txSendFail should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txSendFail bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -820,7 +820,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txSendFail should 
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txSendFail should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txSendFail should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txSendFail bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -840,7 +840,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txSendFail should 
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txSent should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txSent should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txSent bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -864,7 +864,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txSent should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txSent should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txSent should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txSent bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -888,7 +888,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txSent should trig
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txStall should trigger correct DOM render 1`] = `
+exports[`dom-rendering event activeTransaction-txStall should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -908,7 +908,7 @@ exports[`ui-rendering notificationsUI event activeTransaction-txStall should tri
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`ui-rendering notificationsUI event activeTransaction-txStall should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+exports[`dom-rendering event activeTransaction-txStall should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
 "
     
   <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; overflow-x: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
@@ -926,4 +926,66 @@ exports[`ui-rendering notificationsUI event activeTransaction-txStall should tri
 			</p>
 		</div>
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
+`;
+
+exports[`dom-rendering event initialize-mobileBlocked should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-mobile-not-supported\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-alert\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+	  <img src=\\"[object Object]\\" alt=\\"MobileNot Supported\\" srcset=\\"[object Object] 2x\\">
+  
+        <br><br>
+        <h1 class=\\"h4\\">Mobile Not Supported</h1>
+        <p>Our distributed application does not support mobile browsers. Please visit our site on a desktop browser. Thank you!</p>
+        <br>
+        
+        
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event initialize-mobileBlocked should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-mobile-not-supported\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-alert\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+	  <img src=\\"[object Object]\\" alt=\\"MobileNot Supported\\" srcset=\\"[object Object] 2x\\">
+  
+        <br><br>
+        <h1 class=\\"h4\\">Mobile Not Supported</h1>
+        <p>Our distributed application does not support mobile browsers. Please visit our site on a desktop browser. Thank you!</p>
+        <br>
+        
+        
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
 `;

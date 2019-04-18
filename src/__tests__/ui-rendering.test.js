@@ -1,5 +1,5 @@
 /*
- * Check that UI is rendered correctly in response to events
+ * Check that DOM renders correctly in response to events
  */
 
 import { handleEvent } from '../js/helpers/events'
@@ -19,85 +19,96 @@ const mockTransaction = {
   from: '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1'
 }
 
-/* Specify notificationUI events to test
- * [<categoryCode>, <eventCode>, <nonceExpected>, <startTimeExpected>, <customInitialState(optional)>]
- * Enabling nonceExpected/startTimeExpected will set nonce/startTime on the transaction object
- * - nonceExpected should be true when the UI notification displays the transaction ID
- * - startTimeExpected should be true when the UI displays a clock with a timer (eg 5 sec)
+/* Returns a mock transaction, optionally adding a nonce or startTime property.
+ * - nonce should be added when the UI notification displays the transaction ID
+ * - startTime should be added when the UI displays a clock with a timer (eg 5 sec)
  */
-const notificationUIEventsToTest = [
-  ['activePreflight', 'nsfFail', false, false],
-  ['activePreflight', 'txRepeat', false, false],
-  ['activeTransaction', 'txAwaitingApproval', false, false],
-  ['activeTransaction', 'txRequest', false, false],
-  ['activeTransaction', 'txConfirmReminder', false, false],
-  ['activeTransaction', 'txSendFail', false, false],
-  ['activeTransaction', 'txSent', false, true],
-  ['activeTransaction', 'txStall', true, true],
-  ['activeTransaction', 'txPending', true, true],
-  [
-    'activeTransaction',
-    'txConfirmed',
-    true,
-    true,
-    { transactionQueue: [{ transaction: mockTransaction }] }
-  ],
-  [
-    'activeTransaction',
-    'txConfirmedClient',
-    true,
-    true,
-    { transactionQueue: [{ transaction: mockTransaction }] }
-  ],
-  ['activeTransaction', 'txFailed', true, true],
-  ['activeContract', 'txAwaitingApproval', false, false],
-  ['activeContract', 'txRequest', false, false],
-  ['activeContract', 'txConfirmReminder', false, false],
-  ['activeContract', 'txSendFail', false, false],
-  ['activeContract', 'txSent', false, true],
-  ['activeContract', 'txStall', true, true],
-  ['activeContract', 'txPending', true, true],
-  [
-    'activeContract',
-    'txConfirmed',
-    true,
-    true,
-    { transactionQueue: [{ transaction: mockTransaction }] }
-  ],
-  [
-    'activeContract',
-    'txConfirmedClient',
-    true,
-    true,
-    { transactionQueue: [{ transaction: mockTransaction }] }
-  ],
-  ['activeContract', 'txFailed', true, true]
-]
+const mockTxFactory = (nonceExpected, startTimeExpected) => {
+  const MOCK_NONCE = 1235
+  const MOCK_START_TIME = 1262264000000
+  const additions = {}
+  if (nonceExpected) additions.nonce = MOCK_NONCE
+  if (startTimeExpected) additions.startTime = MOCK_START_TIME
+  return { ...mockTransaction, ...additions }
+}
 
-describe('ui-rendering', () => {
-  describe('notificationsUI', () => {
-    notificationUIEventsToTest.forEach(eventSpec => {
-      const [
-        categoryCode,
-        eventCode,
-        nonceExpected,
-        startTimeExpected,
-        customInitialState
-      ] = eventSpec
-      // Create a transaction object to be passed with the event
-      const transaction = Object.assign({}, mockTransaction)
-      if (nonceExpected) transaction.nonce = 1235
-      if (startTimeExpected) transaction.startTime = 1262264000000
+/* Specify events to test
+ * [eventCode]: {
+ *   categories: ['categoryCode1', 'categoryCode2', ...], // tests run for every category
+ *   params: {}, // config information passed as first param for event
+ *   clickHandlers: new Set(['onClose', ...]) // specify any clickHandlers
+ * }
+ */
+const eventsToTest = {
+  mobileBlocked: {
+    categories: ['initialize'],
+    clickHandlers: new Set(['onClose'])
+  },
+  nsfFail: {
+    categories: ['activePreflight'],
+    params: { transaction: mockTxFactory() }
+  },
+  txRepeat: {
+    categories: ['activePreflight'],
+    params: { transaction: mockTxFactory() }
+  },
+  txAwaitingApproval: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory() }
+  },
+  txRequest: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory() }
+  },
+  txConfirmReminder: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory() }
+  },
+  txSendFail: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory() }
+  },
+  txSent: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory(false, true) }
+  },
+  txStall: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory(true, true) }
+  },
+  txPending: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory(true, true) }
+  },
+  txConfirmed: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory(true, true) },
+    customState: { transactionQueue: [{ transaction: mockTransaction }] }
+  },
+  txConfirmedClient: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory(true, true) },
+    customState: { transactionQueue: [{ transaction: mockTransaction }] }
+  },
+  txFailed: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory(true, true) }
+  }
+}
+
+describe('dom-rendering', () => {
+  Object.entries(eventsToTest).forEach(([eventCode, testConfig]) => {
+    testConfig.categories.forEach(categoryCode => {
+      const { params, customState } = testConfig
       describe(`event ${categoryCode}-${eventCode}`, () => {
-        // Handle custom state
         beforeEach(() => {
-          if (customInitialState) updateState(customInitialState)
+          if (customState) updateState(customState)
         })
         test('should trigger correct DOM render', () => {
           handleEvent({
             categoryCode,
             eventCode,
-            transaction
+            ...params
           })
           expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
         })
@@ -109,11 +120,35 @@ describe('ui-rendering', () => {
           handleEvent({
             categoryCode,
             eventCode,
-            transaction,
-            inlineCustomMsgs
+            inlineCustomMsgs,
+            ...params
           })
           expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
         })
+
+        if (
+          testConfig.clickHandlers &&
+          testConfig.clickHandlers.has('onClose')
+        ) {
+          test('onClose should be called when close is clicked', () => {
+            const onCloseMock = jest.fn()
+            handleEvent(
+              {
+                categoryCode,
+                eventCode,
+                ...params
+              },
+              {
+                onClose: onCloseMock
+              }
+            )
+            const closeBtn = state.iframeDocument.getElementsByClassName(
+              'bn-onboard-close'
+            )[0]
+            closeBtn.click()
+            expect(onCloseMock).toHaveBeenCalledTimes(1)
+          })
+        }
       })
     })
   })
