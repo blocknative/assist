@@ -18,7 +18,8 @@ module.exports = {
         regenerator: true,
         useESModules: false
       }
-    ]
+    ],
+    ['@babel/plugin-proposal-object-rest-spread']
   ],
   env: {
     test: {
