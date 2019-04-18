@@ -104,6 +104,7 @@ export function eventCodeToType(eventCode) {
     case 'txRequest':
     case 'txPending':
     case 'txSent':
+    case 'txSpeedUp':
       return 'progress'
     case 'txSendFail':
     case 'txStall':

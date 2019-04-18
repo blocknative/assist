@@ -14,7 +14,7 @@ transactionQueue.getTxObjFromQueue = jest.fn(() => ({
   transaction: { status: 'pending' }
 }))
 
-const serverEvents = ['txPending', 'txConfirmed', 'txFailed']
+const serverEvents = ['txPending', 'txConfirmed', 'txFailed', 'txSpeedUp']
 const uiMockFunctions = {
   activeTransaction: serverEvents,
   activeContract: serverEvents
