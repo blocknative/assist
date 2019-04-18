@@ -103,9 +103,6 @@ export function handleSocketMessage(msg) {
     const { transaction, eventCode } = event
     let txObj
 
-    assistLog({ eventCode })
-    assistLog({ transaction })
-
     switch (transaction.status) {
       case 'pending':
         txObj = updateTransactionInQueue(transaction.id, {
