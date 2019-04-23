@@ -66,6 +66,11 @@ const eventsToTest = {
     categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick'])
   },
+  newOnboardComplete: {
+    categories: ['onboard', 'activePreflight'],
+    customStorage: [['_assist_newUser', 'true']],
+    clickHandlers: new Set(['onClose', 'onClick'])
+  },
   walletLoginEnable: {
     categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick'])
