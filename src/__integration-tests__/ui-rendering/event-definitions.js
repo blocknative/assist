@@ -1,23 +1,4 @@
-/*
- * Check that DOM renders correctly in response to events
- */
-
-import { handleEvent } from '../js/helpers/events'
-import { createIframe } from '../js/helpers/iframe'
-import { state, updateState } from '../js/helpers/state'
-import assistStyles from '../css/styles.css'
-import { storeItem } from '../js/helpers/storage'
-
-// Create an initial state to be passed in fresh to each test
-const initialState = Object.assign({}, state, {
-  userAgent: {
-    browser: { name: 'Chrome', version: '73.0.3683.86' },
-    engine: { name: 'Blink' },
-    os: { name: 'Linux' },
-    platform: { type: 'desktop' }
-  },
-  config: {}
-})
+import { initialState } from './index.test'
 
 const mockTransaction = {
   id: 'cf7fc5a7-1498-419e-8bf9-654d06af5534',
@@ -50,7 +31,7 @@ const mockTxFactory = ({ nonce, startTime } = {}) => {
  *   customStates: [state1, state2, ...] // OPTIONAL: specify states to test
  * }
  */
-const eventsToTest = {
+export default {
   browserFail: {
     categories: ['onboard'],
     clickHandlers: new Set(['onClose'])
@@ -236,109 +217,5 @@ const eventsToTest = {
       initialState,
       { config: { messages: { txFailed: () => 'txFailed custom msg' } } }
     ]
-  }
-}
-
-describe('dom-rendering', () => {
-  // Test each eventCode
-  Object.entries(eventsToTest).forEach(([eventCode, testConfig]) => {
-    // Test each event category
-    testConfig.categories.forEach(categoryCode => {
-      const {
-        params,
-        customStates = [initialState],
-        customStores = [{}]
-      } = testConfig
-      describe(`event ${categoryCode}-${eventCode}`, () => {
-        // Test each storage scenario
-        customStores.forEach((customStore, customStoreIndex) => {
-          // Test each state scenario
-          customStates.forEach((customState, customStateIndex) => {
-            // Get custom storage description
-            let storeDesc = ''
-            if (Object.keys(customStore).length > 0) {
-              storeDesc = ` [Storage: ${customStoreIndex}]`
-            }
-            // Get custom state description
-            let stateDesc = ''
-            if (customStates.length > 1) {
-              stateDesc = ` [Custom state ${customStateIndex}]`
-            }
-
-            // Test DOM elements are rendered
-            test(`should trigger correct DOM render${storeDesc}${stateDesc}`, () => {
-              setTestEnv(customState, customStore)
-              handleEvent({
-                categoryCode,
-                eventCode,
-                ...params
-              })
-              expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
-            })
-
-            // Test clickHandlers
-            if (testConfig.clickHandlers) {
-              if (testConfig.clickHandlers.has('onClose')) {
-                test(`onClose should be called when close is clicked${storeDesc}${stateDesc}`, () => {
-                  setTestEnv(customState, customStore)
-                  const onCloseMock = jest.fn()
-                  handleEvent(
-                    {
-                      categoryCode,
-                      eventCode,
-                      ...params
-                    },
-                    {
-                      onClose: onCloseMock
-                    }
-                  )
-                  const closeBtn = state.iframeDocument.getElementsByClassName(
-                    'bn-onboard-close'
-                  )[0]
-                  if (!closeBtn) return // make sure btn actually exists
-                  closeBtn.click()
-                  expect(onCloseMock).toHaveBeenCalledTimes(1)
-                })
-              }
-
-              if (testConfig.clickHandlers.has('onClick')) {
-                test(`onClick should be called when the primary btn is clicked${storeDesc}${stateDesc}`, () => {
-                  setTestEnv(customState, customStore)
-                  const onClickMock = jest.fn()
-                  handleEvent(
-                    {
-                      categoryCode,
-                      eventCode,
-                      ...params
-                    },
-                    {
-                      onClick: onClickMock
-                    }
-                  )
-                  const defaultBtn = state.iframeDocument.getElementsByClassName(
-                    'bn-btn'
-                  )[0]
-                  if (!defaultBtn) return // make sure btn actually exists
-                  defaultBtn.click()
-                  expect(onClickMock).toHaveBeenCalledTimes(1)
-                })
-              }
-            }
-          })
-        })
-      })
-    })
-  })
-})
-
-// Reset to a specified state and store
-// (not using beforeEach for this as it was behaiving strangely)
-const setTestEnv = (state, store) => {
-  window.localStorage.clear()
-  updateState(initialState)
-  updateState(state)
-  createIframe(document, assistStyles)
-  if (Object.keys(store).length > 0) {
-    Object.entries(store).forEach(([k, v]) => storeItem(k, v))
   }
 }
