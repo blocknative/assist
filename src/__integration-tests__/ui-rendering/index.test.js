@@ -59,7 +59,7 @@ describe('dom-rendering', () => {
               customStoreIndex
             )
 
-            // Test DOM elements are rendered
+            // Test DOM elements are rendered as expected
             test(`should trigger correct DOM render${descSuffix}`, () => {
               setTestEnv(customState, customStore)
               handleEvent({
@@ -125,8 +125,8 @@ describe('dom-rendering', () => {
   })
 })
 
-// Reset to a specified state and store
-// (not using beforeEach for this as it was behaiving strangely)
+// Reset to a base state and store, then create an iframe
+// (not using beforeEach for this as it was behaiving strangely..)
 const setTestEnv = (state, store) => {
   window.localStorage.clear()
   updateState(initialState)

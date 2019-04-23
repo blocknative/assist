@@ -25,8 +25,8 @@ const mockTxFactory = ({ nonce, startTime } = {}) => {
 /* Specify events to test
  * [eventCode]: {
  *   categories: ['categoryCode1', 'categoryCode2', ...], // specify eventCategories
- *   params: {}, // extra items to pass alongside eventCode and categoryCode into the first object passed to handleEvent
- *   clickHandlers: new Set(['onClose', ...]) // OPTIONAL: specify any clickHandlers
+ *   params: {}, // OPTIONAL: items to add alongside eventCode/categoryCode in the first object passed to handleEvent
+ *   clickHandlers: new Set(['onClose', 'onClick']) // OPTIONAL: specify any clickHandlers
  *   customStores: [store1, store2, ...] // OPTIONAL: specify storage scenarios to test
  *   customStates: [state1, state2, ...] // OPTIONAL: specify states to test
  * }
