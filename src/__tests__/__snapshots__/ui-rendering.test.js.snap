@@ -504,6 +504,68 @@ exports[`dom-rendering event activePreflight-txRepeat should trigger correct DOM
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
+exports[`dom-rendering event activePreflight-walletFail should trigger correct DOM render [Storage: _assist_newUser='true'] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-basic\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-basic clearfix\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+    <div class=\\"bn-onboard-sidebar\\">
+      <h4>Setup Tasks</h4>
+      <ul class=\\"bn-onboard-list\\">
+        <li class=\\"bn-active\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Install MetaMask
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Login
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Connect
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Get Some Ether
+        </li>
+      </ul>
+      
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+    </div>
+  
+				
+	  <div class=\\"bn-onboard-main\\">
+	    
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Install MetaMask</h1>
+    <p>We use a product called MetaMask to manage everything you need to interact with a blockchain application like this one. MetaMask is free, installs right into your browser, hyper secure, and can be used for any other blockchain application you may want to use. <a href=\\"https://metamask.io/\\" target=\\"_blank\\">Get MetaMask now</a></p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I HAVE METAMASK
+      </a>
+    </p>
+  
+	  </div>
+	
+        
+      </div>
+    </div>
+  </div>"
+`;
+
 exports[`dom-rendering event activePreflight-welcomeUser should trigger correct DOM render [Storage: _assist_newUser='true'] [Custom state 0] 1`] = `
 "
     
@@ -1122,6 +1184,68 @@ exports[`dom-rendering event onboard-browserFail should trigger correct DOM rend
       </p>
     </div>
   
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-walletFail should trigger correct DOM render [Storage: _assist_newUser='true'] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-basic\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-basic clearfix\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+    <div class=\\"bn-onboard-sidebar\\">
+      <h4>Setup Tasks</h4>
+      <ul class=\\"bn-onboard-list\\">
+        <li class=\\"bn-active\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Install MetaMask
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Login
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Connect
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Get Some Ether
+        </li>
+      </ul>
+      
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+    </div>
+  
+				
+	  <div class=\\"bn-onboard-main\\">
+	    
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Install MetaMask</h1>
+    <p>We use a product called MetaMask to manage everything you need to interact with a blockchain application like this one. MetaMask is free, installs right into your browser, hyper secure, and can be used for any other blockchain application you may want to use. <a href=\\"https://metamask.io/\\" target=\\"_blank\\">Get MetaMask now</a></p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I HAVE METAMASK
+      </a>
+    </p>
+  
+	  </div>
+	
+        
       </div>
     </div>
   </div>"
