@@ -49,6 +49,7 @@ const mockTxFactory = ({ nonce, startTime } = {}) => {
  *   params: {}, // config information passed as first param for event
  *   clickHandlers: new Set(['onClose', ...]) // OPTIONAL: specify any clickHandlers
  *   customStorage: [[key, value]] // OPTIONAL: specify different storage scenarios to test
+ *   customState: [state1, state2, ...] // OPTIONAL: specify the states the tests should be done under
  * }
  */
 const eventsToTest = {
@@ -59,7 +60,17 @@ const eventsToTest = {
   welcomeUser: {
     categories: ['onboard'],
     clickHandlers: new Set(['onClose', 'onClick']),
-    customStorage: [['_assist_newUser', 'true']]
+    customStorage: [['_assist_newUser', 'true']],
+    customStates: [
+      initialState,
+      {
+        config: {
+          images: {
+            welcome: { src: 'custom-img-src', srcset: 'custom-img-srcset' }
+          }
+        }
+      }
+    ]
   },
   mobileBlocked: {
     categories: ['initialize'],
@@ -229,7 +240,7 @@ describe('dom-rendering', () => {
             // Test clickHandlers
             if (testConfig.clickHandlers) {
               if (testConfig.clickHandlers.has('onClose')) {
-                test('onClose should be called when close is clicked', () => {
+                test(`onClose should be called when close is clicked${storeDesc}${stateDesc}`, () => {
                   updateState(initialState)
                   updateState(customState)
                   createIframe(document, assistStyles)
@@ -254,7 +265,7 @@ describe('dom-rendering', () => {
               }
 
               if (testConfig.clickHandlers.has('onClick')) {
-                test('onClick should be called when the primary btn is clicked', () => {
+                test(`onClick should be called when the primary btn is clicked${storeDesc}${stateDesc}`, () => {
                   updateState(initialState)
                   updateState(customState)
                   createIframe(document, assistStyles)
