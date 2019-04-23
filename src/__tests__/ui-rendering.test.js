@@ -58,7 +58,7 @@ const eventsToTest = {
     clickHandlers: new Set(['onClose'])
   },
   welcomeUser: {
-    categories: ['onboard'],
+    categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick']),
     customStorage: [['_assist_newUser', 'true']],
     customStates: [
