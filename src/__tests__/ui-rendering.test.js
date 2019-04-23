@@ -70,6 +70,10 @@ const eventsToTest = {
     categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick'])
   },
+  walletEnable: {
+    categories: ['onboard', 'activePreflight'],
+    clickHandlers: new Set(['onClose', 'onClick'])
+  },
   welcomeUser: {
     categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick']),

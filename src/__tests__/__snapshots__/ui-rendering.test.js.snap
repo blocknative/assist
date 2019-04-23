@@ -504,6 +504,42 @@ exports[`dom-rendering event activePreflight-txRepeat should trigger correct DOM
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
+exports[`dom-rendering event activePreflight-walletEnable should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Connect MetaMask</h1>
+    <p>Connect your wallet to interact with this Dapp</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I'M CONNECTED
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
 exports[`dom-rendering event activePreflight-walletFail should trigger correct DOM render [Storage: _assist_newUser='true'] 1`] = `
 "
     
@@ -1248,6 +1284,42 @@ exports[`dom-rendering event onboard-browserFail should trigger correct DOM rend
     </p>
   <br>
         
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-walletEnable should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Connect MetaMask</h1>
+    <p>Connect your wallet to interact with this Dapp</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I'M CONNECTED
+      </a>
+    </p>
+  
+        <br>
     <div class=\\"bn-onboarding-branding\\">
       <p>Powered by
       <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
