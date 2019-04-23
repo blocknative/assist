@@ -103,7 +103,7 @@ const eventsToTest = {
     ]
   },
   mobileBlocked: {
-    categories: ['initialize'],
+    categories: ['initialize', 'activePreflight'],
     clickHandlers: new Set(['onClose'])
   },
   nsfFail: {

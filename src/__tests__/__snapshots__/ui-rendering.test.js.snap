@@ -424,6 +424,37 @@ exports[`dom-rendering event activeContract-txStall should trigger correct DOM r
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
+exports[`dom-rendering event activePreflight-mobileBlocked should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-mobile-not-supported\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-alert\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+	  <img src=\\"[object Object]\\" alt=\\"MobileNot Supported\\" srcset=\\"[object Object] 2x\\">
+  
+        <br><br>
+        <h1 class=\\"h4\\">Mobile Not Supported</h1>
+        <p>Our distributed application does not support mobile browsers. Please visit our site on a desktop browser. Thank you!</p>
+        <br>
+        
+        
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
 exports[`dom-rendering event activePreflight-networkFail should trigger correct DOM render [Custom state 0] 1`] = `
 "
     
