@@ -208,7 +208,7 @@ describe('dom-rendering', () => {
             }
             // Get custom state description
             let stateDesc = ''
-            if (Object.keys(customState).length > 0) {
+            if (customStates.length > 1) {
               stateDesc = ` [Custom state ${customStateIndex}]`
             }
 

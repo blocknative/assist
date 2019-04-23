@@ -928,7 +928,7 @@ exports[`dom-rendering event activeTransaction-txStall should trigger correct DO
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
-exports[`dom-rendering event initialize-mobileBlocked should trigger correct DOM render [Custom state 0] 1`] = `
+exports[`dom-rendering event initialize-mobileBlocked should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -959,7 +959,7 @@ exports[`dom-rendering event initialize-mobileBlocked should trigger correct DOM
   </div>"
 `;
 
-exports[`dom-rendering event onboard-browserFail should trigger correct DOM render [Custom state 0] 1`] = `
+exports[`dom-rendering event onboard-browserFail should trigger correct DOM render 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -1003,7 +1003,7 @@ exports[`dom-rendering event onboard-browserFail should trigger correct DOM rend
   </div>"
 `;
 
-exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render [Storage: _assist_newUser='true'] [Custom state 0] 1`] = `
+exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render [Storage: _assist_newUser='true'] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
