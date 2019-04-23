@@ -69,7 +69,17 @@ const eventsToTest = {
   newOnboardComplete: {
     categories: ['onboard', 'activePreflight'],
     customStorage: [['_assist_newUser', 'true']],
-    clickHandlers: new Set(['onClose', 'onClick'])
+    clickHandlers: new Set(['onClose', 'onClick']),
+    customStates: [
+      initialState,
+      {
+        config: {
+          images: {
+            complete: { src: 'custom-img-src', srcset: 'custom-img-srcset' }
+          }
+        }
+      }
+    ]
   },
   walletLoginEnable: {
     categories: ['onboard', 'activePreflight'],
