@@ -172,7 +172,8 @@ var config = {
     darkMode: Boolean, // Set Assist UI to dark mode
     notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
     css: String // Custom css string to overide Assist default styles
-  }
+  },
+  truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
 }
 ```
 
