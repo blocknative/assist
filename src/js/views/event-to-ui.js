@@ -198,11 +198,6 @@ function notificationsUI({
     // remove all notifications we don't want to repeat
     removeAllNotifications(notificationsNoRepeat)
 
-    // due to delay in removing many notifications, need to make sure container size is right
-    if (notificationsNoRepeat.length > 4) {
-      setTimeout(setNotificationsHeight, timeouts.changeUI)
-    }
-
     // We want to keep the txRepeat notification if the new notification is a txRequest or txConfirmReminder
     const keepTxRepeatNotification =
       eventCode === 'txRequest' || eventCode === 'txConfirmReminder'
