@@ -6,6 +6,7 @@ import { handleEvent } from '../js/helpers/events'
 import { createIframe } from '../js/helpers/iframe'
 import { state, updateState } from '../js/helpers/state'
 import assistStyles from '../css/styles.css'
+import { storeItem } from '../js/helpers/storage'
 
 // Create an initial state to be passed in fresh to each test
 const initialState = Object.assign({}, state, {
@@ -17,6 +18,8 @@ const initialState = Object.assign({}, state, {
   },
   config: {}
 })
+
+const emptyStorageSetup = [['_NULL', 'null']]
 
 const mockTransaction = {
   id: 'cf7fc5a7-1498-419e-8bf9-654d06af5534',
@@ -44,13 +47,19 @@ const mockTxFactory = ({ nonce, startTime } = {}) => {
  * [eventCode]: {
  *   categories: ['categoryCode1', 'categoryCode2', ...], // tests run for every category
  *   params: {}, // config information passed as first param for event
- *   clickHandlers: new Set(['onClose', ...]) // specify any clickHandlers
+ *   clickHandlers: new Set(['onClose', ...]) // OPTIONAL: specify any clickHandlers
+ *   customStorage: [[key, value]] // OPTIONAL: specify different storage scenarios to test
  * }
  */
 const eventsToTest = {
   browserFail: {
     categories: ['onboard'],
     clickHandlers: new Set(['onClose'])
+  },
+  welcomeUser: {
+    categories: ['onboard'],
+    clickHandlers: new Set(['onClose', 'onClick']),
+    customStorage: [['_assist_newUser', 'true']]
   },
   mobileBlocked: {
     categories: ['initialize'],
@@ -109,58 +118,95 @@ const eventsToTest = {
 }
 
 describe('dom-rendering', () => {
+  // Test each eventCode
   Object.entries(eventsToTest).forEach(([eventCode, testConfig]) => {
+    // Test each events category
     testConfig.categories.forEach(categoryCode => {
-      const { params, customState } = testConfig
+      const {
+        params,
+        customState,
+        customStorage = emptyStorageSetup
+      } = testConfig
       describe(`event ${categoryCode}-${eventCode}`, () => {
-        beforeEach(() => {
-          if (customState) updateState(customState)
-        })
-        test('should trigger correct DOM render', () => {
-          handleEvent({
-            categoryCode,
-            eventCode,
-            ...params
-          })
-          expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
-        })
-
-        test('should trigger correct DOM render when passed inlineCustomMsgs', () => {
-          const inlineCustomMsgs = {
-            [eventCode]: () => `${eventCode} inlineCustomMsg msg`
-          }
-          handleEvent({
-            categoryCode,
-            eventCode,
-            inlineCustomMsgs,
-            ...params
-          })
-          expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
-        })
-
-        if (
-          testConfig.clickHandlers &&
-          testConfig.clickHandlers.has('onClose')
-        ) {
-          test('onClose should be called when close is clicked', () => {
-            const onCloseMock = jest.fn()
-            handleEvent(
-              {
+        // Test each specified storage scenario
+        customStorage.forEach(store => {
+          const [itemName, value] = store
+          const storeDesc =
+            itemName !== '_NULL' ? ` [Storage: ${itemName}='${value}']` : ''
+          customStorage.forEach(store => {
+            beforeEach(() => {
+              if (customState) updateState(customState)
+              if (store) storeItem(itemName, value)
+            })
+            // Test DOM elements are rendered
+            test(`should trigger correct DOM render${storeDesc}`, () => {
+              handleEvent({
                 categoryCode,
                 eventCode,
                 ...params
-              },
-              {
-                onClose: onCloseMock
+              })
+              expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
+            })
+
+            test(`should trigger correct DOM render when passed inlineCustomMsgs${storeDesc}`, () => {
+              const inlineCustomMsgs = {
+                [eventCode]: () => `${eventCode} inlineCustomMsg msg`
               }
-            )
-            const closeBtn = state.iframeDocument.getElementsByClassName(
-              'bn-onboard-close'
-            )[0]
-            closeBtn.click()
-            expect(onCloseMock).toHaveBeenCalledTimes(1)
+              handleEvent({
+                categoryCode,
+                eventCode,
+                inlineCustomMsgs,
+                ...params
+              })
+              expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
+            })
+
+            // Test clickHandlers
+            if (testConfig.clickHandlers) {
+              if (testConfig.clickHandlers.has('onClose')) {
+                test('onClose should be called when close is clicked', () => {
+                  const onCloseMock = jest.fn()
+                  handleEvent(
+                    {
+                      categoryCode,
+                      eventCode,
+                      ...params
+                    },
+                    {
+                      onClose: onCloseMock
+                    }
+                  )
+                  const closeBtn = state.iframeDocument.getElementsByClassName(
+                    'bn-onboard-close'
+                  )[0]
+                  closeBtn.click()
+                  expect(onCloseMock).toHaveBeenCalledTimes(1)
+                })
+              }
+
+              if (testConfig.clickHandlers.has('onClick')) {
+                test('onClose should be called when the primary btn is clicked', () => {
+                  const onClickMock = jest.fn()
+                  handleEvent(
+                    {
+                      categoryCode,
+                      eventCode,
+                      ...params
+                    },
+                    {
+                      onClick: onClickMock
+                    }
+                  )
+                  const defaultBtn = state.iframeDocument.getElementsByClassName(
+                    'bn-btn'
+                  )[0]
+                  defaultBtn.click()
+                  expect(onClickMock).toHaveBeenCalledTimes(1)
+                })
+              }
+            }
           })
-        }
+        })
       })
     })
   })
@@ -169,5 +215,6 @@ describe('dom-rendering', () => {
 // Between each test create a new iframe and reset to clean state
 beforeEach(() => {
   updateState(initialState)
+  window.localStorage.clear()
   createIframe(document, assistStyles)
 })

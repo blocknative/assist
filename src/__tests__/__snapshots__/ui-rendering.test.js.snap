@@ -1077,3 +1077,127 @@ exports[`dom-rendering event onboard-browserFail should trigger correct DOM rend
     </div>
   </div>"
 `;
+
+exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render [Storage: _assist_newUser='true'] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-basic\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-basic clearfix\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+    <div class=\\"bn-onboard-sidebar\\">
+      <h4>Setup Tasks</h4>
+      <ul class=\\"bn-onboard-list\\">
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Install MetaMask
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Login
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Connect
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Get Some Ether
+        </li>
+      </ul>
+      
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+    </div>
+  
+				
+	  <div class=\\"bn-onboard-main\\">
+	    
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Let’s Get You Started</h1>
+    <p>To use this feature you’ll need to be set up and ready to use the blockchain. This onboarding guide will walk you through each step of the process. It won’t take long and at any time you can come back and pick up where you left off.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">I’M READY
+      </a>
+    </p>
+  
+	  </div>
+	
+        
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render when passed inlineCustomMsgs [Storage: _assist_newUser='true'] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-basic\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-basic clearfix\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+    <div class=\\"bn-onboard-sidebar\\">
+      <h4>Setup Tasks</h4>
+      <ul class=\\"bn-onboard-list\\">
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Install MetaMask
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Login
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> MetaMask Connect
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
+        </li>
+        <li class=\\"bn-inactive\\">
+          <span class=\\"bn-onboard-list-sprite\\"></span> Get Some Ether
+        </li>
+      </ul>
+      
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+    </div>
+  
+				
+	  <div class=\\"bn-onboard-main\\">
+	    
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Let’s Get You Started</h1>
+    <p>To use this feature you’ll need to be set up and ready to use the blockchain. This onboarding guide will walk you through each step of the process. It won’t take long and at any time you can come back and pick up where you left off.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">I’M READY
+      </a>
+    </p>
+  
+	  </div>
+	
+        
+      </div>
+    </div>
+  </div>"
+`;
