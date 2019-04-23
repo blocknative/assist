@@ -67,53 +67,121 @@ const eventsToTest = {
   },
   nsfFail: {
     categories: ['activePreflight'],
-    params: { transaction: mockTxFactory() }
+    params: { transaction: mockTxFactory() },
+    customStates: [
+      initialState,
+      { config: { messages: { nsfFail: () => 'nsfFail custom msg' } } }
+    ]
   },
   txRepeat: {
     categories: ['activePreflight'],
-    params: { transaction: mockTxFactory() }
+    params: { transaction: mockTxFactory() },
+    customStates: [
+      initialState,
+      { config: { messages: { txRepeat: () => 'txRepeat custom msg' } } }
+    ]
   },
   txAwaitingApproval: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory() }
+    params: { transaction: mockTxFactory() },
+    customStates: [
+      initialState,
+      {
+        config: {
+          messages: {
+            txAwaitingApproval: () => 'txAwaitingApproval custom msg'
+          }
+        }
+      }
+    ]
   },
   txRequest: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory() }
+    params: { transaction: mockTxFactory() },
+    customStates: [
+      initialState,
+      { config: { messages: { txRequest: () => 'txRequest custom msg' } } }
+    ]
   },
   txConfirmReminder: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory() }
+    params: { transaction: mockTxFactory() },
+    customStates: [
+      initialState,
+      {
+        config: {
+          messages: { txConfirmReminder: () => 'txConfirmReminder custom msg' }
+        }
+      }
+    ]
   },
   txSendFail: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory() }
+    params: { transaction: mockTxFactory() },
+    customStates: [
+      initialState,
+      { config: { messages: { txSendFail: () => 'txSendFail custom msg' } } }
+    ]
   },
   txSent: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory({ startTime: true }) }
+    params: { transaction: mockTxFactory({ startTime: true }) },
+    customStates: [
+      initialState,
+      { config: { messages: { txSent: () => 'txSent custom msg' } } }
+    ]
   },
   txStall: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) }
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
+    customStates: [
+      initialState,
+      { config: { messages: { txStall: () => 'txStall custom msg' } } }
+    ]
   },
   txPending: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) }
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
+    customStates: [
+      initialState,
+      { config: { messages: { txPending: () => 'txPending custom msg' } } }
+    ]
   },
   txConfirmed: {
     categories: ['activeTransaction', 'activeContract'],
     params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
-    customState: { transactionQueue: [{ transaction: mockTransaction }] }
+    customStates: [
+      {
+        transactionQueue: [{ transaction: mockTransaction }]
+      },
+      {
+        transactionQueue: [{ transaction: mockTransaction }],
+        config: { messages: { txConfirmed: () => 'txConfirmed custom msg' } }
+      }
+    ]
   },
   txConfirmedClient: {
     categories: ['activeTransaction', 'activeContract'],
     params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
-    customState: { transactionQueue: [{ transaction: mockTransaction }] }
+    customStates: [
+      {
+        transactionQueue: [{ transaction: mockTransaction }]
+      },
+      {
+        transactionQueue: [{ transaction: mockTransaction }],
+        config: {
+          messages: { txConfirmedClient: () => 'txConfirmedClient custom msg' }
+        }
+      }
+    ]
   },
   txFailed: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) }
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
+    customStates: [
+      initialState,
+      { config: { messages: { txFailed: () => 'txFailed custom msg' } } }
+    ]
   }
 }
 
@@ -124,38 +192,35 @@ describe('dom-rendering', () => {
     testConfig.categories.forEach(categoryCode => {
       const {
         params,
-        customState,
+        customStates = [initialState],
         customStorage = emptyStorageSetup
       } = testConfig
       describe(`event ${categoryCode}-${eventCode}`, () => {
         // Test each specified storage scenario
         customStorage.forEach(store => {
-          const [itemName, value] = store
-          const storeDesc =
-            itemName !== '_NULL' ? ` [Storage: ${itemName}='${value}']` : ''
-          customStorage.forEach(store => {
-            beforeEach(() => {
-              if (customState) updateState(customState)
-              if (store) storeItem(itemName, value)
-            })
-            // Test DOM elements are rendered
-            test(`should trigger correct DOM render${storeDesc}`, () => {
-              handleEvent({
-                categoryCode,
-                eventCode,
-                ...params
-              })
-              expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
-            })
+          // Test each specified state scenario
+          customStates.forEach((customState, customStateIndex) => {
+            const [itemName, value] = store
+            // Get custom storage description
+            let storeDesc = ''
+            if (itemName !== '_NULL') {
+              storeDesc = ` [Storage: ${itemName}='${value}']`
+            }
+            // Get custom state description
+            let stateDesc = ''
+            if (Object.keys(customState).length > 0) {
+              stateDesc = ` [Custom state ${customStateIndex}]`
+            }
 
-            test(`should trigger correct DOM render when passed inlineCustomMsgs${storeDesc}`, () => {
-              const inlineCustomMsgs = {
-                [eventCode]: () => `${eventCode} inlineCustomMsg msg`
-              }
+            // Test DOM elements are rendered
+            test(`should trigger correct DOM render${storeDesc}${stateDesc}`, () => {
+              updateState(initialState)
+              updateState(customState)
+              createIframe(document, assistStyles)
+              if (store) storeItem(itemName, value)
               handleEvent({
                 categoryCode,
                 eventCode,
-                inlineCustomMsgs,
                 ...params
               })
               expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
@@ -165,6 +230,10 @@ describe('dom-rendering', () => {
             if (testConfig.clickHandlers) {
               if (testConfig.clickHandlers.has('onClose')) {
                 test('onClose should be called when close is clicked', () => {
+                  updateState(initialState)
+                  updateState(customState)
+                  createIframe(document, assistStyles)
+                  if (store) storeItem(itemName, value)
                   const onCloseMock = jest.fn()
                   handleEvent(
                     {
@@ -186,6 +255,10 @@ describe('dom-rendering', () => {
 
               if (testConfig.clickHandlers.has('onClick')) {
                 test('onClose should be called when the primary btn is clicked', () => {
+                  updateState(initialState)
+                  updateState(customState)
+                  createIframe(document, assistStyles)
+                  if (store) storeItem(itemName, value)
                   const onClickMock = jest.fn()
                   handleEvent(
                     {
@@ -214,7 +287,7 @@ describe('dom-rendering', () => {
 
 // Between each test create a new iframe and reset to clean state
 beforeEach(() => {
-  updateState(initialState)
+  // updateState(initialState)
   window.localStorage.clear()
-  createIframe(document, assistStyles)
+  // createIframe(document, assistStyles)
 })
