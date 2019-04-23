@@ -1,5 +1,6 @@
 /*
- * Check that DOM renders correctly in response to events
+ * Check that the DOM correctly renders in response to events
+ * being fired
  */
 
 import { handleEvent } from '../../js/helpers/events'
