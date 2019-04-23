@@ -21,6 +21,22 @@ export const initialState = Object.assign({}, state, {
   config: {}
 })
 
+// Generates the suffix to append to tests that are
+// run over multiple stores and/or states
+const generateDescriptionSuffix = (states, stateIndex, store, storeIndex) => {
+  let storeDesc = ''
+  // Get custom storage description
+  if (Object.keys(store).length > 0) {
+    storeDesc = ` [Custom storage ${storeIndex}]`
+  }
+  // Get custom state description
+  let stateDesc = ''
+  if (states.length > 1) {
+    stateDesc = ` [Custom state ${stateIndex}]`
+  }
+  return `${stateDesc}${storeDesc}`
+}
+
 describe('dom-rendering', () => {
   // Test each eventCode
   Object.entries(eventDefinitions).forEach(([eventCode, testConfig]) => {
@@ -36,19 +52,15 @@ describe('dom-rendering', () => {
         customStores.forEach((customStore, customStoreIndex) => {
           // Test each state scenario
           customStates.forEach((customState, customStateIndex) => {
-            // Get custom storage description
-            let storeDesc = ''
-            if (Object.keys(customStore).length > 0) {
-              storeDesc = ` [Storage: ${customStoreIndex}]`
-            }
-            // Get custom state description
-            let stateDesc = ''
-            if (customStates.length > 1) {
-              stateDesc = ` [Custom state ${customStateIndex}]`
-            }
+            const descSuffix = generateDescriptionSuffix(
+              customStates,
+              customStateIndex,
+              customStore,
+              customStoreIndex
+            )
 
             // Test DOM elements are rendered
-            test(`should trigger correct DOM render${storeDesc}${stateDesc}`, () => {
+            test(`should trigger correct DOM render${descSuffix}`, () => {
               setTestEnv(customState, customStore)
               handleEvent({
                 categoryCode,
@@ -61,7 +73,7 @@ describe('dom-rendering', () => {
             // Test clickHandlers
             if (testConfig.clickHandlers) {
               if (testConfig.clickHandlers.has('onClose')) {
-                test(`onClose should be called when close is clicked${storeDesc}${stateDesc}`, () => {
+                test(`onClose should be called when close is clicked${descSuffix}`, () => {
                   setTestEnv(customState, customStore)
                   const onCloseMock = jest.fn()
                   handleEvent(
@@ -84,7 +96,7 @@ describe('dom-rendering', () => {
               }
 
               if (testConfig.clickHandlers.has('onClick')) {
-                test(`onClick should be called when the primary btn is clicked${storeDesc}${stateDesc}`, () => {
+                test(`onClick should be called when the primary btn is clicked${descSuffix}`, () => {
                   setTestEnv(customState, customStore)
                   const onClickMock = jest.fn()
                   handleEvent(

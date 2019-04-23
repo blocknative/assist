@@ -527,7 +527,7 @@ exports[`dom-rendering event activePreflight-networkFail should trigger correct 
   </div>"
 `;
 
-exports[`dom-rendering event activePreflight-newOnboardComplete should trigger correct DOM render [Storage: 0] [Custom state 0] 1`] = `
+exports[`dom-rendering event activePreflight-newOnboardComplete should trigger correct DOM render [Custom state 0] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -589,7 +589,7 @@ exports[`dom-rendering event activePreflight-newOnboardComplete should trigger c
   </div>"
 `;
 
-exports[`dom-rendering event activePreflight-newOnboardComplete should trigger correct DOM render [Storage: 0] [Custom state 1] 1`] = `
+exports[`dom-rendering event activePreflight-newOnboardComplete should trigger correct DOM render [Custom state 1] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -767,7 +767,7 @@ exports[`dom-rendering event activePreflight-walletEnable should trigger correct
   </div>"
 `;
 
-exports[`dom-rendering event activePreflight-walletFail should trigger correct DOM render [Storage: 0] 1`] = `
+exports[`dom-rendering event activePreflight-walletFail should trigger correct DOM render [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -901,7 +901,7 @@ exports[`dom-rendering event activePreflight-walletLoginEnable should trigger co
   </div>"
 `;
 
-exports[`dom-rendering event activePreflight-welcomeUser should trigger correct DOM render [Storage: 0] [Custom state 0] 1`] = `
+exports[`dom-rendering event activePreflight-welcomeUser should trigger correct DOM render [Custom state 0] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -963,7 +963,7 @@ exports[`dom-rendering event activePreflight-welcomeUser should trigger correct 
   </div>"
 `;
 
-exports[`dom-rendering event activePreflight-welcomeUser should trigger correct DOM render [Storage: 0] [Custom state 1] 1`] = `
+exports[`dom-rendering event activePreflight-welcomeUser should trigger correct DOM render [Custom state 1] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -1596,7 +1596,7 @@ exports[`dom-rendering event onboard-networkFail should trigger correct DOM rend
   </div>"
 `;
 
-exports[`dom-rendering event onboard-newOnboardComplete should trigger correct DOM render [Storage: 0] [Custom state 0] 1`] = `
+exports[`dom-rendering event onboard-newOnboardComplete should trigger correct DOM render [Custom state 0] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -1658,7 +1658,7 @@ exports[`dom-rendering event onboard-newOnboardComplete should trigger correct D
   </div>"
 `;
 
-exports[`dom-rendering event onboard-newOnboardComplete should trigger correct DOM render [Storage: 0] [Custom state 1] 1`] = `
+exports[`dom-rendering event onboard-newOnboardComplete should trigger correct DOM render [Custom state 1] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -1828,7 +1828,7 @@ exports[`dom-rendering event onboard-walletEnable should trigger correct DOM ren
   </div>"
 `;
 
-exports[`dom-rendering event onboard-walletFail should trigger correct DOM render [Storage: 0] 1`] = `
+exports[`dom-rendering event onboard-walletFail should trigger correct DOM render [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -1962,7 +1962,7 @@ exports[`dom-rendering event onboard-walletLoginEnable should trigger correct DO
   </div>"
 `;
 
-exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render [Storage: 0] [Custom state 0] 1`] = `
+exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render [Custom state 0] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
@@ -2024,7 +2024,7 @@ exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM rend
   </div>"
 `;
 
-exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render [Storage: 0] [Custom state 1] 1`] = `
+exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM render [Custom state 1] [Custom storage 0] 1`] = `
 "
     
   <div class=\\"bn-onboard-modal-shade\\">
