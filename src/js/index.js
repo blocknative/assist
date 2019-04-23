@@ -286,7 +286,7 @@ function init(config) {
     const seenMethods = []
 
     const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
-      if (legacyWeb3) {
+      if (legacyWeb3 || state.config.truffleContract) {
         // if we have seen this key, then we have already dealt with it
         if (seenMethods.includes(key)) {
           return newContractObj
@@ -328,6 +328,11 @@ function init(config) {
           overloadedMethodKeys.forEach(key => {
             const method = contractObj[name][key]
 
+            if (!method) {
+              // no method, then overloaded methods not supported on this object
+              return
+            }
+
             newContractObj[name][key] = (...args) =>
               constant
                 ? legacyCall(method, name, args, argsLength)
@@ -344,9 +349,15 @@ function init(config) {
         }
       } else {
         if (key !== 'methods') {
-          newContractObj[key] = contractObj[key]
+          const methodAbiArray = abi.filter(method => method.name === key)
 
-          return newContractObj
+          // if the key doesn't point to a method or is an event, just copy it over
+          // this check is now needed to allow for truffle contract 1.0
+          if (!methodAbiArray[0] || methodAbiArray[0].type === 'event') {
+            newContractObj[key] = contractObj[key]
+
+            return newContractObj
+          }
         }
 
         const methodsKeys = Object.keys(contractObj[key])
