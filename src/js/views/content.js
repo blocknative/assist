@@ -262,5 +262,7 @@ export const transactionMsgs = {
   txConfirmed: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has succeeded`,
   txConfirmedClient: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has succeeded`
+    `Your transaction ID: ${transaction.nonce} has succeeded`,
+  txSpeedUp: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} has been sped up`
 }
