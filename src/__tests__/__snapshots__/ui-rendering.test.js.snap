@@ -1441,6 +1441,78 @@ exports[`dom-rendering event onboard-networkFail should trigger correct DOM rend
   </div>"
 `;
 
+exports[`dom-rendering event onboard-nsfFail should trigger correct DOM render [Custom state 0] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Get Some ETH</h1>
+    <p>Blockchain applications sometimes require Ether to perform various functions. You’ll need at least NaN Ether (ETH) for this application.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">I HAVE ENOUGH ETH
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-nsfFail should trigger correct DOM render [Custom state 1] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Get Some ETH</h1>
+    <p>Blockchain applications sometimes require Ether to perform various functions. You’ll need at least 12.3 Ether (ETH) for this application.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">I HAVE ENOUGH ETH
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
 exports[`dom-rendering event onboard-walletEnable should trigger correct DOM render 1`] = `
 "
     

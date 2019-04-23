@@ -102,11 +102,16 @@ const eventsToTest = {
     clickHandlers: new Set(['onClose'])
   },
   nsfFail: {
-    categories: ['activePreflight'],
+    categories: ['activePreflight', 'onboard'],
     params: { transaction: mockTxFactory() },
     customStates: [
       initialState,
-      { config: { messages: { nsfFail: () => 'nsfFail custom msg' } } }
+      {
+        config: {
+          minimumBalance: '12300000000000000000',
+          messages: { nsfFail: () => 'nsfFail custom msg' }
+        }
+      }
     ]
   },
   txRepeat: {
@@ -284,6 +289,7 @@ describe('dom-rendering', () => {
                   const closeBtn = state.iframeDocument.getElementsByClassName(
                     'bn-onboard-close'
                   )[0]
+                  if (!closeBtn) return // make sure btn actually exists
                   closeBtn.click()
                   expect(onCloseMock).toHaveBeenCalledTimes(1)
                 })
@@ -309,6 +315,7 @@ describe('dom-rendering', () => {
                   const defaultBtn = state.iframeDocument.getElementsByClassName(
                     'bn-btn'
                   )[0]
+                  if (!defaultBtn) return // make sure btn actually exists
                   defaultBtn.click()
                   expect(onClickMock).toHaveBeenCalledTimes(1)
                 })
