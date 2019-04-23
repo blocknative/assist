@@ -267,12 +267,7 @@ describe('dom-rendering', () => {
 
             // Test DOM elements are rendered
             test(`should trigger correct DOM render${storeDesc}${stateDesc}`, () => {
-              updateState(initialState)
-              updateState(customState)
-              createIframe(document, assistStyles)
-              if (Object.keys(customStore).length !== 0) {
-                Object.entries(customStore).forEach(([k, v]) => storeItem(k, v))
-              }
+              setTestEnv(customState, customStore)
               handleEvent({
                 categoryCode,
                 eventCode,
@@ -285,14 +280,7 @@ describe('dom-rendering', () => {
             if (testConfig.clickHandlers) {
               if (testConfig.clickHandlers.has('onClose')) {
                 test(`onClose should be called when close is clicked${storeDesc}${stateDesc}`, () => {
-                  updateState(initialState)
-                  updateState(customState)
-                  createIframe(document, assistStyles)
-                  if (Object.keys(customStore).length > 0) {
-                    Object.entries(customStore).forEach(([k, v]) =>
-                      storeItem(k, v)
-                    )
-                  }
+                  setTestEnv(customState, customStore)
                   const onCloseMock = jest.fn()
                   handleEvent(
                     {
@@ -315,14 +303,7 @@ describe('dom-rendering', () => {
 
               if (testConfig.clickHandlers.has('onClick')) {
                 test(`onClick should be called when the primary btn is clicked${storeDesc}${stateDesc}`, () => {
-                  updateState(initialState)
-                  updateState(customState)
-                  createIframe(document, assistStyles)
-                  if (Object.keys(customStore).length > 0) {
-                    Object.entries(customStore).forEach(([k, v]) =>
-                      storeItem(k, v)
-                    )
-                  }
+                  setTestEnv(customState, customStore)
                   const onClickMock = jest.fn()
                   handleEvent(
                     {
@@ -350,9 +331,14 @@ describe('dom-rendering', () => {
   })
 })
 
-// Between each test create a new iframe and reset to clean state
-beforeEach(() => {
-  // updateState(initialState)
+// Reset to a specified state and store
+// (not using beforeEach for this as it was behaiving strangely)
+const setTestEnv = (state, store) => {
   window.localStorage.clear()
-  // createIframe(document, assistStyles)
-})
+  updateState(initialState)
+  updateState(state)
+  createIframe(document, assistStyles)
+  if (Object.keys(store).length > 0) {
+    Object.entries(store).forEach(([k, v]) => storeItem(k, v))
+  }
+}
