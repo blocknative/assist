@@ -566,6 +566,42 @@ exports[`dom-rendering event activePreflight-walletFail should trigger correct D
   </div>"
 `;
 
+exports[`dom-rendering event activePreflight-walletLogin should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Login to MetaMask</h1>
+    <p>We’ve detected you are not logged into MetaMask. Please log in to continue using the blockchain enabled features of this application.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I’M LOGGED IN
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
 exports[`dom-rendering event activePreflight-welcomeUser should trigger correct DOM render [Storage: _assist_newUser='true'] [Custom state 0] 1`] = `
 "
     
@@ -1246,6 +1282,42 @@ exports[`dom-rendering event onboard-walletFail should trigger correct DOM rende
 	  </div>
 	
         
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-walletLogin should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Login to MetaMask</h1>
+    <p>We’ve detected you are not logged into MetaMask. Please log in to continue using the blockchain enabled features of this application.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I’M LOGGED IN
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
       </div>
     </div>
   </div>"
