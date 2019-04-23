@@ -989,3 +989,91 @@ exports[`dom-rendering event initialize-mobileBlocked should trigger correct DOM
     </div>
   </div>"
 `;
+
+exports[`dom-rendering event onboard-browserFail should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-browser-not-supported\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-alert\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+	  <img src=\\"[object Object]\\" alt=\\"BrowserNot Supported\\" srcset=\\"[object Object] 2x\\">
+  
+        <br><br>
+        <h1 class=\\"h4\\">This Browser is Not Supported</h1>
+        <p>This Dapp is not supported in Chrome. Please visit us in one of the following browsers. Thank You!</p>
+        <br>
+        
+    <p>
+      <a href=\\"https://www.google.com/chrome/\\" target=\\"_blank\\" class=\\"bn-btn bn-btn-primary bn-btn-outline text-center\\">
+      <img src=\\"[object Object]\\" alt=\\"Chrome Logo\\" srcset=\\"[object Object] 2x\\">
+      <br>
+      Chrome
+      </a>
+      <a href=\\"https://www.mozilla.org/en-US/firefox/\\" target=\\"_blank\\" class=\\"bn-btn bn-btn-primary bn-btn-outline text-center\\">
+      <img src=\\"[object Object]\\" alt=\\"Firefox Logo\\" srcset=\\"[object Object] 2x\\">
+      <br>
+      Firefox
+      </a>
+    </p>
+  <br>
+        
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-browserFail should trigger correct DOM render when passed inlineCustomMsgs 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-browser-not-supported\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-alert\\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+	  <img src=\\"[object Object]\\" alt=\\"BrowserNot Supported\\" srcset=\\"[object Object] 2x\\">
+  
+        <br><br>
+        <h1 class=\\"h4\\">This Browser is Not Supported</h1>
+        <p>This Dapp is not supported in Chrome. Please visit us in one of the following browsers. Thank You!</p>
+        <br>
+        
+    <p>
+      <a href=\\"https://www.google.com/chrome/\\" target=\\"_blank\\" class=\\"bn-btn bn-btn-primary bn-btn-outline text-center\\">
+      <img src=\\"[object Object]\\" alt=\\"Chrome Logo\\" srcset=\\"[object Object] 2x\\">
+      <br>
+      Chrome
+      </a>
+      <a href=\\"https://www.mozilla.org/en-US/firefox/\\" target=\\"_blank\\" class=\\"bn-btn bn-btn-primary bn-btn-outline text-center\\">
+      <img src=\\"[object Object]\\" alt=\\"Firefox Logo\\" srcset=\\"[object Object] 2x\\">
+      <br>
+      Firefox
+      </a>
+    </p>
+  <br>
+        
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;

@@ -8,7 +8,15 @@ import { state, updateState } from '../js/helpers/state'
 import assistStyles from '../css/styles.css'
 
 // Create an initial state to be passed in fresh to each test
-const initialState = Object.assign({}, state, { config: {} })
+const initialState = Object.assign({}, state, {
+  userAgent: {
+    browser: { name: 'Chrome', version: '73.0.3683.86' },
+    engine: { name: 'Blink' },
+    os: { name: 'Linux' },
+    platform: { type: 'desktop' }
+  },
+  config: {}
+})
 
 const mockTransaction = {
   id: 'cf7fc5a7-1498-419e-8bf9-654d06af5534',
@@ -20,15 +28,15 @@ const mockTransaction = {
 }
 
 /* Returns a mock transaction, optionally adding a nonce or startTime property.
- * - nonce should be added when the UI notification displays the transaction ID
- * - startTime should be added when the UI displays a clock with a timer (eg 5 sec)
+ * - nonce should be specified when the UI notification displays the transaction ID
+ * - startTime should be specified when the UI displays a clock with a timer (eg 5 sec)
  */
-const mockTxFactory = (nonceExpected, startTimeExpected) => {
+const mockTxFactory = ({ nonce, startTime } = {}) => {
   const MOCK_NONCE = 1235
   const MOCK_START_TIME = 1262264000000
   const additions = {}
-  if (nonceExpected) additions.nonce = MOCK_NONCE
-  if (startTimeExpected) additions.startTime = MOCK_START_TIME
+  if (nonce) additions.nonce = MOCK_NONCE
+  if (startTime) additions.startTime = MOCK_START_TIME
   return { ...mockTransaction, ...additions }
 }
 
@@ -40,6 +48,10 @@ const mockTxFactory = (nonceExpected, startTimeExpected) => {
  * }
  */
 const eventsToTest = {
+  browserFail: {
+    categories: ['onboard'],
+    clickHandlers: new Set(['onClose'])
+  },
   mobileBlocked: {
     categories: ['initialize'],
     clickHandlers: new Set(['onClose'])
@@ -70,29 +82,29 @@ const eventsToTest = {
   },
   txSent: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory(false, true) }
+    params: { transaction: mockTxFactory({ startTime: true }) }
   },
   txStall: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory(true, true) }
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) }
   },
   txPending: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory(true, true) }
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) }
   },
   txConfirmed: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory(true, true) },
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
     customState: { transactionQueue: [{ transaction: mockTransaction }] }
   },
   txConfirmedClient: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory(true, true) },
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
     customState: { transactionQueue: [{ transaction: mockTransaction }] }
   },
   txFailed: {
     categories: ['activeTransaction', 'activeContract'],
-    params: { transaction: mockTxFactory(true, true) }
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) }
   }
 }
 
