@@ -113,6 +113,7 @@ export function eventCodeToType(eventCode) {
     case 'txRepeat':
     case 'txAwaitingApproval':
     case 'txConfirmReminder':
+    case 'txCancel':
       return 'failed'
     case 'txConfirmed':
     case 'txConfirmedClient':

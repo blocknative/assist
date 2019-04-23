@@ -69,7 +69,8 @@ const eventToUI = {
     txConfirmedClient: notificationsUI,
     txStall: notificationsUI,
     txFailed: notificationsUI,
-    txSpeedUp: notificationsUI
+    txSpeedUp: notificationsUI,
+    txCancel: notificationsUI
   },
   activeContract: {
     txAwaitingApproval: notificationsUI,
@@ -82,7 +83,8 @@ const eventToUI = {
     txConfirmedClient: notificationsUI,
     txStall: notificationsUI,
     txFailed: notificationsUI,
-    txSpeedUp: notificationsUI
+    txSpeedUp: notificationsUI,
+    txCancel: notificationsUI
   }
 }
 
