@@ -254,7 +254,7 @@ describe('dom-rendering', () => {
               }
 
               if (testConfig.clickHandlers.has('onClick')) {
-                test('onClose should be called when the primary btn is clicked', () => {
+                test('onClick should be called when the primary btn is clicked', () => {
                   updateState(initialState)
                   updateState(customState)
                   createIframe(document, assistStyles)
