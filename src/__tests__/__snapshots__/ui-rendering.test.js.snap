@@ -424,6 +424,78 @@ exports[`dom-rendering event activeContract-txStall should trigger correct DOM r
 	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
 `;
 
+exports[`dom-rendering event activePreflight-networkFail should trigger correct DOM render [Custom state 0] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Wrong Network</h1>
+    <p>We’ve detected that you need to be on the local network for this application but you have MetaMask set to local. Please switch to the correct network.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK MY NETWORK
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event activePreflight-networkFail should trigger correct DOM render [Custom state 1] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Wrong Network</h1>
+    <p>We’ve detected that you need to be on the rinkeby network for this application but you have MetaMask set to kovan. Please switch to the correct network.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK MY NETWORK
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
 exports[`dom-rendering event activePreflight-nsfFail should trigger correct DOM render [Custom state 0] 1`] = `
 "
     
@@ -1284,6 +1356,78 @@ exports[`dom-rendering event onboard-browserFail should trigger correct DOM rend
     </p>
   <br>
         
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-networkFail should trigger correct DOM render [Custom state 0] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Wrong Network</h1>
+    <p>We’ve detected that you need to be on the local network for this application but you have MetaMask set to local. Please switch to the correct network.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK MY NETWORK
+      </a>
+    </p>
+  
+        <br>
+    <div class=\\"bn-onboarding-branding\\">
+      <p>Powered by
+      <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">
+      <img src=\\"[object Object]\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+      </a>
+      </p>
+    </div>
+  
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`dom-rendering event onboard-networkFail should trigger correct DOM render [Custom state 1] 1`] = `
+"
+    
+  <div class=\\"bn-onboard-modal-shade\\">
+    <div id=\\"bn-user-advanced\\" class=\\"bn-onboard\\">
+      <div class=\\"bn-onboard-modal bn-onboard-advanced \\">
+        <a href=\\"#\\" class=\\"bn-onboard-close\\">
+          <span class=\\"bn-onboard-close-x\\"></span>
+        </a>
+        
+				
+    <img src=\\"[object Object]\\" class=\\"bn-onboard-img\\" alt=\\"Blocknative\\" srcset=\\"[object Object] 2x\\">
+    <br>
+    <h1 class=\\"h4\\">Wrong Network</h1>
+    <p>We’ve detected that you need to be on the rinkeby network for this application but you have MetaMask set to kovan. Please switch to the correct network.</p>
+    <br>
+    <br>
+    <p class=\\"bn-onboard-button-section\\">
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK MY NETWORK
+      </a>
+    </p>
+  
+        <br>
     <div class=\\"bn-onboarding-branding\\">
       <p>Powered by
       <a href=\\"https://www.blocknative.com/\\" target=\\"_blank\\">

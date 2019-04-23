@@ -74,6 +74,14 @@ const eventsToTest = {
     categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick'])
   },
+  networkFail: {
+    categories: ['onboard', 'activePreflight'],
+    clickHandlers: new Set(['onClose', 'onClick']),
+    customStates: [
+      initialState,
+      { userCurrentNetworkId: 42, config: { networkId: 4 } }
+    ]
+  },
   welcomeUser: {
     categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick']),
