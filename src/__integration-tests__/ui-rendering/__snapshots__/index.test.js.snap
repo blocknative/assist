@@ -93,7 +93,7 @@ exports[`dom-rendering event activeContract-txConfirmed should trigger correct D
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -113,7 +113,7 @@ exports[`dom-rendering event activeContract-txConfirmed should trigger correct D
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -133,7 +133,7 @@ exports[`dom-rendering event activeContract-txConfirmedClient should trigger cor
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration bn-duration-hidden\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -153,7 +153,7 @@ exports[`dom-rendering event activeContract-txConfirmedClient should trigger cor
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration bn-duration-hidden\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -173,7 +173,7 @@ exports[`dom-rendering event activeContract-txFailed should trigger correct DOM 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -193,7 +193,7 @@ exports[`dom-rendering event activeContract-txFailed should trigger correct DOM 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -217,7 +217,7 @@ exports[`dom-rendering event activeContract-txPending should trigger correct DOM
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -241,7 +241,7 @@ exports[`dom-rendering event activeContract-txPending should trigger correct DOM
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -353,7 +353,7 @@ exports[`dom-rendering event activeContract-txSent should trigger correct DOM re
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -377,7 +377,7 @@ exports[`dom-rendering event activeContract-txSent should trigger correct DOM re
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -401,7 +401,7 @@ exports[`dom-rendering event activeContract-txSpeedUp should trigger correct DOM
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -425,7 +425,7 @@ exports[`dom-rendering event activeContract-txSpeedUp should trigger correct DOM
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -445,7 +445,7 @@ exports[`dom-rendering event activeContract-txStall should trigger correct DOM r
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -465,7 +465,7 @@ exports[`dom-rendering event activeContract-txStall should trigger correct DOM r
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1166,7 +1166,7 @@ exports[`dom-rendering event activeTransaction-txConfirmed should trigger correc
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1186,7 +1186,7 @@ exports[`dom-rendering event activeTransaction-txConfirmed should trigger correc
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1206,7 +1206,7 @@ exports[`dom-rendering event activeTransaction-txConfirmedClient should trigger 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration bn-duration-hidden\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1226,7 +1226,7 @@ exports[`dom-rendering event activeTransaction-txConfirmedClient should trigger 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration bn-duration-hidden\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1246,7 +1246,7 @@ exports[`dom-rendering event activeTransaction-txFailed should trigger correct D
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1266,7 +1266,7 @@ exports[`dom-rendering event activeTransaction-txFailed should trigger correct D
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1290,7 +1290,7 @@ exports[`dom-rendering event activeTransaction-txPending should trigger correct 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1314,7 +1314,7 @@ exports[`dom-rendering event activeTransaction-txPending should trigger correct 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1426,7 +1426,7 @@ exports[`dom-rendering event activeTransaction-txSent should trigger correct DOM
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1450,7 +1450,7 @@ exports[`dom-rendering event activeTransaction-txSent should trigger correct DOM
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1474,7 +1474,7 @@ exports[`dom-rendering event activeTransaction-txSpeedUp should trigger correct 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1498,7 +1498,7 @@ exports[`dom-rendering event activeTransaction-txSpeedUp should trigger correct 
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1518,7 +1518,7 @@ exports[`dom-rendering event activeTransaction-txStall should trigger correct DO
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
@@ -1538,7 +1538,7 @@ exports[`dom-rendering event activeTransaction-txStall should trigger correct DO
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
 					<i class=\\"bn-clock\\"></i>
-					<span class=\\"bn-duration-time\\">6 min</span>
+					<span class=\\"bn-duration-time\\">606 min</span>
 				</span>
 			</p>
 		</div>
