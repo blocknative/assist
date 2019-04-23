@@ -21,7 +21,7 @@ export const initialState = Object.assign({}, state, {
   config: {}
 })
 
-// Generates the suffix to append to tests that are
+// Generates the suffix to append to test names that are
 // run over multiple stores and/or states
 const generateDescriptionSuffix = (states, stateIndex, store, storeIndex) => {
   let storeDesc = ''
@@ -61,7 +61,7 @@ describe('dom-rendering', () => {
 
             // Test DOM elements are rendered as expected
             test(`should trigger correct DOM render${descSuffix}`, () => {
-              setTestEnv(customState, customStore)
+              resetEnv(customState, customStore)
               handleEvent({
                 categoryCode,
                 eventCode,
@@ -74,7 +74,7 @@ describe('dom-rendering', () => {
             if (testConfig.clickHandlers) {
               if (testConfig.clickHandlers.has('onClose')) {
                 test(`onClose should be called when close is clicked${descSuffix}`, () => {
-                  setTestEnv(customState, customStore)
+                  resetEnv(customState, customStore)
                   const onCloseMock = jest.fn()
                   handleEvent(
                     {
@@ -97,7 +97,7 @@ describe('dom-rendering', () => {
 
               if (testConfig.clickHandlers.has('onClick')) {
                 test(`onClick should be called when the primary btn is clicked${descSuffix}`, () => {
-                  setTestEnv(customState, customStore)
+                  resetEnv(customState, customStore)
                   const onClickMock = jest.fn()
                   handleEvent(
                     {
@@ -125,9 +125,10 @@ describe('dom-rendering', () => {
   })
 })
 
-// Reset to a base state and store, then create an iframe
-// (not using beforeEach for this as it was behaiving strangely..)
-const setTestEnv = (state, store) => {
+// Reset the environment to a specified state and localstorage,
+// then create a new iframe
+// (not using beforeEach for this as it was behaiving strangely)
+const resetEnv = (state, store) => {
   window.localStorage.clear()
   updateState(initialState)
   updateState(state)
