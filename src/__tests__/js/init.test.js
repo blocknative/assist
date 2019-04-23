@@ -59,7 +59,11 @@ test('Fails if we try to decorate without a web3 instance', () => {
 test('Does not delete any methods from the contract object when decorating', () => {
   const web3 = new Web3('ws://example.com')
   stateMock.state.web3Instance = web3
-  const assistWithWeb3 = da.init({ dappId: 'something', web3 })
+  stateMock.state.config = {}
+  const assistWithWeb3 = da.init({
+    dappId: 'something',
+    web3
+  })
   const contract = new web3.eth.Contract(
     abi,
     '0x0000000000000000000000000000000000000000'
