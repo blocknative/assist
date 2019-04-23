@@ -36,6 +36,19 @@ export default {
     categories: ['onboard'],
     clickHandlers: new Set(['onClose'])
   },
+  txSpeedUp: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
+    customStates: [
+      {
+        transactionQueue: [{ transaction: mockTransaction }]
+      },
+      {
+        transactionQueue: [{ transaction: mockTransaction }],
+        config: { messages: { txSpeedUp: () => 'txSpeedUp custom msg' } }
+      }
+    ]
+  },
   walletFail: {
     categories: ['onboard', 'activePreflight'],
     customStores: [{ _assist_newUser: 'true' }],
