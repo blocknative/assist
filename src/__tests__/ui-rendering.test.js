@@ -19,8 +19,6 @@ const initialState = Object.assign({}, state, {
   config: {}
 })
 
-const emptyStorageSetup = [['_NULL', 'null']]
-
 const mockTransaction = {
   id: 'cf7fc5a7-1498-419e-8bf9-654d06af5534',
   gas: '54707',
@@ -48,8 +46,8 @@ const mockTxFactory = ({ nonce, startTime } = {}) => {
  *   categories: ['categoryCode1', 'categoryCode2', ...], // tests run for every category
  *   params: {}, // config information passed as first param for event
  *   clickHandlers: new Set(['onClose', ...]) // OPTIONAL: specify any clickHandlers
- *   customStorage: [[key, value]] // OPTIONAL: specify different storage scenarios to test
- *   customState: [state1, state2, ...] // OPTIONAL: specify the states the tests should be done under
+ *   customStores: [store1, store2, ...] // OPTIONAL: specify storage scenarios to test
+ *   customState: [state1, state2, ...] // OPTIONAL: specify states to test
  * }
  */
 const eventsToTest = {
@@ -59,7 +57,7 @@ const eventsToTest = {
   },
   walletFail: {
     categories: ['onboard', 'activePreflight'],
-    customStorage: [['_assist_newUser', 'true']],
+    customStores: [{ _assist_newUser: 'true' }],
     clickHandlers: new Set(['onClose', 'onClick'])
   },
   walletLogin: {
@@ -68,7 +66,7 @@ const eventsToTest = {
   },
   newOnboardComplete: {
     categories: ['onboard', 'activePreflight'],
-    customStorage: [['_assist_newUser', 'true']],
+    customStores: [{ _assist_newUser: 'true' }],
     clickHandlers: new Set(['onClose', 'onClick']),
     customStates: [
       initialState,
@@ -100,7 +98,7 @@ const eventsToTest = {
   welcomeUser: {
     categories: ['onboard', 'activePreflight'],
     clickHandlers: new Set(['onClose', 'onClick']),
-    customStorage: [['_assist_newUser', 'true']],
+    customStores: [{ _assist_newUser: 'true' }],
     customStates: [
       initialState,
       {
@@ -244,23 +242,22 @@ const eventsToTest = {
 describe('dom-rendering', () => {
   // Test each eventCode
   Object.entries(eventsToTest).forEach(([eventCode, testConfig]) => {
-    // Test each events category
+    // Test each event category
     testConfig.categories.forEach(categoryCode => {
       const {
         params,
         customStates = [initialState],
-        customStorage = emptyStorageSetup
+        customStores = [{}]
       } = testConfig
       describe(`event ${categoryCode}-${eventCode}`, () => {
-        // Test each specified storage scenario
-        customStorage.forEach(store => {
-          // Test each specified state scenario
+        // Test each storage scenario
+        customStores.forEach((customStore, customStoreIndex) => {
+          // Test each state scenario
           customStates.forEach((customState, customStateIndex) => {
-            const [itemName, value] = store
             // Get custom storage description
             let storeDesc = ''
-            if (itemName !== '_NULL') {
-              storeDesc = ` [Storage: ${itemName}='${value}']`
+            if (Object.keys(customStore).length > 0) {
+              storeDesc = ` [Storage: ${customStoreIndex}]`
             }
             // Get custom state description
             let stateDesc = ''
@@ -273,7 +270,9 @@ describe('dom-rendering', () => {
               updateState(initialState)
               updateState(customState)
               createIframe(document, assistStyles)
-              if (store) storeItem(itemName, value)
+              if (Object.keys(customStore).length !== 0) {
+                Object.entries(customStore).forEach(([k, v]) => storeItem(k, v))
+              }
               handleEvent({
                 categoryCode,
                 eventCode,
@@ -289,7 +288,11 @@ describe('dom-rendering', () => {
                   updateState(initialState)
                   updateState(customState)
                   createIframe(document, assistStyles)
-                  if (store) storeItem(itemName, value)
+                  if (Object.keys(customStore).length > 0) {
+                    Object.entries(customStore).forEach(([k, v]) =>
+                      storeItem(k, v)
+                    )
+                  }
                   const onCloseMock = jest.fn()
                   handleEvent(
                     {
@@ -315,7 +318,11 @@ describe('dom-rendering', () => {
                   updateState(initialState)
                   updateState(customState)
                   createIframe(document, assistStyles)
-                  if (store) storeItem(itemName, value)
+                  if (Object.keys(customStore).length > 0) {
+                    Object.entries(customStore).forEach(([k, v]) =>
+                      storeItem(k, v)
+                    )
+                  }
                   const onClickMock = jest.fn()
                   handleEvent(
                     {
