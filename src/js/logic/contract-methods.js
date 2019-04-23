@@ -84,60 +84,62 @@ export function modernSend(method, name, args) {
   return returnObject
 }
 
-export async function legacyCall(method, name, allArgs, argsLength) {
-  const { callback, args, txObject, defaultBlock } = separateArgs(
-    allArgs,
-    argsLength
-  )
+export function legacyCall(method, name, allArgs, argsLength) {
+  return new Promise(async (resolve, reject) => {
+    const { callback, args, txObject, defaultBlock } = separateArgs(
+      allArgs,
+      argsLength
+    )
 
-  if (state.mobileDevice && state.config.mobileBlocked) {
-    handleEvent(
-      {
-        eventCode: 'mobileBlocked',
-        categoryCode: 'activePreflight'
-      },
-      {
-        onClose: () => {
-          const errorObj = new Error('User is on a mobile device')
-          errorObj.eventCode = 'mobileBlocked'
-          callback && callback(errorObj)
+    if (state.mobileDevice && state.config.mobileBlocked) {
+      handleEvent(
+        {
+          eventCode: 'mobileBlocked',
+          categoryCode: 'activePreflight'
+        },
+        {
+          onClose: () => {
+            const errorObj = new Error('User is on a mobile device')
+            errorObj.eventCode = 'mobileBlocked'
+            handleError({ resolve, reject, callback })(errorObj)
+          }
         }
+      )
+
+      return resolve()
+    }
+
+    // Only promisify method if it isn't a truffle contract
+    method = state.config.truffleContract ? method : promisify(method)
+
+    const result = await method(...args, txObject, defaultBlock).catch(
+      errorObj => {
+        handleEvent({
+          eventCode: 'contractQueryFail',
+          categoryCode: 'activeContract',
+          contract: {
+            methodName: name,
+            parameters: args
+          },
+          reason: errorObj.message || errorObj
+        })
+
+        handleError({ resolve, reject, callback })(errorObj)
       }
     )
 
-    return
-  }
-
-  const result = await promisify(method.call)(
-    ...args,
-    txObject,
-    defaultBlock
-  ).catch(errorObj => {
     handleEvent({
-      eventCode: 'contractQueryFail',
+      eventCode: 'contractQuery',
       categoryCode: 'activeContract',
       contract: {
         methodName: name,
-        parameters: args
-      },
-      reason: errorObj.message || errorObj
+        parameters: args,
+        result: JSON.stringify(result)
+      }
     })
 
-    callback && callback(errorObj)
-  })
-
-  if (result) {
     callback && callback(null, result)
-  }
-
-  handleEvent({
-    eventCode: 'contractQuery',
-    categoryCode: 'activeContract',
-    contract: {
-      methodName: name,
-      parameters: args,
-      result: JSON.stringify(result)
-    }
+    return resolve(result)
   })
 }
 
@@ -147,10 +149,14 @@ export async function legacySend(method, name, allArgs, argsLength) {
     argsLength
   )
 
-  await sendTransaction(
+  const sendMethod = state.config.truffleContract
+    ? method.sendTransaction
+    : promisify(method)
+
+  return sendTransaction(
     'activeContract',
     txObject,
-    promisify(method.sendTransaction),
+    sendMethod,
     callback,
     inlineCustomMsgs,
     method,
