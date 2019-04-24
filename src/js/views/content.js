@@ -266,5 +266,5 @@ export const transactionMsgs = {
   txSpeedUp: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has been sped up`,
   txCancel: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has been canceled`
+    `Your transaction ID: ${transaction.nonce} is being canceled`
 }

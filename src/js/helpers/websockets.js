@@ -148,7 +148,7 @@ export function handleSocketMessage(msg) {
         txObj = updateTransactionInQueue(transaction.id, { status: 'failed' })
 
         handleEvent({
-          eventCode,
+          eventCode: 'txFailed',
           categoryCode: 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
