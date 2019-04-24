@@ -11,7 +11,8 @@ export function handleEvent(eventObj, clickHandlers) {
     eventCode === 'txPool' ||
     eventCode === 'txConfirmed' ||
     eventCode === 'txFailed' ||
-    eventCode === 'txSpeedUp'
+    eventCode === 'txSpeedUp' ||
+    eventCode === 'txCancel'
 
   // If not a server event then log it
   !serverEvent && lib.logEvent(eventObj)
