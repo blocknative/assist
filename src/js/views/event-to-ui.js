@@ -16,7 +16,10 @@ import {
   setNotificationsHeight,
   startTimerInterval,
   removeAllNotifications,
-  positionElement
+  positionElement,
+  handleTouchStart,
+  handleTouchMove,
+  handleTouchEnd
 } from './dom'
 
 import { showIframe } from '../helpers/iframe'
@@ -231,11 +234,39 @@ function notificationsUI({
     createElement(
       'li',
       `bn-notification bn-${type} bn-${eventCode} bn-${id} ${
-        position.includes('Left') ? 'bn-right-border' : ''
+        state.mobileDevice
+          ? 'bn-top-border'
+          : position.includes('Left')
+          ? 'bn-right-border'
+          : ''
       }`,
       notificationContent(type, message, { startTime, showTime, timeStamp })
     )
   )
+
+  if (state.mobileDevice) {
+    notification.appendChild(createTransactionBranding())
+
+    const movementReference = {
+      translateY: 0
+    }
+
+    notification.addEventListener(
+      'touchstart',
+      handleTouchStart(movementReference),
+      false
+    )
+    notification.addEventListener(
+      'touchmove',
+      handleTouchMove(notification, movementReference),
+      false
+    )
+    notification.addEventListener(
+      'touchend',
+      handleTouchEnd(notification, movementReference),
+      false
+    )
+  }
 
   notificationsList.appendChild(notification)
 
@@ -243,11 +274,15 @@ function notificationsUI({
     notificationsScroll.appendChild(notificationsList)
 
     if (position.includes('top')) {
-      notificationsContainer.appendChild(blockNativeBrand)
+      if (!state.mobileDevice) {
+        notificationsContainer.appendChild(blockNativeBrand)
+      }
       notificationsContainer.appendChild(notificationsScroll)
     } else {
       notificationsContainer.appendChild(notificationsScroll)
-      notificationsContainer.appendChild(blockNativeBrand)
+      if (!state.mobileDevice) {
+        notificationsContainer.appendChild(blockNativeBrand)
+      }
     }
     state.iframeDocument.body.appendChild(notificationsContainer)
     showElement(notificationsContainer, timeouts.showElement)

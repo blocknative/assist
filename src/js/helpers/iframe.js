@@ -1,9 +1,11 @@
 import { updateState, state } from './state'
 import { positionElement } from '../views/dom'
 
+import assistStyles from '../../css/styles.css'
+import mediaQueries from '../../css/media-queries.css'
 import darkModeStyles from '../../css/dark-mode.css'
 
-export function createIframe(browserDocument, assistStyles, style = {}) {
+export function createIframe(browserDocument, style = {}) {
   const { darkMode, css } = style
 
   const initialIframeContent = `
@@ -11,6 +13,9 @@ export function createIframe(browserDocument, assistStyles, style = {}) {
       <head>
         <style>
           ${assistStyles}
+        </style>
+        <style>
+          ${mediaQueries}
         </style>
         <style>
           ${darkMode ? darkModeStyles : ''}

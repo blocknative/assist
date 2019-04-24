@@ -95,6 +95,7 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -213,7 +214,7 @@ b {
 
 body {
   font-family: 'Source Sans Pro', 'Open Sans', 'Helvetica Neue', Arial,
-  sans-serif;
+    sans-serif;
 }
 
 .clearfix::after {
@@ -406,6 +407,8 @@ img.bn-onboard-img {
 /* Notifications */
 
 #blocknative-notifications {
+  display: flex;
+  width: 100%;
   position: fixed;
   opacity: 0;
   padding: 10px;
@@ -416,22 +419,35 @@ img.bn-onboard-img {
   display: none;
 }
 
+.bn-notifications {
+  display: flex;
+  flex-flow: column nowrap;
+  list-style-type: none;
+  width: 100%;
+}
+
+.bn-notifications-scroll {
+  display: flex;
+  width: 100%;
+}
+
 .bn-notification {
+  display: flex;
+  width: 100%;
+  flex-flow: row nowrap;
   background: #fff;
-  border-left: 2px solid transparent;
   border-radius: 2px;
   padding: 13px 10px;
   text-align: left;
   margin-bottom: 5px;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
-  width: 320px; /* something to consider (changed from max-width) */
-  margin-left: 10px; /* keeps notification from bumping edge on mobile.*/
   opacity: 0;
   transition: transform 350ms ease-in-out, opacity 300ms linear;
 }
 
-ul.bn-notifications {
-  list-style-type: none;
+.bn-notification-info {
+  margin-left: 10px;
+  max-width: 80%;
 }
 
 .bn-notification.bn-progress {
@@ -454,12 +470,15 @@ li.bn-notification.bn-right-border {
   border-width: 0px 2px 0px 0px;
 }
 
+li.bn-notification.bn-top-border {
+  border-width: 2px 0px 0px 0px;
+}
+
 li.bn-notification.bn-right-border .bn-notification-info {
   margin: 0px 10px 0px 5px;
 }
 
 .bn-status-icon {
-  float: left;
   width: 18px;
   height: 18px;
   background-image: url('https://assist.blocknative.com/images/jJu8b0B.png');
@@ -506,9 +525,6 @@ li.bn-notification.bn-right-border .bn-notification-info {
   vertical-align: sub;
 }
 
-.bn-notification-info {
-  margin-left: 30px;
-}
 .bn-notification-meta {
   color: #aeaeae;
   font-size: 0.79em;

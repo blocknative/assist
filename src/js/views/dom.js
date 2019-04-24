@@ -152,12 +152,13 @@ export function notSupportedModal(type) {
         <a href="#" class="bn-onboard-close">
           <span class="bn-onboard-close-x"></span>
         </a>
-        ${notSupportedImage(`${type}${darkMode ? 'Light' : ''}`)}
+        ${notSupportedImage(type + darkMode ? 'Light' : '')}
         <br><br>
         <h1 class="h4">${info.heading}</h1>
         <p>${info.description()}</p>
         <br>
-        ${type === 'browser' ? `${browserLogos()}<br>` : ''}
+        ${type === 'browser' ? browserLogos() : ''}
+        <br>
         ${onboardBranding()}
       </div>
     </div>
@@ -352,7 +353,7 @@ export function notificationContent(type, message, time = {}) {
 					<i class="bn-clock"></i>
 					<span class="bn-duration-time">${elapsedTime}</span>
 				</span>
-			</p>
+      </p>
 		</div>
 	`
 }
@@ -393,7 +394,9 @@ export function showElement(element, timeout) {
 export function hideElement(element) {
   setTimeout(() => {
     element.style.opacity = '0'
-    element.style.transform = `translateX(${getPolarity()}600px)`
+    element.style.transform = `translate${
+      state.mobileDevice ? 'Y' : 'X'
+    }(${getPolarity()}${state.mobileDevice ? '150' : '600'}px)`
   }, timeouts.hideElement)
 }
 
@@ -416,7 +419,9 @@ function getPolarity() {
 }
 
 export function offsetElement(el) {
-  el.style.transform = `translate(${getPolarity()}600px)`
+  el.style.transform = `translate${
+    state.mobileDevice ? 'Y' : 'X'
+  }(${getPolarity()}${state.mobileDevice ? '150' : '600'}px)`
   return el
 }
 
@@ -424,8 +429,16 @@ export function positionElement(el) {
   const position =
     (state.config.style && state.config.style.notificationsPosition) || ''
 
-  el.style.left = position.includes('Left') ? '0px' : 'initial'
-  el.style.right = position.includes('Right') || !position ? '0px' : 'initial'
+  el.style.left = state.mobileDevice
+    ? 'initial'
+    : position.includes('Left')
+    ? '0px'
+    : 'initial'
+  el.style.right = state.mobileDevice
+    ? 'initial'
+    : position.includes('Right') || !position
+    ? '0px'
+    : 'initial'
   el.style.bottom = position.includes('bottom') || !position ? '0px' : 'initial'
   el.style.top = position.includes('top') ? '0px' : 'initial'
 
@@ -494,7 +507,7 @@ export function setNotificationsHeight() {
 
   resizeIframe({
     height: notificationsContainer.clientHeight + toolTipBuffer,
-    width: 371,
+    width: state.mobileDevice ? window.innerWidth : 371,
     transitionHeight: true
   })
 }
@@ -502,4 +515,53 @@ export function setNotificationsHeight() {
 function setHeight(el, overflow, height) {
   el.style['overflow-y'] = overflow
   el.style.height = height
+}
+
+export function handleTouchStart(movementReference) {
+  return e => {
+    const touch = e.changedTouches[0]
+    movementReference.startY = touch.pageY
+    movementReference.startTime = Date.now()
+
+    e.preventDefault()
+  }
+}
+
+export function handleTouchMove(notification, movementReference) {
+  return e => {
+    const { startY, translateY, startTime } = movementReference
+    const touch = e.changedTouches[0]
+    const distance = touch.pageY - startY
+    const elapsedTime = Date.now() - startTime
+
+    const newTranslateY = distance + translateY
+
+    if (newTranslateY < 30 && newTranslateY >= 0) {
+      notification.style.transform = `translateY(${newTranslateY}px)`
+      movementReference.translateY = translateY + distance
+    }
+
+    const validSwipe = elapsedTime <= timeouts.swipeTime && distance >= 40
+
+    if (validSwipe) {
+      removeNotification(notification)
+    }
+
+    e.preventDefault()
+  }
+}
+
+export function handleTouchEnd() {
+  return e => {
+    // const { startY, startTime } = movementReference
+    // const touch = e.changedTouches[0]
+    // const distance = touch.pageY - startY
+    // const elapsedTime = Date.now() - startTime
+    // const validSwipe = elapsedTime <= timeouts.swipeTime && distance >= 30
+    // if (!validSwipe) {
+    //   notification.style.transform = 'translateY(0)'
+    //   movementReference.translateY = 0
+    // }
+    // e.preventDefault()
+  }
 }

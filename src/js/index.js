@@ -22,7 +22,7 @@ import {
   removeItem,
   getItem
 } from './helpers/storage'
-import assistStyles from '../css/styles.css'
+
 import { version } from '../../package.json'
 
 function init(config) {
@@ -75,7 +75,7 @@ function init(config) {
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
   if (!state.iframe && !headlessMode) {
-    createIframe(document, assistStyles, style)
+    createIframe(document, style)
   }
 
   // Check if on mobile and mobile is blocked
@@ -208,22 +208,22 @@ function init(config) {
     }
 
     // If user is on mobile, warn that it isn't supported
-    if (state.mobileDevice) {
-      return new Promise((resolve, reject) => {
-        handleEvent(
-          { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
-          {
-            onClose: () => {
-              const errorObj = new Error('User is on a mobile device')
-              errorObj.eventCode = 'mobileBlocked'
-              reject(errorObj)
-            }
-          }
-        )
+    // if (state.mobileDevice) {
+    //   return new Promise((resolve, reject) => {
+    //     handleEvent(
+    //       { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
+    //       {
+    //         onClose: () => {
+    //           const errorObj = new Error('User is on a mobile device')
+    //           errorObj.eventCode = 'mobileBlocked'
+    //           reject(errorObj)
+    //         }
+    //       }
+    //     )
 
-        updateState({ validBrowser: false })
-      })
-    }
+    //     updateState({ validBrowser: false })
+    //   })
+    // }
 
     return new Promise(async (resolve, reject) => {
       storeItem('onboarding', 'true')
@@ -251,11 +251,6 @@ function init(config) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
       throw errorObj
-    }
-
-    // if user is on mobile, and mobile is allowed by Dapp then just pass the contract back
-    if (state.mobileDevice && !config.mobileBlocked) {
-      return contractObj
     }
 
     // Check if we have an instance of web3
