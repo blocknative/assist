@@ -163,6 +163,9 @@ function notificationsUI({
   inlineCustomMsgs,
   eventCode
 }) {
+  // treat txConfirmedClient as txConfirm
+  if (eventCode === 'txConfirmedClient') eventCode = 'txConfirmed'
+
   const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
   const timeStamp = formatTime(Date.now())
