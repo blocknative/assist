@@ -5,6 +5,7 @@
   "main": "lib/assist.min.js",
   "scripts": {
     "build": "yarn lint && yarn test && node build.js",
+    "build:dev": "node build.js",
     "lint": "eslint src/ --fix",
     "test": "jest"
   },

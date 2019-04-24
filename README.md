@@ -418,7 +418,7 @@ assistInstance.getState()
 
 `npm i`
 
-#### Yarn
+#### yarn
 
 `yarn`
 
@@ -428,7 +428,7 @@ assistInstance.getState()
 
 `npm test`
 
-#### Yarn
+#### yarn
 
 `yarn test`
 
@@ -438,6 +438,46 @@ assistInstance.getState()
 
 `npm run build`
 
-#### Yarn
+#### yarn
 
 `yarn build`
+
+### Developing locally
+
+Install an assist enabled version of the [uniswap](https://uniswap.exchange) Dapp locally
+
+```bash
+cd <dir-to-contain-uniswap-dir>
+git clone https://github.com/aaronbarnardsound/uniswap-frontend
+cd uniswap-frontend
+yarn
+```
+
+Link your local `assist` directory to the `uniswap-frontend`
+
+```bash
+cd <assist-dir>
+yarn link
+cd <uniswap-frontend-dir>
+yarn link bnc-assist
+```
+
+Run uniswap locally
+
+```bash
+yarn start:rinkeby
+```
+
+In a new terminal open your local `assist` project, make changes and build them
+
+```bash
+cd <assist-dir>
+yarn build:dev
+```
+
+Every time `yarn build:dev` completes the `uniswap` bundler will automatically detect the changes and reload the page with your changes
+
+#### Tips
+
+- Read more about `yarn link` [here](https://yarnpkg.com/lang/en/docs/cli/link/)
+- [npm-link-check](https://www.npmjs.com/package/npm-link-check) is a handy utility to quickly display linked modules
