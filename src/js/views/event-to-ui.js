@@ -68,7 +68,9 @@ const eventToUI = {
     txConfirmed: notificationsUI,
     txConfirmedClient: notificationsUI,
     txStall: notificationsUI,
-    txFailed: notificationsUI
+    txFailed: notificationsUI,
+    txSpeedUp: notificationsUI,
+    txCancel: notificationsUI
   },
   activeContract: {
     txAwaitingApproval: notificationsUI,
@@ -80,7 +82,9 @@ const eventToUI = {
     txConfirmed: notificationsUI,
     txConfirmedClient: notificationsUI,
     txStall: notificationsUI,
-    txFailed: notificationsUI
+    txFailed: notificationsUI,
+    txSpeedUp: notificationsUI,
+    txCancel: notificationsUI
   }
 }
 
@@ -159,6 +163,9 @@ function notificationsUI({
   inlineCustomMsgs,
   eventCode
 }) {
+  // treat txConfirmedClient as txConfirm
+  if (eventCode === 'txConfirmedClient') eventCode = 'txConfirmed'
+
   const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
   const timeStamp = formatTime(Date.now())
@@ -169,7 +176,9 @@ function notificationsUI({
   const hasTimer =
     eventCode === 'txPending' ||
     eventCode === 'txSent' ||
-    eventCode === 'txStall'
+    eventCode === 'txStall' ||
+    eventCode === 'txSpeedUp'
+
   const showTime =
     hasTimer || eventCode === 'txConfirmed' || eventCode === 'txFailed'
 
@@ -187,30 +196,22 @@ function notificationsUI({
     notificationsList = getByQuery('.bn-notifications')
 
     const notificationsNoRepeat = eventCodesNoRepeat.reduce(
-      (acc, eventCode) => [
-        ...acc,
-        ...Array.from(getAllByQuery(`.bn-${eventCode}`))
-      ],
+      (acc, eventCode) => [...acc, ...getAllByQuery(`.bn-${eventCode}`)],
       []
     )
 
     // remove all notifications we don't want to repeat
     removeAllNotifications(notificationsNoRepeat)
 
-    // due to delay in removing many notifications, need to make sure container size is right
-    if (notificationsNoRepeat.length > 4) {
-      setTimeout(setNotificationsHeight, timeouts.changeUI)
-    }
-
     // We want to keep the txRepeat notification if the new notification is a txRequest or txConfirmReminder
     const keepTxRepeatNotification =
       eventCode === 'txRequest' || eventCode === 'txConfirmReminder'
 
     const notificationsWithSameId = keepTxRepeatNotification
-      ? Array.from(getAllByQuery(`.bn-${id}`)).filter(
+      ? getAllByQuery(`.bn-${id}`).filter(
           n => !n.classList.contains('bn-txRepeat')
         )
-      : Array.from(getAllByQuery(`.bn-${id}`))
+      : getAllByQuery(`.bn-${id}`)
 
     // if notification with the same id we can remove it to be replaced with new status
     removeAllNotifications(notificationsWithSameId)
@@ -272,13 +273,13 @@ function notificationsUI({
   dismissButton.onclick = () => {
     intervalId && clearInterval(intervalId)
     removeNotification(notification)
-    setNotificationsHeight()
+    setTimeout(setNotificationsHeight, timeouts.changeUI)
   }
 
   if (type === 'complete') {
     setTimeout(() => {
       removeNotification(notification)
-      setNotificationsHeight()
+      setTimeout(setNotificationsHeight, timeouts.changeUI)
     }, timeouts.autoRemoveNotification)
   }
 }

@@ -1,6 +1,6 @@
 import { promisify } from 'bluebird'
 import { state, updateState } from './state'
-import { formatNumber, handleError, timeouts } from './utilities'
+import { formatNumber, handleWeb3Error, timeouts } from './utilities'
 
 const errorObj = new Error('undefined version of web3')
 errorObj.eventCode = 'initFail'
@@ -12,16 +12,6 @@ export const web3Functions = {
         return promisify(state.web3Instance.version.getNetwork)
       case '1.0':
         return state.web3Instance.eth.net.getId
-      default:
-        return () => Promise.reject(errorObj)
-    }
-  },
-  nonce: version => {
-    switch (version) {
-      case '0.2':
-        return promisify(state.web3Instance.eth.getTransactionCount)
-      case '1.0':
-        return state.web3Instance.eth.getTransactionCount
       default:
         return () => Promise.reject(errorObj)
     }
@@ -52,10 +42,14 @@ export const web3Functions = {
     switch (version) {
       case '0.2':
         return (contractMethod, parameters, txObject) =>
-          promisify(contractMethod.estimateGas)(...parameters, txObject)
+          state.config.truffleContract
+            ? contractMethod.estimateGas(...parameters, txObject)
+            : promisify(contractMethod.estimateGas)(...parameters, txObject)
       case '1.0':
         return (contractMethod, parameters, txObject) =>
-          contractMethod(...parameters).estimateGas(txObject)
+          state.config.truffleContract
+            ? contractMethod.estimateGas(...parameters, txObject)
+            : contractMethod(...parameters).estimateGas(txObject)
       default:
         return () => Promise.reject(errorObj)
     }
@@ -164,17 +158,12 @@ export function getNetworkId() {
   return web3Functions.networkId(version)()
 }
 
-export function getNonce(address) {
-  const version = state.web3Version && state.web3Version.slice(0, 3)
-  return web3Functions.nonce(version)(address)
-}
-
 export function getTransactionParams(
   txObject = {},
   contractMethod,
   contractEventObj
 ) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async resolve => {
     const version = state.web3Version && state.web3Version.slice(0, 3)
 
     // Sometimes value is in exponent notation and needs to be formatted
@@ -185,22 +174,22 @@ export function getTransactionParams(
     const value = txObject.value
       ? await web3Functions
           .bigNumber(version)(txObject.value)
-          .catch(handleError('web3', reject))
+          .catch(handleWeb3Error)
       : await web3Functions
           .bigNumber(version)('0')
-          .catch(handleError('web3', reject))
+          .catch(handleWeb3Error)
 
     const gasPrice = txObject.gasPrice
       ? await web3Functions
           .bigNumber(version)(txObject.gasPrice)
-          .catch(handleError('web3', reject))
+          .catch(handleWeb3Error)
       : await web3Functions
           .bigNumber(version)(
             await web3Functions
               .gasPrice(version)()
-              .catch(handleError('web3', reject))
+              .catch(handleWeb3Error)
           )
-          .catch(handleError('web3', reject))
+          .catch(handleWeb3Error)
 
     const gas = contractMethod
       ? await web3Functions
@@ -211,23 +200,23 @@ export function getTransactionParams(
                 contractEventObj.parameters,
                 txObject
               )
-              .catch(handleError('web3', reject))
+              .catch(handleWeb3Error)
           )
-          .catch(handleError('web3', reject))
+          .catch(handleWeb3Error)
       : await web3Functions
           .bigNumber(version)(
             await web3Functions
               .transactionGas(version)(txObject)
-              .catch(handleError('web3', reject))
+              .catch(handleWeb3Error)
           )
-          .catch(handleError('web3', reject))
+          .catch(handleWeb3Error)
 
     resolve({ value, gasPrice, gas })
   })
 }
 
-export function hasSufficientBalance({ value, gas, gasPrice }) {
-  return new Promise(async (resolve, reject) => {
+export function hasSufficientBalance({ value = 0, gas = 0, gasPrice = 0 }) {
+  return new Promise(async resolve => {
     const version = state.web3Version && state.web3Version.slice(0, 3)
 
     const gasCost = gas.mul(gasPrice)
@@ -235,15 +224,15 @@ export function hasSufficientBalance({ value, gas, gasPrice }) {
     const buffer = gasCost.div(
       await web3Functions
         .bigNumber(version)('10')
-        .catch(handleError('web3', reject))
+        .catch(handleWeb3Error)
     )
 
     const transactionCost = gasCost.add(value).add(buffer)
 
-    const balance = await getAccountBalance().catch(handleError('web3', reject))
+    const balance = await getAccountBalance().catch(handleWeb3Error)
     const accountBalance = await web3Functions
       .bigNumber(version)(balance)
-      .catch(handleError('web3', reject))
+      .catch(handleWeb3Error)
 
     const sufficientBalance = accountBalance.gt(transactionCost)
 
@@ -252,14 +241,14 @@ export function hasSufficientBalance({ value, gas, gasPrice }) {
 }
 
 export function getAccountBalance() {
-  return new Promise(async (resolve, reject) => {
-    const accounts = await getAccounts().catch(handleError('web3', reject))
-    updateState({ accountAddress: accounts[0] })
+  return new Promise(async resolve => {
+    const accounts = await getAccounts().catch(handleWeb3Error)
+    updateState({ accountAddress: accounts && accounts[0] })
 
     const version = state.web3Version && state.web3Version.slice(0, 3)
     const balance = await web3Functions
       .balance(version)(accounts[0])
-      .catch(handleError('web3', reject))
+      .catch(handleWeb3Error)
 
     resolve(balance)
   })
@@ -319,7 +308,7 @@ export function getCurrentProvider() {
 
 // Poll for a tx receipt
 export function waitForTransactionReceipt(txHash) {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     return checkForReceipt()
 
     function checkForReceipt() {
@@ -332,7 +321,10 @@ export function waitForTransactionReceipt(txHash) {
 
           return resolve(txReceipt)
         })
-        .catch(reject)
+        .catch(errorObj => {
+          handleWeb3Error(errorObj)
+          return resolve(null)
+        })
     }
   })
 }

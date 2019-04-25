@@ -5,14 +5,22 @@
 
 import * as events from '../../js/helpers/events'
 import eventToUi from '../../js/views/event-to-ui'
-import * as utils from '../../js/helpers/utilities'
+import * as transactionQueue from '../../js/helpers/transaction-queue'
 import * as stateHelper from '../../js/helpers/state'
 
 // This function tries to send something to the websocket, so we mock it
 events.lib.logEvent = jest.fn()
-utils.getTransactionObj = jest.fn(() => true)
+transactionQueue.getTxObjFromQueue = jest.fn(() => ({
+  transaction: { status: 'pending' }
+}))
 
-const serverEvents = ['txPending', 'txConfirmed', 'txFailed']
+const serverEvents = [
+  'txPending',
+  'txConfirmed',
+  'txFailed',
+  'txSpeedUp',
+  'txCancel'
+]
 const uiMockFunctions = {
   activeTransaction: serverEvents,
   activeContract: serverEvents

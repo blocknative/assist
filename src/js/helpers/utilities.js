@@ -1,42 +1,5 @@
 import uuid from 'uuid/v4'
-import { state } from './state'
 import { handleEvent } from './events'
-
-export function addTransactionToQueue(txObject) {
-  const { transactionQueue } = state
-  return [...transactionQueue, txObject]
-}
-
-export function removeTransactionFromQueue(txNonce) {
-  const { transactionQueue } = state
-  return transactionQueue.filter(txObj => txObj.transaction.nonce !== txNonce)
-}
-
-export function checkTransactionQueue(txNonce) {
-  const { transactionQueue } = state
-  return transactionQueue.find(txObj => txObj.transaction.nonce === txNonce)
-}
-
-export function getTransactionObj(txHash) {
-  const { transactionQueue } = state
-  return transactionQueue.find(txObj => txObj.transaction.hash === txHash)
-}
-
-export function nowInTxPool(txHash) {
-  const { transactionQueue } = state
-  const txObj = transactionQueue.find(
-    txObj => txObj.transaction.hash === txHash
-  )
-  txObj.transaction.inTxPool = true
-}
-
-export function isDuplicateTransaction({ value, to }) {
-  const { transactionQueue } = state
-
-  return transactionQueue.find(
-    txObj => txObj.transaction.value === value && txObj.transaction.to === to
-  )
-}
 
 // Nice time format
 export function formatTime(number) {
@@ -51,6 +14,22 @@ export function formatTime(number) {
 export function timeString(time) {
   const seconds = Math.floor(time / 1000)
   return seconds >= 60 ? `${Math.floor(seconds / 60)} min` : `${seconds} sec`
+}
+
+export function capitalize(str) {
+  const first = str.slice(0, 1)
+  const rest = str.slice(1)
+  return `${first.toUpperCase()}${rest}`
+}
+
+export function formatNumber(num) {
+  const numString = String(num)
+  if (numString.includes('+')) {
+    const exponent = numString.split('+')[1]
+    const precision = Number(exponent) + 1
+    return num.toPrecision(precision)
+  }
+  return num
 }
 
 function last(arr) {
@@ -69,6 +48,10 @@ export function first(arr) {
 function takeFirst(arr) {
   // mutates original arr
   return arr.splice(0, 1)[0]
+}
+
+export function createTransactionId() {
+  return uuid()
 }
 
 export function separateArgs(allArgs, argsLength) {
@@ -99,45 +82,16 @@ export function separateArgs(allArgs, argsLength) {
   }
 }
 
+export function argsEqual(args1, args2) {
+  return JSON.stringify(args1) === JSON.stringify(args2)
+}
+
 export function getOverloadedMethodKeys(inputs) {
   return inputs.map(input => input.type).join(',')
 }
 
 export function assistLog(log) {
   console.log('Assist:', log) // eslint-disable-line no-console
-}
-
-export function handleError(categoryCode, propagateError) {
-  return errorObj => {
-    const { message } = errorObj
-    handleEvent({
-      eventCode: 'errorLog',
-      categoryCode,
-      reason: message || errorObj
-    })
-
-    propagateError && propagateError(errorObj)
-  }
-}
-
-export function createTransactionId() {
-  return uuid()
-}
-
-export function capitalize(str) {
-  const first = str.slice(0, 1)
-  const rest = str.slice(1)
-  return `${first.toUpperCase()}${rest}`
-}
-
-export function formatNumber(num) {
-  const numString = String(num)
-  if (numString.includes('+')) {
-    const exponent = numString.split('+')[1]
-    const precision = Number(exponent) + 1
-    return num.toPrecision(precision)
-  }
-  return num
 }
 
 export function extractMessageFromError(message) {
@@ -150,6 +104,8 @@ export function eventCodeToType(eventCode) {
     case 'txRequest':
     case 'txPending':
     case 'txSent':
+    case 'txSpeedUp':
+    case 'txCancel':
       return 'progress'
     case 'txSendFail':
     case 'txStall':
@@ -235,4 +191,28 @@ export function stepToImageKey(step) {
     default:
       return null
   }
+}
+
+export function handleError(handlers = {}) {
+  return errorObj => {
+    const { callback, reject, resolve } = handlers
+
+    if (callback) {
+      callback(errorObj)
+      resolve()
+
+      return
+    }
+
+    reject(errorObj)
+  }
+}
+
+export function handleWeb3Error(errorObj) {
+  const { message } = errorObj
+  handleEvent({
+    eventCode: 'errorLog',
+    categoryCode: 'web3',
+    reason: message || errorObj
+  })
 }

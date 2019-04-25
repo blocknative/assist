@@ -1,12 +1,12 @@
 import { state, updateState } from './state'
 import { handleEvent } from './events'
 import { storeItem, getItem } from './storage'
+import { assistLog } from './utilities'
 import {
-  getTransactionObj,
-  removeTransactionFromQueue,
-  nowInTxPool,
-  assistLog
-} from './utilities'
+  updateTransactionInQueue,
+  getTxObjFromQueue,
+  removeTransactionFromQueue
+} from './transaction-queue'
 
 // Create websocket connection
 export function openWebsocketConnection() {
@@ -100,45 +100,64 @@ export function handleSocketMessage(msg) {
   }
 
   if (event && event.transaction) {
-    const { transaction } = event
-    if (transaction.status) {
-      const txObj = getTransactionObj(transaction.hash)
+    const { transaction, eventCode } = event
+    let txObj
 
-      if (!txObj) return
+    switch (transaction.status) {
+      case 'pending':
+        txObj = updateTransactionInQueue(transaction.id, {
+          status: 'pending',
+          nonce: transaction.nonce
+        })
 
-      switch (transaction.status) {
-        case 'pending':
-          nowInTxPool(transaction.hash)
-          handleEvent({
-            eventCode: 'txPending',
-            categoryCode: 'activeTransaction',
-            transaction: txObj.transaction,
-            contract: txObj.contract
+        handleEvent({
+          eventCode: eventCode === 'txPool' ? 'txPending' : eventCode,
+          categoryCode: 'activeTransaction',
+          transaction: txObj.transaction,
+          contract: txObj.contract,
+          inlineCustomMsgs: txObj.inlineCustomMsgs
+        })
+        break
+      case 'confirmed':
+        txObj = getTxObjFromQueue(transaction.id)
+
+        if (txObj.transaction.status === 'confirmed') {
+          txObj = updateTransactionInQueue(transaction.id, {
+            status: 'completed'
           })
-          break
-        case 'confirmed':
-          handleEvent({
-            eventCode: 'txConfirmed',
-            categoryCode: 'activeTransaction',
-            transaction: txObj.transaction,
-            contract: txObj.contract
+        } else {
+          txObj = updateTransactionInQueue(transaction.id, {
+            status: 'confirmed'
           })
-          updateState({
-            transactionQueue: removeTransactionFromQueue(
-              txObj.transaction.nonce
-            )
-          })
-          break
-        case 'failed':
-          handleEvent({
-            eventCode: 'txFailed',
-            categoryCode: 'activeTransaction',
-            transaction: txObj.transaction,
-            contract: txObj.contract
-          })
-          break
-        default:
-      }
+        }
+
+        handleEvent({
+          eventCode: 'txConfirmed',
+          categoryCode: 'activeTransaction',
+          transaction: txObj.transaction,
+          contract: txObj.contract,
+          inlineCustomMsgs: txObj.inlineCustomMsgs
+        })
+
+        if (txObj.transaction.status === 'completed') {
+          removeTransactionFromQueue(transaction.id)
+        }
+
+        break
+      case 'failed':
+        txObj = updateTransactionInQueue(transaction.id, { status: 'failed' })
+
+        handleEvent({
+          eventCode: 'txFailed',
+          categoryCode: 'activeTransaction',
+          transaction: txObj.transaction,
+          contract: txObj.contract,
+          inlineCustomMsgs: txObj.inlineCustomMsgs
+        })
+
+        removeTransactionFromQueue(transaction.id)
+        break
+      default:
     }
   }
 }

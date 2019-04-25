@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.5.2.
+The current version is 0.6.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-5-2/assist.js"></script>
+<script src="https://assist.blocknative.com/0-6-0/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-5-2/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-6-0/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -156,7 +156,8 @@ var config = {
     txRepeat: Function, // Warning to user that they might be repeating a transaction
     txAwaitingApproval: Function, // Warning to the user that they have a previous transaction awaiting approval
     txConfirmReminder: Function, // A warning to the user that their current transaction is still awaiting approval
-    txConfirmed: Function // Transaction is confirmed
+    txConfirmed: Function, // Transaction is confirmed
+    txSpeedUp: Function // The user has re-submitted a transaction with a higher gas price
   },
   images: {
     welcome: {
@@ -170,8 +171,10 @@ var config = {
   },
   style: {
     darkMode: Boolean, // Set Assist UI to dark mode
-    notificationsPosition: String // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
-  }
+    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+    css: String // Custom css string to overide Assist default styles
+  },
+  truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
 }
 ```
 

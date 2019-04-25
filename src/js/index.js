@@ -23,9 +23,7 @@ import {
   getItem
 } from './helpers/storage'
 import assistStyles from '../css/styles.css'
-
-// Library Version - if changing, also need to change in package.json
-const version = '0.5.2'
+import { version } from '../../package.json'
 
 function init(config) {
   updateState({ version })
@@ -288,7 +286,7 @@ function init(config) {
     const seenMethods = []
 
     const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
-      if (legacyWeb3) {
+      if (legacyWeb3 || state.config.truffleContract) {
         // if we have seen this key, then we have already dealt with it
         if (seenMethods.includes(key)) {
           return newContractObj
@@ -330,6 +328,11 @@ function init(config) {
           overloadedMethodKeys.forEach(key => {
             const method = contractObj[name][key]
 
+            if (!method) {
+              // no method, then overloaded methods not supported on this object
+              return
+            }
+
             newContractObj[name][key] = (...args) =>
               constant
                 ? legacyCall(method, name, args, argsLength)
@@ -346,9 +349,15 @@ function init(config) {
         }
       } else {
         if (key !== 'methods') {
-          newContractObj[key] = contractObj[key]
+          const methodAbiArray = abi.filter(method => method.name === key)
 
-          return newContractObj
+          // if the key doesn't point to a method or is an event, just copy it over
+          // this check is now needed to allow for truffle contract 1.0
+          if (!methodAbiArray[0] || methodAbiArray[0].type === 'event') {
+            newContractObj[key] = contractObj[key]
+
+            return newContractObj
+          }
         }
 
         const methodsKeys = Object.keys(contractObj[key])
@@ -409,13 +418,15 @@ function init(config) {
     if (!state.validApiKey) {
       const errorObj = new Error('Your api key is not valid')
       errorObj.eventCode = 'initFail'
-      return Promise.reject(errorObj)
+
+      throw errorObj
     }
 
     if (!state.supportedNetwork) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
-      return Promise.reject(errorObj)
+
+      throw errorObj
     }
 
     // Check if we have an instance of web3
@@ -425,34 +436,28 @@ function init(config) {
 
     // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
     if (state.mobileDevice && !state.config.mobileBlocked) {
-      return state.web3Instance.eth.sendTransaction(txObject)
+      return state.web3Instance.eth.sendTransaction(txObject, callback)
     }
 
     const sendMethod = state.legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
       : state.web3Instance.eth.sendTransaction
 
-    return new Promise(async (resolve, reject) => {
-      const txPromiseObj = await sendTransaction(
-        'activeTransaction',
-        txObject,
-        sendMethod,
-        callback,
-        inlineCustomMsgs
-      ).catch(errorObj => {
-        reject(errorObj)
-        callback && callback(errorObj)
-      })
-      resolve(txPromiseObj)
-    })
+    return sendTransaction(
+      'activeTransaction',
+      txObject,
+      sendMethod,
+      callback,
+      inlineCustomMsgs
+    )
   }
 }
 
 // GETSTATE FUNCTION //
 
 function getState() {
-  return new Promise(async (resolve, reject) => {
-    await checkUserEnvironment().catch(reject)
+  return new Promise(async resolve => {
+    await checkUserEnvironment()
     const {
       mobileDevice,
       validBrowser,

@@ -1,6 +1,7 @@
 import { state } from './state'
 import eventToUI from '../views/event-to-ui'
-import { networkName, timeouts, getTransactionObj } from './utilities'
+import { networkName, timeouts } from './utilities'
+import { getTxObjFromQueue } from './transaction-queue'
 import { openWebsocketConnection } from './websockets'
 import { getItem } from './storage'
 
@@ -9,16 +10,18 @@ export function handleEvent(eventObj, clickHandlers) {
   const serverEvent =
     eventCode === 'txPending' ||
     eventCode === 'txConfirmed' ||
-    eventCode === 'txFailed'
+    eventCode === 'txFailed' ||
+    eventCode === 'txSpeedUp' ||
+    eventCode === 'txCancel'
 
   // If not a server event then log it
   !serverEvent && lib.logEvent(eventObj)
 
-  // if the tx is not in the queue then it has been previously confirmed
-  // so just return and don't show UI
+  // If tx status is 'completed', UI has been already handled
   if (eventCode === 'txConfirmed' || eventCode === 'txConfirmedClient') {
-    const inTxQueue = getTransactionObj(eventObj.transaction.hash)
-    if (!inTxQueue) {
+    const txObj = getTxObjFromQueue(eventObj.transaction.id)
+
+    if (txObj.transaction.status === 'completed') {
       return
     }
   }
