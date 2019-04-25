@@ -8,7 +8,7 @@ import { getItem } from './storage'
 export function handleEvent(eventObj, clickHandlers) {
   const { eventCode, categoryCode } = eventObj
   const serverEvent =
-    eventCode === 'txPool' ||
+    eventCode === 'txPending' ||
     eventCode === 'txConfirmed' ||
     eventCode === 'txFailed' ||
     eventCode === 'txSpeedUp' ||

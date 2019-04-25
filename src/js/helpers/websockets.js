@@ -111,7 +111,7 @@ export function handleSocketMessage(msg) {
         })
 
         handleEvent({
-          eventCode,
+          eventCode: eventCode === 'txPool' ? 'txPending' : eventCode,
           categoryCode: 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
