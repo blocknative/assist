@@ -17,7 +17,7 @@ const defaultTimeout = eventCode => {
  * - returns:
  *     A function that when called will dismiss the notification
  */
-export default function userInitiatedNotify(eventCode, message, options) {
+export default function userInitiatedNotify(eventCode, message, customTimeout) {
   // Enforce assist must be initialized
   if (!state.iframe)
     throw new Error('assist must be initialized before calling notify')
@@ -32,7 +32,6 @@ export default function userInitiatedNotify(eventCode, message, options) {
     eventCode !== 'error'
   )
     throw new Error(`eventCode must be one of: ['success', 'pending', 'error']`)
-  const { customTimeout } = options
   // Validate customTimeout
   if (typeof customTimeout !== 'number')
     throw new Error('customTimeout must be a number')
