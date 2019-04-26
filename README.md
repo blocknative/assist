@@ -437,7 +437,7 @@ customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
 // Display a success notification for 1500ms
 assistInstance.notify('success', 'Operation was a success!', 1500);
 
-// Display a loading notification and dismiss it after 10000ms using the returned function
+// Display a pending notification and dismiss it after 10000ms using the returned function
 const dismiss = assistInstance.notify('pending', 'Loading data...', -1);
 setTimeout(dismiss, 10000);
 ```
