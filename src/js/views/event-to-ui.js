@@ -69,7 +69,8 @@ const eventToUI = {
     txConfirmedClient: notificationsUI,
     txStall: notificationsUI,
     txFailed: notificationsUI,
-    txSpeedUp: notificationsUI
+    txSpeedUp: notificationsUI,
+    txCancel: notificationsUI
   },
   activeContract: {
     txAwaitingApproval: notificationsUI,
@@ -82,7 +83,8 @@ const eventToUI = {
     txConfirmedClient: notificationsUI,
     txStall: notificationsUI,
     txFailed: notificationsUI,
-    txSpeedUp: notificationsUI
+    txSpeedUp: notificationsUI,
+    txCancel: notificationsUI
   },
   userInitiatedNotify: {
     success: notificationsUI,
@@ -167,6 +169,9 @@ function notificationsUI({
   eventCode,
   customTimeout
 }) {
+  // treat txConfirmedClient as txConfirm
+  if (eventCode === 'txConfirmedClient') eventCode = 'txConfirmed'
+
   const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
   const timeStamp = formatTime(Date.now())
@@ -203,11 +208,6 @@ function notificationsUI({
 
     // remove all notifications we don't want to repeat
     removeAllNotifications(notificationsNoRepeat)
-
-    // due to delay in removing many notifications, need to make sure container size is right
-    if (notificationsNoRepeat.length > 4) {
-      setTimeout(setNotificationsHeight, timeouts.changeUI)
-    }
 
     // We want to keep the txRepeat notification if the new notification is a txRequest or txConfirmReminder
     const keepTxRepeatNotification =
