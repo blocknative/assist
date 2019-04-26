@@ -16,9 +16,23 @@ const defaultTimeout = eventCode => {
  * - returns:
  *     A function that when called will dismiss the notification
  */
-export default function notify(eventCode, message, options) {
-  const id = uuid()
+export default function userInitiatedNotify(eventCode, message, options) {
+  // Validate message
+  if (!message || typeof message !== 'string')
+    throw new Error('Message is required')
+  // Validate eventCode
+  if (
+    eventCode !== 'success' &&
+    eventCode !== 'pending' &&
+    eventCode !== 'error'
+  )
+    throw new Error(`eventCode must be one of: ['success', 'pending', 'error']`)
   const { customTimeout } = options
+  // Validate customTimeout
+  if (typeof customTimeout !== 'number')
+    throw new Error('customTimeout must be a number')
+
+  const id = uuid()
   handleEvent({
     eventCode,
     categoryCode: 'userInitiatedNotify',
