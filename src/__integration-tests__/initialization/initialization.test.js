@@ -82,7 +82,6 @@ describe('init is called', () => {
         // wait for promises to resolve
         await new Promise(res => setImmediate(() => res()))
 
-        // console.log(state.iframeDocument.body.innerHTML)
         // iframe should exist in DOM
         expect(document.body.innerHTML.includes('iframe')).toBeTruthy()
         // iframe should display a modal
