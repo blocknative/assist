@@ -124,7 +124,7 @@ function sendTransaction(
 
     let txPromise
 
-    if (state.legacyWeb3) {
+    if (state.legacyWeb3 || state.config.truffleContract) {
       if (contractEventObj) {
         txPromise = sendTransactionMethod(
           ...contractEventObj.parameters,
@@ -189,6 +189,20 @@ function sendTransaction(
           return waitForTransactionReceipt(hash).then(() => {
             onTxReceipt(transactionId, categoryCode)
           })
+        })
+        .catch(async errorObj => {
+          onTxError(transactionId, errorObj, categoryCode)
+          handleError({ resolve, reject, callback })(errorObj)
+        })
+    } else if (state.config.truffleContract) {
+      txPromise
+        .then(async hash => {
+          onTxHash(transactionId, hash, categoryCode)
+
+          const receipt = await waitForTransactionReceipt(hash)
+          onTxReceipt(transactionId, categoryCode)
+          resolve({ receipt })
+          callback && callback(null, receipt)
         })
         .catch(async errorObj => {
           onTxError(transactionId, errorObj, categoryCode)
