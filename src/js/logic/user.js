@@ -17,7 +17,9 @@ import { timeouts, handleWeb3Error } from '../helpers/utilities'
 
 export function checkUserEnvironment() {
   return new Promise(async resolve => {
-    checkValidBrowser()
+    if (!state.mobileDevice) {
+      checkValidBrowser()
+    }
 
     checkForWallet()
 
@@ -65,7 +67,7 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       return
     }
 
-    if (getItem('_assist_newUser') === 'true') {
+    if (getItem('_assist_newUser') === 'true' && !state.mobileDevice) {
       if (!state.validBrowser) {
         handleEvent(
           {

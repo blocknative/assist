@@ -207,24 +207,6 @@ function init(config) {
       return Promise.reject(errorObj)
     }
 
-    // If user is on mobile, warn that it isn't supported
-    // if (state.mobileDevice) {
-    //   return new Promise((resolve, reject) => {
-    //     handleEvent(
-    //       { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
-    //       {
-    //         onClose: () => {
-    //           const errorObj = new Error('User is on a mobile device')
-    //           errorObj.eventCode = 'mobileBlocked'
-    //           reject(errorObj)
-    //         }
-    //       }
-    //     )
-
-    //     updateState({ validBrowser: false })
-    //   })
-    // }
-
     return new Promise(async (resolve, reject) => {
       storeItem('onboarding', 'true')
 
@@ -429,10 +411,10 @@ function init(config) {
       configureWeb3()
     }
 
-    // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
-    if (state.mobileDevice && !state.config.mobileBlocked) {
-      return state.web3Instance.eth.sendTransaction(txObject, callback)
-    }
+    // // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
+    // if (state.mobileDevice && !state.config.mobileBlocked) {
+    //   return state.web3Instance.eth.sendTransaction(txObject, callback)
+    // }
 
     const sendMethod = state.legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
