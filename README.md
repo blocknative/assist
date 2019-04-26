@@ -413,7 +413,7 @@ assistInstance.getState()
 
 ### `notify()`
 
-Allows the dev to trigger a custom UI notification
+Trigger a custom UI notification
 
 #### Parameters
 
@@ -423,7 +423,7 @@ Allows the dev to trigger a custom UI notification
 
 `customTimeout` - `Number`: Specify how many ms the notification should exist. Set to -1 for no timeout. 
 
-Default timeouts: { success: 2000ms, pending: 5000ms, error: 5000ms }
+customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
 
 #### Returns
 
@@ -437,7 +437,7 @@ Default timeouts: { success: 2000ms, pending: 5000ms, error: 5000ms }
 // Display a success notification for 1500ms
 assistInstance.notify('success', 'Operation was a success!', 1500);
 
-// Display a loading notification and dismiss it using the returned function after 10000ms
+// Display a loading notification and dismiss it after 10000ms using the returned function
 const dismiss = assistInstance.notify('pending', 'Loading data...', -1);
 setTimeout(dismiss, 10000);
 ```
