@@ -13,8 +13,10 @@ export function handleEvent(eventObj, clickHandlers) {
     eventCode === 'txFailed' ||
     eventCode === 'txSpeedUp'
 
-  // If not a server event then log it
-  !serverEvent && lib.logEvent(eventObj)
+  // Log everything that isn't a server event or user initiated notification
+  !serverEvent &&
+    categoryCode !== 'userInitiatedNotify' &&
+    lib.logEvent(eventObj)
 
   // If tx status is 'completed', UI has been already handled
   if (eventCode === 'txConfirmed' || eventCode === 'txConfirmedClient') {

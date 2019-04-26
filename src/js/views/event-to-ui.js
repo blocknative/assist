@@ -83,6 +83,11 @@ const eventToUI = {
     txStall: notificationsUI,
     txFailed: notificationsUI,
     txSpeedUp: notificationsUI
+  },
+  userInitiatedNotify: {
+    success: notificationsUI,
+    pending: notificationsUI,
+    error: notificationsUI
   }
 }
 
@@ -159,7 +164,8 @@ function notificationsUI({
   transaction = {},
   contract = {},
   inlineCustomMsgs,
-  eventCode
+  eventCode,
+  customTimeout
 }) {
   const { id, startTime } = transaction
   const type = eventCodeToType(eventCode)
@@ -276,11 +282,11 @@ function notificationsUI({
     setTimeout(setNotificationsHeight, timeouts.changeUI)
   }
 
-  if (type === 'complete') {
+  if (type === 'complete' || customTimeout) {
     setTimeout(() => {
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
-    }, timeouts.autoRemoveNotification)
+    }, customTimeout || timeouts.autoRemoveNotification)
   }
 }
 

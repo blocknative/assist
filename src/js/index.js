@@ -2,6 +2,7 @@ import '@babel/polyfill'
 import { promisify } from 'bluebird'
 import { state, updateState } from './helpers/state'
 import { handleEvent } from './helpers/events'
+import notify from './logic/user-initiated-notify'
 import {
   legacyCall,
   legacySend,
@@ -479,4 +480,4 @@ function getState() {
   })
 }
 
-export default { init }
+export default { init, notify }

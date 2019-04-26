@@ -399,7 +399,7 @@ export function hideElement(element) {
 
 export function removeElement(parent, element) {
   setTimeout(() => {
-    if (parent.contains(element)) {
+    if (parent && parent.contains(element)) {
       parent.removeChild(element)
       if (parent !== state.iframeDocument.body) {
         checkIfNotifications()
@@ -472,6 +472,8 @@ export function removeContainer() {
 
 export function setNotificationsHeight() {
   const scrollContainer = getByQuery('.bn-notifications-scroll')
+  // if no notifications to manipulate return
+  if (!scrollContainer) return
   const maxHeight = window.innerHeight
   const widgetHeight =
     scrollContainer.scrollHeight +

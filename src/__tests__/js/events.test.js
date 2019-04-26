@@ -70,7 +70,9 @@ test('Logs the event if it has not come from the server', () => {
   Object.keys(eventToUi).forEach(key => {
     Object.keys(eventToUi[key]).forEach(func => {
       // make sure we're not sending any events which could look like they've come from the server
-      if (serverEvents.indexOf(func) !== -1) return
+      // or were user initiated notifications
+      if (serverEvents.indexOf(func) !== -1 || key === 'userInitiatedNotify')
+        return
       eventObj = {
         categoryCode: key,
         eventCode: func,
