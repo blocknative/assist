@@ -9,7 +9,7 @@ const defaultTimeout = eventCode => {
   throw new Error('Invalid eventCode')
 }
 
-/* Allow the user to create custom notifications
+/* Allow the developer to spawn custom notifications
  * Returns a function that when called will dismiss the notification
  * - customTimeout:
  *     Overrides default timeout length. Set to -1 for no timeout.
