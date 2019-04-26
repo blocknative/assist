@@ -41,7 +41,7 @@ describe('init is called', () => {
       expect(spy).toHaveBeenCalledWith('unload', storeTransactionQueue)
       spy.mockRestore()
     })
-    test('event initState should be emitted asynchronously', async () => {
+    test('event initState should be emitted with expected payload', async () => {
       const handleEventSpy = jest.spyOn(events, 'handleEvent')
       da.init(config)
       const initState = await getState()
