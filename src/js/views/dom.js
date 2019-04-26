@@ -438,10 +438,12 @@ export function removeNotification(notification) {
   hideElement(notification)
   removeElement(notificationsList, notification)
   const scrollContainer = getByQuery('.bn-notifications-scroll')
-  setTimeout(
-    () => setHeight(scrollContainer, 'initial', 'auto'),
-    timeouts.changeUI
-  )
+  if (scrollContainer) {
+    setTimeout(
+      () => setHeight(scrollContainer, 'initial', 'auto'),
+      timeouts.changeUI
+    )
+  }
 }
 
 export function removeAllNotifications(notifications) {
