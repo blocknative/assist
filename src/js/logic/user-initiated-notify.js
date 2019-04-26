@@ -1,6 +1,5 @@
 import uuid from 'uuid/v4'
 import { handleEvent } from '../helpers/events'
-import { state } from '../helpers/state'
 import { getAllByQuery, removeNotification } from '../views/dom'
 
 const defaultTimeout = eventCode => {
@@ -18,10 +17,6 @@ const defaultTimeout = eventCode => {
  *     A function that when called will dismiss the notification
  */
 export default function userInitiatedNotify(eventCode, message, customTimeout) {
-  // Enforce assist must be initialized
-  if (!state.iframe)
-    throw new Error('assist must be initialized before calling notify')
-
   // Validate message
   if (!message || typeof message !== 'string')
     throw new Error('Message is required')

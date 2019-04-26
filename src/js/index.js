@@ -96,7 +96,8 @@ function init(config) {
     onboard,
     Contract,
     Transaction,
-    getState
+    getState,
+    notify
   }
 
   getState().then(state => {
@@ -480,4 +481,4 @@ function getState() {
   })
 }
 
-export default { init, notify }
+export default { init }
