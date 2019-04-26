@@ -18,8 +18,7 @@ const defaultTimeout = eventCode => {
  */
 export default function userInitiatedNotify(eventCode, message, customTimeout) {
   // Validate message
-  if (!message || typeof message !== 'string')
-    throw new Error('Message is required')
+  if (typeof message !== 'string') throw new Error('Message is required')
   // Validate eventCode
   if (
     eventCode !== 'success' &&
@@ -28,7 +27,7 @@ export default function userInitiatedNotify(eventCode, message, customTimeout) {
   )
     throw new Error(`eventCode must be one of: ['success', 'pending', 'error']`)
   // Validate customTimeout
-  if (typeof customTimeout !== 'number')
+  if (customTimeout && typeof customTimeout !== 'number')
     throw new Error('customTimeout must be a number')
 
   const id = uuid()
