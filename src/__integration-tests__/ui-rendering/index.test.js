@@ -71,10 +71,16 @@ describe('dom-rendering', () => {
               expect(state.iframeDocument.body.innerHTML).toMatchSnapshot()
             })
 
+            // Check that the iframe is visible and can be interacted with
+            test(`should be visible and respond to pointer events${descSuffix}`, () => {
+              expect(state.iframe.style.pointerEvents).toEqual('all')
+              expect(state.iframe.style['z-index']).toEqual('999')
+            })
+
             // Test clickHandlers
             if (testConfig.clickHandlers) {
               if (testConfig.clickHandlers.has('onClose')) {
-                test(`onClose should be called when close is clicked${descSuffix}`, () => {
+                test(`UI should be closed as expected called when close is clicked${descSuffix}`, () => {
                   resetEnv(customState, customStore)
                   const onCloseMock = jest.fn()
                   handleEvent(
@@ -93,6 +99,8 @@ describe('dom-rendering', () => {
                   if (!closeBtn) return // make sure btn actually exists
                   closeBtn.click()
                   expect(onCloseMock).toHaveBeenCalledTimes(1)
+                  expect(state.iframe.style.pointerEvents).toEqual('none')
+                  expect(state.iframe.style['z-index']).toEqual('initial')
                 })
               }
 
