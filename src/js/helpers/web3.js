@@ -215,7 +215,11 @@ export function getTransactionParams(
   })
 }
 
-export function hasSufficientBalance({ value = 0, gas = 0, gasPrice = 0 }) {
+export async function hasSufficientBalance({
+  value = 0,
+  gas = 0,
+  gasPrice = 0
+}) {
   return new Promise(async resolve => {
     const version = state.web3Version && state.web3Version.slice(0, 3)
 

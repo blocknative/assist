@@ -55,7 +55,7 @@ export function hideIframe() {
   state.iframe.style.pointerEvents = 'none'
 }
 
-export function resizeIframe({ height, width, transitionHeight }) {
+export async function resizeIframe({ height, width, transitionHeight }) {
   if (transitionHeight) {
     state.iframe.style.transition = 'height 200ms ease-in-out'
   } else {
