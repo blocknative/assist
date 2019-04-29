@@ -1,8 +1,9 @@
 import { promisify } from 'bluebird'
-import { state } from '../helpers/state'
-import { handleEvent } from '../helpers/events'
+import { state } from 'js/helpers/state'
+import { handleEvent } from 'js/helpers/events'
+import { separateArgs, handleError } from 'js/helpers/utilities'
+
 import sendTransaction from './send-transaction'
-import { separateArgs, handleError } from '../helpers/utilities'
 
 export function modernCall(method, name, args) {
   const innerMethod = method(...args).call

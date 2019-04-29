@@ -1,7 +1,7 @@
-import * as events from '../../js/helpers/events'
-import * as websocket from '../../js/helpers/websockets'
-import * as state from '../../js/helpers/state'
-import * as transactionQueue from '../../js/helpers/transaction-queue'
+import * as events from 'js/helpers/events'
+import * as websocket from 'js/helpers/websockets'
+import * as state from 'js/helpers/state'
+import * as transactionQueue from 'js/helpers/transaction-queue'
 
 transactionQueue.getTxObjFromQueue = jest.fn(() => ({
   transaction: { status: 'pending' }

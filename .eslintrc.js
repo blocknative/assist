@@ -1,7 +1,8 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
+    jest: true
   },
   extends: ['airbnb/base', 'plugin:prettier/recommended'],
   parserOptions: {
@@ -24,5 +25,12 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/no-cycle': 'off',
     'no-lonely-if': 'off'
+  },
+  settings: {
+    'import/resolver': {
+      'node': {
+        'paths': ['src']
+      }
+    }
   }
 }

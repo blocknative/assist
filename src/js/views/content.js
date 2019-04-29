@@ -1,5 +1,5 @@
-import { state } from '../helpers/state'
-import { capitalize, networkName } from '../helpers/utilities'
+import { state } from 'js/helpers/state'
+import { capitalize, networkName } from 'js/helpers/utilities'
 
 import welcome from '../../../lib/images/XUPOg7L.jpg'
 import welcome2x from '../../../lib/images/s8euD9T.jpg'
