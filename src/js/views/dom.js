@@ -1,12 +1,12 @@
-import { state } from 'js/helpers/state'
+import { state } from '~/js/helpers/state'
 import {
   capitalize,
   timeString,
   timeouts,
   stepToImageKey,
   first
-} from 'js/helpers/utilities'
-import { showIframe, hideIframe, resizeIframe } from 'js/helpers/iframe'
+} from '~/js/helpers/utilities'
+import { showIframe, hideIframe, resizeIframe } from '~/js/helpers/iframe'
 
 import {
   onboardHeading,

@@ -28,8 +28,8 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      'node': {
-        'paths': ['src']
+      'babel-plugin-root-import': {
+        rootPathSuffix: 'src'
       }
     }
   }

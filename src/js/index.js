@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
-import assistStyles from 'css/styles.css'
+import assistStyles from '~/css/styles.css'
 
 import { state, updateState } from './helpers/state'
 import { handleEvent } from './helpers/events'

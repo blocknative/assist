@@ -1,13 +1,13 @@
-import { state } from 'js/helpers/state'
-import { getItem } from 'js/helpers/storage'
-import { showIframe } from 'js/helpers/iframe'
+import { state } from '~/js/helpers/state'
+import { getItem } from '~/js/helpers/storage'
+import { showIframe } from '~/js/helpers/iframe'
 import {
   formatTime,
   eventCodeToStep,
   eventCodeToType,
   timeouts,
   assistLog
-} from 'js/helpers/utilities'
+} from '~/js/helpers/utilities'
 
 import {
   openModal,
