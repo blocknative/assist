@@ -1,6 +1,16 @@
-import { state } from '../helpers/state'
-import { handleEvent } from '../helpers/events'
-import { prepareForTransaction } from './user'
+import { state } from '~/js/helpers/state'
+import { handleEvent } from '~/js/helpers/events'
+import {
+  hasSufficientBalance,
+  waitForTransactionReceipt,
+  getTransactionParams
+} from '~/js/helpers/web3'
+import {
+  timeouts,
+  extractMessageFromError,
+  createTransactionId,
+  handleError
+} from '~/js/helpers/utilities'
 import {
   addTransactionToQueue,
   removeTransactionFromQueue,
@@ -9,18 +19,9 @@ import {
   isDuplicateTransaction,
   getTransactionsAwaitingApproval,
   isTransactionAwaitingApproval
-} from '../helpers/transaction-queue'
-import {
-  hasSufficientBalance,
-  waitForTransactionReceipt,
-  getTransactionParams
-} from '../helpers/web3'
-import {
-  timeouts,
-  extractMessageFromError,
-  createTransactionId,
-  handleError
-} from '../helpers/utilities'
+} from '~/js/helpers/transaction-queue'
+
+import { prepareForTransaction } from './user'
 
 function sendTransaction(
   categoryCode,

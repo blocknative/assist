@@ -1,11 +1,13 @@
-import { state } from '../helpers/state'
+import { state } from '~/js/helpers/state'
 import {
   capitalize,
   timeString,
   timeouts,
   stepToImageKey,
   first
-} from '../helpers/utilities'
+} from '~/js/helpers/utilities'
+import { showIframe, hideIframe, resizeIframe } from '~/js/helpers/iframe'
+
 import {
   onboardHeading,
   onboardDescription,
@@ -14,7 +16,6 @@ import {
   notSupported,
   onboardWarningMsg
 } from './content'
-import { showIframe, hideIframe, resizeIframe } from '../helpers/iframe'
 
 export function createElementString(type, className, innerHTML) {
   return `

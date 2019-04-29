@@ -1,5 +1,7 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
+import assistStyles from '~/css/styles.css'
+
 import { state, updateState } from './helpers/state'
 import { handleEvent } from './helpers/events'
 import notify from './logic/user-initiated-notify'
@@ -23,7 +25,6 @@ import {
   removeItem,
   getItem
 } from './helpers/storage'
-import assistStyles from '../css/styles.css'
 import { version } from '../../package.json'
 
 function init(config) {
