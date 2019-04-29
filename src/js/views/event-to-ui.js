@@ -1,5 +1,14 @@
-import { state } from '../helpers/state'
-import { getItem } from '../helpers/storage'
+import { state } from 'js/helpers/state'
+import { getItem } from 'js/helpers/storage'
+import { showIframe } from 'js/helpers/iframe'
+import {
+  formatTime,
+  eventCodeToStep,
+  eventCodeToType,
+  timeouts,
+  assistLog
+} from 'js/helpers/utilities'
+
 import {
   openModal,
   createElement,
@@ -18,17 +27,7 @@ import {
   removeAllNotifications,
   positionElement
 } from './dom'
-
-import { showIframe } from '../helpers/iframe'
-
 import { transactionMsgs } from './content'
-import {
-  formatTime,
-  eventCodeToStep,
-  eventCodeToType,
-  timeouts,
-  assistLog
-} from '../helpers/utilities'
 
 const eventToUI = {
   initialize: {

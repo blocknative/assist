@@ -1,15 +1,15 @@
 import Web3 from 'web3'
-import da from '../../js/index'
-import * as events from '../../js/helpers/events'
-import * as websocket from '../../js/helpers/websockets'
-import * as stateMock from '../../js/helpers/state'
-import * as iframeMock from '../../js/helpers/iframe'
+import da from 'js/index'
+import * as events from 'js/helpers/events'
+import * as websocket from 'js/helpers/websockets'
+import * as stateMock from 'js/helpers/state'
+import * as iframeMock from 'js/helpers/iframe'
 import abi from '../res/abi'
 
-jest.mock('../../js/helpers/web3')
-jest.mock('../../js/helpers/browser')
-jest.mock('../../js/helpers/state')
-jest.mock('../../js/helpers/iframe')
+jest.mock('js/helpers/web3')
+jest.mock('js/helpers/browser')
+jest.mock('js/helpers/state')
+jest.mock('js/helpers/iframe')
 
 events.handleEvent = jest.fn()
 
