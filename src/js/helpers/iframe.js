@@ -1,7 +1,7 @@
-import { updateState, state } from './state'
-import { positionElement } from '../views/dom'
+import { positionElement } from '~/js/views/dom'
+import darkModeStyles from '~/css/dark-mode.css'
 
-import darkModeStyles from '../../css/dark-mode.css'
+import { updateState, state } from './state'
 
 export function createIframe(browserDocument, assistStyles, style = {}) {
   const { darkMode, css } = style

@@ -25,5 +25,12 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/no-cycle': 'off',
     'no-lonely-if': 'off'
+  },
+  settings: {
+    'import/resolver': {
+      'babel-plugin-root-import': {
+        rootPathSuffix: 'src'
+      }
+    }
   }
 }

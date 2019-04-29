@@ -1,5 +1,5 @@
-import { state } from '../helpers/state'
-import { capitalize, networkName } from '../helpers/utilities'
+import { state } from '~/js/helpers/state'
+import { capitalize, networkName } from '~/js/helpers/utilities'
 
 import welcome from '../../../lib/images/XUPOg7L.jpg'
 import welcome2x from '../../../lib/images/s8euD9T.jpg'
@@ -261,8 +261,8 @@ export const transactionMsgs = {
     'Please confirm your transaction to continue (hint: the transaction window may be behind your browser)',
   txConfirmed: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has succeeded`,
-  txConfirmedClient: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has succeeded`,
   txSpeedUp: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has been sped up`
+    `Your transaction ID: ${transaction.nonce} has been sped up`,
+  txCancel: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} is being canceled`
 }

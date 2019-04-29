@@ -1,11 +1,13 @@
-import { state } from '../helpers/state'
+import { state } from '~/js/helpers/state'
 import {
   capitalize,
   timeString,
   timeouts,
   stepToImageKey,
   first
-} from '../helpers/utilities'
+} from '~/js/helpers/utilities'
+import { showIframe, hideIframe, resizeIframe } from '~/js/helpers/iframe'
+
 import {
   onboardHeading,
   onboardDescription,
@@ -14,7 +16,6 @@ import {
   notSupported,
   onboardWarningMsg
 } from './content'
-import { showIframe, hideIframe, resizeIframe } from '../helpers/iframe'
 
 export function createElementString(type, className, innerHTML) {
   return `
@@ -437,6 +438,11 @@ export function removeNotification(notification) {
   const notificationsList = getByQuery('.bn-notifications')
   hideElement(notification)
   removeElement(notificationsList, notification)
+  const scrollContainer = getByQuery('.bn-notifications-scroll')
+  setTimeout(
+    () => setHeight(scrollContainer, 'initial', 'auto'),
+    timeouts.changeUI
+  )
 }
 
 export function removeAllNotifications(notifications) {
@@ -473,22 +479,15 @@ export function removeContainer() {
 export function setNotificationsHeight() {
   const scrollContainer = getByQuery('.bn-notifications-scroll')
   const maxHeight = window.innerHeight
-  const widgetHeight =
-    scrollContainer.scrollHeight +
-    getById('bn-transaction-branding').clientHeight +
-    16
+  const brandingHeight = getById('bn-transaction-branding').clientHeight + 26
+  const widgetHeight = scrollContainer.scrollHeight + brandingHeight
 
   const tooBig = widgetHeight > maxHeight
 
   if (tooBig) {
-    scrollContainer.style['overflow-y'] = 'scroll'
-    scrollContainer.style['overflow-x'] = 'hidden'
-    scrollContainer.style.height =
-      maxHeight - (getById('bn-transaction-branding').clientHeight + 26)
+    setHeight(scrollContainer, 'scroll', maxHeight - brandingHeight)
   } else {
-    scrollContainer.style['overflow-y'] = 'initial'
-    scrollContainer.style['overflow-x'] = 'initial'
-    scrollContainer.style.height = 'auto'
+    setHeight(scrollContainer, 'initial', 'auto')
   }
 
   const notificationsContainer = getById('blocknative-notifications')
@@ -499,4 +498,9 @@ export function setNotificationsHeight() {
     width: 371,
     transitionHeight: true
   })
+}
+
+function setHeight(el, overflow, height) {
+  el.style['overflow-y'] = overflow
+  el.style.height = height
 }
