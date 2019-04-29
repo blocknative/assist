@@ -237,6 +237,7 @@ body {
   justify-content: center;
   align-items: center;
   opacity: 0;
+  padding: 1rem;
   transition: opacity 150ms ease-in-out;
 }
 
@@ -408,6 +409,7 @@ img.bn-onboard-img {
 
 #blocknative-notifications {
   display: flex;
+  flex-flow: column nowrap;
   width: 100%;
   position: fixed;
   opacity: 0;
@@ -447,7 +449,7 @@ img.bn-onboard-img {
 
 .bn-notification-info {
   margin-left: 10px;
-  max-width: 80%;
+  max-width: 90%;
 }
 
 .bn-notification.bn-progress {
@@ -468,10 +470,16 @@ img.bn-onboard-img {
 
 li.bn-notification.bn-right-border {
   border-width: 0px 2px 0px 0px;
+  flex-direction: row-reverse;
+  justify-content: space-between;
 }
 
 li.bn-notification.bn-top-border {
   border-width: 2px 0px 0px 0px;
+}
+
+li.bn-notification.bn-bottom-border {
+  border-width: 0px 0px 2px 0px;
 }
 
 li.bn-notification.bn-right-border .bn-notification-info {
@@ -535,7 +543,6 @@ li.bn-notification.bn-right-border .bn-notification-info {
 }
 
 a#bn-transaction-branding {
-  margin: 0 10px;
   padding-top: 10px;
   display: inline-block;
   width: 18px;
