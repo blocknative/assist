@@ -1,5 +1,5 @@
-import { positionElement } from 'js/views/dom'
-import darkModeStyles from 'css/dark-mode.css'
+import { positionElement } from '~/js/views/dom'
+import darkModeStyles from '~/css/dark-mode.css'
 
 import { updateState, state } from './state'
 

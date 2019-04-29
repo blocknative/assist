@@ -11,6 +11,12 @@ module.exports = {
   ],
   plugins: [
     [
+      'babel-plugin-root-import',
+      {
+        rootPathSuffix: 'src'
+      }
+    ],
+    [
       '@babel/plugin-transform-runtime',
       {
         corejs: false,

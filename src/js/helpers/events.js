@@ -1,4 +1,4 @@
-import eventToUI from 'js/views/event-to-ui'
+import eventToUI from '~/js/views/event-to-ui'
 
 import { state } from './state'
 import { networkName, timeouts } from './utilities'

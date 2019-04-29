@@ -1,7 +1,7 @@
 import { promisify } from 'bluebird'
-import { state } from 'js/helpers/state'
-import { handleEvent } from 'js/helpers/events'
-import { separateArgs, handleError } from 'js/helpers/utilities'
+import { state } from '~/js/helpers/state'
+import { handleEvent } from '~/js/helpers/events'
+import { separateArgs, handleError } from '~/js/helpers/utilities'
 
 import sendTransaction from './send-transaction'
 
