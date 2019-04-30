@@ -1,6 +1,6 @@
 import { WebSocket, Server } from 'mock-socket'
 
-import da from '../../js/index'
+import da from '~/js'
 import { state, updateState, initialState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
 import * as utilities from '~/js/helpers/utilities'
