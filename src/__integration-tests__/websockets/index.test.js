@@ -53,6 +53,7 @@ describe('a websocket connection is requested', () => {
       })
     })
   })
+
   describe('socket refuses to connect', () => {
     beforeEach(() => {
       websockets.openWebsocketConnection()
@@ -145,6 +146,7 @@ describe('assist is connected to a websocket', () => {
       handleEventSpy.mockRestore()
     })
   })
+
   describe('received message: [network not supported]', () => {
     const payload = {
       status: 'error',
@@ -177,6 +179,7 @@ describe('assist is connected to a websocket', () => {
       handleEventSpy.mockRestore()
     })
   })
+
   describe('received message: [checkDappId]', () => {
     const payload = { status: 'ok', event: { eventCode: 'checkDappId' } }
     beforeEach(() => {
@@ -189,6 +192,7 @@ describe('assist is connected to a websocket', () => {
       expect(state.supportedNetwork).toEqual(true)
     })
   })
+
   describe('received message with a pending transaction', () => {
     let payload
     let handleEventSpy
@@ -203,11 +207,11 @@ describe('assist is connected to a websocket', () => {
       contract: 'some-contract',
       inlineCustomMsgs: { '1': 'msg' }
     }
+    const existingTx = {
+      ...transaction,
+      status: 'submitted'
+    }
     beforeEach(() => {
-      const existingTx = {
-        ...transaction,
-        status: 'submitted'
-      }
       updateState({ transactionQueue: [{ ...txObj, transaction: existingTx }] })
       handleEventSpy = jest
         .spyOn(events, 'handleEvent')
@@ -247,6 +251,7 @@ describe('assist is connected to a websocket', () => {
       })
     })
   })
+
   describe('received message with a confirmed transaction', () => {
     const transaction = {
       status: 'confirmed',
@@ -324,6 +329,7 @@ describe('assist is connected to a websocket', () => {
       })
     })
   })
+
   describe('received message with a failed transaction', () => {
     let handleEventSpy
     const transaction = {
