@@ -554,10 +554,20 @@ a#bn-transaction-branding {
   -moz-transition: width 0.2s ease-out;
   -o-transition: width 0.2s ease-out;
   transition: width 0.2s ease-out;
+  align-self: flex-start;
+  margin: 0 10px;
 }
 
 a#bn-transaction-branding:hover {
   width: 75px;
+}
+
+.align-end {
+  align-self: flex-end;
+}
+
+.margin-top {
+  margin: 10px 10px;
 }
 
 /* Retina Settings */

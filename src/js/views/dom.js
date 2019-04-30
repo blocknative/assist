@@ -319,12 +319,13 @@ export function createTransactionBranding() {
   )
   blockNativeBrand.href = 'https://www.blocknative.com/'
   blockNativeBrand.target = '_blank'
-  blockNativeBrand.style['align-self'] = position.includes('Left')
-    ? 'flex-start'
-    : 'flex-end'
-  blockNativeBrand.style.margin = position.includes('top')
-    ? '10px 10px'
-    : '0 10px'
+  if (position.includes('Left')) {
+    blockNativeBrand.classList.add('align-end')
+  }
+
+  if (position.includes('top')) {
+    blockNativeBrand.classList.add('margin-top')
+  }
 
   return blockNativeBrand
 }
