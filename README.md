@@ -411,13 +411,13 @@ assistInstance.getState()
   })
 ```
 
-### `notify()`
+### `notify(type, message, customTimeout)`
 
 Trigger a custom UI notification
 
 #### Parameters
 
-`eventCode` - `String`: One of: ['success', 'pending', 'error'] (**Required**)
+`type` - `String`: One of: ['success', 'pending', 'error'] (**Required**)
 
 `message` - `String`: The message to display in the notification (**Required**)
 
