@@ -218,7 +218,7 @@ export default {
       {
         transactionQueue: [{ transaction: mockTransaction }],
         config: {
-          messages: { txConfirmedClient: () => 'txConfirmedClient custom msg' }
+          messages: { txConfirmed: () => 'txConfirmedClient custom msg' }
         }
       }
     ]
