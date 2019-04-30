@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4'
-import { handleEvent } from '../helpers/events'
-import { getAllByQuery, removeNotification } from '../views/dom'
+import { handleEvent } from '~/js/helpers/events'
+import { getAllByQuery, removeNotification } from '~/js/views/dom'
 
 const defaultTimeout = eventCode => {
   if (eventCode === 'success') return 2000
