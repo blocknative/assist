@@ -364,7 +364,6 @@ function init(config) {
         }
 
         const methodsKeys = Object.keys(contractObj[key])
-        const overloadedRegex = /[A-z]+\([a-z*A-Z*0-9*,*]+\)/g
 
         newContractObj.methods = abi.reduce((obj, methodAbi) => {
           const { name, type, constant } = methodAbi
@@ -384,9 +383,7 @@ function init(config) {
           const method = contractObj.methods[name]
 
           const overloadedMethodKeys = methodsKeys.filter(
-            methodKey =>
-              methodKey.split('(')[0] === name &&
-              overloadedRegex.test(methodKey)
+            methodKey => methodKey.split('(')[0] === name && methodKey !== name
           )
 
           obj[name] = (...args) =>
