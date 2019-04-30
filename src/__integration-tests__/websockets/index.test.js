@@ -264,6 +264,7 @@ describe('assist is connected to a websocket', () => {
       contract: 'some-contract',
       inlineCustomMsgs: { '1': 'msg' }
     }
+    const payload = { event: { transaction } }
     let existingTxStatus = 'pending'
     let handleEventSpy
     beforeEach(() => {
@@ -279,7 +280,6 @@ describe('assist is connected to a websocket', () => {
     afterEach(() => {
       handleEventSpy.mockRestore()
     })
-    const payload = { event: { transaction } }
     describe('tx status is confirmed', () => {
       beforeAll(() => {
         existingTxStatus = 'confirmed'
