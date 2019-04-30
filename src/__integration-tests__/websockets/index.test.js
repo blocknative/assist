@@ -103,7 +103,7 @@ describe('assist is connected to a websocket', () => {
         payload.connectionId
       )
     })
-    test(`state.connectionId !== connectionId from the server, update with val from server`, () => {
+    test(`if state.connectionId !== connectionId from the server, update with val from server`, () => {
       updateState({ connectionId: '456' })
       expect(state.connectionId).toEqual('456')
       mockServer.emit('message', JSON.stringify(payload))
@@ -179,17 +179,19 @@ describe('assist is connected to a websocket', () => {
   })
   describe('received message: [checkDappId]', () => {
     const payload = { status: 'ok', event: { eventCode: 'checkDappId' } }
-    test('state.validApiKey should be set to true', () => {
+    beforeEach(() => {
       mockServer.emit('message', JSON.stringify(payload))
+    })
+    test('state.validApiKey should be set to true', () => {
       expect(state.validApiKey).toEqual(true)
     })
     test('state.supportedNetwork should be set to true', () => {
-      mockServer.emit('message', JSON.stringify(payload))
       expect(state.supportedNetwork).toEqual(true)
     })
   })
   describe('received message with a pending transaction', () => {
     let payload
+    let handleEventSpy
     const transaction = {
       status: 'pending',
       nonce: 123,
@@ -207,17 +209,19 @@ describe('assist is connected to a websocket', () => {
         status: 'submitted'
       }
       updateState({ transactionQueue: [{ ...txObj, transaction: existingTx }] })
-    })
-    payload = { event: { transaction } }
-    test('tx status in transactionQueue should be set to pending', () => {
-      mockServer.emit('message', JSON.stringify(payload))
-      expect(state.transactionQueue[0].transaction.status).toEqual('pending')
-    })
-    test('the expected event should be emitted', () => {
-      const handleEventSpy = jest
+      handleEventSpy = jest
         .spyOn(events, 'handleEvent')
         .mockImplementation(() => {})
       mockServer.emit('message', JSON.stringify(payload))
+    })
+    afterEach(() => {
+      handleEventSpy.mockRestore()
+    })
+    payload = { event: { transaction } }
+    test('tx status in transactionQueue should be set to pending', () => {
+      expect(state.transactionQueue[0].transaction.status).toEqual('pending')
+    })
+    test('the expected event should be emitted', () => {
       expect(handleEventSpy).toHaveBeenCalledWith({
         eventCode: payload.eventCode,
         categoryCode: 'activeTransaction',
@@ -225,24 +229,22 @@ describe('assist is connected to a websocket', () => {
         contract: txObj.contract,
         inlineCustomMsgs: txObj.inlineCustomMsgs
       })
-      handleEventSpy.mockRestore()
     })
-    test(`if eventCode is 'txPool', emitted event should have eventCode 'txPending'`, () => {
-      const handleEventSpy = jest
-        .spyOn(events, 'handleEvent')
-        .mockImplementation(() => {})
-      payload = {
-        event: { transaction, eventCode: 'txPool' }
-      }
-      mockServer.emit('message', JSON.stringify(payload))
-      expect(handleEventSpy).toHaveBeenCalledWith({
-        eventCode: 'txPending',
-        categoryCode: 'activeTransaction',
-        transaction: txObj.transaction,
-        contract: txObj.contract,
-        inlineCustomMsgs: txObj.inlineCustomMsgs
+    describe('eventCode is txPool', () => {
+      beforeAll(() => {
+        payload = {
+          event: { transaction, eventCode: 'txPool' }
+        }
       })
-      handleEventSpy.mockRestore()
+      test(`emitted event should have eventCode 'txPending'`, () => {
+        expect(handleEventSpy).toHaveBeenCalledWith({
+          eventCode: 'txPending',
+          categoryCode: 'activeTransaction',
+          transaction: txObj.transaction,
+          contract: txObj.contract,
+          inlineCustomMsgs: txObj.inlineCustomMsgs
+        })
+      })
     })
   })
   describe('received message with a confirmed transaction', () => {
@@ -258,20 +260,29 @@ describe('assist is connected to a websocket', () => {
       inlineCustomMsgs: { '1': 'msg' }
     }
     let existingTxStatus = 'pending'
+    let handleEventSpy
     beforeEach(() => {
+      handleEventSpy = jest
+        .spyOn(events, 'handleEvent')
+        .mockImplementation(() => {})
       const existingTx = {
         ...transaction,
         status: existingTxStatus
       }
       updateState({ transactionQueue: [{ ...txObj, transaction: existingTx }] })
     })
+    afterEach(() => {
+      handleEventSpy.mockRestore()
+    })
     const payload = { event: { transaction } }
     describe('tx status is confirmed', () => {
       beforeAll(() => {
         existingTxStatus = 'confirmed'
       })
-      test(`tx should be removed from the txQueue`, () => {
+      beforeEach(() => {
         mockServer.emit('message', JSON.stringify(payload))
+      })
+      test(`tx should be removed from the txQueue`, () => {
         expect(
           state.transactionQueue.find(
             txObj => txObj.transaction.id === 'some-id'
@@ -279,10 +290,6 @@ describe('assist is connected to a websocket', () => {
         ).toBeFalsy()
       })
       test(`correct event should be emitted with tx status 'completed'`, () => {
-        const handleEventSpy = jest
-          .spyOn(events, 'handleEvent')
-          .mockImplementation(() => {})
-        mockServer.emit('message', JSON.stringify(payload))
         expect(handleEventSpy).toHaveBeenCalledWith({
           eventCode: 'txConfirmed',
           categoryCode: 'activeTransaction',
@@ -290,15 +297,16 @@ describe('assist is connected to a websocket', () => {
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs
         })
-        handleEventSpy.mockRestore()
       })
     })
     describe('tx status is NOT confirmed', () => {
       beforeAll(() => {
         existingTxStatus = 'some-status'
       })
-      test(`tx should remain in the txQueue`, () => {
+      beforeEach(() => {
         mockServer.emit('message', JSON.stringify(payload))
+      })
+      test(`tx should remain in the txQueue`, () => {
         expect(
           state.transactionQueue.find(
             txObj => txObj.transaction.id === 'some-id'
@@ -306,10 +314,6 @@ describe('assist is connected to a websocket', () => {
         ).toBeTruthy()
       })
       test(`correct event should be emitted with tx status 'confirmed'`, () => {
-        const handleEventSpy = jest
-          .spyOn(events, 'handleEvent')
-          .mockImplementation(() => {})
-        mockServer.emit('message', JSON.stringify(payload))
         expect(handleEventSpy).toHaveBeenCalledWith({
           eventCode: 'txConfirmed',
           categoryCode: 'activeTransaction',
@@ -317,11 +321,11 @@ describe('assist is connected to a websocket', () => {
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs
         })
-        handleEventSpy.mockRestore()
       })
     })
   })
   describe('received message with a failed transaction', () => {
+    let handleEventSpy
     const transaction = {
       status: 'failed',
       nonce: 123,
@@ -340,18 +344,20 @@ describe('assist is connected to a websocket', () => {
     const payload = { event: { transaction } }
     beforeEach(() => {
       updateState({ transactionQueue: [{ ...txObj, transaction: existingTx }] })
+      handleEventSpy = jest
+        .spyOn(events, 'handleEvent')
+        .mockImplementation(() => {})
+      mockServer.emit('message', JSON.stringify(payload))
+    })
+    afterEach(() => {
+      handleEventSpy.mockRestore()
     })
     test(`tx should be removed from the txQueue`, () => {
-      mockServer.emit('message', JSON.stringify(payload))
       expect(
         state.transactionQueue.find(txObj => txObj.transaction.id === 'some-id')
       ).toBeFalsy()
     })
     test(`correct event should be emitted with tx status 'failed'`, () => {
-      const handleEventSpy = jest
-        .spyOn(events, 'handleEvent')
-        .mockImplementation(() => {})
-      mockServer.emit('message', JSON.stringify(payload))
       expect(handleEventSpy).toHaveBeenCalledWith({
         eventCode: 'txFailed',
         categoryCode: 'activeTransaction',
@@ -359,7 +365,6 @@ describe('assist is connected to a websocket', () => {
         contract: txObj.contract,
         inlineCustomMsgs: txObj.inlineCustomMsgs
       })
-      handleEventSpy.mockRestore()
     })
   })
 })
