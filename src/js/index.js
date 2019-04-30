@@ -456,7 +456,7 @@ function init(config) {
 
 // GETSTATE FUNCTION //
 
-export function getState() {
+function getState() {
   return new Promise(async resolve => {
     await checkUserEnvironment()
     const {

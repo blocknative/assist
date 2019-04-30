@@ -4,7 +4,7 @@
  */
 
 import bowser from 'bowser'
-import da, { getState } from '../../js/index'
+import da from '../../js/index'
 import * as events from '../../js/helpers/events'
 import { state, initialState, updateState } from '../../js/helpers/state'
 
@@ -43,8 +43,8 @@ describe('init is called', () => {
     })
     test('event initState should be emitted with expected payload', async () => {
       const handleEventSpy = jest.spyOn(events, 'handleEvent')
-      da.init(config)
-      const initState = await getState()
+      const assistInstance = da.init(config)
+      const initState = await assistInstance.getState()
       expect(events.handleEvent).toHaveBeenCalledWith({
         eventCode: 'initState',
         categoryCode: 'initialize',
