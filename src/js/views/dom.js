@@ -319,12 +319,16 @@ export function createTransactionBranding() {
   )
   blockNativeBrand.href = 'https://www.blocknative.com/'
   blockNativeBrand.target = '_blank'
-  if (position.includes('Left')) {
-    blockNativeBrand.classList.add('align-end')
-  }
+  if (state.mobileDevice) {
+    blockNativeBrand.classList.add('mobile-margin')
+  } else {
+    if (position.includes('Left')) {
+      blockNativeBrand.classList.add('align-end')
+    }
 
-  if (position.includes('top')) {
-    blockNativeBrand.classList.add('margin-top')
+    if (position.includes('top')) {
+      blockNativeBrand.classList.add('margin-top')
+    }
   }
 
   return blockNativeBrand

@@ -562,12 +562,16 @@ a#bn-transaction-branding:hover {
   width: 75px;
 }
 
-.align-end {
+a#bn-transaction-branding.align-end {
   align-self: flex-end;
 }
 
-.margin-top {
+a#bn-transaction-branding.margin-top {
   margin: 10px 10px;
+}
+
+a#bn-transaction-branding.mobile-margin {
+  margin: 5px 5px;
 }
 
 /* Retina Settings */

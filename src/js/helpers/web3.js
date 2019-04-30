@@ -91,10 +91,7 @@ export const web3Functions = {
 export function configureWeb3(web3) {
   if (!web3) {
     web3 = window.web3 // eslint-disable-line prefer-destructuring
-    if (!web3) {
-      alert('a web3 enabled browser is needed to use this dapp')
-      return
-    }
+    // @TODO - if on mobile and no web3 then show mobile dapp browser modal
   }
 
   // If web3 has been prefaced with the default property, re-assign it
