@@ -28,10 +28,13 @@ describe('a websocket connection is requested', () => {
     beforeEach(() => {
       handleEventSpy = jest
         .spyOn(events, 'handleEvent')
-        .mockImplementationOnce(() => {})
+        .mockImplementation(() => {})
       window.localStorage.setItem('connectionId', connectionId)
       websockets.openWebsocketConnection()
       mockServer.emit('open')
+    })
+    afterEach(() => {
+      handleEventSpy.mockRestore()
     })
     test('state.pendingSocketConnection set to false', () => {
       expect(state.pendingSocketConnection).toEqual(false)
@@ -69,11 +72,12 @@ describe('a websocket connection is requested', () => {
     test('assistLog should be called with the error', () => {
       const assistLogSpy = jest
         .spyOn(utilities, 'assistLog')
-        .mockImplementationOnce(() => {})
+        .mockImplementation(() => {})
       expect(() => {
         websockets.openWebsocketConnection()
       }).toThrow()
       expect(assistLogSpy).toHaveBeenCalled()
+      assistLogSpy.mockRestore()
     })
   })
 })
@@ -333,10 +337,9 @@ describe('assist is connected to a websocket', () => {
       ...transaction,
       status: 'some-status'
     }
-    let payload
+    const payload = { event: { transaction } }
     beforeEach(() => {
       updateState({ transactionQueue: [{ ...txObj, transaction: existingTx }] })
-      payload = { event: { transaction } }
     })
     test(`tx should be removed from the txQueue`, () => {
       mockServer.emit('message', JSON.stringify(payload))
