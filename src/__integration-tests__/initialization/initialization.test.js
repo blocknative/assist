@@ -4,12 +4,11 @@
  */
 
 import bowser from 'bowser'
-import da from '../../js/index'
-import * as events from '../../js/helpers/events'
-import { state, initialState, updateState } from '../../js/helpers/state'
-
+import da from '~/js'
+import * as events from '~/js/helpers/events'
+import { state, initialState, updateState } from '~/js/helpers/state'
+import { storeTransactionQueue } from '~/js/helpers/storage'
 import { version as packageVersion } from '../../../package.json'
-import { storeTransactionQueue } from '../../js/helpers/storage'
 
 describe('init is called', () => {
   describe('with a basic valid config', () => {
