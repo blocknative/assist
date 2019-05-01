@@ -44,7 +44,11 @@ export function createElement(el, className, children, id) {
   return element
 }
 
+const handleWindowResize = () =>
+  resizeIframe({ height: window.innerHeight, width: window.innerWidth })
+
 export function closeModal() {
+  window.removeEventListener('resize', handleWindowResize)
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
 
@@ -65,6 +69,7 @@ export function closeModal() {
 
 export function openModal(modal, handlers = {}) {
   const { onClick, onClose } = handlers
+  window.addEventListener('resize', handleWindowResize)
   state.iframeDocument.body.appendChild(modal)
   showIframe()
   resizeIframe({ height: window.innerHeight, width: window.innerWidth })

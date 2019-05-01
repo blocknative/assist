@@ -171,45 +171,44 @@ export function getTransactionParams(
       txObject.value = formatNumber(txObject.value)
     }
 
-    const value = txObject.value
-      ? await web3Functions
-          .bigNumber(version)(txObject.value)
-          .catch(handleWeb3Error)
-      : await web3Functions
-          .bigNumber(version)('0')
-          .catch(handleWeb3Error)
+    const valuePromise = txObject.value
+      ? web3Functions.bigNumber(version)(txObject.value)
+      : web3Functions.bigNumber(version)('0')
 
-    const gasPrice = txObject.gasPrice
-      ? await web3Functions
-          .bigNumber(version)(txObject.gasPrice)
-          .catch(handleWeb3Error)
-      : await web3Functions
-          .bigNumber(version)(
-            await web3Functions
-              .gasPrice(version)()
-              .catch(handleWeb3Error)
-          )
-          .catch(handleWeb3Error)
+    const gasPricePromise = new Promise(async (resolve, reject) => {
+      try {
+        // If gasPrice isn't passed explicitly, ask web3 for a suitable one
+        const gasPrice = txObject.gasPrice
+          ? txObject.gasPrice
+          : await web3Functions.gasPrice(version)()
+        resolve(web3Functions.bigNumber(version)(gasPrice))
+      } catch (e) {
+        reject(e)
+      }
+    })
 
-    const gas = contractMethod
-      ? await web3Functions
-          .bigNumber(version)(
-            await web3Functions
-              .contractGas(version)(
-                contractMethod,
-                contractEventObj.parameters,
-                txObject
-              )
-              .catch(handleWeb3Error)
-          )
-          .catch(handleWeb3Error)
-      : await web3Functions
-          .bigNumber(version)(
-            await web3Functions
-              .transactionGas(version)(txObject)
-              .catch(handleWeb3Error)
-          )
-          .catch(handleWeb3Error)
+    const gasPromise = new Promise(async (resolve, reject) => {
+      try {
+        // Get a gas estimate based on if the tx is a contract method call
+        // or regular transaction
+        const gas = contractMethod
+          ? await web3Functions.contractGas(version)(
+              contractMethod,
+              contractEventObj.parameters,
+              txObject
+            )
+          : await web3Functions.transactionGas(version)(txObject)
+        resolve(web3Functions.bigNumber(version)(gas))
+      } catch (e) {
+        reject(e)
+      }
+    })
+
+    const [value, gasPrice, gas] = await Promise.all([
+      valuePromise,
+      gasPricePromise,
+      gasPromise
+    ]).catch(handleWeb3Error)
 
     resolve({ value, gasPrice, gas })
   })
