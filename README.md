@@ -419,7 +419,7 @@ Trigger a custom UI notification
 
 `type` - `String`: One of: ['success', 'pending', 'error'] (**Required**)
 
-`message` - `String`: The message to display in the notification (**Required**)
+`message` - `String`: The message to display in the notification. HTML can be embedded in the string. (**Required**)
 
 `customTimeout` - `Number`: Specify how many ms the notification should exist. Set to -1 for no timeout. 
 
@@ -434,8 +434,8 @@ customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
 #### Example
 
 ```javascript
-// Display a success notification for 1500ms
-assistInstance.notify('success', 'Operation was a success!', 1500);
+// Display a success notification with an embedded link for 5000ms
+assistInstance.notify('success', 'Operation was a success! Click <a href="https://example.com" target="_blank">here</a> to view more', 5000);
 
 // Display a pending notification, load data from an imaginary backend
 // and dismiss the pending notification when the data is loaded
