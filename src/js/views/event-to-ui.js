@@ -166,6 +166,7 @@ function notificationsUI({
   contract = {},
   inlineCustomMsgs,
   eventCode,
+  categoryCode,
   customTimeout
 }) {
   // treat txConfirmedClient as txConfirm
@@ -281,7 +282,10 @@ function notificationsUI({
     setTimeout(setNotificationsHeight, timeouts.changeUI)
   }
 
-  if (type === 'complete' || customTimeout) {
+  const notificationShouldTimeout =
+    (type === 'complete' && categoryCode !== 'userInitiatedNotify') ||
+    customTimeout
+  if (notificationShouldTimeout) {
     setTimeout(() => {
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
