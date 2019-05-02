@@ -119,6 +119,11 @@ export function handleSocketMessage(msg) {
         })
         break
       case 'confirmed':
+        // have already dealt with txConfirmedClient event
+        if (eventCode === 'txConfirmedClient') {
+          return
+        }
+
         txObj = getTxObjFromQueue(transaction.id)
 
         if (txObj.transaction.status === 'confirmed') {
