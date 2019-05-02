@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Contract decoration using web3 v1 decorating a contract produces the expected output 1`] = `
+exports[`using web3 v1 Contract function is called it returns the expected decorated contract 1`] = `
 Object {
   "_currentProvider": Object {
     "CLOSE": "close",
