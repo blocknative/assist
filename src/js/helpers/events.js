@@ -15,11 +15,8 @@ export function handleEvent(eventObj, clickHandlers) {
     eventCode === 'txSpeedUp' ||
     eventCode === 'txCancel'
 
-  const unknownCodeToServer =
-    eventCode === 'mobileWalletFail' || eventCode === 'mobileNetworkFail'
-
   // If not a server event then log it
-  !serverEvent && !unknownCodeToServer && lib.logEvent(eventObj)
+  !serverEvent && lib.logEvent(eventObj)
 
   // If tx status is 'completed', UI has been already handled
   if (eventCode === 'txConfirmed' || eventCode === 'txConfirmedClient') {
