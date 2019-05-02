@@ -34,7 +34,7 @@ export default function userInitiatedNotify(eventCode, message, customTimeout) {
   handleEvent({
     eventCode,
     categoryCode: 'userInitiatedNotify',
-    transaction: { id },
+    transaction: { id, startTime: Date.now() },
     inlineCustomMsgs: { [eventCode]: () => message },
     customTimeout:
       customTimeout !== -1 && (customTimeout || defaultTimeout(eventCode))
