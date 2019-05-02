@@ -24,7 +24,10 @@ export function checkUserEnvironment() {
     checkForWallet()
 
     if (!state.web3Wallet) {
-      storeItem('_assist_newUser', 'true')
+      if (!state.mobileDevice) {
+        storeItem('_assist_newUser', 'true')
+      }
+
       resolve()
       return
     }
@@ -67,8 +70,8 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       return
     }
 
-    if (getItem('_assist_newUser') === 'true' && !state.mobileDevice) {
-      if (!state.validBrowser) {
+    if (getItem('_assist_newUser') === 'true') {
+      if (!state.validBrowser && !state.mobileDevice) {
         handleEvent(
           {
             eventCode: 'browserFail',
@@ -108,6 +111,14 @@ export function prepareForTransaction(categoryCode, originalResolve) {
     }
 
     if (!state.web3Instance) {
+      if (state.mobileDevice) {
+        try {
+          await getWeb3Wallet(categoryCode)
+        } catch (errorObj) {
+          reject(errorObj)
+        }
+        return
+      }
       configureWeb3()
     }
 
@@ -187,7 +198,7 @@ function getWeb3Wallet(categoryCode) {
   return new Promise((resolve, reject) => {
     handleEvent(
       {
-        eventCode: 'walletFail',
+        eventCode: state.mobileDevice ? 'mobileWalletFail' : 'walletFail',
         categoryCode,
         wallet: {
           provider: state.currentProvider
@@ -199,7 +210,9 @@ function getWeb3Wallet(categoryCode) {
             const errorObj = new Error(
               'User does not have a web3 wallet installed'
             )
-            errorObj.eventCode = 'walletFail'
+            errorObj.eventCode = state.mobileDevice
+              ? 'mobileWalletFail'
+              : 'walletFail'
             reject(errorObj)
           }, timeouts.changeUI),
         onClick: () => {
@@ -593,7 +606,7 @@ function getCorrectNetwork(categoryCode) {
   return new Promise(async (resolve, reject) => {
     handleEvent(
       {
-        eventCode: 'networkFail',
+        eventCode: state.mobileDevice ? 'mobileNetworkFail' : 'networkFail',
         categoryCode,
         walletNetworkID: state.userCurrentNetworkId,
         walletName: state.currentProvider
@@ -602,7 +615,9 @@ function getCorrectNetwork(categoryCode) {
         onClose: () =>
           setTimeout(() => {
             const errorObj = new Error('User is on the wrong network')
-            errorObj.eventCode = 'networkFail'
+            errorObj.eventCode = state.mobileDevice
+              ? 'mobileNetworkFail'
+              : 'networkFail'
             reject(errorObj)
           }, timeouts.changeUI),
         onClick: async () => {
