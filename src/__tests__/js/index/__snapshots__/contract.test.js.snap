@@ -1,0 +1,3014 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Contract decoration using web3 v1 decorating a contract produces the expected output 1`] = `
+Object {
+  "_currentProvider": Object {
+    "CLOSE": "close",
+    "CONNECT": "connect",
+    "ERROR": "error",
+    "READY": "ready",
+    "SOCKET_ACCOUNTS_CHANGED": "socket_accountsChanged",
+    "SOCKET_CLOSE": "socket_close",
+    "SOCKET_CONNECT": "socket_connect",
+    "SOCKET_ERROR": "socket_error",
+    "SOCKET_MESSAGE": "socket_message",
+    "SOCKET_NETWORK_CHANGED": "socket_networkChanged",
+    "SOCKET_READY": "socket_ready",
+    "_events": Object {},
+    "_eventsCount": 0,
+    "connection": Object {
+      "_binaryType": "arraybuffer",
+      "_bufferedAmount": 0,
+      "_client": Object {
+        "_events": Object {},
+        "_eventsCount": 2,
+        "_req": Object {
+          "_contentLength": 0,
+          "_ended": false,
+          "_events": Object {},
+          "_eventsCount": 4,
+          "_hasBody": true,
+          "_header": "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+          "_headerSent": true,
+          "_last": true,
+          "_removedConnection": false,
+          "_removedContLen": false,
+          "_removedTE": false,
+          "_trailer": "",
+          "agent": Object {
+            "_events": Object {},
+            "_eventsCount": 1,
+            "defaultPort": 80,
+            "freeSockets": Object {},
+            "keepAlive": false,
+            "keepAliveMsecs": 1000,
+            "maxFreeSockets": 256,
+            "maxSockets": null,
+            "options": Object {
+              "path": null,
+            },
+            "protocol": "http:",
+            "requests": Object {},
+            "sockets": Object {
+              "example.com:80:": Array [
+                Object {
+                  "_events": Object {},
+                  "_eventsCount": 5,
+                  "_hadError": false,
+                  "_handle": Object {
+                    "onconnection": null,
+                    "reading": false,
+                  },
+                  "_host": "example.com",
+                  "_parent": null,
+                  "_pendingData": null,
+                  "_pendingEncoding": "",
+                  "_readableState": Object {
+                    "awaitDrain": 0,
+                    "buffer": Object {
+                      "head": null,
+                      "length": 0,
+                      "tail": null,
+                    },
+                    "decoder": null,
+                    "defaultEncoding": "utf8",
+                    "destroyed": false,
+                    "emitClose": false,
+                    "emittedReadable": false,
+                    "encoding": null,
+                    "endEmitted": false,
+                    "ended": false,
+                    "flowing": null,
+                    "highWaterMark": 16384,
+                    "length": 0,
+                    "needReadable": false,
+                    "objectMode": false,
+                    "paused": true,
+                    "pipes": null,
+                    "pipesCount": 0,
+                    "readableListening": false,
+                    "reading": false,
+                    "readingMore": false,
+                    "resumeScheduled": false,
+                    "sync": true,
+                  },
+                  "_server": null,
+                  "_sockname": null,
+                  "_writableState": Object {
+                    "bufferProcessing": false,
+                    "bufferedRequest": null,
+                    "bufferedRequestCount": 0,
+                    "corked": 0,
+                    "corkedRequestsFree": Object {
+                      "entry": null,
+                      "next": null,
+                    },
+                    "decodeStrings": false,
+                    "defaultEncoding": "utf8",
+                    "destroyed": false,
+                    "emitClose": false,
+                    "ended": false,
+                    "ending": false,
+                    "errorEmitted": false,
+                    "finalCalled": false,
+                    "finished": false,
+                    "highWaterMark": 16384,
+                    "lastBufferedRequest": null,
+                    "length": 0,
+                    "needDrain": false,
+                    "objectMode": false,
+                    "pendingcb": 0,
+                    "prefinished": false,
+                    "sync": true,
+                    "writecb": null,
+                    "writelen": 0,
+                    "writing": false,
+                  },
+                  "allowHalfOpen": false,
+                  "connecting": true,
+                  "readable": false,
+                  "server": null,
+                  "writable": true,
+                },
+              ],
+            },
+          },
+          "chunkedEncoding": false,
+          "connection": null,
+          "finished": true,
+          "maxHeadersCount": null,
+          "method": "GET",
+          "output": Array [
+            "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+          ],
+          "outputCallbacks": Array [
+            null,
+          ],
+          "outputEncodings": Array [
+            "latin1",
+          ],
+          "outputSize": 150,
+          "parser": null,
+          "path": "/",
+          "res": null,
+          "sendDate": false,
+          "shouldKeepAlive": true,
+          "socket": null,
+          "timeoutCb": null,
+          "upgradeOrConnect": false,
+          "useChunkedEncodingByDefault": false,
+          "writable": true,
+        },
+        "base64nonce": "somenonce==",
+        "config": Object {
+          "assembleFragments": true,
+          "closeTimeout": 5000,
+          "disableNagleAlgorithm": true,
+          "fragmentOutgoingMessages": true,
+          "fragmentationThreshold": 16384,
+          "maxReceivedFrameSize": 1048576,
+          "maxReceivedMessageSize": 8388608,
+          "tlsOptions": Object {},
+          "webSocketVersion": 13,
+        },
+        "origin": null,
+        "protocols": Array [],
+        "secure": false,
+        "url": Object {
+          "auth": null,
+          "hash": null,
+          "host": "example.com",
+          "hostname": "example.com",
+          "href": "ws://example.com",
+          "path": null,
+          "pathname": null,
+          "port": "80",
+          "protocol": "ws:",
+          "query": null,
+          "search": null,
+          "slashes": true,
+        },
+      },
+      "_extensions": "",
+      "_listeners": Object {
+        "close": Array [
+          null,
+        ],
+        "error": Array [
+          null,
+        ],
+        "message": Array [
+          null,
+        ],
+        "open": Array [
+          null,
+          null,
+        ],
+      },
+      "_readyState": 0,
+      "_url": "ws://example.com",
+    },
+    "host": "ws://example.com",
+    "subscriptions": Object {},
+  },
+  "_defaultBlock": "latest",
+  "_transactionBlockTimeout": 50,
+  "_transactionConfirmationBlocks": 24,
+  "_transactionPollingTimeout": 750,
+  "abiCoder": Object {
+    "ethersAbiCoder": Object {},
+    "utils": Object {},
+  },
+  "abiMapper": Object {
+    "abiCoder": Object {
+      "ethersAbiCoder": Object {},
+      "utils": Object {},
+    },
+    "contractModuleFactory": Object {
+      "abiCoder": Object {
+        "ethersAbiCoder": Object {},
+        "utils": Object {},
+      },
+      "formatters": Object {},
+      "utils": Object {},
+    },
+    "hasConstructor": false,
+    "utils": Object {},
+  },
+  "abiModel": Object {
+    "abi": Object {
+      "events": Object {
+        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": Object {
+          "abiItem": Object {
+            "anonymous": false,
+            "funcName": "Approval(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "indexed": true,
+                "name": "owner",
+                "type": "address",
+              },
+              Object {
+                "indexed": true,
+                "name": "spender",
+                "type": "address",
+              },
+              Object {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256",
+              },
+            ],
+            "name": "Approval",
+            "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+            "type": "event",
+          },
+          "anonymous": false,
+          "contractMethodParameters": Array [],
+          "name": "Approval",
+          "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+        },
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": Object {
+          "abiItem": Object {
+            "anonymous": false,
+            "funcName": "Transfer(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "indexed": true,
+                "name": "from",
+                "type": "address",
+              },
+              Object {
+                "indexed": true,
+                "name": "to",
+                "type": "address",
+              },
+              Object {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256",
+              },
+            ],
+            "name": "Transfer",
+            "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "type": "event",
+          },
+          "anonymous": false,
+          "contractMethodParameters": Array [],
+          "name": "Transfer",
+          "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        },
+        "Approval": Object {
+          "abiItem": Object {
+            "anonymous": false,
+            "funcName": "Approval(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "indexed": true,
+                "name": "owner",
+                "type": "address",
+              },
+              Object {
+                "indexed": true,
+                "name": "spender",
+                "type": "address",
+              },
+              Object {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256",
+              },
+            ],
+            "name": "Approval",
+            "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+            "type": "event",
+          },
+          "anonymous": false,
+          "contractMethodParameters": Array [],
+          "name": "Approval",
+          "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+        },
+        "Approval(address,address,uint256)": Object {
+          "abiItem": Object {
+            "anonymous": false,
+            "funcName": "Approval(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "indexed": true,
+                "name": "owner",
+                "type": "address",
+              },
+              Object {
+                "indexed": true,
+                "name": "spender",
+                "type": "address",
+              },
+              Object {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256",
+              },
+            ],
+            "name": "Approval",
+            "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+            "type": "event",
+          },
+          "anonymous": false,
+          "contractMethodParameters": Array [],
+          "name": "Approval",
+          "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+        },
+        "Transfer": Object {
+          "abiItem": Object {
+            "anonymous": false,
+            "funcName": "Transfer(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "indexed": true,
+                "name": "from",
+                "type": "address",
+              },
+              Object {
+                "indexed": true,
+                "name": "to",
+                "type": "address",
+              },
+              Object {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256",
+              },
+            ],
+            "name": "Transfer",
+            "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "type": "event",
+          },
+          "anonymous": false,
+          "contractMethodParameters": Array [],
+          "name": "Transfer",
+          "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        },
+        "Transfer(address,address,uint256)": Object {
+          "abiItem": Object {
+            "anonymous": false,
+            "funcName": "Transfer(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "indexed": true,
+                "name": "from",
+                "type": "address",
+              },
+              Object {
+                "indexed": true,
+                "name": "to",
+                "type": "address",
+              },
+              Object {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256",
+              },
+            ],
+            "name": "Transfer",
+            "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "type": "event",
+          },
+          "anonymous": false,
+          "contractMethodParameters": Array [],
+          "name": "Transfer",
+          "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        },
+      },
+      "methods": Object {
+        "0x06fdde03": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "name()",
+            "inputs": Array [],
+            "name": "name",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "string",
+              },
+            ],
+            "payable": false,
+            "signature": "0x06fdde03",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "name",
+          "payable": false,
+          "signature": "0x06fdde03",
+        },
+        "0x095ea7b3": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "approve(address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_spender",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "approve",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0x095ea7b3",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "approve",
+          "payable": false,
+          "signature": "0x095ea7b3",
+        },
+        "0x18160ddd": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "totalSupply()",
+            "inputs": Array [],
+            "name": "totalSupply",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0x18160ddd",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "totalSupply",
+          "payable": false,
+          "signature": "0x18160ddd",
+        },
+        "0x23b872dd": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "transferFrom(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_from",
+                "type": "address",
+              },
+              Object {
+                "name": "_to",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "transferFrom",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0x23b872dd",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "transferFrom",
+          "payable": false,
+          "signature": "0x23b872dd",
+        },
+        "0x313ce567": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "decimals()",
+            "inputs": Array [],
+            "name": "decimals",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint8",
+              },
+            ],
+            "payable": false,
+            "signature": "0x313ce567",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "decimals",
+          "payable": false,
+          "signature": "0x313ce567",
+        },
+        "0x70a08231": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "balanceOf(address)",
+            "inputs": Array [
+              Object {
+                "name": "_owner",
+                "type": "address",
+              },
+            ],
+            "name": "balanceOf",
+            "outputs": Array [
+              Object {
+                "name": "balance",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0x70a08231",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "balanceOf",
+          "payable": false,
+          "signature": "0x70a08231",
+        },
+        "0x95d89b41": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "symbol()",
+            "inputs": Array [],
+            "name": "symbol",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "string",
+              },
+            ],
+            "payable": false,
+            "signature": "0x95d89b41",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "symbol",
+          "payable": false,
+          "signature": "0x95d89b41",
+        },
+        "0xa9059cbb": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "transfer(address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_to",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "transfer",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0xa9059cbb",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "transfer",
+          "payable": false,
+          "signature": "0xa9059cbb",
+        },
+        "0xdd62ed3e": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "allowance(address,address)",
+            "inputs": Array [
+              Object {
+                "name": "_owner",
+                "type": "address",
+              },
+              Object {
+                "name": "_spender",
+                "type": "address",
+              },
+            ],
+            "name": "allowance",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0xdd62ed3e",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "allowance",
+          "payable": false,
+          "signature": "0xdd62ed3e",
+        },
+        "allowance": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "allowance(address,address)",
+            "inputs": Array [
+              Object {
+                "name": "_owner",
+                "type": "address",
+              },
+              Object {
+                "name": "_spender",
+                "type": "address",
+              },
+            ],
+            "name": "allowance",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0xdd62ed3e",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "allowance",
+          "payable": false,
+          "signature": "0xdd62ed3e",
+        },
+        "allowance(address,address)": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "allowance(address,address)",
+            "inputs": Array [
+              Object {
+                "name": "_owner",
+                "type": "address",
+              },
+              Object {
+                "name": "_spender",
+                "type": "address",
+              },
+            ],
+            "name": "allowance",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0xdd62ed3e",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "allowance",
+          "payable": false,
+          "signature": "0xdd62ed3e",
+        },
+        "approve": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "approve(address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_spender",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "approve",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0x095ea7b3",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "approve",
+          "payable": false,
+          "signature": "0x095ea7b3",
+        },
+        "approve(address,uint256)": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "approve(address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_spender",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "approve",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0x095ea7b3",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "approve",
+          "payable": false,
+          "signature": "0x095ea7b3",
+        },
+        "balanceOf": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "balanceOf(address)",
+            "inputs": Array [
+              Object {
+                "name": "_owner",
+                "type": "address",
+              },
+            ],
+            "name": "balanceOf",
+            "outputs": Array [
+              Object {
+                "name": "balance",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0x70a08231",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "balanceOf",
+          "payable": false,
+          "signature": "0x70a08231",
+        },
+        "balanceOf(address)": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "balanceOf(address)",
+            "inputs": Array [
+              Object {
+                "name": "_owner",
+                "type": "address",
+              },
+            ],
+            "name": "balanceOf",
+            "outputs": Array [
+              Object {
+                "name": "balance",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0x70a08231",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "balanceOf",
+          "payable": false,
+          "signature": "0x70a08231",
+        },
+        "contractConstructor": Object {
+          "abiItem": Object {
+            "constant": false,
+            "inputs": Array [],
+            "payable": false,
+            "type": "constructor",
+          },
+          "contractMethodParameters": Array [],
+          "payable": false,
+        },
+        "decimals": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "decimals()",
+            "inputs": Array [],
+            "name": "decimals",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint8",
+              },
+            ],
+            "payable": false,
+            "signature": "0x313ce567",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "decimals",
+          "payable": false,
+          "signature": "0x313ce567",
+        },
+        "decimals()": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "decimals()",
+            "inputs": Array [],
+            "name": "decimals",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint8",
+              },
+            ],
+            "payable": false,
+            "signature": "0x313ce567",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "decimals",
+          "payable": false,
+          "signature": "0x313ce567",
+        },
+        "name": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "name()",
+            "inputs": Array [],
+            "name": "name",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "string",
+              },
+            ],
+            "payable": false,
+            "signature": "0x06fdde03",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "name",
+          "payable": false,
+          "signature": "0x06fdde03",
+        },
+        "name()": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "name()",
+            "inputs": Array [],
+            "name": "name",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "string",
+              },
+            ],
+            "payable": false,
+            "signature": "0x06fdde03",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "name",
+          "payable": false,
+          "signature": "0x06fdde03",
+        },
+        "symbol": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "symbol()",
+            "inputs": Array [],
+            "name": "symbol",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "string",
+              },
+            ],
+            "payable": false,
+            "signature": "0x95d89b41",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "symbol",
+          "payable": false,
+          "signature": "0x95d89b41",
+        },
+        "symbol()": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "symbol()",
+            "inputs": Array [],
+            "name": "symbol",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "string",
+              },
+            ],
+            "payable": false,
+            "signature": "0x95d89b41",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "symbol",
+          "payable": false,
+          "signature": "0x95d89b41",
+        },
+        "totalSupply": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "totalSupply()",
+            "inputs": Array [],
+            "name": "totalSupply",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0x18160ddd",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "totalSupply",
+          "payable": false,
+          "signature": "0x18160ddd",
+        },
+        "totalSupply()": Object {
+          "abiItem": Object {
+            "constant": true,
+            "funcName": "totalSupply()",
+            "inputs": Array [],
+            "name": "totalSupply",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "uint256",
+              },
+            ],
+            "payable": false,
+            "signature": "0x18160ddd",
+            "stateMutability": "view",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "totalSupply",
+          "payable": false,
+          "signature": "0x18160ddd",
+        },
+        "transfer": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "transfer(address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_to",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "transfer",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0xa9059cbb",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "transfer",
+          "payable": false,
+          "signature": "0xa9059cbb",
+        },
+        "transfer(address,uint256)": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "transfer(address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_to",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "transfer",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0xa9059cbb",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "transfer",
+          "payable": false,
+          "signature": "0xa9059cbb",
+        },
+        "transferFrom": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "transferFrom(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_from",
+                "type": "address",
+              },
+              Object {
+                "name": "_to",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "transferFrom",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0x23b872dd",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "transferFrom",
+          "payable": false,
+          "signature": "0x23b872dd",
+        },
+        "transferFrom(address,address,uint256)": Object {
+          "abiItem": Object {
+            "constant": false,
+            "funcName": "transferFrom(address,address,uint256)",
+            "inputs": Array [
+              Object {
+                "name": "_from",
+                "type": "address",
+              },
+              Object {
+                "name": "_to",
+                "type": "address",
+              },
+              Object {
+                "name": "_value",
+                "type": "uint256",
+              },
+            ],
+            "name": "transferFrom",
+            "outputs": Array [
+              Object {
+                "name": "",
+                "type": "bool",
+              },
+            ],
+            "payable": false,
+            "signature": "0x23b872dd",
+            "stateMutability": "nonpayable",
+            "type": "function",
+          },
+          "contractMethodParameters": Array [],
+          "name": "transferFrom",
+          "payable": false,
+          "signature": "0x23b872dd",
+        },
+      },
+    },
+  },
+  "accounts": Object {
+    "_currentProvider": Object {
+      "CLOSE": "close",
+      "CONNECT": "connect",
+      "ERROR": "error",
+      "READY": "ready",
+      "SOCKET_ACCOUNTS_CHANGED": "socket_accountsChanged",
+      "SOCKET_CLOSE": "socket_close",
+      "SOCKET_CONNECT": "socket_connect",
+      "SOCKET_ERROR": "socket_error",
+      "SOCKET_MESSAGE": "socket_message",
+      "SOCKET_NETWORK_CHANGED": "socket_networkChanged",
+      "SOCKET_READY": "socket_ready",
+      "_events": Object {},
+      "_eventsCount": 0,
+      "connection": Object {
+        "_binaryType": "arraybuffer",
+        "_bufferedAmount": 0,
+        "_client": Object {
+          "_events": Object {},
+          "_eventsCount": 2,
+          "_req": Object {
+            "_contentLength": 0,
+            "_ended": false,
+            "_events": Object {},
+            "_eventsCount": 4,
+            "_hasBody": true,
+            "_header": "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+            "_headerSent": true,
+            "_last": true,
+            "_removedConnection": false,
+            "_removedContLen": false,
+            "_removedTE": false,
+            "_trailer": "",
+            "agent": Object {
+              "_events": Object {},
+              "_eventsCount": 1,
+              "defaultPort": 80,
+              "freeSockets": Object {},
+              "keepAlive": false,
+              "keepAliveMsecs": 1000,
+              "maxFreeSockets": 256,
+              "maxSockets": null,
+              "options": Object {
+                "path": null,
+              },
+              "protocol": "http:",
+              "requests": Object {},
+              "sockets": Object {
+                "example.com:80:": Array [
+                  Object {
+                    "_events": Object {},
+                    "_eventsCount": 5,
+                    "_hadError": false,
+                    "_handle": Object {
+                      "onconnection": null,
+                      "reading": false,
+                    },
+                    "_host": "example.com",
+                    "_parent": null,
+                    "_pendingData": null,
+                    "_pendingEncoding": "",
+                    "_readableState": Object {
+                      "awaitDrain": 0,
+                      "buffer": Object {
+                        "head": null,
+                        "length": 0,
+                        "tail": null,
+                      },
+                      "decoder": null,
+                      "defaultEncoding": "utf8",
+                      "destroyed": false,
+                      "emitClose": false,
+                      "emittedReadable": false,
+                      "encoding": null,
+                      "endEmitted": false,
+                      "ended": false,
+                      "flowing": null,
+                      "highWaterMark": 16384,
+                      "length": 0,
+                      "needReadable": false,
+                      "objectMode": false,
+                      "paused": true,
+                      "pipes": null,
+                      "pipesCount": 0,
+                      "readableListening": false,
+                      "reading": false,
+                      "readingMore": false,
+                      "resumeScheduled": false,
+                      "sync": true,
+                    },
+                    "_server": null,
+                    "_sockname": null,
+                    "_writableState": Object {
+                      "bufferProcessing": false,
+                      "bufferedRequest": null,
+                      "bufferedRequestCount": 0,
+                      "corked": 0,
+                      "corkedRequestsFree": Object {
+                        "entry": null,
+                        "next": null,
+                      },
+                      "decodeStrings": false,
+                      "defaultEncoding": "utf8",
+                      "destroyed": false,
+                      "emitClose": false,
+                      "ended": false,
+                      "ending": false,
+                      "errorEmitted": false,
+                      "finalCalled": false,
+                      "finished": false,
+                      "highWaterMark": 16384,
+                      "lastBufferedRequest": null,
+                      "length": 0,
+                      "needDrain": false,
+                      "objectMode": false,
+                      "pendingcb": 0,
+                      "prefinished": false,
+                      "sync": true,
+                      "writecb": null,
+                      "writelen": 0,
+                      "writing": false,
+                    },
+                    "allowHalfOpen": false,
+                    "connecting": true,
+                    "readable": false,
+                    "server": null,
+                    "writable": true,
+                  },
+                ],
+              },
+            },
+            "chunkedEncoding": false,
+            "connection": null,
+            "finished": true,
+            "maxHeadersCount": null,
+            "method": "GET",
+            "output": Array [
+              "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+            ],
+            "outputCallbacks": Array [
+              null,
+            ],
+            "outputEncodings": Array [
+              "latin1",
+            ],
+            "outputSize": 150,
+            "parser": null,
+            "path": "/",
+            "res": null,
+            "sendDate": false,
+            "shouldKeepAlive": true,
+            "socket": null,
+            "timeoutCb": null,
+            "upgradeOrConnect": false,
+            "useChunkedEncodingByDefault": false,
+            "writable": true,
+          },
+          "base64nonce": "somenonce==",
+          "config": Object {
+            "assembleFragments": true,
+            "closeTimeout": 5000,
+            "disableNagleAlgorithm": true,
+            "fragmentOutgoingMessages": true,
+            "fragmentationThreshold": 16384,
+            "maxReceivedFrameSize": 1048576,
+            "maxReceivedMessageSize": 8388608,
+            "tlsOptions": Object {},
+            "webSocketVersion": 13,
+          },
+          "origin": null,
+          "protocols": Array [],
+          "secure": false,
+          "url": Object {
+            "auth": null,
+            "hash": null,
+            "host": "example.com",
+            "hostname": "example.com",
+            "href": "ws://example.com",
+            "path": null,
+            "pathname": null,
+            "port": "80",
+            "protocol": "ws:",
+            "query": null,
+            "search": null,
+            "slashes": true,
+          },
+        },
+        "_extensions": "",
+        "_listeners": Object {
+          "close": Array [
+            null,
+          ],
+          "error": Array [
+            null,
+          ],
+          "message": Array [
+            null,
+          ],
+          "open": Array [
+            null,
+            null,
+          ],
+        },
+        "_readyState": 0,
+        "_url": "ws://example.com",
+      },
+      "host": "ws://example.com",
+      "subscriptions": Object {},
+    },
+    "_defaultBlock": "latest",
+    "_transactionBlockTimeout": 50,
+    "_transactionConfirmationBlocks": 24,
+    "_transactionPollingTimeout": 750,
+    "_transactionSigner": Object {
+      "formatters": Object {},
+      "utils": Object {},
+    },
+    "accounts": Object {},
+    "accountsIndex": 0,
+    "defaultKeyName": "web3js_wallet",
+    "formatters": Object {},
+    "givenProvider": null,
+    "providerResolver": Object {
+      "providersModuleFactory": Object {},
+    },
+    "utils": Object {},
+    "wallet": Object {
+      "accounts": Object {},
+      "accountsIndex": 0,
+      "accountsModule": "[Circular]",
+      "defaultKeyName": "web3js_wallet",
+      "utils": Object {},
+    },
+  },
+  "contractModuleFactory": Object {
+    "abiCoder": Object {
+      "ethersAbiCoder": Object {},
+      "utils": Object {},
+    },
+    "formatters": Object {},
+    "utils": Object {},
+  },
+  "events": Object {
+    "allEventsLogDecoder": Object {
+      "abiCoder": Object {
+        "ethersAbiCoder": Object {},
+        "utils": Object {},
+      },
+    },
+    "allEventsOptionsMapper": Object {
+      "allEventsFilterEncoder": Object {
+        "abiCoder": Object {
+          "ethersAbiCoder": Object {},
+          "utils": Object {},
+        },
+      },
+      "formatters": Object {},
+    },
+    "contract": Object {
+      "_currentProvider": Object {
+        "CLOSE": "close",
+        "CONNECT": "connect",
+        "ERROR": "error",
+        "READY": "ready",
+        "SOCKET_ACCOUNTS_CHANGED": "socket_accountsChanged",
+        "SOCKET_CLOSE": "socket_close",
+        "SOCKET_CONNECT": "socket_connect",
+        "SOCKET_ERROR": "socket_error",
+        "SOCKET_MESSAGE": "socket_message",
+        "SOCKET_NETWORK_CHANGED": "socket_networkChanged",
+        "SOCKET_READY": "socket_ready",
+        "_events": Object {},
+        "_eventsCount": 0,
+        "connection": Object {
+          "_binaryType": "arraybuffer",
+          "_bufferedAmount": 0,
+          "_client": Object {
+            "_events": Object {},
+            "_eventsCount": 2,
+            "_req": Object {
+              "_contentLength": 0,
+              "_ended": false,
+              "_events": Object {},
+              "_eventsCount": 4,
+              "_hasBody": true,
+              "_header": "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+              "_headerSent": true,
+              "_last": true,
+              "_removedConnection": false,
+              "_removedContLen": false,
+              "_removedTE": false,
+              "_trailer": "",
+              "agent": Object {
+                "_events": Object {},
+                "_eventsCount": 1,
+                "defaultPort": 80,
+                "freeSockets": Object {},
+                "keepAlive": false,
+                "keepAliveMsecs": 1000,
+                "maxFreeSockets": 256,
+                "maxSockets": null,
+                "options": Object {
+                  "path": null,
+                },
+                "protocol": "http:",
+                "requests": Object {},
+                "sockets": Object {
+                  "example.com:80:": Array [
+                    Object {
+                      "_events": Object {},
+                      "_eventsCount": 5,
+                      "_hadError": false,
+                      "_handle": Object {
+                        "onconnection": null,
+                        "reading": false,
+                      },
+                      "_host": "example.com",
+                      "_parent": null,
+                      "_pendingData": null,
+                      "_pendingEncoding": "",
+                      "_readableState": Object {
+                        "awaitDrain": 0,
+                        "buffer": Object {
+                          "head": null,
+                          "length": 0,
+                          "tail": null,
+                        },
+                        "decoder": null,
+                        "defaultEncoding": "utf8",
+                        "destroyed": false,
+                        "emitClose": false,
+                        "emittedReadable": false,
+                        "encoding": null,
+                        "endEmitted": false,
+                        "ended": false,
+                        "flowing": null,
+                        "highWaterMark": 16384,
+                        "length": 0,
+                        "needReadable": false,
+                        "objectMode": false,
+                        "paused": true,
+                        "pipes": null,
+                        "pipesCount": 0,
+                        "readableListening": false,
+                        "reading": false,
+                        "readingMore": false,
+                        "resumeScheduled": false,
+                        "sync": true,
+                      },
+                      "_server": null,
+                      "_sockname": null,
+                      "_writableState": Object {
+                        "bufferProcessing": false,
+                        "bufferedRequest": null,
+                        "bufferedRequestCount": 0,
+                        "corked": 0,
+                        "corkedRequestsFree": Object {
+                          "entry": null,
+                          "next": null,
+                        },
+                        "decodeStrings": false,
+                        "defaultEncoding": "utf8",
+                        "destroyed": false,
+                        "emitClose": false,
+                        "ended": false,
+                        "ending": false,
+                        "errorEmitted": false,
+                        "finalCalled": false,
+                        "finished": false,
+                        "highWaterMark": 16384,
+                        "lastBufferedRequest": null,
+                        "length": 0,
+                        "needDrain": false,
+                        "objectMode": false,
+                        "pendingcb": 0,
+                        "prefinished": false,
+                        "sync": true,
+                        "writecb": null,
+                        "writelen": 0,
+                        "writing": false,
+                      },
+                      "allowHalfOpen": false,
+                      "connecting": true,
+                      "readable": false,
+                      "server": null,
+                      "writable": true,
+                    },
+                  ],
+                },
+              },
+              "chunkedEncoding": false,
+              "connection": null,
+              "finished": true,
+              "maxHeadersCount": null,
+              "method": "GET",
+              "output": Array [
+                "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+              ],
+              "outputCallbacks": Array [
+                null,
+              ],
+              "outputEncodings": Array [
+                "latin1",
+              ],
+              "outputSize": 150,
+              "parser": null,
+              "path": "/",
+              "res": null,
+              "sendDate": false,
+              "shouldKeepAlive": true,
+              "socket": null,
+              "timeoutCb": null,
+              "upgradeOrConnect": false,
+              "useChunkedEncodingByDefault": false,
+              "writable": true,
+            },
+            "base64nonce": "somenonce==",
+            "config": Object {
+              "assembleFragments": true,
+              "closeTimeout": 5000,
+              "disableNagleAlgorithm": true,
+              "fragmentOutgoingMessages": true,
+              "fragmentationThreshold": 16384,
+              "maxReceivedFrameSize": 1048576,
+              "maxReceivedMessageSize": 8388608,
+              "tlsOptions": Object {},
+              "webSocketVersion": 13,
+            },
+            "origin": null,
+            "protocols": Array [],
+            "secure": false,
+            "url": Object {
+              "auth": null,
+              "hash": null,
+              "host": "example.com",
+              "hostname": "example.com",
+              "href": "ws://example.com",
+              "path": null,
+              "pathname": null,
+              "port": "80",
+              "protocol": "ws:",
+              "query": null,
+              "search": null,
+              "slashes": true,
+            },
+          },
+          "_extensions": "",
+          "_listeners": Object {
+            "close": Array [
+              null,
+            ],
+            "error": Array [
+              null,
+            ],
+            "message": Array [
+              null,
+            ],
+            "open": Array [
+              null,
+              null,
+            ],
+          },
+          "_readyState": 0,
+          "_url": "ws://example.com",
+        },
+        "host": "ws://example.com",
+        "subscriptions": Object {},
+      },
+      "_defaultBlock": "latest",
+      "_transactionBlockTimeout": 50,
+      "_transactionConfirmationBlocks": 24,
+      "_transactionPollingTimeout": 750,
+      "abiCoder": Object {
+        "ethersAbiCoder": Object {},
+        "utils": Object {},
+      },
+      "abiMapper": Object {
+        "abiCoder": Object {
+          "ethersAbiCoder": Object {},
+          "utils": Object {},
+        },
+        "contractModuleFactory": Object {
+          "abiCoder": Object {
+            "ethersAbiCoder": Object {},
+            "utils": Object {},
+          },
+          "formatters": Object {},
+          "utils": Object {},
+        },
+        "hasConstructor": false,
+        "utils": Object {},
+      },
+      "abiModel": Object {
+        "abi": Object {
+          "events": Object {
+            "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": Object {
+              "abiItem": Object {
+                "anonymous": false,
+                "funcName": "Approval(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "indexed": true,
+                    "name": "owner",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": true,
+                    "name": "spender",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": false,
+                    "name": "value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "Approval",
+                "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+                "type": "event",
+              },
+              "anonymous": false,
+              "contractMethodParameters": Array [],
+              "name": "Approval",
+              "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+            },
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": Object {
+              "abiItem": Object {
+                "anonymous": false,
+                "funcName": "Transfer(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "indexed": true,
+                    "name": "from",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": true,
+                    "name": "to",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": false,
+                    "name": "value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "Transfer",
+                "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                "type": "event",
+              },
+              "anonymous": false,
+              "contractMethodParameters": Array [],
+              "name": "Transfer",
+              "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            },
+            "Approval": Object {
+              "abiItem": Object {
+                "anonymous": false,
+                "funcName": "Approval(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "indexed": true,
+                    "name": "owner",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": true,
+                    "name": "spender",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": false,
+                    "name": "value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "Approval",
+                "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+                "type": "event",
+              },
+              "anonymous": false,
+              "contractMethodParameters": Array [],
+              "name": "Approval",
+              "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+            },
+            "Approval(address,address,uint256)": Object {
+              "abiItem": Object {
+                "anonymous": false,
+                "funcName": "Approval(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "indexed": true,
+                    "name": "owner",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": true,
+                    "name": "spender",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": false,
+                    "name": "value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "Approval",
+                "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+                "type": "event",
+              },
+              "anonymous": false,
+              "contractMethodParameters": Array [],
+              "name": "Approval",
+              "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+            },
+            "Transfer": Object {
+              "abiItem": Object {
+                "anonymous": false,
+                "funcName": "Transfer(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "indexed": true,
+                    "name": "from",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": true,
+                    "name": "to",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": false,
+                    "name": "value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "Transfer",
+                "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                "type": "event",
+              },
+              "anonymous": false,
+              "contractMethodParameters": Array [],
+              "name": "Transfer",
+              "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            },
+            "Transfer(address,address,uint256)": Object {
+              "abiItem": Object {
+                "anonymous": false,
+                "funcName": "Transfer(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "indexed": true,
+                    "name": "from",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": true,
+                    "name": "to",
+                    "type": "address",
+                  },
+                  Object {
+                    "indexed": false,
+                    "name": "value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "Transfer",
+                "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                "type": "event",
+              },
+              "anonymous": false,
+              "contractMethodParameters": Array [],
+              "name": "Transfer",
+              "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            },
+          },
+          "methods": Object {
+            "0x06fdde03": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "name()",
+                "inputs": Array [],
+                "name": "name",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "string",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x06fdde03",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "name",
+              "payable": false,
+              "signature": "0x06fdde03",
+            },
+            "0x095ea7b3": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "approve(address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_spender",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "approve",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x095ea7b3",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "approve",
+              "payable": false,
+              "signature": "0x095ea7b3",
+            },
+            "0x18160ddd": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "totalSupply()",
+                "inputs": Array [],
+                "name": "totalSupply",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x18160ddd",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "totalSupply",
+              "payable": false,
+              "signature": "0x18160ddd",
+            },
+            "0x23b872dd": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "transferFrom(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_from",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_to",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "transferFrom",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x23b872dd",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "transferFrom",
+              "payable": false,
+              "signature": "0x23b872dd",
+            },
+            "0x313ce567": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "decimals()",
+                "inputs": Array [],
+                "name": "decimals",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint8",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x313ce567",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "decimals",
+              "payable": false,
+              "signature": "0x313ce567",
+            },
+            "0x70a08231": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "balanceOf(address)",
+                "inputs": Array [
+                  Object {
+                    "name": "_owner",
+                    "type": "address",
+                  },
+                ],
+                "name": "balanceOf",
+                "outputs": Array [
+                  Object {
+                    "name": "balance",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x70a08231",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "balanceOf",
+              "payable": false,
+              "signature": "0x70a08231",
+            },
+            "0x95d89b41": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "symbol()",
+                "inputs": Array [],
+                "name": "symbol",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "string",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x95d89b41",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "symbol",
+              "payable": false,
+              "signature": "0x95d89b41",
+            },
+            "0xa9059cbb": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "transfer(address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_to",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "transfer",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0xa9059cbb",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "transfer",
+              "payable": false,
+              "signature": "0xa9059cbb",
+            },
+            "0xdd62ed3e": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "allowance(address,address)",
+                "inputs": Array [
+                  Object {
+                    "name": "_owner",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_spender",
+                    "type": "address",
+                  },
+                ],
+                "name": "allowance",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0xdd62ed3e",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "allowance",
+              "payable": false,
+              "signature": "0xdd62ed3e",
+            },
+            "allowance": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "allowance(address,address)",
+                "inputs": Array [
+                  Object {
+                    "name": "_owner",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_spender",
+                    "type": "address",
+                  },
+                ],
+                "name": "allowance",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0xdd62ed3e",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "allowance",
+              "payable": false,
+              "signature": "0xdd62ed3e",
+            },
+            "allowance(address,address)": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "allowance(address,address)",
+                "inputs": Array [
+                  Object {
+                    "name": "_owner",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_spender",
+                    "type": "address",
+                  },
+                ],
+                "name": "allowance",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0xdd62ed3e",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "allowance",
+              "payable": false,
+              "signature": "0xdd62ed3e",
+            },
+            "approve": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "approve(address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_spender",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "approve",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x095ea7b3",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "approve",
+              "payable": false,
+              "signature": "0x095ea7b3",
+            },
+            "approve(address,uint256)": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "approve(address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_spender",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "approve",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x095ea7b3",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "approve",
+              "payable": false,
+              "signature": "0x095ea7b3",
+            },
+            "balanceOf": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "balanceOf(address)",
+                "inputs": Array [
+                  Object {
+                    "name": "_owner",
+                    "type": "address",
+                  },
+                ],
+                "name": "balanceOf",
+                "outputs": Array [
+                  Object {
+                    "name": "balance",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x70a08231",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "balanceOf",
+              "payable": false,
+              "signature": "0x70a08231",
+            },
+            "balanceOf(address)": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "balanceOf(address)",
+                "inputs": Array [
+                  Object {
+                    "name": "_owner",
+                    "type": "address",
+                  },
+                ],
+                "name": "balanceOf",
+                "outputs": Array [
+                  Object {
+                    "name": "balance",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x70a08231",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "balanceOf",
+              "payable": false,
+              "signature": "0x70a08231",
+            },
+            "contractConstructor": Object {
+              "abiItem": Object {
+                "constant": false,
+                "inputs": Array [],
+                "payable": false,
+                "type": "constructor",
+              },
+              "contractMethodParameters": Array [],
+              "payable": false,
+            },
+            "decimals": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "decimals()",
+                "inputs": Array [],
+                "name": "decimals",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint8",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x313ce567",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "decimals",
+              "payable": false,
+              "signature": "0x313ce567",
+            },
+            "decimals()": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "decimals()",
+                "inputs": Array [],
+                "name": "decimals",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint8",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x313ce567",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "decimals",
+              "payable": false,
+              "signature": "0x313ce567",
+            },
+            "name": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "name()",
+                "inputs": Array [],
+                "name": "name",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "string",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x06fdde03",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "name",
+              "payable": false,
+              "signature": "0x06fdde03",
+            },
+            "name()": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "name()",
+                "inputs": Array [],
+                "name": "name",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "string",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x06fdde03",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "name",
+              "payable": false,
+              "signature": "0x06fdde03",
+            },
+            "symbol": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "symbol()",
+                "inputs": Array [],
+                "name": "symbol",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "string",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x95d89b41",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "symbol",
+              "payable": false,
+              "signature": "0x95d89b41",
+            },
+            "symbol()": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "symbol()",
+                "inputs": Array [],
+                "name": "symbol",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "string",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x95d89b41",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "symbol",
+              "payable": false,
+              "signature": "0x95d89b41",
+            },
+            "totalSupply": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "totalSupply()",
+                "inputs": Array [],
+                "name": "totalSupply",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x18160ddd",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "totalSupply",
+              "payable": false,
+              "signature": "0x18160ddd",
+            },
+            "totalSupply()": Object {
+              "abiItem": Object {
+                "constant": true,
+                "funcName": "totalSupply()",
+                "inputs": Array [],
+                "name": "totalSupply",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "uint256",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x18160ddd",
+                "stateMutability": "view",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "totalSupply",
+              "payable": false,
+              "signature": "0x18160ddd",
+            },
+            "transfer": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "transfer(address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_to",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "transfer",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0xa9059cbb",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "transfer",
+              "payable": false,
+              "signature": "0xa9059cbb",
+            },
+            "transfer(address,uint256)": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "transfer(address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_to",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "transfer",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0xa9059cbb",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "transfer",
+              "payable": false,
+              "signature": "0xa9059cbb",
+            },
+            "transferFrom": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "transferFrom(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_from",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_to",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "transferFrom",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x23b872dd",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "transferFrom",
+              "payable": false,
+              "signature": "0x23b872dd",
+            },
+            "transferFrom(address,address,uint256)": Object {
+              "abiItem": Object {
+                "constant": false,
+                "funcName": "transferFrom(address,address,uint256)",
+                "inputs": Array [
+                  Object {
+                    "name": "_from",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_to",
+                    "type": "address",
+                  },
+                  Object {
+                    "name": "_value",
+                    "type": "uint256",
+                  },
+                ],
+                "name": "transferFrom",
+                "outputs": Array [
+                  Object {
+                    "name": "",
+                    "type": "bool",
+                  },
+                ],
+                "payable": false,
+                "signature": "0x23b872dd",
+                "stateMutability": "nonpayable",
+                "type": "function",
+              },
+              "contractMethodParameters": Array [],
+              "name": "transferFrom",
+              "payable": false,
+              "signature": "0x23b872dd",
+            },
+          },
+        },
+      },
+      "accounts": Object {
+        "_currentProvider": Object {
+          "CLOSE": "close",
+          "CONNECT": "connect",
+          "ERROR": "error",
+          "READY": "ready",
+          "SOCKET_ACCOUNTS_CHANGED": "socket_accountsChanged",
+          "SOCKET_CLOSE": "socket_close",
+          "SOCKET_CONNECT": "socket_connect",
+          "SOCKET_ERROR": "socket_error",
+          "SOCKET_MESSAGE": "socket_message",
+          "SOCKET_NETWORK_CHANGED": "socket_networkChanged",
+          "SOCKET_READY": "socket_ready",
+          "_events": Object {},
+          "_eventsCount": 0,
+          "connection": Object {
+            "_binaryType": "arraybuffer",
+            "_bufferedAmount": 0,
+            "_client": Object {
+              "_events": Object {},
+              "_eventsCount": 2,
+              "_req": Object {
+                "_contentLength": 0,
+                "_ended": false,
+                "_events": Object {},
+                "_eventsCount": 4,
+                "_hasBody": true,
+                "_header": "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+                "_headerSent": true,
+                "_last": true,
+                "_removedConnection": false,
+                "_removedContLen": false,
+                "_removedTE": false,
+                "_trailer": "",
+                "agent": Object {
+                  "_events": Object {},
+                  "_eventsCount": 1,
+                  "defaultPort": 80,
+                  "freeSockets": Object {},
+                  "keepAlive": false,
+                  "keepAliveMsecs": 1000,
+                  "maxFreeSockets": 256,
+                  "maxSockets": null,
+                  "options": Object {
+                    "path": null,
+                  },
+                  "protocol": "http:",
+                  "requests": Object {},
+                  "sockets": Object {
+                    "example.com:80:": Array [
+                      Object {
+                        "_events": Object {},
+                        "_eventsCount": 5,
+                        "_hadError": false,
+                        "_handle": Object {
+                          "onconnection": null,
+                          "reading": false,
+                        },
+                        "_host": "example.com",
+                        "_parent": null,
+                        "_pendingData": null,
+                        "_pendingEncoding": "",
+                        "_readableState": Object {
+                          "awaitDrain": 0,
+                          "buffer": Object {
+                            "head": null,
+                            "length": 0,
+                            "tail": null,
+                          },
+                          "decoder": null,
+                          "defaultEncoding": "utf8",
+                          "destroyed": false,
+                          "emitClose": false,
+                          "emittedReadable": false,
+                          "encoding": null,
+                          "endEmitted": false,
+                          "ended": false,
+                          "flowing": null,
+                          "highWaterMark": 16384,
+                          "length": 0,
+                          "needReadable": false,
+                          "objectMode": false,
+                          "paused": true,
+                          "pipes": null,
+                          "pipesCount": 0,
+                          "readableListening": false,
+                          "reading": false,
+                          "readingMore": false,
+                          "resumeScheduled": false,
+                          "sync": true,
+                        },
+                        "_server": null,
+                        "_sockname": null,
+                        "_writableState": Object {
+                          "bufferProcessing": false,
+                          "bufferedRequest": null,
+                          "bufferedRequestCount": 0,
+                          "corked": 0,
+                          "corkedRequestsFree": Object {
+                            "entry": null,
+                            "next": null,
+                          },
+                          "decodeStrings": false,
+                          "defaultEncoding": "utf8",
+                          "destroyed": false,
+                          "emitClose": false,
+                          "ended": false,
+                          "ending": false,
+                          "errorEmitted": false,
+                          "finalCalled": false,
+                          "finished": false,
+                          "highWaterMark": 16384,
+                          "lastBufferedRequest": null,
+                          "length": 0,
+                          "needDrain": false,
+                          "objectMode": false,
+                          "pendingcb": 0,
+                          "prefinished": false,
+                          "sync": true,
+                          "writecb": null,
+                          "writelen": 0,
+                          "writing": false,
+                        },
+                        "allowHalfOpen": false,
+                        "connecting": true,
+                        "readable": false,
+                        "server": null,
+                        "writable": true,
+                      },
+                    ],
+                  },
+                },
+                "chunkedEncoding": false,
+                "connection": null,
+                "finished": true,
+                "maxHeadersCount": null,
+                "method": "GET",
+                "output": Array [
+                  "GET / HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: somekey==
+Host: example.com
+
+",
+                ],
+                "outputCallbacks": Array [
+                  null,
+                ],
+                "outputEncodings": Array [
+                  "latin1",
+                ],
+                "outputSize": 150,
+                "parser": null,
+                "path": "/",
+                "res": null,
+                "sendDate": false,
+                "shouldKeepAlive": true,
+                "socket": null,
+                "timeoutCb": null,
+                "upgradeOrConnect": false,
+                "useChunkedEncodingByDefault": false,
+                "writable": true,
+              },
+              "base64nonce": "somenonce==",
+              "config": Object {
+                "assembleFragments": true,
+                "closeTimeout": 5000,
+                "disableNagleAlgorithm": true,
+                "fragmentOutgoingMessages": true,
+                "fragmentationThreshold": 16384,
+                "maxReceivedFrameSize": 1048576,
+                "maxReceivedMessageSize": 8388608,
+                "tlsOptions": Object {},
+                "webSocketVersion": 13,
+              },
+              "origin": null,
+              "protocols": Array [],
+              "secure": false,
+              "url": Object {
+                "auth": null,
+                "hash": null,
+                "host": "example.com",
+                "hostname": "example.com",
+                "href": "ws://example.com",
+                "path": null,
+                "pathname": null,
+                "port": "80",
+                "protocol": "ws:",
+                "query": null,
+                "search": null,
+                "slashes": true,
+              },
+            },
+            "_extensions": "",
+            "_listeners": Object {
+              "close": Array [
+                null,
+              ],
+              "error": Array [
+                null,
+              ],
+              "message": Array [
+                null,
+              ],
+              "open": Array [
+                null,
+                null,
+              ],
+            },
+            "_readyState": 0,
+            "_url": "ws://example.com",
+          },
+          "host": "ws://example.com",
+          "subscriptions": Object {},
+        },
+        "_defaultBlock": "latest",
+        "_transactionBlockTimeout": 50,
+        "_transactionConfirmationBlocks": 24,
+        "_transactionPollingTimeout": 750,
+        "_transactionSigner": Object {
+          "formatters": Object {},
+          "utils": Object {},
+        },
+        "accounts": Object {},
+        "accountsIndex": 0,
+        "defaultKeyName": "web3js_wallet",
+        "formatters": Object {},
+        "givenProvider": null,
+        "providerResolver": Object {
+          "providersModuleFactory": Object {},
+        },
+        "utils": Object {},
+        "wallet": Object {
+          "accounts": Object {},
+          "accountsIndex": 0,
+          "accountsModule": "[Circular]",
+          "defaultKeyName": "web3js_wallet",
+          "utils": Object {},
+        },
+      },
+      "contractModuleFactory": Object {
+        "abiCoder": Object {
+          "ethersAbiCoder": Object {},
+          "utils": Object {},
+        },
+        "formatters": Object {},
+        "utils": Object {},
+      },
+      "events": "[Circular]",
+      "formatters": Object {},
+      "givenProvider": null,
+      "methodFactory": Object {
+        "abiCoder": Object {
+          "ethersAbiCoder": Object {},
+          "utils": Object {},
+        },
+        "contractModuleFactory": Object {
+          "abiCoder": Object {
+            "ethersAbiCoder": Object {},
+            "utils": Object {},
+          },
+          "formatters": Object {},
+          "utils": Object {},
+        },
+        "formatters": Object {},
+        "utils": Object {},
+      },
+      "methods": Object {
+        "contract": "[Circular]",
+        "methodEncoder": Object {
+          "abiCoder": Object {
+            "ethersAbiCoder": Object {},
+            "utils": Object {},
+          },
+        },
+        "methodFactory": Object {
+          "abiCoder": Object {
+            "ethersAbiCoder": Object {},
+            "utils": Object {},
+          },
+          "contractModuleFactory": Object {
+            "abiCoder": Object {
+              "ethersAbiCoder": Object {},
+              "utils": Object {},
+            },
+            "formatters": Object {},
+            "utils": Object {},
+          },
+          "formatters": Object {},
+          "utils": Object {},
+        },
+        "methodOptionsMapper": Object {
+          "formatters": Object {},
+          "utils": Object {},
+        },
+        "methodOptionsValidator": Object {
+          "utils": Object {},
+        },
+      },
+      "options": Object {
+        "address": "0x0000000000000000000000000000000000000000",
+        "defaultBlock": "latest",
+        "transactionBlockTimeout": 50,
+        "transactionConfirmationBlocks": 24,
+        "transactionPollingTimeout": 750,
+        "transactionSigner": Object {
+          "formatters": Object {},
+          "utils": Object {},
+        },
+      },
+      "providerResolver": Object {
+        "providersModuleFactory": Object {},
+      },
+      "transactionSigner": Object {
+        "formatters": Object {},
+        "utils": Object {},
+      },
+      "utils": Object {},
+    },
+    "eventLogDecoder": Object {
+      "abiCoder": Object {
+        "ethersAbiCoder": Object {},
+        "utils": Object {},
+      },
+    },
+    "eventOptionsMapper": Object {
+      "eventFilterEncoder": Object {
+        "abiCoder": Object {
+          "ethersAbiCoder": Object {},
+          "utils": Object {},
+        },
+      },
+      "formatters": Object {},
+    },
+    "eventSubscriptionFactory": Object {
+      "formatters": Object {},
+      "utils": Object {},
+    },
+  },
+  "formatters": Object {},
+  "givenProvider": null,
+  "methodFactory": Object {
+    "abiCoder": Object {
+      "ethersAbiCoder": Object {},
+      "utils": Object {},
+    },
+    "contractModuleFactory": Object {
+      "abiCoder": Object {
+        "ethersAbiCoder": Object {},
+        "utils": Object {},
+      },
+      "formatters": Object {},
+      "utils": Object {},
+    },
+    "formatters": Object {},
+    "utils": Object {},
+  },
+  "methods": Object {},
+  "options": Object {
+    "address": "0x0000000000000000000000000000000000000000",
+    "defaultBlock": "latest",
+    "transactionBlockTimeout": 50,
+    "transactionConfirmationBlocks": 24,
+    "transactionPollingTimeout": 750,
+    "transactionSigner": Object {
+      "formatters": Object {},
+      "utils": Object {},
+    },
+  },
+  "providerResolver": Object {
+    "providersModuleFactory": Object {},
+  },
+  "transactionSigner": Object {
+    "formatters": Object {},
+    "utils": Object {},
+  },
+  "utils": Object {},
+}
+`;
