@@ -51,6 +51,7 @@ export function closeModal() {
   window.removeEventListener('resize', handleWindowResize)
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
+  document.body.style.position = 'initial'
   removeTouchHandlers(modal)
 
   const notifications = getById('blocknative-notifications')
@@ -554,6 +555,8 @@ export function removeTouchHandlers(element, type) {
 
 export function handleTouchStart(element) {
   return e => {
+    e.stopPropagation()
+    document.body.style.position = 'fixed'
     const touch = e.changedTouches[0]
     element.attributes['data-startY'] = touch.pageY
     element.attributes['data-startX'] = touch.pageX
@@ -564,6 +567,7 @@ export function handleTouchStart(element) {
 
 export function handleTouchMove(element) {
   return e => {
+    e.stopPropagation()
     const touch = e.changedTouches[0]
     const startY = element.attributes['data-startY']
     const translateY = element.attributes['data-translateY']
@@ -580,6 +584,7 @@ export function handleTouchMove(element) {
 
 export function handleTouchEnd(element, type) {
   return e => {
+    e.stopPropagation()
     const touch = e.changedTouches[0]
     const startY = element.attributes['data-startY']
     const startX = element.attributes['data-startX']

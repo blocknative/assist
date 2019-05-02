@@ -305,6 +305,7 @@ function notificationsUI({
     dismissButton.addEventListener('touchstart', () => {
       intervalId && clearInterval(intervalId)
       removeTouchHandlers(notification, 'notification')
+      document.body.style.position = 'initial'
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
     })
@@ -314,6 +315,7 @@ function notificationsUI({
     setTimeout(() => {
       if (state.mobileDevice) {
         removeTouchHandlers(notification, 'notification')
+        document.body.style.position = 'initial'
       }
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
