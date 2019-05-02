@@ -62,6 +62,8 @@ export const notSupported = {
 }
 
 export const onboardHeading = {
+  mobileWallet: { advanced: 'Install A Mobile Dapp Browser' },
+  mobileNetwork: { advanced: 'Switch to the Correct Network' },
   '0': { basic: 'Let’s Get You Started' },
   '1': { basic: 'Install MetaMask' },
   '2': {
@@ -84,6 +86,19 @@ export const onboardHeading = {
 }
 
 export const onboardDescription = {
+  mobileWallet: {
+    advanced: () =>
+      'A mobile ethereum wallet is needed to use this dapp. We recommend Trust or Coinbase wallet.'
+  },
+  mobileNetwork: {
+    advanced: () =>
+      `We’ve detected that you need to be on the ${networkName(
+        state.config.networkId
+      ) ||
+        'mainnet'} network for this application but you have MetaMask set to ${networkName(
+        state.userCurrentNetworkId
+      )}. Please switch to the correct network.`
+  },
   '0': {
     basic: () =>
       'To use this feature you’ll need to be set up and ready to use the blockchain. This onboarding guide will walk you through each step of the process. It won’t take long and at any time you can come back and pick up where you left off.'
@@ -135,6 +150,8 @@ export const onboardDescription = {
 }
 
 export const onboardButton = {
+  mobileWallet: { advanced: 'CHECK THAT I HAVE A MOBILE WALLET' },
+  mobileNetwork: { advanced: 'CHECK THAT I’M ON THE RIGHT NETWORK' },
   '0': { basic: 'I’M READY' },
   '1': {
     basic: 'CHECK THAT I HAVE METAMASK'
@@ -212,6 +229,14 @@ export const imageSrc = {
   firefoxLogo: {
     src: firefoxLogo,
     srcset: firefoxLogo2x
+  },
+  mobileWallet: {
+    src: mobile,
+    srcset: mobile2x
+  },
+  mobileNetwork: {
+    src: network,
+    srcset: network2x
   },
   '0': {
     src: welcome,
