@@ -1215,10 +1215,6 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bignumber.js@debris/bignumber.js#master:
-  version "2.0.7"
-  resolved "https://codeload.github.com/debris/bignumber.js/tar.gz/c7a38de919ed75e6fb6ba38051986e294b328df9"
-
 bindings@^1.2.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.5.0.tgz#10353c9e945334bc0511a6d90b38fbc7c9c504df"
@@ -4454,11 +4450,6 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
-lodash.isequal@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
-  integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
-
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -4921,13 +4912,6 @@ oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
   integrity sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==
-
-obj-traverse@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/obj-traverse/-/obj-traverse-1.0.0.tgz#58fec7e235961e3b6922c59cfc5bb84648072146"
-  integrity sha1-WP7H4jWWHjtpIsWc/Fu4RkgHIUY=
-  dependencies:
-    lodash.isequal "^4.5.0"
 
 object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
@@ -7144,14 +7128,6 @@ web3-utils@1.0.0-beta.53:
     randomhex "0.1.5"
     utf8 "2.1.1"
 
-"web3-v0.2@npm:web3@0.2":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/web3/-/web3-0.2.8.tgz#a1c85977470b12228ce35153b669f5be123f49a7"
-  integrity sha1-ochZd0cLEiKM41FTtmn1vhI/Sac=
-  dependencies:
-    bignumber.js debris/bignumber.js#master
-    xmlhttprequest "*"
-
 web3@^1.0.0-beta.37:
   version "1.0.0-beta.53"
   resolved "https://registry.yarnpkg.com/web3/-/web3-1.0.0-beta.53.tgz#455ade24706a11b7e17dfd51dca475001c9b78b1"
@@ -7331,7 +7307,7 @@ xml-name-validator@^3.0.0:
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
 
-xmlhttprequest@*, xmlhttprequest@1.8.0:
+xmlhttprequest@1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
   integrity sha1-Z/4HXFwk/vOfnWX197f+dRcZaPw=
