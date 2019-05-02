@@ -277,6 +277,7 @@ function init(config) {
     const abi =
       contractObj.abi ||
       contractObj._jsonInterface ||
+      (contractObj.interface && contractObj.interface.abi) ||
       Object.keys(contractObj.abiModel.abi.methods).map(
         key => contractObj.abiModel.abi.methods[key].abiItem
       )
