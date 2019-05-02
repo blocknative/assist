@@ -153,6 +153,7 @@ export function notSupportedModal(type) {
   const info = notSupported[`${type}NotSupported`]
   const { style } = state.config
   const darkMode = style && style.darkMode
+  const variant = darkMode ? 'Light' : ''
 
   return `
     <div id="bn-${type}-not-supported" class="bn-onboard">
@@ -160,7 +161,7 @@ export function notSupportedModal(type) {
         <a href="#" class="bn-onboard-close">
           <span class="bn-onboard-close-x"></span>
         </a>
-        ${notSupportedImage(type + darkMode ? 'Light' : '')}
+        ${notSupportedImage(type + variant)}
         <br><br>
         <h1 class="h4">${info.heading}</h1>
         <p>${info.description()}</p>
