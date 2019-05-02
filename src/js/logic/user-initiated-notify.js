@@ -2,7 +2,7 @@ import uuid from 'uuid/v4'
 import { handleEvent } from '~/js/helpers/events'
 import { getAllByQuery, removeNotification } from '~/js/views/dom'
 
-const defaultTimeout = eventCode => {
+export const defaultTimeout = eventCode => {
   if (eventCode === 'success') return 2000
   if (eventCode === 'pending') return 5000
   if (eventCode === 'error') return 5000
@@ -19,7 +19,7 @@ const defaultTimeout = eventCode => {
 export default function userInitiatedNotify(
   eventCode,
   message,
-  { customTimeout = defaultTimeout(eventCode) }
+  { customTimeout = defaultTimeout(eventCode) } = {}
 ) {
   // Validate message
   if (typeof message !== 'string') throw new Error('Message is required')
