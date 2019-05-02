@@ -330,6 +330,7 @@ img.bn-onboard-img {
   max-width: 100%;
   height: auto;
   border-radius: 4px;
+  margin: 0 auto;
 }
 
 .bn-onboard-close {
@@ -554,7 +555,7 @@ a#bn-transaction-branding {
   -moz-transition: width 0.2s ease-out;
   -o-transition: width 0.2s ease-out;
   transition: width 0.2s ease-out;
-  align-self: flex-start;
+  align-self: flex-end;
   margin: 0 10px;
 }
 
@@ -562,8 +563,8 @@ a#bn-transaction-branding:hover {
   width: 75px;
 }
 
-a#bn-transaction-branding.align-end {
-  align-self: flex-end;
+a#bn-transaction-branding.align-start {
+  align-self: flex-start;
 }
 
 a#bn-transaction-branding.margin-top {
