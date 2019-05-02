@@ -137,13 +137,7 @@ function init(config) {
       return new Promise(async (resolve, reject) => {
         await checkUserEnvironment().catch(reject)
 
-        if (state.mobileDevice) {
-          const error = new Error('User is on a mobile device')
-          error.eventCode = 'mobileBlocked'
-          reject(error)
-        }
-
-        if (!state.validBrowser) {
+        if (!state.validBrowser && !state.mobileDevice) {
           const error = new Error('User has an invalid browser')
           error.eventCode = 'browserFail'
           reject(error)
