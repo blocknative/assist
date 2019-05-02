@@ -1,4 +1,4 @@
-export let state = {
+export const initialState = {
   version: null,
   validApiKey: 'unknown',
   supportedNetwork: 'unknown',
@@ -34,6 +34,8 @@ export let state = {
   iframeWindow: null,
   connectionId: null
 }
+
+export let state = Object.assign({}, initialState)
 
 export function updateState(newState) {
   state = Object.assign({}, state, newState)

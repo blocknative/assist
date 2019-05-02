@@ -1,7 +1,6 @@
-import { state, updateState } from '../helpers/state'
-import { handleEvent } from '../helpers/events'
-import { checkValidBrowser } from '../helpers/browser'
-import { closeModal, addOnboardWarning } from '../views/dom'
+import { state, updateState } from '~/js/helpers/state'
+import { handleEvent } from '~/js/helpers/events'
+import { checkValidBrowser } from '~/js/helpers/browser'
 import {
   getAccountBalance,
   getAccounts,
@@ -11,9 +10,10 @@ import {
   requestLoginEnable,
   checkForWallet,
   configureWeb3
-} from '../helpers/web3'
-import { getItem, storeItem } from '../helpers/storage'
-import { timeouts, handleWeb3Error } from '../helpers/utilities'
+} from '~/js/helpers/web3'
+import { getItem, storeItem } from '~/js/helpers/storage'
+import { timeouts, handleWeb3Error } from '~/js/helpers/utilities'
+import { closeModal, addOnboardWarning } from '~/js/views/dom'
 
 export function checkUserEnvironment() {
   return new Promise(async resolve => {
