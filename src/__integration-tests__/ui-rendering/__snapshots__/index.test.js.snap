@@ -489,6 +489,7 @@ exports[`dom-rendering event activePreflight-mobileBlocked should trigger correc
         <p>Our distributed application does not support mobile browsers. Please visit our site on a desktop browser. Thank you!</p>
         <br>
         
+        <br>
         
     <div class=\\"bn-onboarding-branding\\">
       <p>Powered by
@@ -1562,6 +1563,7 @@ exports[`dom-rendering event initialize-mobileBlocked should trigger correct DOM
         <p>Our distributed application does not support mobile browsers. Please visit our site on a desktop browser. Thank you!</p>
         <br>
         
+        <br>
         
     <div class=\\"bn-onboarding-branding\\">
       <p>Powered by
@@ -1605,7 +1607,8 @@ exports[`dom-rendering event onboard-browserFail should trigger correct DOM rend
       Firefox
       </a>
     </p>
-  <br>
+  
+        <br>
         
     <div class=\\"bn-onboarding-branding\\">
       <p>Powered by
