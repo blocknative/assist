@@ -46,6 +46,7 @@ export function createElement(el, className, children, id) {
 export function closeModal() {
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
+  removeTouchHandlers(modal)
 
   const notifications = getById('blocknative-notifications')
   if (notifications) {
@@ -323,7 +324,7 @@ export function createTransactionBranding() {
     blockNativeBrand.classList.add('mobile-margin')
   } else {
     if (position.includes('Left')) {
-      blockNativeBrand.classList.add('align-end')
+      blockNativeBrand.classList.add('align-start')
     }
 
     if (position.includes('top')) {
@@ -533,62 +534,67 @@ function setHeight(el, overflow, height) {
   el.style.height = height
 }
 
-export function handleTouchStart(movementReference) {
+export function addTouchHandlers(element, type) {
+  element.addEventListener('touchstart', handleTouchStart(element), false)
+  element.addEventListener('touchmove', handleTouchMove(element), false)
+  element.addEventListener('touchend', handleTouchEnd(element, type), false)
+}
+
+export function removeTouchHandlers(element, type) {
+  element.removeEventListener('touchstart', handleTouchStart(element), false)
+  element.removeEventListener('touchmove', handleTouchMove(element), false)
+  element.removeEventListener('touchend', handleTouchEnd(element, type), false)
+}
+
+export function handleTouchStart(element) {
   return e => {
     const touch = e.changedTouches[0]
-    movementReference.startY = touch.pageY
-    movementReference.startTime = Date.now()
-
-    e.preventDefault()
+    element.attributes['data-startY'] = touch.pageY
+    element.attributes['data-startX'] = touch.pageX
+    element.attributes['data-startTime'] = Date.now()
+    element.attributes['data-translateY'] = 0
   }
 }
 
-export function handleTouchMove(notification, movementReference) {
+export function handleTouchMove(element) {
   return e => {
-    const { startY, translateY } = movementReference
     const touch = e.changedTouches[0]
-    const distance = touch.pageY - startY
-    const newTranslateY = distance + translateY
-    const position =
-      (state.config.style && state.config.style.notificationsPosition) || ''
+    const startY = element.attributes['data-startY']
+    const translateY = element.attributes['data-translateY']
+    const distanceY = touch.pageY - startY
 
-    if (position.includes('top')) {
-      if (newTranslateY > -40 && newTranslateY <= 0) {
-        notification.style.transform = `translateY(${newTranslateY}px)`
-        movementReference.translateY = newTranslateY
-      }
-    } else {
-      if (newTranslateY < 40 && newTranslateY >= 0) {
-        notification.style.transform = `translateY(${newTranslateY}px)`
-        movementReference.translateY = translateY + distance
-      }
+    const newTranslateY = distanceY + translateY
+
+    if (newTranslateY > -40 && newTranslateY < 40) {
+      element.style.transform = `translateY(${newTranslateY}px)`
+      element.attributes['data-translateY'] = newTranslateY
     }
-
-    e.preventDefault()
   }
 }
 
-export function handleTouchEnd(notification, movementReference) {
+export function handleTouchEnd(element, type) {
   return e => {
-    const { startY, startTime } = movementReference
     const touch = e.changedTouches[0]
-    const distance = touch.pageY - startY
+    const startY = element.attributes['data-startY']
+    const startX = element.attributes['data-startX']
+    const startTime = element.attributes['data-startTime']
+    const distanceY = touch.pageY - startY
+    const distanceX = touch.pageX - startX
     const elapsedTime = Date.now() - startTime
-    const topNotification =
-      state.config.style &&
-      state.config.style.notificationsPosition &&
-      state.config.style.notificationsPosition.includes('top')
-    const validDistance = topNotification ? distance <= -40 : distance >= 40
+    const validDistance =
+      distanceY <= -40 || distanceY >= 40 || distanceX <= -40 || distanceX >= 40
     const validSwipe = elapsedTime <= timeouts.swipeTime && validDistance
+
     if (!validSwipe) {
-      notification.style.transform = 'translateY(0)'
-      movementReference.translateY = 0
+      element.style.transform = 'translateY(0)'
+      element.attributes['data-translateY'] = 0
     } else {
-      notification.style.transform = `translateY(${
-        topNotification ? '-150px' : '150px'
-      })`
-      removeNotification(notification)
+      removeTouchHandlers(element)
+      if (type === 'notification') {
+        removeNotification(element)
+      } else {
+        closeModal()
+      }
     }
-    e.preventDefault()
   }
 }
