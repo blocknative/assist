@@ -26,7 +26,13 @@ module.exports = {
         useESModules: false
       }
     ],
-    ['@babel/plugin-proposal-object-rest-spread']
+    ['@babel/plugin-proposal-object-rest-spread'],
+    ['inline-import-data-uri', {
+      'extensions': [
+        '.png',
+        '.jpg'
+      ]
+    }]
   ],
   env: {
     test: {
