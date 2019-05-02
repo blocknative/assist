@@ -9,7 +9,9 @@ describe('user-initiated-notify.js', () => {
   describe('userInitiatedNotify', () => {
     test(`doesn't throw if dismiss is called after the notification has already timed out`, () => {
       expect(() => {
-        const notify = userInitiatedNotify('success', 'some-msg', 100)
+        const notify = userInitiatedNotify('success', 'some-msg', {
+          customTimeout: 100
+        })
         setTimeout(() => {
           notify()
         }, 1000)
@@ -19,7 +21,9 @@ describe('user-initiated-notify.js', () => {
     })
     test(`doesn't throw if notification times out after dismiss was already called`, () => {
       expect(() => {
-        const notify = userInitiatedNotify('success', 'some-msg', 1000)
+        const notify = userInitiatedNotify('success', 'some-msg', {
+          customTimeout: 1000
+        })
         setTimeout(() => {
           notify()
         }, 100)
@@ -31,7 +35,7 @@ describe('user-initiated-notify.js', () => {
     customEventCodes.forEach(event => {
       test(`setting customTimeout in a ${event} event overrides the default timeout`, () => {
         const message = 'some-msg'
-        userInitiatedNotify(event, message, 500)
+        userInitiatedNotify(event, message, { customTimeout: 500 })
         jest.advanceTimersByTime(1000)
         expect(
           state.iframeDocument.body.innerHTML.includes(message)
@@ -39,7 +43,7 @@ describe('user-initiated-notify.js', () => {
       })
       test(`setting customTimeout to -1 in a ${event} event stops it automatically timing out`, () => {
         const message = 'some-msg'
-        userInitiatedNotify(event, message, -1)
+        userInitiatedNotify(event, message, { customTimeout: -1 })
         jest.advanceTimersByTime(ONE_MIN_IN_MS * 10)
         expect(
           state.iframeDocument.body.innerHTML.includes(message)

@@ -411,7 +411,7 @@ assistInstance.getState()
   })
 ```
 
-### `notify(type, message, customTimeout)`
+### `notify(type, message, options)`
 
 Trigger a custom UI notification
 
@@ -421,9 +421,16 @@ Trigger a custom UI notification
 
 `message` - `String`: The message to display in the notification. HTML can be embedded in the string. (**Required**)
 
-`customTimeout` - `Number`: Specify how many ms the notification should exist. Set to -1 for no timeout. 
+`options` - `Object`: Further customize the notification
 
-customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
+```js
+options = {
+  customTimeout // Specify how many ms the notification should exist. Set to -1 for no timeout.
+}
+```
+
+options.customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
+
 
 #### Returns
 
@@ -431,15 +438,15 @@ customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
 
 - a function that when called will dismiss the notification
 
-#### Example
+#### Examples
 
 ```javascript
 // Display a success notification with an embedded link for 5000ms
-assistInstance.notify('success', 'Operation was a success! Click <a href="https://example.com" target="_blank">here</a> to view more', 5000);
+assistInstance.notify('success', 'Operation was a success! Click <a href="https://example.com" target="_blank">here</a> to view more', { customTimeout: 5000 });
 
 // Display a pending notification, load data from an imaginary backend
-// and dismiss the pending notification when the data is loaded
-const dismiss = assistInstance.notify('pending', 'Loading data...', -1);
+// and dismiss the pending notification only when the data is loaded
+const dismiss = assistInstance.notify('pending', 'Loading data...', { customTimeout: -1 });
 myEventEmitter.emit('fetch-data-from-backend')
 myEventEmitter.on('data-from-backend-loaded', () => {
   dismiss()
