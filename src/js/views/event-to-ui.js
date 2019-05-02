@@ -17,9 +17,8 @@ import {
   startTimerInterval,
   removeAllNotifications,
   positionElement,
-  handleTouchStart,
-  handleTouchMove,
-  handleTouchEnd
+  addTouchHandlers,
+  removeTouchHandlers
 } from './dom'
 
 import { showIframe } from '../helpers/iframe'
@@ -42,10 +41,12 @@ const eventToUI = {
     mobileBlocked: notSupportedUI,
     welcomeUser: onboardingUI,
     walletFail: onboardingUI,
+    mobileWalletFail: onboardingUI,
     walletLogin: onboardingUI,
     walletLoginEnable: onboardingUI,
     walletEnable: onboardingUI,
     networkFail: onboardingUI,
+    mobileNetworkFail: onboardingUI,
     nsfFail: onboardingUI,
     newOnboardComplete: onboardingUI
   },
@@ -53,10 +54,12 @@ const eventToUI = {
     mobileBlocked: notSupportedUI,
     welcomeUser: onboardingUI,
     walletFail: onboardingUI,
+    mobileWalletFail: onboardingUI,
     walletLogin: onboardingUI,
     walletLoginEnable: onboardingUI,
     walletEnable: onboardingUI,
     networkFail: onboardingUI,
+    mobileNetworkFail: onboardingUI,
     nsfFail: notificationsUI,
     newOnboardComplete: onboardingUI,
     txRepeat: notificationsUI
@@ -125,6 +128,11 @@ function onboardingUI(eventObj, handlers) {
     'bn-onboard-modal-shade',
     onboardModal(type, eventCodeToStep(eventCode))
   )
+
+  if (state.mobileDevice) {
+    addTouchHandlers(modal.children[0], 'modal')
+  }
+
   openModal(modal, handlers)
 }
 
@@ -248,26 +256,7 @@ function notificationsUI({
 
   if (state.mobileDevice) {
     notification.appendChild(createTransactionBranding())
-
-    const movementReference = {
-      translateY: 0
-    }
-
-    notification.addEventListener(
-      'touchstart',
-      handleTouchStart(movementReference),
-      false
-    )
-    notification.addEventListener(
-      'touchmove',
-      handleTouchMove(notification, movementReference),
-      false
-    )
-    notification.addEventListener(
-      'touchend',
-      handleTouchEnd(notification, movementReference),
-      false
-    )
+    addTouchHandlers(notification, 'notification')
   }
 
   notificationsList.appendChild(notification)
@@ -311,6 +300,7 @@ function notificationsUI({
   if (state.mobileDevice) {
     dismissButton.addEventListener('touchstart', () => {
       intervalId && clearInterval(intervalId)
+      removeTouchHandlers(notification, 'notification')
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
     })
@@ -318,6 +308,9 @@ function notificationsUI({
 
   if (type === 'complete') {
     setTimeout(() => {
+      if (state.mobileDevice) {
+        removeTouchHandlers(notification, 'notification')
+      }
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
     }, timeouts.autoRemoveNotification)
