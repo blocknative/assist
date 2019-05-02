@@ -62,7 +62,7 @@ export const notSupported = {
 }
 
 export const onboardHeading = {
-  mobileWallet: { advanced: 'Install A Mobile Dapp Browser' },
+  mobileWallet: { advanced: 'Install A Mobile Dapp Wallet' },
   mobileNetwork: { advanced: 'Switch to the Correct Network' },
   '0': { basic: 'Let’s Get You Started' },
   '1': { basic: 'Install MetaMask' },
@@ -150,7 +150,7 @@ export const onboardDescription = {
 }
 
 export const onboardButton = {
-  mobileWallet: { advanced: 'CHECK THAT I HAVE A MOBILE WALLET' },
+  mobileWallet: { advanced: 'CHECK MY MOBILE WALLET' },
   mobileNetwork: { advanced: 'CHECK THAT I’M ON THE RIGHT NETWORK' },
   '0': { basic: 'I’M READY' },
   '1': {
