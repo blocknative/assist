@@ -1,11 +1,13 @@
-import { state } from '../helpers/state'
+import { state } from '~/js/helpers/state'
 import {
   capitalize,
   timeString,
   timeouts,
   stepToImageKey,
   first
-} from '../helpers/utilities'
+} from '~/js/helpers/utilities'
+import { showIframe, hideIframe, resizeIframe } from '~/js/helpers/iframe'
+
 import {
   onboardHeading,
   onboardDescription,
@@ -14,7 +16,6 @@ import {
   notSupported,
   onboardWarningMsg
 } from './content'
-import { showIframe, hideIframe, resizeIframe } from '../helpers/iframe'
 
 export function createElementString(type, className, innerHTML) {
   return `
@@ -43,7 +44,11 @@ export function createElement(el, className, children, id) {
   return element
 }
 
+const handleWindowResize = () =>
+  resizeIframe({ height: window.innerHeight, width: window.innerWidth })
+
 export function closeModal() {
+  window.removeEventListener('resize', handleWindowResize)
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
 
@@ -64,6 +69,7 @@ export function closeModal() {
 
 export function openModal(modal, handlers = {}) {
   const { onClick, onClose } = handlers
+  window.addEventListener('resize', handleWindowResize)
   state.iframeDocument.body.appendChild(modal)
   showIframe()
   resizeIframe({ height: window.innerHeight, width: window.innerWidth })

@@ -1,6 +1,16 @@
-import { state } from '../helpers/state'
-import { handleEvent } from '../helpers/events'
-import { prepareForTransaction } from './user'
+import { state } from '~/js/helpers/state'
+import { handleEvent } from '~/js/helpers/events'
+import {
+  hasSufficientBalance,
+  waitForTransactionReceipt,
+  getTransactionParams
+} from '~/js/helpers/web3'
+import {
+  timeouts,
+  extractMessageFromError,
+  createTransactionId,
+  handleError
+} from '~/js/helpers/utilities'
 import {
   addTransactionToQueue,
   removeTransactionFromQueue,
@@ -9,18 +19,9 @@ import {
   isDuplicateTransaction,
   getTransactionsAwaitingApproval,
   isTransactionAwaitingApproval
-} from '../helpers/transaction-queue'
-import {
-  hasSufficientBalance,
-  waitForTransactionReceipt,
-  getTransactionParams
-} from '../helpers/web3'
-import {
-  timeouts,
-  extractMessageFromError,
-  createTransactionId,
-  handleError
-} from '../helpers/utilities'
+} from '~/js/helpers/transaction-queue'
+
+import { prepareForTransaction } from './user'
 
 function sendTransaction(
   categoryCode,
@@ -32,24 +33,27 @@ function sendTransaction(
   contractEventObj
 ) {
   return new Promise(async (resolve, reject) => {
-    // Make sure user is onboarded and ready to transact
-    await prepareForTransaction('activePreflight').catch(
-      handleError({ resolve, reject, callback })
-    )
-
-    // make sure that we have from address in txOptions
-    if (!txOptions.from) {
-      txOptions.from = state.accountAddress
-    }
-
-    const transactionId = createTransactionId()
-
+    // Get information like gasPrice and gas
     const transactionParams = await getTransactionParams(
       txOptions,
       contractMethod,
       contractEventObj
     )
 
+    // Check user is ready to make the transaction
+    const [sufficientBalance] = await Promise.all([
+      hasSufficientBalance(transactionParams),
+      prepareForTransaction('activePreflight').catch(
+        handleError({ resolve, reject, callback })
+      )
+    ])
+
+    // Make sure that we have from address in txOptions
+    if (!txOptions.from) {
+      txOptions.from = state.accountAddress
+    }
+
+    const transactionId = createTransactionId()
     const transactionEventObj = {
       id: transactionId,
       gas: transactionParams.gas.toString(),
@@ -58,8 +62,6 @@ function sendTransaction(
       to: txOptions.to,
       from: txOptions.from
     }
-
-    const sufficientBalance = await hasSufficientBalance(transactionParams)
 
     if (sufficientBalance === false) {
       handleEvent({
