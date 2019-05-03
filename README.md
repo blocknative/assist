@@ -425,7 +425,7 @@ Trigger a custom UI notification
 
 ```js
 options = {
-  customTimeout // Specify how many ms the notification should exist. Set to -1 for no timeout.
+  customTimeout: Number // Specify how many ms the notification should exist. Set to -1 for no timeout.
 }
 ```
 
