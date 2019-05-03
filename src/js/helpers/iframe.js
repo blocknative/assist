@@ -3,21 +3,49 @@ import darkModeStyles from '~/css/dark-mode.css'
 
 import { updateState, state } from './state'
 
-export function createIframe(browserDocument, assistStyles, style = {}) {
-  const { darkMode, css } = style
+export function updateStyle({ darkMode, css }) {
+  const { iframeDocument } = state
+  const darkModeStyleElement = iframeDocument.getElementById('dark-mode-style')
+  const customCssStyleElement = iframeDocument.getElementById(
+    'custom-css-style'
+  )
 
+  // update darkMode
+  if (typeof darkMode === 'boolean') {
+    const newConfig = {
+      ...state.config,
+      style: {
+        ...state.config.style,
+        darkMode
+      }
+    }
+    darkModeStyleElement.innerHTML = darkMode ? darkModeStyles : ''
+    updateState({ config: newConfig })
+  }
+
+  // update custom css
+  if (css) {
+    const newConfig = {
+      ...state.config,
+      style: {
+        ...state.config.style,
+        css
+      }
+    }
+    customCssStyleElement.innerHTML = css
+    updateState({ config: newConfig })
+  }
+}
+
+export function createIframe(browserDocument, assistStyles, style = {}) {
   const initialIframeContent = `
     <html>
       <head>
         <style>
           ${assistStyles}
         </style>
-        <style>
-          ${darkMode ? darkModeStyles : ''}
-        </style>
-        <style>
-          ${css || ''}
-        </style>
+        <style id="dark-mode-style"></style>
+        <style id="custom-css-style"></style>
       </head>
       <body></body>
     </html>
@@ -38,6 +66,7 @@ export function createIframe(browserDocument, assistStyles, style = {}) {
   iDocument.close()
 
   updateState({ iframe, iframeDocument: iDocument, iframeWindow: iWindow })
+  updateStyle(style)
 }
 
 export function showIframe() {
