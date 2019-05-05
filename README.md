@@ -411,6 +411,36 @@ assistInstance.getState()
   })
 ```
 
+### `updateStyle(style)`
+
+#### Parameters
+
+`style` - `Object`: Object containing new style information (**Required**)
+
+```javascript
+const style = {
+    darkMode: Boolean, // Set Assist UI to dark mode
+    css: String // Custom css string to overide Assist default styles
+}
+```
+
+#### Examples
+
+```javascript
+// Enable dark mode
+const style = {
+  darkMode: true
+}
+assistInstance.updateStyle(style)
+
+// Disable dark mode and set notification background to black
+const style = {
+  darkMode: false,
+  css: `.bn-notification { background: black }`
+}
+assistInstance.updateStyle(style)
+```
+
 ## Contribute
 
 ### Installing Dependencies
