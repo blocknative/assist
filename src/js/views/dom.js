@@ -17,12 +17,13 @@ import {
   onboardWarningMsg
 } from './content'
 
+// Update UI styles based on the current style.notificationsPosition value
 export function updateNotificationsPosition() {
   const { notificationsPosition } = state.config.style
   if (!notificationsPosition) return
   positionElement(state.iframe)
 
-  // Reorder notificationsContainer elements
+  // Position notificationsContainer and reorder it's elements
   const notificationsContainer = state.iframeDocument.getElementById(
     'blocknative-notifications'
   )
@@ -51,7 +52,7 @@ export function updateNotificationsPosition() {
       : icon.classList.remove('bn-float-right')
   })
 
-  // Update existing progress tooltop positions
+  // Update existing progress tooltip positions
   const progressTooltips = [
     ...state.iframeDocument.getElementsByClassName('progress-tooltip')
   ]
