@@ -102,7 +102,7 @@ describe('user-initiated-notify.js', () => {
         })
         test(`setting customTimeout to -1 stops it automatically timing out`, () => {
           userInitiatedNotify(eventCode, message, { customTimeout: -1 })
-          jest.advanceTimersByTime(ONE_MIN_IN_MS * 5)
+          jest.advanceTimersByTime(ONE_MIN_IN_MS)
           expect(
             state.iframeDocument.body.innerHTML.includes(message)
           ).toBeTruthy()
