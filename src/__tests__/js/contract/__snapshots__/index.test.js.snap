@@ -1,6 +1,814 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`using web3 v1 Contract function is called it returns the expected decorated contract 1`] = `
+exports[`using web3 0.20.6 Contract function is called it returns the expected decorated contract 1`] = `
+Object {
+  "abi": Array [
+    Object {
+      "constant": true,
+      "funcName": "name()",
+      "inputs": Array [],
+      "name": "name",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "string",
+        },
+      ],
+      "payable": false,
+      "signature": "0x06fdde03",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "funcName": "approve(address,uint256)",
+      "inputs": Array [
+        Object {
+          "name": "_spender",
+          "type": "address",
+        },
+        Object {
+          "name": "_value",
+          "type": "uint256",
+        },
+      ],
+      "name": "approve",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0x095ea7b3",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "totalSupply()",
+      "inputs": Array [],
+      "name": "totalSupply",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0x18160ddd",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "funcName": "transferFrom(address,address,uint256)",
+      "inputs": Array [
+        Object {
+          "name": "_from",
+          "type": "address",
+        },
+        Object {
+          "name": "_to",
+          "type": "address",
+        },
+        Object {
+          "name": "_value",
+          "type": "uint256",
+        },
+      ],
+      "name": "transferFrom",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0x23b872dd",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "decimals()",
+      "inputs": Array [],
+      "name": "decimals",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint8",
+        },
+      ],
+      "payable": false,
+      "signature": "0x313ce567",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "balanceOf(address)",
+      "inputs": Array [
+        Object {
+          "name": "_owner",
+          "type": "address",
+        },
+      ],
+      "name": "balanceOf",
+      "outputs": Array [
+        Object {
+          "name": "balance",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0x70a08231",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "symbol()",
+      "inputs": Array [],
+      "name": "symbol",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "string",
+        },
+      ],
+      "payable": false,
+      "signature": "0x95d89b41",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "funcName": "transfer(address,uint256)",
+      "inputs": Array [
+        Object {
+          "name": "_to",
+          "type": "address",
+        },
+        Object {
+          "name": "_value",
+          "type": "uint256",
+        },
+      ],
+      "name": "transfer",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0xa9059cbb",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "allowance(address,address)",
+      "inputs": Array [
+        Object {
+          "name": "_owner",
+          "type": "address",
+        },
+        Object {
+          "name": "_spender",
+          "type": "address",
+        },
+      ],
+      "name": "allowance",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0xdd62ed3e",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "fallback",
+    },
+    Object {
+      "anonymous": false,
+      "funcName": "Approval(address,address,uint256)",
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "owner",
+          "type": "address",
+        },
+        Object {
+          "indexed": true,
+          "name": "spender",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256",
+        },
+      ],
+      "name": "Approval",
+      "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+      "type": "event",
+    },
+    Object {
+      "anonymous": false,
+      "funcName": "Transfer(address,address,uint256)",
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "from",
+          "type": "address",
+        },
+        Object {
+          "indexed": true,
+          "name": "to",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256",
+        },
+      ],
+      "name": "Transfer",
+      "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "type": "event",
+    },
+  ],
+  "eth": Object {},
+}
+`;
+
+exports[`using web3 1.0.0-beta.37 Contract function is called it returns the expected decorated contract 1`] = `
+Object {
+  "_address": "0x0000000000000000000000000000000000000000",
+  "_jsonInterface": Array [
+    Object {
+      "constant": true,
+      "funcName": "name()",
+      "inputs": Array [],
+      "name": "name",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "string",
+        },
+      ],
+      "payable": false,
+      "signature": "0x06fdde03",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "funcName": "approve(address,uint256)",
+      "inputs": Array [
+        Object {
+          "name": "_spender",
+          "type": "address",
+        },
+        Object {
+          "name": "_value",
+          "type": "uint256",
+        },
+      ],
+      "name": "approve",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0x095ea7b3",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "totalSupply()",
+      "inputs": Array [],
+      "name": "totalSupply",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0x18160ddd",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "funcName": "transferFrom(address,address,uint256)",
+      "inputs": Array [
+        Object {
+          "name": "_from",
+          "type": "address",
+        },
+        Object {
+          "name": "_to",
+          "type": "address",
+        },
+        Object {
+          "name": "_value",
+          "type": "uint256",
+        },
+      ],
+      "name": "transferFrom",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0x23b872dd",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "decimals()",
+      "inputs": Array [],
+      "name": "decimals",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint8",
+        },
+      ],
+      "payable": false,
+      "signature": "0x313ce567",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "balanceOf(address)",
+      "inputs": Array [
+        Object {
+          "name": "_owner",
+          "type": "address",
+        },
+      ],
+      "name": "balanceOf",
+      "outputs": Array [
+        Object {
+          "name": "balance",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0x70a08231",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "symbol()",
+      "inputs": Array [],
+      "name": "symbol",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "string",
+        },
+      ],
+      "payable": false,
+      "signature": "0x95d89b41",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "funcName": "transfer(address,uint256)",
+      "inputs": Array [
+        Object {
+          "name": "_to",
+          "type": "address",
+        },
+        Object {
+          "name": "_value",
+          "type": "uint256",
+        },
+      ],
+      "name": "transfer",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0xa9059cbb",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "funcName": "allowance(address,address)",
+      "inputs": Array [
+        Object {
+          "name": "_owner",
+          "type": "address",
+        },
+        Object {
+          "name": "_spender",
+          "type": "address",
+        },
+      ],
+      "name": "allowance",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0xdd62ed3e",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "fallback",
+    },
+    Object {
+      "anonymous": false,
+      "funcName": "Approval(address,address,uint256)",
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "owner",
+          "type": "address",
+        },
+        Object {
+          "indexed": true,
+          "name": "spender",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256",
+        },
+      ],
+      "name": "Approval",
+      "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+      "type": "event",
+    },
+    Object {
+      "anonymous": false,
+      "funcName": "Transfer(address,address,uint256)",
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "from",
+          "type": "address",
+        },
+        Object {
+          "indexed": true,
+          "name": "to",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256",
+        },
+      ],
+      "name": "Transfer",
+      "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "type": "event",
+    },
+  ],
+  "_provider": Object {
+    "connected": false,
+    "connection": Object {},
+    "notificationCallbacks": Array [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
+    "responseCallbacks": Object {},
+  },
+  "_requestManager": Object {
+    "provider": Object {
+      "connected": false,
+      "connection": Object {},
+      "notificationCallbacks": Array [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
+      "responseCallbacks": Object {},
+    },
+    "providers": Object {},
+    "subscriptions": Object {},
+  },
+  "currentProvider": Object {
+    "connected": false,
+    "connection": Object {},
+    "notificationCallbacks": Array [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
+    "responseCallbacks": Object {},
+  },
+  "defaultAccount": null,
+  "defaultBlock": "latest",
+  "events": Object {},
+  "givenProvider": null,
+  "methods": Object {},
+  "options": Object {
+    "address": "0x0000000000000000000000000000000000000000",
+    "jsonInterface": Array [
+      Object {
+        "constant": true,
+        "funcName": "name()",
+        "inputs": Array [],
+        "name": "name",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "string",
+          },
+        ],
+        "payable": false,
+        "signature": "0x06fdde03",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "funcName": "approve(address,uint256)",
+        "inputs": Array [
+          Object {
+            "name": "_spender",
+            "type": "address",
+          },
+          Object {
+            "name": "_value",
+            "type": "uint256",
+          },
+        ],
+        "name": "approve",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0x095ea7b3",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "funcName": "totalSupply()",
+        "inputs": Array [],
+        "name": "totalSupply",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "uint256",
+          },
+        ],
+        "payable": false,
+        "signature": "0x18160ddd",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "funcName": "transferFrom(address,address,uint256)",
+        "inputs": Array [
+          Object {
+            "name": "_from",
+            "type": "address",
+          },
+          Object {
+            "name": "_to",
+            "type": "address",
+          },
+          Object {
+            "name": "_value",
+            "type": "uint256",
+          },
+        ],
+        "name": "transferFrom",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0x23b872dd",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "funcName": "decimals()",
+        "inputs": Array [],
+        "name": "decimals",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "uint8",
+          },
+        ],
+        "payable": false,
+        "signature": "0x313ce567",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "funcName": "balanceOf(address)",
+        "inputs": Array [
+          Object {
+            "name": "_owner",
+            "type": "address",
+          },
+        ],
+        "name": "balanceOf",
+        "outputs": Array [
+          Object {
+            "name": "balance",
+            "type": "uint256",
+          },
+        ],
+        "payable": false,
+        "signature": "0x70a08231",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "funcName": "symbol()",
+        "inputs": Array [],
+        "name": "symbol",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "string",
+          },
+        ],
+        "payable": false,
+        "signature": "0x95d89b41",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "funcName": "transfer(address,uint256)",
+        "inputs": Array [
+          Object {
+            "name": "_to",
+            "type": "address",
+          },
+          Object {
+            "name": "_value",
+            "type": "uint256",
+          },
+        ],
+        "name": "transfer",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0xa9059cbb",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "funcName": "allowance(address,address)",
+        "inputs": Array [
+          Object {
+            "name": "_owner",
+            "type": "address",
+          },
+          Object {
+            "name": "_spender",
+            "type": "address",
+          },
+        ],
+        "name": "allowance",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "uint256",
+          },
+        ],
+        "payable": false,
+        "signature": "0xdd62ed3e",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback",
+      },
+      Object {
+        "anonymous": false,
+        "funcName": "Approval(address,address,uint256)",
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "owner",
+            "type": "address",
+          },
+          Object {
+            "indexed": true,
+            "name": "spender",
+            "type": "address",
+          },
+          Object {
+            "indexed": false,
+            "name": "value",
+            "type": "uint256",
+          },
+        ],
+        "name": "Approval",
+        "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+        "type": "event",
+      },
+      Object {
+        "anonymous": false,
+        "funcName": "Transfer(address,address,uint256)",
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "from",
+            "type": "address",
+          },
+          Object {
+            "indexed": true,
+            "name": "to",
+            "type": "address",
+          },
+          Object {
+            "indexed": false,
+            "name": "value",
+            "type": "uint256",
+          },
+        ],
+        "name": "Transfer",
+        "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        "type": "event",
+      },
+    ],
+  },
+  "providers": Object {},
+}
+`;
+
+exports[`using web3 1.0.0-beta.54 Contract function is called it returns the expected decorated contract 1`] = `
 Object {
   "_currentProvider": Object {
     "CLOSE": "close",
@@ -33,7 +841,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
           "_headerSent": true,
@@ -57,7 +865,7 @@ Host: example.com
             "protocol": "http:",
             "requests": Object {},
             "sockets": Object {
-              "example.com:80:": Array [
+              "some-socket.123:80:": Array [
                 Object {
                   "_events": Object {},
                   "_eventsCount": 5,
@@ -66,7 +874,7 @@ Host: example.com
                     "onconnection": null,
                     "reading": false,
                   },
-                  "_host": "example.com",
+                  "_host": "some-socket.123",
                   "_parent": null,
                   "_pendingData": null,
                   "_pendingEncoding": "",
@@ -151,7 +959,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
           ],
@@ -161,7 +969,7 @@ Host: example.com
           "outputEncodings": Array [
             "latin1",
           ],
-          "outputSize": 150,
+          "outputSize": 154,
           "parser": null,
           "path": "/",
           "res": null,
@@ -191,9 +999,9 @@ Host: example.com
         "url": Object {
           "auth": null,
           "hash": null,
-          "host": "example.com",
-          "hostname": "example.com",
-          "href": "ws://example.com",
+          "host": "some-socket.123",
+          "hostname": "some-socket.123",
+          "href": "ws://some-socket.123",
           "path": null,
           "pathname": null,
           "port": "80",
@@ -220,9 +1028,9 @@ Host: example.com
         ],
       },
       "_readyState": 0,
-      "_url": "ws://example.com",
+      "_url": "ws://some-socket.123",
     },
-    "host": "ws://example.com",
+    "host": "ws://some-socket.123",
     "subscriptions": Object {},
   },
   "_defaultBlock": "latest",
@@ -1208,7 +2016,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
             "_headerSent": true,
@@ -1232,7 +2040,7 @@ Host: example.com
               "protocol": "http:",
               "requests": Object {},
               "sockets": Object {
-                "example.com:80:": Array [
+                "some-socket.123:80:": Array [
                   Object {
                     "_events": Object {},
                     "_eventsCount": 5,
@@ -1241,7 +2049,7 @@ Host: example.com
                       "onconnection": null,
                       "reading": false,
                     },
-                    "_host": "example.com",
+                    "_host": "some-socket.123",
                     "_parent": null,
                     "_pendingData": null,
                     "_pendingEncoding": "",
@@ -1326,7 +2134,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
             ],
@@ -1336,7 +2144,7 @@ Host: example.com
             "outputEncodings": Array [
               "latin1",
             ],
-            "outputSize": 150,
+            "outputSize": 154,
             "parser": null,
             "path": "/",
             "res": null,
@@ -1366,9 +2174,9 @@ Host: example.com
           "url": Object {
             "auth": null,
             "hash": null,
-            "host": "example.com",
-            "hostname": "example.com",
-            "href": "ws://example.com",
+            "host": "some-socket.123",
+            "hostname": "some-socket.123",
+            "href": "ws://some-socket.123",
             "path": null,
             "pathname": null,
             "port": "80",
@@ -1395,9 +2203,9 @@ Host: example.com
           ],
         },
         "_readyState": 0,
-        "_url": "ws://example.com",
+        "_url": "ws://some-socket.123",
       },
-      "host": "ws://example.com",
+      "host": "ws://some-socket.123",
       "subscriptions": Object {},
     },
     "_defaultBlock": "latest",
@@ -1481,7 +2289,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
               "_headerSent": true,
@@ -1505,7 +2313,7 @@ Host: example.com
                 "protocol": "http:",
                 "requests": Object {},
                 "sockets": Object {
-                  "example.com:80:": Array [
+                  "some-socket.123:80:": Array [
                     Object {
                       "_events": Object {},
                       "_eventsCount": 5,
@@ -1514,7 +2322,7 @@ Host: example.com
                         "onconnection": null,
                         "reading": false,
                       },
-                      "_host": "example.com",
+                      "_host": "some-socket.123",
                       "_parent": null,
                       "_pendingData": null,
                       "_pendingEncoding": "",
@@ -1599,7 +2407,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
               ],
@@ -1609,7 +2417,7 @@ Host: example.com
               "outputEncodings": Array [
                 "latin1",
               ],
-              "outputSize": 150,
+              "outputSize": 154,
               "parser": null,
               "path": "/",
               "res": null,
@@ -1639,9 +2447,9 @@ Host: example.com
             "url": Object {
               "auth": null,
               "hash": null,
-              "host": "example.com",
-              "hostname": "example.com",
-              "href": "ws://example.com",
+              "host": "some-socket.123",
+              "hostname": "some-socket.123",
+              "href": "ws://some-socket.123",
               "path": null,
               "pathname": null,
               "port": "80",
@@ -1668,9 +2476,9 @@ Host: example.com
             ],
           },
           "_readyState": 0,
-          "_url": "ws://example.com",
+          "_url": "ws://some-socket.123",
         },
-        "host": "ws://example.com",
+        "host": "ws://some-socket.123",
         "subscriptions": Object {},
       },
       "_defaultBlock": "latest",
@@ -2656,7 +3464,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
                 "_headerSent": true,
@@ -2680,7 +3488,7 @@ Host: example.com
                   "protocol": "http:",
                   "requests": Object {},
                   "sockets": Object {
-                    "example.com:80:": Array [
+                    "some-socket.123:80:": Array [
                       Object {
                         "_events": Object {},
                         "_eventsCount": 5,
@@ -2689,7 +3497,7 @@ Host: example.com
                           "onconnection": null,
                           "reading": false,
                         },
-                        "_host": "example.com",
+                        "_host": "some-socket.123",
                         "_parent": null,
                         "_pendingData": null,
                         "_pendingEncoding": "",
@@ -2774,7 +3582,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: example.com
+Host: some-socket.123
 
 ",
                 ],
@@ -2784,7 +3592,7 @@ Host: example.com
                 "outputEncodings": Array [
                   "latin1",
                 ],
-                "outputSize": 150,
+                "outputSize": 154,
                 "parser": null,
                 "path": "/",
                 "res": null,
@@ -2814,9 +3622,9 @@ Host: example.com
               "url": Object {
                 "auth": null,
                 "hash": null,
-                "host": "example.com",
-                "hostname": "example.com",
-                "href": "ws://example.com",
+                "host": "some-socket.123",
+                "hostname": "some-socket.123",
+                "href": "ws://some-socket.123",
                 "path": null,
                 "pathname": null,
                 "port": "80",
@@ -2843,9 +3651,9 @@ Host: example.com
               ],
             },
             "_readyState": 0,
-            "_url": "ws://example.com",
+            "_url": "ws://some-socket.123",
           },
-          "host": "ws://example.com",
+          "host": "ws://some-socket.123",
           "subscriptions": Object {},
         },
         "_defaultBlock": "latest",

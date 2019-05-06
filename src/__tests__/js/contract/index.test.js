@@ -1,9 +1,10 @@
-import Web3v1 from 'web3'
 import fclone from 'fclone'
 import abi from '~/__tests__/res/abi.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
 import { initialState, updateState } from '~/js/helpers/state'
+
+const multidepRequire = require('multidep')('multidep.json')
 
 const someAddress = '0x0000000000000000000000000000000000000000'
 
@@ -23,8 +24,7 @@ function sanitiseContract(contract) {
   )
 }
 
-const web3Versions = [[Web3v1, 'v1']]
-web3Versions.forEach(([Web3, version]) => {
+multidepRequire.forEachVersion('web3', (version, Web3) => {
   describe(`using web3 ${version}`, () => {
     describe('Contract function is called', () => {
       let assistInstance
@@ -32,8 +32,10 @@ web3Versions.forEach(([Web3, version]) => {
       let contract
       const config = { dappId: '123' }
       beforeEach(() => {
-        web3 = new Web3('ws://example.com')
-        contract = new web3.eth.Contract(abi, someAddress)
+        web3 = new Web3('ws://some-socket.123')
+        contract = version.includes('0.20')
+          ? new web3.eth.contract(abi, someAddress) // eslint-disable-line new-cap
+          : new web3.eth.Contract(abi, someAddress)
         assistInstance = da.init(config)
       })
       /* Takes a snapshot of the decorated contract returned to the user.
@@ -82,10 +84,10 @@ web3Versions.forEach(([Web3, version]) => {
           updateState({ web3Instance: undefined })
         })
         describe('and window.web3 exists', () => {
-          beforeAll(() => {
+          beforeEach(() => {
             window.web3 = web3
           })
-          afterAll(() => {
+          afterEach(() => {
             delete window.web3
           })
           test('configureWeb3 should be called', () => {
@@ -112,6 +114,6 @@ web3Versions.forEach(([Web3, version]) => {
 afterEach(() => {
   document.body.innerHTML = ''
   updateState(initialState)
-  window.localStorage.clear()
+  // window.localStorage.clear()
   jest.clearAllMocks()
 })
