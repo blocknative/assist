@@ -39,11 +39,6 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
           : new web3.eth.Contract(abi, someAddress)
         assistInstance = da.init(config)
       })
-      /* Takes a snapshot of the decorated contract returned to the user.
-       * This snapshot may fail if web3 changes the internals of Contract.
-       * If it does fail, carefully check that any critical methods/functionality
-       * was not attached to the decorated contract.
-       */
       test('it returns the expected decorated contract', () => {
         const assistInstance = da.init({ dappId: '123', web3, networkId: '1' })
         const decoratedContract = assistInstance.Contract(contract)
