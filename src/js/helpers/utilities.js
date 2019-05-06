@@ -56,7 +56,7 @@ export function createTransactionId() {
 
 export function separateArgs(allArgs, argsLength) {
   const allArgsCopy = [...allArgs]
-  const args = argsLength ? allArgsCopy.splice(0, argsLength) : []
+  const methodArgs = argsLength ? allArgsCopy.splice(0, argsLength) : []
 
   const inlineCustomMsgs =
     typeof last(allArgsCopy) === 'object' &&
@@ -66,7 +66,7 @@ export function separateArgs(allArgs, argsLength) {
   const callback =
     typeof last(allArgsCopy) === 'function' && takeLast(allArgsCopy)
 
-  const txObject =
+  const txOptions =
     typeof first(allArgsCopy) === 'object' && first(allArgsCopy) !== null
       ? takeFirst(allArgsCopy)
       : {}
@@ -75,8 +75,8 @@ export function separateArgs(allArgs, argsLength) {
 
   return {
     callback,
-    args,
-    txObject,
+    methodArgs,
+    txOptions,
     defaultBlock,
     inlineCustomMsgs
   }
