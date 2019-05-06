@@ -114,6 +114,6 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
 afterEach(() => {
   document.body.innerHTML = ''
   updateState(initialState)
-  // window.localStorage.clear()
+  window.localStorage.clear()
   jest.clearAllMocks()
 })
