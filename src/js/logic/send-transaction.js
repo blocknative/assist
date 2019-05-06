@@ -279,7 +279,7 @@ function onTxHash(id, hash, categoryCode) {
 
     if (
       txObj &&
-      txObj.transaction.status !== 'pending' &&
+      txObj.transaction.status === 'approved' &&
       state.socketConnection
     ) {
       updateTransactionInQueue(id, { status: 'stalled' })
