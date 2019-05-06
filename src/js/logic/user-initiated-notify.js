@@ -19,7 +19,10 @@ export const defaultTimeout = eventCode => {
 export default function userInitiatedNotify(
   eventCode,
   message,
-  { customTimeout = defaultTimeout(eventCode) } = {}
+  {
+    customTimeout = defaultTimeout(eventCode),
+    customCode = `custom notify type ${eventCode}`
+  } = {}
 ) {
   // Validate message
   if (typeof message !== 'string') throw new Error('Message is required')
@@ -40,7 +43,8 @@ export default function userInitiatedNotify(
     categoryCode: 'userInitiatedNotify',
     transaction: { id, startTime: Date.now() },
     inlineCustomMsgs: { [eventCode]: () => message },
-    customTimeout: customTimeout !== -1 && customTimeout
+    customTimeout: customTimeout !== -1 && customTimeout,
+    customCode
   })
 
   // Return a callback the user can use to dismiss the notification

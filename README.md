@@ -425,12 +425,12 @@ Trigger a custom UI notification
 
 ```js
 options = {
-  customTimeout: Number // Specify how many ms the notification should exist. Set to -1 for no timeout.
+  customTimeout: Number, // Specify how many ms the notification should exist. Set to -1 for no timeout.
+  customCode: String // An identifier for this notify call
 }
 ```
 
 options.customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
-
 
 #### Returns
 

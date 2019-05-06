@@ -3,6 +3,7 @@ import userInitiatedNotify, {
   defaultTimeout
 } from '~/js/logic/user-initiated-notify'
 import { updateState, initialState, state } from '~/js/helpers/state'
+import * as events from '~/js/helpers/events'
 
 jest.useFakeTimers()
 const ONE_MIN_IN_MS = 60000
@@ -11,8 +12,31 @@ describe('user-initiated-notify.js', () => {
   describe('userInitiatedNotify', () => {
     const message = 'some-msg'
     const customEventCodes = ['success', 'pending', 'error']
-    customEventCodes.forEach(event => {
-      describe(`type ${event}`, () => {
+    customEventCodes.forEach(eventCode => {
+      describe(`type ${eventCode}`, () => {
+        test('when no customCode is specified the correct default is passed to handleEvent', () => {
+          const handleEventSpy = jest
+            .spyOn(events, 'handleEvent')
+            .mockImplementation(() => {})
+          userInitiatedNotify(eventCode, message)
+          const lastCallIndex = handleEventSpy.mock.calls.length - 1
+          expect(handleEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
+            customCode: `custom notify type ${eventCode}`
+          })
+          handleEventSpy.mockRestore()
+        })
+        test('when a customCode is specified it is included in the object passed to handleEvent', () => {
+          const customCode = '123'
+          const handleEventSpy = jest
+            .spyOn(events, 'handleEvent')
+            .mockImplementation(() => {})
+          userInitiatedNotify(eventCode, message, { customCode })
+          const lastCallIndex = handleEventSpy.mock.calls.length - 1
+          expect(handleEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
+            customCode
+          })
+          handleEventSpy.mockRestore()
+        })
         test('triggers notification and defaults to correct timeout', () => {
           userInitiatedNotify('success', message)
           // notification should exist after being triggered
@@ -20,7 +44,7 @@ describe('user-initiated-notify.js', () => {
             state.iframeDocument.body.innerHTML.includes(message)
           ).toBeTruthy()
           // advance time past the defaultTimeout
-          jest.advanceTimersByTime(defaultTimeout(event) + 500)
+          jest.advanceTimersByTime(defaultTimeout(eventCode) + 500)
           // notification should have timed out
           expect(
             state.iframeDocument.body.innerHTML.includes(message)
@@ -28,7 +52,7 @@ describe('user-initiated-notify.js', () => {
         })
         test(`doesn't throw if dismiss is called after the notification has already timed out`, () => {
           expect(() => {
-            const notify = userInitiatedNotify(event, message, {
+            const notify = userInitiatedNotify(eventCode, message, {
               customTimeout: 100
             })
             setTimeout(() => {
@@ -40,7 +64,7 @@ describe('user-initiated-notify.js', () => {
         })
         test(`doesn't throw if notification times out after dismiss was already called`, () => {
           expect(() => {
-            const notify = userInitiatedNotify(event, message, {
+            const notify = userInitiatedNotify(eventCode, message, {
               customTimeout: 1000
             })
             setTimeout(() => {
@@ -51,14 +75,14 @@ describe('user-initiated-notify.js', () => {
           }).not.toThrow()
         })
         test(`setting customTimeout overrides the default timeout`, () => {
-          userInitiatedNotify(event, message, { customTimeout: 500 })
+          userInitiatedNotify(eventCode, message, { customTimeout: 500 })
           jest.advanceTimersByTime(1000)
           expect(
             state.iframeDocument.body.innerHTML.includes(message)
           ).toBeFalsy()
         })
         test(`setting customTimeout to -1 stops it automatically timing out`, () => {
-          userInitiatedNotify(event, message, { customTimeout: -1 })
+          userInitiatedNotify(eventCode, message, { customTimeout: -1 })
           jest.advanceTimersByTime(ONE_MIN_IN_MS * 10)
           expect(
             state.iframeDocument.body.innerHTML.includes(message)
