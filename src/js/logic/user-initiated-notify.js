@@ -15,7 +15,7 @@ export default function userInitiatedNotify(
   message,
   {
     customTimeout = defaultTimeout(eventCode),
-    customCode = `custom notify type ${eventCode}`
+    customCode = `custom type ${eventCode}`
   } = {}
 ) {
   // Validate message
@@ -31,8 +31,12 @@ export default function userInitiatedNotify(
   if (customTimeout && typeof customTimeout !== 'number')
     throw new Error('customTimeout must be a number')
   // Validate customCode
-  if (customCode && typeof customCode !== 'string')
-    throw new Error('customCode must be a string')
+  if (customCode) {
+    if (typeof customCode !== 'string')
+      throw new Error('customCode must be a string')
+    if (customCode.length > 24)
+      throw new Error('customCode must be less than 24 characters')
+  }
 
   const id = uuid()
   handleEvent({
