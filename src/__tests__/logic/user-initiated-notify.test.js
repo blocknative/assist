@@ -14,28 +14,28 @@ describe('user-initiated-notify.js', () => {
     const customEventCodes = ['success', 'pending', 'error']
     customEventCodes.forEach(eventCode => {
       describe(`type ${eventCode}`, () => {
-        test('when no customCode is specified the correct default is passed to handleEvent', () => {
-          const handleEventSpy = jest
-            .spyOn(events, 'handleEvent')
+        test('when no customCode is specified the correct default is passed to logEvent', () => {
+          const logEventSpy = jest
+            .spyOn(events.lib, 'logEvent')
             .mockImplementation(() => {})
           userInitiatedNotify(eventCode, message)
-          const lastCallIndex = handleEventSpy.mock.calls.length - 1
-          expect(handleEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
+          const lastCallIndex = logEventSpy.mock.calls.length - 1
+          expect(logEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
             customCode: `custom notify type ${eventCode}`
           })
-          handleEventSpy.mockRestore()
+          logEventSpy.mockRestore()
         })
-        test('when a customCode is specified it is included in the object passed to handleEvent', () => {
+        test('when a customCode is specified it is included in the object passed to logEvent', () => {
           const customCode = '123'
-          const handleEventSpy = jest
-            .spyOn(events, 'handleEvent')
+          const logEventSpy = jest
+            .spyOn(events.lib, 'logEvent')
             .mockImplementation(() => {})
           userInitiatedNotify(eventCode, message, { customCode })
-          const lastCallIndex = handleEventSpy.mock.calls.length - 1
-          expect(handleEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
+          const lastCallIndex = logEventSpy.mock.calls.length - 1
+          expect(logEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
             customCode
           })
-          handleEventSpy.mockRestore()
+          logEventSpy.mockRestore()
         })
         test('triggers notification and defaults to correct timeout', () => {
           userInitiatedNotify('success', message)
