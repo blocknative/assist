@@ -24,6 +24,7 @@ function sanitiseContract(contract) {
   )
 }
 
+// multidep docs: https://github.com/joliss/node-multidep
 multidepRequire.forEachVersion('web3', (version, Web3) => {
   describe(`using web3 ${version}`, () => {
     describe('Contract function is called', () => {
