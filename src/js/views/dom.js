@@ -17,6 +17,79 @@ import {
   onboardWarningMsg
 } from './content'
 
+export function updateNotificationsPosition() {
+  const { notificationsPosition } = state.config.style
+  if (!notificationsPosition) return
+  positionElement(state.iframe)
+
+  // Reorder notificationsContainer elements
+  const notificationsContainer = state.iframeDocument.getElementById(
+    'blocknative-notifications'
+  )
+  if (notificationsContainer) {
+    const brand = notificationsContainer.querySelector(
+      '#bn-transaction-branding'
+    )
+    const scroll = notificationsContainer.querySelector(
+      '.bn-notifications-scroll'
+    )
+    if (notificationsPosition.includes('top')) {
+      notificationsContainer.insertBefore(brand, scroll)
+    } else {
+      notificationsContainer.insertBefore(scroll, brand)
+    }
+    positionElement(notificationsContainer)
+  }
+
+  // Update existing status-icon positions
+  const statusIcons = [
+    ...state.iframeDocument.getElementsByClassName('bn-status-icon')
+  ]
+  statusIcons.forEach(icon => {
+    notificationsPosition.includes('Left')
+      ? icon.classList.add('bn-float-right')
+      : icon.classList.remove('bn-float-right')
+  })
+
+  // Update existing progress tooltop positions
+  const progressTooltips = [
+    ...state.iframeDocument.getElementsByClassName('progress-tooltip')
+  ]
+  progressTooltips.forEach(tooltip => {
+    notificationsPosition.includes('Left')
+      ? tooltip.classList.add('bn-left')
+      : tooltip.classList.remove('bn-left')
+  })
+
+  // Update brand position
+  const brand = state.iframeDocument.getElementById('bn-transaction-branding')
+  if (brand) {
+    notificationsPosition.includes('Left')
+      ? (brand.style.float = 'initial')
+      : (brand.style.float = 'right')
+  }
+
+  // Update existing notifications borders
+  const notifications = [
+    ...state.iframeDocument.getElementsByClassName('bn-notification')
+  ]
+  notifications.forEach(n => {
+    notificationsPosition.includes('Left')
+      ? n.classList.add('bn-right-border')
+      : n.classList.remove('bn-right-border')
+  })
+
+  // Update notifications-scroll position
+  const scrolls = [
+    ...state.iframeDocument.getElementsByClassName('bn-notifications-scroll')
+  ]
+  scrolls.forEach(s => {
+    notificationsPosition === 'topRight'
+      ? (s.style.float = 'right')
+      : delete s.style.float
+  })
+}
+
 export function createElementString(type, className, innerHTML) {
   return `
 	  <${type} class="${className}">

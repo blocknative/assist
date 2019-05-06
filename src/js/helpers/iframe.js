@@ -1,9 +1,9 @@
-import { positionElement } from '~/js/views/dom'
+import { positionElement, updateNotificationsPosition } from '~/js/views/dom'
 import darkModeStyles from '~/css/dark-mode.css'
 
 import { updateState, state } from './state'
 
-export function updateStyle({ darkMode, css }) {
+export function updateStyle({ darkMode, css, notificationsPosition }) {
   const { iframeDocument } = state
   const darkModeStyleElement = iframeDocument.getElementById('dark-mode-style')
   const customCssStyleElement = iframeDocument.getElementById(
@@ -34,6 +34,21 @@ export function updateStyle({ darkMode, css }) {
     }
     customCssStyleElement.innerHTML = css
     updateState({ config: newConfig })
+  }
+
+  // update notifications position
+  if (notificationsPosition) {
+    const newConfig = {
+      ...state.config,
+      style: {
+        ...state.config.style,
+        notificationsPosition
+      }
+    }
+    updateState({
+      config: newConfig
+    })
+    updateNotificationsPosition()
   }
 }
 
