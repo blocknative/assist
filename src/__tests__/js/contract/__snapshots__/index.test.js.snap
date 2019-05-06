@@ -499,23 +499,7 @@ Object {
   ],
   "_provider": Object {
     "connected": false,
-    "connection": Object {
-      "binaryType": "blob",
-      "listeners": Object {
-        "close": Array [
-          null,
-        ],
-        "error": Array [
-          null,
-        ],
-        "message": Array [
-          null,
-        ],
-      },
-      "protocol": "",
-      "readyState": 0,
-      "url": "ws://localhost:8080/",
-    },
+    "connection": Object {},
     "notificationCallbacks": Array [
       null,
       null,
@@ -533,23 +517,7 @@ Object {
   "_requestManager": Object {
     "provider": Object {
       "connected": false,
-      "connection": Object {
-        "binaryType": "blob",
-        "listeners": Object {
-          "close": Array [
-            null,
-          ],
-          "error": Array [
-            null,
-          ],
-          "message": Array [
-            null,
-          ],
-        },
-        "protocol": "",
-        "readyState": 0,
-        "url": "ws://localhost:8080/",
-      },
+      "connection": Object {},
       "notificationCallbacks": Array [
         null,
         null,
@@ -569,23 +537,7 @@ Object {
   },
   "currentProvider": Object {
     "connected": false,
-    "connection": Object {
-      "binaryType": "blob",
-      "listeners": Object {
-        "close": Array [
-          null,
-        ],
-        "error": Array [
-          null,
-        ],
-        "message": Array [
-          null,
-        ],
-      },
-      "protocol": "",
-      "readyState": 0,
-      "url": "ws://localhost:8080/",
-    },
+    "connection": Object {},
     "notificationCallbacks": Array [
       null,
       null,
@@ -889,7 +841,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
           "_headerSent": true,
@@ -913,7 +865,7 @@ Host: localhost:8080
             "protocol": "http:",
             "requests": Object {},
             "sockets": Object {
-              "localhost:8080:": Array [
+              "some-websocket.123:80:": Array [
                 Object {
                   "_events": Object {},
                   "_eventsCount": 5,
@@ -922,7 +874,7 @@ Host: localhost:8080
                     "onconnection": null,
                     "reading": false,
                   },
-                  "_host": "localhost",
+                  "_host": "some-websocket.123",
                   "_parent": null,
                   "_pendingData": null,
                   "_pendingEncoding": "",
@@ -1007,7 +959,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
           ],
@@ -1017,7 +969,7 @@ Host: localhost:8080
           "outputEncodings": Array [
             "latin1",
           ],
-          "outputSize": 153,
+          "outputSize": 157,
           "parser": null,
           "path": "/",
           "res": null,
@@ -1047,12 +999,12 @@ Host: localhost:8080
         "url": Object {
           "auth": null,
           "hash": null,
-          "host": "localhost:8080",
-          "hostname": "localhost",
-          "href": "ws://localhost:8080",
+          "host": "some-websocket.123",
+          "hostname": "some-websocket.123",
+          "href": "ws://some-websocket.123",
           "path": null,
           "pathname": null,
-          "port": "8080",
+          "port": "80",
           "protocol": "ws:",
           "query": null,
           "search": null,
@@ -1076,9 +1028,9 @@ Host: localhost:8080
         ],
       },
       "_readyState": 0,
-      "_url": "ws://localhost:8080",
+      "_url": "ws://some-websocket.123",
     },
-    "host": "ws://localhost:8080",
+    "host": "ws://some-websocket.123",
     "subscriptions": Object {},
   },
   "_defaultBlock": "latest",
@@ -2064,7 +2016,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
             "_headerSent": true,
@@ -2088,7 +2040,7 @@ Host: localhost:8080
               "protocol": "http:",
               "requests": Object {},
               "sockets": Object {
-                "localhost:8080:": Array [
+                "some-websocket.123:80:": Array [
                   Object {
                     "_events": Object {},
                     "_eventsCount": 5,
@@ -2097,7 +2049,7 @@ Host: localhost:8080
                       "onconnection": null,
                       "reading": false,
                     },
-                    "_host": "localhost",
+                    "_host": "some-websocket.123",
                     "_parent": null,
                     "_pendingData": null,
                     "_pendingEncoding": "",
@@ -2182,7 +2134,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
             ],
@@ -2192,7 +2144,7 @@ Host: localhost:8080
             "outputEncodings": Array [
               "latin1",
             ],
-            "outputSize": 153,
+            "outputSize": 157,
             "parser": null,
             "path": "/",
             "res": null,
@@ -2222,12 +2174,12 @@ Host: localhost:8080
           "url": Object {
             "auth": null,
             "hash": null,
-            "host": "localhost:8080",
-            "hostname": "localhost",
-            "href": "ws://localhost:8080",
+            "host": "some-websocket.123",
+            "hostname": "some-websocket.123",
+            "href": "ws://some-websocket.123",
             "path": null,
             "pathname": null,
-            "port": "8080",
+            "port": "80",
             "protocol": "ws:",
             "query": null,
             "search": null,
@@ -2251,9 +2203,9 @@ Host: localhost:8080
           ],
         },
         "_readyState": 0,
-        "_url": "ws://localhost:8080",
+        "_url": "ws://some-websocket.123",
       },
-      "host": "ws://localhost:8080",
+      "host": "ws://some-websocket.123",
       "subscriptions": Object {},
     },
     "_defaultBlock": "latest",
@@ -2337,7 +2289,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
               "_headerSent": true,
@@ -2361,7 +2313,7 @@ Host: localhost:8080
                 "protocol": "http:",
                 "requests": Object {},
                 "sockets": Object {
-                  "localhost:8080:": Array [
+                  "some-websocket.123:80:": Array [
                     Object {
                       "_events": Object {},
                       "_eventsCount": 5,
@@ -2370,7 +2322,7 @@ Host: localhost:8080
                         "onconnection": null,
                         "reading": false,
                       },
-                      "_host": "localhost",
+                      "_host": "some-websocket.123",
                       "_parent": null,
                       "_pendingData": null,
                       "_pendingEncoding": "",
@@ -2455,7 +2407,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
               ],
@@ -2465,7 +2417,7 @@ Host: localhost:8080
               "outputEncodings": Array [
                 "latin1",
               ],
-              "outputSize": 153,
+              "outputSize": 157,
               "parser": null,
               "path": "/",
               "res": null,
@@ -2495,12 +2447,12 @@ Host: localhost:8080
             "url": Object {
               "auth": null,
               "hash": null,
-              "host": "localhost:8080",
-              "hostname": "localhost",
-              "href": "ws://localhost:8080",
+              "host": "some-websocket.123",
+              "hostname": "some-websocket.123",
+              "href": "ws://some-websocket.123",
               "path": null,
               "pathname": null,
-              "port": "8080",
+              "port": "80",
               "protocol": "ws:",
               "query": null,
               "search": null,
@@ -2524,9 +2476,9 @@ Host: localhost:8080
             ],
           },
           "_readyState": 0,
-          "_url": "ws://localhost:8080",
+          "_url": "ws://some-websocket.123",
         },
-        "host": "ws://localhost:8080",
+        "host": "ws://some-websocket.123",
         "subscriptions": Object {},
       },
       "_defaultBlock": "latest",
@@ -3512,7 +3464,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
                 "_headerSent": true,
@@ -3536,7 +3488,7 @@ Host: localhost:8080
                   "protocol": "http:",
                   "requests": Object {},
                   "sockets": Object {
-                    "localhost:8080:": Array [
+                    "some-websocket.123:80:": Array [
                       Object {
                         "_events": Object {},
                         "_eventsCount": 5,
@@ -3545,7 +3497,7 @@ Host: localhost:8080
                           "onconnection": null,
                           "reading": false,
                         },
-                        "_host": "localhost",
+                        "_host": "some-websocket.123",
                         "_parent": null,
                         "_pendingData": null,
                         "_pendingEncoding": "",
@@ -3630,7 +3582,7 @@ Upgrade: websocket
 Connection: Upgrade
 Sec-WebSocket-Version: 13
 Sec-WebSocket-Key: somekey==
-Host: localhost:8080
+Host: some-websocket.123
 
 ",
                 ],
@@ -3640,7 +3592,7 @@ Host: localhost:8080
                 "outputEncodings": Array [
                   "latin1",
                 ],
-                "outputSize": 153,
+                "outputSize": 157,
                 "parser": null,
                 "path": "/",
                 "res": null,
@@ -3670,12 +3622,12 @@ Host: localhost:8080
               "url": Object {
                 "auth": null,
                 "hash": null,
-                "host": "localhost:8080",
-                "hostname": "localhost",
-                "href": "ws://localhost:8080",
+                "host": "some-websocket.123",
+                "hostname": "some-websocket.123",
+                "href": "ws://some-websocket.123",
                 "path": null,
                 "pathname": null,
-                "port": "8080",
+                "port": "80",
                 "protocol": "ws:",
                 "query": null,
                 "search": null,
@@ -3699,9 +3651,9 @@ Host: localhost:8080
               ],
             },
             "_readyState": 0,
-            "_url": "ws://localhost:8080",
+            "_url": "ws://some-websocket.123",
           },
-          "host": "ws://localhost:8080",
+          "host": "ws://some-websocket.123",
           "subscriptions": Object {},
         },
         "_defaultBlock": "latest",

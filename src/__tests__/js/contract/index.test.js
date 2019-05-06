@@ -1,5 +1,4 @@
 import fclone from 'fclone'
-import { Server } from 'mock-socket'
 import abi from '~/__tests__/res/abi.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
@@ -32,19 +31,14 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       let assistInstance
       let web3
       let contract
-      let mockServer
       const config = { dappId: '123' }
-      const fakeURL = 'ws://localhost:8080'
+      const fakeURL = 'ws://some-websocket.123'
       beforeEach(() => {
-        mockServer = new Server(fakeURL)
         web3 = new Web3(fakeURL)
-        contract = version.includes('0.20')
+        contract = web3.eth.contract
           ? new web3.eth.contract(abi, someAddress) // eslint-disable-line new-cap
           : new web3.eth.Contract(abi, someAddress)
         assistInstance = da.init(config)
-      })
-      afterEach(() => {
-        mockServer.close()
       })
       test('it returns the expected decorated contract', () => {
         const assistInstance = da.init({ dappId: '123', web3, networkId: '1' })
