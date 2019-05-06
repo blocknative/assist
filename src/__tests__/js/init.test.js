@@ -49,6 +49,10 @@ test('Fails if we try to decorate without a web3 instance', () => {
     abi,
     '0x0000000000000000000000000000000000000000'
   )
+
+  stateMock.state.web3Instance = null
+  stateMock.state.config = {}
+
   try {
     assist.Contract(contract)
   } catch (e) {
