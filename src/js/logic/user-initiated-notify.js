@@ -30,6 +30,9 @@ export default function userInitiatedNotify(
   // Validate customTimeout
   if (customTimeout && typeof customTimeout !== 'number')
     throw new Error('customTimeout must be a number')
+  // Validate customCode
+  if (customCode && typeof customCode !== 'string')
+    throw new Error('customCode must be a string')
 
   const id = uuid()
   handleEvent({
