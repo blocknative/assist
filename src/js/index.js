@@ -12,6 +12,7 @@ import {
 } from './logic/contract-methods'
 import { openWebsocketConnection } from './helpers/websockets'
 import { getUserAgent } from './helpers/browser'
+import getEthersProvider from './helpers/ethers-provider'
 import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
@@ -260,7 +261,7 @@ function init(config) {
     }
 
     // Check if we have an instance of web3
-    if (!state.web3Instance) {
+    if (!state.web3Instance && !state.config.ethers) {
       if (window.web3) {
         configureWeb3()
       } else {
@@ -272,7 +273,8 @@ function init(config) {
       }
     }
 
-    const { legacyWeb3 } = state
+    const { legacyWeb3, config } = state
+    const { ethers, truffleContract } = config
 
     const abi =
       contractObj.abi ||
@@ -288,7 +290,7 @@ function init(config) {
     const seenMethods = []
 
     const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
-      if (legacyWeb3 || state.config.truffleContract) {
+      if (legacyWeb3 || truffleContract || ethers) {
         // if we have seen this key, then we have already dealt with it
         if (seenMethods.includes(key)) {
           return newContractObj
@@ -310,43 +312,67 @@ function init(config) {
           methodAbiArray.map(abi => getOverloadedMethodKeys(abi.inputs))
 
         const { name, inputs, constant } = methodAbiArray[0]
-        const method = contractObj[name]
         const argsLength = inputs.length
 
         newContractObj[name] = (...args) =>
           constant
-            ? legacyCall(method, name, args, argsLength)
-            : legacySend(method, name, args, argsLength)
+            ? legacyCall({ contractObj, methodName: name, args, argsLength })
+            : legacySend({ contractObj, methodName: name, args, argsLength })
 
         newContractObj[name].call = (...args) =>
-          legacyCall(method, name, args, argsLength)
+          legacyCall({ contractObj, methodName: name, args, argsLength })
 
         newContractObj[name].sendTransaction = (...args) =>
-          legacySend(method, name, args, argsLength)
+          legacySend({ contractObj, methodName: name, args, argsLength })
 
         newContractObj[name].getData = contractObj[name].getData
 
         if (overloadedMethodKeys) {
-          overloadedMethodKeys.forEach(key => {
-            const method = contractObj[name][key]
+          overloadedMethodKeys.forEach(overloadKey => {
+            const method = contractObj[name][overloadKey]
 
             if (!method) {
               // no method, then overloaded methods not supported on this object
               return
             }
 
-            newContractObj[name][key] = (...args) =>
+            newContractObj[name][overloadKey] = (...args) =>
               constant
-                ? legacyCall(method, name, args, argsLength)
-                : legacySend(method, name, args, argsLength)
+                ? legacyCall({
+                    contractObj,
+                    methodName: name,
+                    overloadKey,
+                    args,
+                    argsLength
+                  })
+                : legacySend({
+                    contractObj,
+                    methodName: name,
+                    overloadKey,
+                    args,
+                    argsLength
+                  })
 
-            newContractObj[name][key].call = (...args) =>
-              legacyCall(method, name, args, argsLength)
+            newContractObj[name][overloadKey].call = (...args) =>
+              legacyCall({
+                contractObj,
+                methodName: name,
+                overloadKey,
+                args,
+                argsLength
+              })
 
-            newContractObj[name][key].sendTransaction = (...args) =>
-              legacySend(method, name, args, argsLength)
+            newContractObj[name][overloadKey].sendTransaction = (...args) =>
+              legacySend({
+                contractObj,
+                methodName: name,
+                overloadKey,
+                args,
+                argsLength
+              })
 
-            newContractObj[name][key].getData = contractObj[name][key].getData
+            newContractObj[name][overloadKey].getData =
+              contractObj[name][overloadKey].getData
           })
         }
       } else {
@@ -379,25 +405,31 @@ function init(config) {
 
           seenMethods.push(name)
 
-          const method = contractObj.methods[name]
-
           const overloadedMethodKeys = methodsKeys.filter(
             methodKey => methodKey.split('(')[0] === name && methodKey !== name
           )
 
           obj[name] = (...args) =>
             constant
-              ? modernCall(method, name, args)
-              : modernSend(method, name, args)
+              ? modernCall({ contractObj, methodName: name, args })
+              : modernSend({ contractObj, methodName: name, args })
 
           if (overloadedMethodKeys.length > 0) {
-            overloadedMethodKeys.forEach(key => {
-              const method = contractObj.methods[key]
-
-              obj[key] = (...args) =>
+            overloadedMethodKeys.forEach(overloadKey => {
+              obj[overloadKey] = (...args) =>
                 constant
-                  ? modernCall(method, name, args)
-                  : modernSend(method, name, args)
+                  ? modernCall({
+                      contractObj,
+                      methodName: name,
+                      overloadKey,
+                      args
+                    })
+                  : modernSend({
+                      contractObj,
+                      methodName: name,
+                      overloadKey,
+                      args
+                    })
             })
           }
 
@@ -413,15 +445,24 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txObject, callback, inlineCustomMsgs) {
-    if (!state.validApiKey) {
+  function Transaction(txOptions, callback, inlineCustomMsgs) {
+    const {
+      validApiKey,
+      supportedNetwork,
+      web3Instance,
+      config: { ethers, mobileBlocked },
+      mobileDevice,
+      legacyWeb3
+    } = state
+
+    if (!validApiKey) {
       const errorObj = new Error('Your api key is not valid')
       errorObj.eventCode = 'initFail'
 
       throw errorObj
     }
 
-    if (!state.supportedNetwork) {
+    if (!supportedNetwork) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
 
@@ -429,26 +470,33 @@ function init(config) {
     }
 
     // Check if we have an instance of web3
-    if (!state.web3Instance) {
+    if (!web3Instance && !ethers) {
       configureWeb3()
     }
 
     // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
-    if (state.mobileDevice && !state.config.mobileBlocked) {
-      return state.web3Instance.eth.sendTransaction(txObject, callback)
+    if (mobileDevice && !mobileBlocked) {
+      return ethers
+        ? getEthersProvider().sendTransaction(txOptions, callback)
+        : web3Instance.eth.sendTransaction(txOptions, callback)
     }
 
-    const sendMethod = state.legacyWeb3
+    const sendMethod = ethers
+      ? txOptions =>
+          getEthersProvider()
+            .getSigner()
+            .sendTransaction(txOptions)
+      : legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
       : state.web3Instance.eth.sendTransaction
 
-    return sendTransaction(
-      'activeTransaction',
-      txObject,
+    return sendTransaction({
+      categoryCode: 'activeTransaction',
+      txOptions,
       sendMethod,
       callback,
       inlineCustomMsgs
-    )
+    })
   }
 }
 

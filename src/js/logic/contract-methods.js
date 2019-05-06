@@ -5,13 +5,13 @@ import { separateArgs, handleError } from '~/js/helpers/utilities'
 
 import sendTransaction from './send-transaction'
 
-export function modernCall(method, name, args) {
-  const innerMethod = method(...args).call
+export function modernCall({ contractObj, methodName, overloadKey, args }) {
+  const innerMethod = contractObj[overloadKey || methodName](...args).call
   const returnObject = {}
 
   returnObject.call = (...innerArgs) =>
     new Promise(async (resolve, reject) => {
-      const { callback, txObject } = separateArgs(innerArgs, 0)
+      const { callback, txOptions } = separateArgs(innerArgs, 0)
 
       if (state.mobileDevice && state.config.mobileBlocked) {
         handleEvent(
@@ -30,12 +30,12 @@ export function modernCall(method, name, args) {
         )
       }
 
-      const result = await innerMethod(txObject).catch(errorObj => {
+      const result = await innerMethod(txOptions).catch(errorObj => {
         handleEvent({
           eventCode: 'contractQueryFail',
           categoryCode: 'activeContract',
           contract: {
-            methodName: name,
+            methodName,
             parameters: args
           },
           reason: errorObj.message || errorObj
@@ -49,7 +49,7 @@ export function modernCall(method, name, args) {
           eventCode: 'contractQuery',
           categoryCode: 'activeContract',
           contract: {
-            methodName: name,
+            methodName: overloadKey || methodName,
             parameters: args,
             result: JSON.stringify(result)
           }
@@ -64,31 +64,39 @@ export function modernCall(method, name, args) {
   return returnObject
 }
 
-export function modernSend(method, name, args) {
-  const innerMethod = method(...args).send
+export function modernSend({ contractObj, methodName, overloadKey, args }) {
+  const innerMethod = contractObj[overloadKey || methodName](...args).send
   const returnObject = {}
 
   returnObject.send = (...innerArgs) => {
-    const { callback, txObject, inlineCustomMsgs } = separateArgs(innerArgs, 0)
+    const { callback, txOptions, inlineCustomMsgs } = separateArgs(innerArgs, 0)
 
-    return sendTransaction(
-      'activeContract',
-      txObject,
-      innerMethod,
+    return sendTransaction({
+      categoryCode: 'activeContract',
+      txOptions,
+      sendMethod: innerMethod,
       callback,
       inlineCustomMsgs,
-      method,
-      { methodName: name, parameters: args }
-    )
+      contractObj,
+      methodName,
+      overloadKey,
+      methodArgs: args
+    })
   }
 
   return returnObject
 }
 
-export function legacyCall(method, name, allArgs, argsLength) {
+export function legacyCall({
+  contractObj,
+  methodName,
+  overloadKey,
+  args,
+  argsLength
+}) {
   return new Promise(async (resolve, reject) => {
-    const { callback, args, txObject, defaultBlock } = separateArgs(
-      allArgs,
+    const { callback, methodArgs, txOptions, defaultBlock } = separateArgs(
+      args,
       argsLength
     )
 
@@ -110,17 +118,24 @@ export function legacyCall(method, name, allArgs, argsLength) {
       return resolve()
     }
 
-    // Only promisify method if it isn't a truffle contract
-    method = state.config.truffleContract ? method : promisify(method)
+    const { truffleContract, ethers } = state.config
 
-    const result = await method(...args, txObject, defaultBlock).catch(
+    const contractMethod = overloadKey
+      ? contractObj[methodName][overloadKey]
+      : contractObj[methodName]
+
+    // Only promisify method if it isn't a truffle or ethers contract
+    const method =
+      truffleContract || ethers ? contractMethod : promisify(contractMethod)
+
+    const result = await method(...methodArgs, txOptions, defaultBlock).catch(
       errorObj => {
         handleEvent({
           eventCode: 'contractQueryFail',
           categoryCode: 'activeContract',
           contract: {
-            methodName: name,
-            parameters: args
+            methodName: overloadKey || methodName,
+            parameters: methodArgs
           },
           reason: errorObj.message || errorObj
         })
@@ -133,8 +148,8 @@ export function legacyCall(method, name, allArgs, argsLength) {
       eventCode: 'contractQuery',
       categoryCode: 'activeContract',
       contract: {
-        methodName: name,
-        parameters: args,
+        methodName: overloadKey || methodName,
+        parameters: methodArgs,
         result: JSON.stringify(result)
       }
     })
@@ -144,26 +159,35 @@ export function legacyCall(method, name, allArgs, argsLength) {
   })
 }
 
-export async function legacySend(method, name, allArgs, argsLength) {
-  const { callback, txObject, args, inlineCustomMsgs } = separateArgs(
-    allArgs,
+export async function legacySend({
+  contractObj,
+  methodName,
+  overloadKey,
+  args,
+  argsLength
+}) {
+  const { callback, txOptions, methodArgs, inlineCustomMsgs } = separateArgs(
+    args,
     argsLength
   )
 
-  const sendMethod = state.config.truffleContract
-    ? method.sendTransaction
-    : promisify(method)
+  const { truffleContract, ethers } = state.config
 
-  return sendTransaction(
-    'activeContract',
-    txObject,
+  const contractMethod = overloadKey
+    ? contractObj[methodName][overloadKey]
+    : contractObj[methodName]
+
+  const sendMethod =
+    truffleContract || ethers ? contractMethod : promisify(contractMethod)
+
+  return sendTransaction({
+    categoryCode: 'activeContract',
+    txOptions,
     sendMethod,
     callback,
     inlineCustomMsgs,
-    method,
-    {
-      methodName: name,
-      parameters: args
-    }
-  )
+    contractObj,
+    methodName,
+    methodArgs
+  })
 }

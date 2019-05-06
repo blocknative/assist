@@ -27,7 +27,7 @@ export function checkUserEnvironment() {
       return
     }
 
-    if (!state.web3Instance) {
+    if (!state.web3Instance && !state.config.ethers) {
       configureWeb3()
     }
 
@@ -105,7 +105,7 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       }
     }
 
-    if (!state.web3Instance) {
+    if (!state.web3Instance && !state.config.ethers) {
       configureWeb3()
     }
 
@@ -254,7 +254,9 @@ function checkMinimumBalance() {
       resolve()
     }
     const { web3Version } = state
-    const version = web3Version && web3Version.slice(0, 3)
+    const version = state.config.ethers
+      ? 'ethers'
+      : web3Version && web3Version.slice(0, 3)
     const minimum = state.config.minimumBalance || 0
     const account = await getAccountBalance().catch(resolve)
     const minimumBalance = await web3Functions
