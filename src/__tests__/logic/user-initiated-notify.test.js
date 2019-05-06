@@ -40,7 +40,7 @@ describe('user-initiated-notify.js', () => {
           userInitiatedNotify(eventCode, message)
           const lastCallIndex = logEventSpy.mock.calls.length - 1
           expect(logEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
-            customCode: `custom type ${eventCode}`
+            customCode: `custom ${eventCode}`
           })
           logEventSpy.mockRestore()
         })

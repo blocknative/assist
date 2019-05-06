@@ -15,7 +15,7 @@ export default function userInitiatedNotify(
   message,
   {
     customTimeout = defaultTimeout(eventCode),
-    customCode = `custom type ${eventCode}`
+    customCode = `custom ${eventCode}`
   } = {}
 ) {
   // Validate message
