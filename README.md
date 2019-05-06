@@ -420,7 +420,8 @@ assistInstance.getState()
 ```javascript
 const style = {
     darkMode: Boolean, // Set Assist UI to dark mode
-    css: String // Custom css string to overide Assist default styles
+    css: String, // Custom css string to overide Assist default styles
+    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
 }
 ```
 
