@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`assist is connected to a websocket received message: [network not supported] the expected error should be thrown 1`] = `"network not supported"`;
+
+exports[`assist is connected to a websocket received message: [not a valid API key] the expected error should be thrown 1`] = `"not a valid API key"`;

@@ -7,7 +7,6 @@ const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 const { uglify } = require('rollup-plugin-uglify')
 const string = require('rollup-plugin-string')
-const image = require('rollup-plugin-img')
 const json = require('rollup-plugin-json')
 
 const defaultPlugins = [
@@ -16,10 +15,6 @@ const defaultPlugins = [
   }),
   string({
     include: '**/*.css'
-  }),
-  image({
-    exclude: ['node_modules/**'],
-    limit: 51200
   }),
   resolve({
     jsnext: true,
