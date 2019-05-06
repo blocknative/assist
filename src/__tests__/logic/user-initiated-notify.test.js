@@ -12,8 +12,27 @@ describe('user-initiated-notify.js', () => {
   describe('userInitiatedNotify', () => {
     const message = 'some-msg'
     const customEventCodes = ['success', 'pending', 'error']
+    test('throws if eventCode is invalid', () => {
+      expect(() => userInitiatedNotify('invalid code', message)).toThrow()
+    })
     customEventCodes.forEach(eventCode => {
       describe(`type ${eventCode}`, () => {
+        test('throws if customTimeout is not a number', () => {
+          expect(() =>
+            userInitiatedNotify(eventCode, message, { customTimeout: '123' })
+          ).toThrow()
+        })
+        test('throws if customCode is not a string', () => {
+          expect(() =>
+            userInitiatedNotify(eventCode, message, { customCode: 123 })
+          ).toThrow()
+        })
+        test('throws if customCode is greater than 24 characters', () => {
+          const customCode = '0123456789012345678901234'
+          expect(() =>
+            userInitiatedNotify(eventCode, message, { customCode })
+          ).toThrow()
+        })
         test('when no customCode is specified the correct default is passed to logEvent', () => {
           const logEventSpy = jest
             .spyOn(events.lib, 'logEvent')
@@ -21,7 +40,7 @@ describe('user-initiated-notify.js', () => {
           userInitiatedNotify(eventCode, message)
           const lastCallIndex = logEventSpy.mock.calls.length - 1
           expect(logEventSpy.mock.calls[lastCallIndex][0]).toMatchObject({
-            customCode: `custom notify type ${eventCode}`
+            customCode: `custom type ${eventCode}`
           })
           logEventSpy.mockRestore()
         })
@@ -83,7 +102,7 @@ describe('user-initiated-notify.js', () => {
         })
         test(`setting customTimeout to -1 stops it automatically timing out`, () => {
           userInitiatedNotify(eventCode, message, { customTimeout: -1 })
-          jest.advanceTimersByTime(ONE_MIN_IN_MS * 10)
+          jest.advanceTimersByTime(ONE_MIN_IN_MS * 5)
           expect(
             state.iframeDocument.body.innerHTML.includes(message)
           ).toBeTruthy()
