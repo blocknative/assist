@@ -2,11 +2,16 @@ import { promisify } from 'bluebird'
 import { state } from '~/js/helpers/state'
 import { handleEvent } from '~/js/helpers/events'
 import { separateArgs, handleError } from '~/js/helpers/utilities'
+import { getContractMethod } from '~/js/helpers/web3'
 
 import sendTransaction from './send-transaction'
 
 export function modernCall({ contractObj, methodName, overloadKey, args }) {
-  const innerMethod = contractObj[overloadKey || methodName](...args).call
+  const innerMethod = getContractMethod({
+    contractObj,
+    methodName,
+    overloadKey
+  })(...args).call
   const returnObject = {}
 
   returnObject.call = (...innerArgs) =>
@@ -65,7 +70,11 @@ export function modernCall({ contractObj, methodName, overloadKey, args }) {
 }
 
 export function modernSend({ contractObj, methodName, overloadKey, args }) {
-  const innerMethod = contractObj[overloadKey || methodName](...args).send
+  const innerMethod = getContractMethod({
+    contractObj,
+    methodName,
+    overloadKey
+  })(...args).send
   const returnObject = {}
 
   returnObject.send = (...innerArgs) => {
@@ -120,9 +129,11 @@ export function legacyCall({
 
     const { truffleContract, ethers } = state.config
 
-    const contractMethod = overloadKey
-      ? contractObj[methodName][overloadKey]
-      : contractObj[methodName]
+    const contractMethod = getContractMethod({
+      contractObj,
+      methodName,
+      overloadKey
+    })
 
     // Only promisify method if it isn't a truffle or ethers contract
     const method =
@@ -173,9 +184,11 @@ export async function legacySend({
 
   const { truffleContract, ethers } = state.config
 
-  const contractMethod = overloadKey
-    ? contractObj[methodName][overloadKey]
-    : contractObj[methodName]
+  const contractMethod = getContractMethod({
+    contractObj,
+    methodName,
+    overloadKey
+  })
 
   const sendMethod =
     truffleContract || ethers ? contractMethod : promisify(contractMethod)
@@ -188,6 +201,7 @@ export async function legacySend({
     inlineCustomMsgs,
     contractObj,
     methodName,
+    overloadKey,
     methodArgs
   })
 }

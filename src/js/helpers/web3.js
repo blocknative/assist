@@ -62,11 +62,11 @@ export const web3Functions = {
     switch (version) {
       case '0.2':
         return ({ contractObj, methodName, overloadKey, args, txOptions }) => {
-          const contractMethod = getContractMethod(
+          const contractMethod = getContractMethod({
             contractObj,
             methodName,
             overloadKey
-          )
+          })
 
           return state.config.truffleContract
             ? contractMethod.estimateGas(...args, txOptions)
@@ -75,11 +75,11 @@ export const web3Functions = {
 
       case '1.0':
         return ({ contractObj, methodName, overloadKey, args, txOptions }) => {
-          const contractMethod = getContractMethod(
+          const contractMethod = getContractMethod({
             contractObj,
             methodName,
             overloadKey
-          )
+          })
 
           return state.config.truffleContract
             ? contractMethod.estimateGas(...args, txOptions)
