@@ -429,7 +429,7 @@ export function hideElement(element) {
 
 export function removeElement(parent, element) {
   setTimeout(() => {
-    if (parent.contains(element)) {
+    if (parent && parent.contains(element)) {
       parent.removeChild(element)
       if (parent !== state.iframeDocument.body) {
         checkIfNotifications()
@@ -521,6 +521,10 @@ export function removeContainer() {
 
 export function setNotificationsHeight() {
   const scrollContainer = getByQuery('.bn-notifications-scroll')
+  if (!scrollContainer) {
+    return
+  }
+
   const maxHeight = window.innerHeight
   const branding = getById('bn-transaction-branding')
   const brandingHeight = branding ? branding.clientHeight + 26 : 0
@@ -545,8 +549,10 @@ export function setNotificationsHeight() {
 }
 
 function setHeight(el, overflow, height) {
-  el.style['overflow-y'] = overflow
-  el.style.height = height
+  if (el) {
+    el.style['overflow-y'] = overflow
+    el.style.height = height
+  }
 }
 
 export function addTouchHandlers(element, type) {
@@ -615,5 +621,7 @@ export function handleTouchEnd(element, type) {
         closeModal()
       }
     }
+
+    document.body.style.position = 'initial'
   }
 }
