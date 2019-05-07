@@ -46,6 +46,12 @@ import chromeLogo2x from '../../../lib/images/maxXVIH.png'
 import firefoxLogo from '../../../lib/images/WjOSJTh.png'
 import firefoxLogo2x from '../../../lib/images/kodZvyO.png'
 
+import mobileWalletLight from '../../../lib/images/mobile-wallet-required-white.png'
+import mobileWalletLight2x from '../../../lib/images/mobile-wallet-required-white@2x.png'
+
+import mobileWallet from '../../../lib/images/mobile-wallet-required.png'
+import mobileWallet2x from '../../../lib/images/mobile-wallet-required@2x.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -231,8 +237,12 @@ export const imageSrc = {
     srcset: firefoxLogo2x
   },
   mobileWallet: {
-    src: mobile,
-    srcset: mobile2x
+    src: mobileWallet,
+    srcset: mobileWallet2x
+  },
+  mobileWalletLight: {
+    src: mobileWalletLight,
+    srcset: mobileWalletLight2x
   },
   mobileNetwork: {
     src: network,

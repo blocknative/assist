@@ -228,7 +228,14 @@ export function onboardMain(type, step) {
       ? onboardButton[step][type]()
       : onboardButton[step][type]
 
-  const defaultImages = imageSrc[step]
+  const {
+    config: { style }
+  } = state
+
+  const darkMode = style && style.darkMode
+  const variant = darkMode ? 'Light' : ''
+
+  const defaultImages = imageSrc[step + variant] || imageSrc[step]
 
   const { images } = state.config
   const stepKey = stepToImageKey(step)
