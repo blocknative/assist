@@ -65,6 +65,12 @@ function sendTransaction({
       )
     ])
 
+    // Make sure that we have from address in txOptions
+    // @NOTE - ethers.js errors if you add a from address, but web3.js errors if you don't
+    if (!ethers && !txOptions.from) {
+      txOptions.from = state.accountAddress
+    }
+
     const transactionId = createTransactionId()
     const transactionEventObj = {
       id: transactionId,
@@ -140,7 +146,7 @@ function sendTransaction({
 
     if (legacyWeb3 || truffleContract || ethers) {
       if (contractObj) {
-        txPromise = sendMethod(...contractEventObj.parameters, txOptions)
+        txPromise = sendMethod(...methodArgs, txOptions)
       } else {
         txPromise = sendMethod(txOptions)
       }
