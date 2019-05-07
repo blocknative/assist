@@ -1,3 +1,4 @@
+import { Server } from 'mock-socket'
 import abi from '~/__tests__/res/abi.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
@@ -14,16 +15,21 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       let assistInstance
       let web3
       let contract
+      let mockServer
       const config = { dappId: '123' }
-      const fakeURL = 'ws://some-websocket.123'
+      const fakeURL = 'ws://localhost:8080'
       beforeEach(() => {
+        mockServer = new Server(fakeURL)
         web3 = new Web3(fakeURL)
         contract = web3.eth.contract
           ? web3.eth.contract(abi, someAddress).at(someAddress)
           : new web3.eth.Contract(abi, someAddress)
         assistInstance = da.init(config)
       })
-      test('it returns the expected decorated contract', () => {
+      afterEach(() => {
+        mockServer.close()
+      })
+      test(`it doesn't fail and returns the expected decorated contract`, () => {
         const assistInstance = da.init({ dappId: '123', web3, networkId: '1' })
         const decoratedContract = assistInstance.Contract(contract)
 
@@ -33,7 +39,6 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
             BatchRequest: decoratedContract.BatchRequest,
             options: decoratedContract.options,
             methods: decoratedContract.methods,
-            abiMapper: decoratedContract.abiMapper,
             abiModel: decoratedContract.abiModel,
             _jsonInterface: decoratedContract._jsonInterface,
             events: {
