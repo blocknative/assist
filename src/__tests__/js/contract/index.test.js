@@ -1,4 +1,4 @@
-import fclone from 'fclone'
+// import fclone from 'fclone'
 import abi from '~/__tests__/res/abi.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
@@ -13,16 +13,16 @@ const someAddress = '0x0000000000000000000000000000000000000000'
  * - Repalces random websocket key with predefined value
  * - Replaces random nonce with predefined value
  */
-const websocketRegex = /nSec-WebSocket-Key.*?==/g
-const base64NonceRegex = /base64nonce.*?==/g
-function sanitiseContract(contract) {
-  const contractNoCircular = fclone(contract)
-  return JSON.parse(
-    JSON.stringify(contractNoCircular)
-      .replace(websocketRegex, 'nSec-WebSocket-Key: somekey==')
-      .replace(base64NonceRegex, 'base64nonce":"somenonce==')
-  )
-}
+// const websocketRegex = /nSec-WebSocket-Key.*?==/g
+// const base64NonceRegex = /base64nonce.*?==/g
+// function sanitiseContract(contract) {
+//   const contractNoCircular = fclone(contract)
+//   return JSON.parse(
+//     JSON.stringify(contractNoCircular)
+//       .replace(websocketRegex, 'nSec-WebSocket-Key: somekey==')
+//       .replace(base64NonceRegex, 'base64nonce":"somenonce==')
+//   )
+// }
 
 // multidep docs: https://github.com/joliss/node-multidep
 multidepRequire.forEachVersion('web3', (version, Web3) => {
@@ -36,14 +36,34 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       beforeEach(() => {
         web3 = new Web3(fakeURL)
         contract = web3.eth.contract
-          ? new web3.eth.contract(abi, someAddress) // eslint-disable-line new-cap
+          ? web3.eth.contract(abi, someAddress).at(someAddress)
           : new web3.eth.Contract(abi, someAddress)
         assistInstance = da.init(config)
       })
       test('it returns the expected decorated contract', () => {
         const assistInstance = da.init({ dappId: '123', web3, networkId: '1' })
         const decoratedContract = assistInstance.Contract(contract)
-        expect(sanitiseContract(decoratedContract)).toMatchSnapshot()
+
+        if (decoratedContract.methods) {
+          expect({
+            givenProvider: decoratedContract.givenProvider,
+            BatchRequest: decoratedContract.BatchRequest,
+            options: decoratedContract.options,
+            methods: decoratedContract.methods,
+            abiMapper: decoratedContract.abiMapper,
+            abiModel: decoratedContract.abiModel,
+            _jsonInterface: decoratedContract._jsonInterface,
+            events: {
+              ...decoratedContract.events,
+              contract: null
+            }
+          }).toMatchSnapshot()
+        } else {
+          expect({
+            ...decoratedContract,
+            _eth: null
+          }).toMatchSnapshot()
+        }
       })
       describe(`when user doesn't have a validApiKey`, () => {
         beforeEach(() => {
@@ -71,9 +91,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
         })
         test('it should return the contract unmodified', () => {
           const decoratedContract = assistInstance.Contract(contract)
-          expect(JSON.stringify(fclone(contract))).toEqual(
-            JSON.stringify(fclone(decoratedContract))
-          )
+          expect(decoratedContract).toEqual(contract)
         })
       })
       describe('when state.web3Instance is falsy', () => {
@@ -88,9 +106,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
             delete window.web3
           })
           test('configureWeb3 should be called', () => {
-            const configureWeb3Mock = jest
-              .spyOn(web3Helpers, 'configureWeb3')
-              .mockImplementation(() => {})
+            const configureWeb3Mock = jest.spyOn(web3Helpers, 'configureWeb3')
             assistInstance.Contract(contract)
             expect(configureWeb3Mock).toHaveBeenCalledTimes(1)
             configureWeb3Mock.mockRestore()
