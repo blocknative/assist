@@ -1,4 +1,3 @@
-// import fclone from 'fclone'
 import abi from '~/__tests__/res/abi.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
@@ -7,22 +6,6 @@ import { initialState, updateState } from '~/js/helpers/state'
 const multidepRequire = require('multidep')('multidep.json')
 
 const someAddress = '0x0000000000000000000000000000000000000000'
-
-/* Prepares contract for snapshot
- * - Removes circular refs
- * - Repalces random websocket key with predefined value
- * - Replaces random nonce with predefined value
- */
-// const websocketRegex = /nSec-WebSocket-Key.*?==/g
-// const base64NonceRegex = /base64nonce.*?==/g
-// function sanitiseContract(contract) {
-//   const contractNoCircular = fclone(contract)
-//   return JSON.parse(
-//     JSON.stringify(contractNoCircular)
-//       .replace(websocketRegex, 'nSec-WebSocket-Key: somekey==')
-//       .replace(base64NonceRegex, 'base64nonce":"somenonce==')
-//   )
-// }
 
 // multidep docs: https://github.com/joliss/node-multidep
 multidepRequire.forEachVersion('web3', (version, Web3) => {
