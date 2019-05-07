@@ -22,7 +22,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
         mockServer = new Server(fakeURL)
         web3 = new Web3(fakeURL)
         contract = web3.eth.contract
-          ? web3.eth.contract(abi, someAddress).at(someAddress)
+          ? web3.eth.contract(abi).at(someAddress)
           : new web3.eth.Contract(abi, someAddress)
         assistInstance = da.init(config)
       })
