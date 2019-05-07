@@ -331,9 +331,13 @@ export function getAccountBalance() {
 }
 
 export function getContractMethod({ contractObj, methodName, overloadKey }) {
-  return state.legacyWeb3 || state.config.ethers
+  return state.legacyWeb3
     ? overloadKey
       ? contractObj[methodName][overloadKey]
+      : contractObj[methodName]
+    : state.config.ethers
+    ? overloadKey
+      ? contractObj[overloadKey]
       : contractObj[methodName]
     : overloadKey
     ? contractObj.methods[overloadKey]
