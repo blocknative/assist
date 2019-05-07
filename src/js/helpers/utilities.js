@@ -184,7 +184,8 @@ export const timeouts = {
   showElement: 120,
   autoRemoveNotification: 4000,
   pollForReceipt: 1000,
-  swipeTime: 250
+  swipeTime: 250,
+  lockScreen: 500
 }
 
 export function stepToImageKey(step) {

@@ -569,8 +569,8 @@ export function removeTouchHandlers(element, type) {
 
 export function handleTouchStart(element) {
   return e => {
-    e.stopPropagation()
     document.body.style.position = 'fixed'
+    e.stopPropagation()
     const touch = e.changedTouches[0]
     element.attributes['data-startY'] = touch.pageY
     element.attributes['data-startX'] = touch.pageX
@@ -621,7 +621,8 @@ export function handleTouchEnd(element, type) {
         closeModal()
       }
     }
-
-    document.body.style.position = 'initial'
+    setTimeout(() => {
+      document.body.style.position = 'initial'
+    }, timeouts.lockScreen)
   }
 }
