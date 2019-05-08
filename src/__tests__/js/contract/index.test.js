@@ -1,5 +1,5 @@
 import { Server } from 'mock-socket'
-import abi from '~/__tests__/res/abi.json'
+import abi from '~/__tests__/res/dstoken.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
 import { initialState, updateState } from '~/js/helpers/state'
