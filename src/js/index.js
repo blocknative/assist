@@ -2,7 +2,7 @@ import '@babel/polyfill'
 import { promisify } from 'bluebird'
 import assistStyles from '~/css/styles.css'
 
-import { state, updateState } from './helpers/state'
+import { state, updateState, filteredState } from './helpers/state'
 import { handleEvent } from './helpers/events'
 import {
   legacyCall,
@@ -192,7 +192,7 @@ function init(config) {
           reject(error)
         }
 
-        resolve('User is ready to transact')
+        resolve(filteredState())
       })
     }
 
@@ -229,13 +229,13 @@ function init(config) {
     return new Promise(async (resolve, reject) => {
       storeItem('onboarding', 'true')
 
-      const ready = await prepareForTransaction('onboard').catch(error => {
+      await prepareForTransaction('onboard').catch(error => {
         removeItem('onboarding')
         reject(error)
       })
 
       removeItem('onboarding')
-      resolve(ready)
+      resolve(filteredState())
     })
   }
 
@@ -456,35 +456,7 @@ function init(config) {
 function getState() {
   return new Promise(async resolve => {
     await checkUserEnvironment()
-    const {
-      mobileDevice,
-      validBrowser,
-      currentProvider,
-      web3Wallet,
-      accessToAccounts,
-      walletLoggedIn,
-      walletEnabled,
-      accountAddress,
-      accountBalance,
-      minimumBalance,
-      userCurrentNetworkId,
-      correctNetwork
-    } = state
-
-    resolve({
-      mobileDevice,
-      validBrowser,
-      currentProvider,
-      web3Wallet,
-      accessToAccounts,
-      walletLoggedIn,
-      walletEnabled,
-      accountAddress,
-      accountBalance,
-      minimumBalance,
-      userCurrentNetworkId,
-      correctNetwork
-    })
+    resolve(filteredState())
   })
 }
 
