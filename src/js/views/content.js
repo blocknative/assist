@@ -52,6 +52,12 @@ import mobileWalletLight2x from '../../../lib/images/mobile-wallet-required-whit
 import mobileWallet from '../../../lib/images/mobile-wallet-required.png'
 import mobileWallet2x from '../../../lib/images/mobile-wallet-required@2x.png'
 
+import trustLogo from '../../../lib/images/trust.png'
+import trustLogo2x from '../../../lib/images/trust@2x.png'
+
+import coinbaseLogo from '../../../lib/images/coinbase.png'
+import coinbaseLogo2x from '../../../lib/images/coinbase@2x.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -64,11 +70,15 @@ export const notSupported = {
       `This Dapp is not supported in ${
         state.userAgent.browser.name
       }. Please visit us in one of the following browsers. Thank You!`
+  },
+  mobileWalletNotSupported: {
+    heading: 'Install A Mobile Dapp Wallet',
+    description: () =>
+      'A mobile ethereum wallet is needed to use this dapp. We recommend Trust or Coinbase wallet.'
   }
 }
 
 export const onboardHeading = {
-  mobileWallet: { advanced: 'Install A Mobile Dapp Wallet' },
   mobileNetwork: { advanced: 'Switch to the Correct Network' },
   '0': { basic: 'Let’s Get You Started' },
   '1': { basic: 'Install MetaMask' },
@@ -92,10 +102,6 @@ export const onboardHeading = {
 }
 
 export const onboardDescription = {
-  mobileWallet: {
-    advanced: () =>
-      'A mobile ethereum wallet is needed to use this dapp. We recommend Trust or Coinbase wallet.'
-  },
   mobileNetwork: {
     advanced: () =>
       `We’ve detected that you need to be on the ${networkName(
@@ -235,6 +241,14 @@ export const imageSrc = {
   firefoxLogo: {
     src: firefoxLogo,
     srcset: firefoxLogo2x
+  },
+  trustLogo: {
+    src: trustLogo,
+    srcset: trustLogo2x
+  },
+  coinbaseLogo: {
+    src: coinbaseLogo,
+    srcset: coinbaseLogo2x
   },
   mobileWallet: {
     src: mobileWallet,

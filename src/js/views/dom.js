@@ -128,6 +128,35 @@ export function browserLogos() {
   `
 }
 
+function walletLogos() {
+  const { trustLogo, coinbaseLogo } = imageSrc
+
+  return `
+    <p class="flex-row">
+      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
+        window.location.href
+      }" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <img
+        src="${trustLogo.src}" 
+        alt="Chrome Logo" 
+        srcset="${trustLogo.srcset} 2x"
+      />
+      <br>
+      Trust
+      </a>
+      <a href="https://go.cb-w.com/" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <img
+        src="${coinbaseLogo.src}" 
+        alt="Firefox Logo" 
+        srcset="${coinbaseLogo.srcset} 2x"
+      />
+      <br>
+      Coinbase
+      </a>
+    </p>
+  `
+}
+
 export function onboardBranding() {
   const { blockNativeLogo, blockNativeLogoLight } = imageSrc
   const { style } = state.config
@@ -166,7 +195,13 @@ export function notSupportedModal(type) {
         <h1 class="h4">${info.heading}</h1>
         <p>${info.description()}</p>
         <br>
-        ${type === 'browser' ? browserLogos() : ''}
+        ${
+          type === 'browser'
+            ? browserLogos()
+            : type === 'mobileWallet'
+            ? walletLogos()
+            : ''
+        }
         <br>
         ${onboardBranding()}
       </div>

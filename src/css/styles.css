@@ -1177,3 +1177,18 @@ input[type='button'].bn-btn-block {
 .bn-btn-danger.bn-btn-outline:hover {
   color: #fff;
 }
+
+/* GENERAL */
+
+.flex-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

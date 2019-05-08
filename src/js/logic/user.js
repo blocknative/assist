@@ -216,7 +216,13 @@ function getWeb3Wallet(categoryCode) {
             reject(errorObj)
           }, timeouts.changeUI),
         onClick: () => {
-          window.location.reload()
+          if (state.mobileDevice) {
+            window.location = `https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
+              window.location.href
+            }`
+          } else {
+            window.location.reload()
+          }
         }
       }
     )
