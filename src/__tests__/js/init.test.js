@@ -19,7 +19,6 @@ websocket.openWebsocketConnection = jest.fn(() => {
 
 const assist = da.init({ dappId: 'something' })
 
-describe('it does something', () => {
   test('Fails if we try to initialise without a config object', () => {
     try {
       da.init()
@@ -114,4 +113,3 @@ describe('it does something', () => {
     stateMock.updateState(stateMock.initialState)
     events.handleEvent.mockClear()
   })
-})
