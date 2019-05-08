@@ -491,6 +491,7 @@ export function setNotificationsHeight() {
 
   if (tooBig) {
     setHeight(scrollContainer, 'scroll', maxHeight - brandingHeight)
+    scrollContainer.scrollTop = maxHeight * 4
   } else {
     setHeight(scrollContainer, 'initial', 'auto')
   }
