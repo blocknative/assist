@@ -34,6 +34,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
         const decoratedContract = assistInstance.Contract(contract)
 
         if (decoratedContract.methods) {
+          // test web3js v1.0.0-beta.X
           expect({
             givenProvider: decoratedContract.givenProvider,
             BatchRequest: decoratedContract.BatchRequest,
@@ -47,6 +48,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
             }
           }).toMatchSnapshot()
         } else {
+          // test web3js v0.20.X
           expect({
             ...decoratedContract,
             _eth: null
