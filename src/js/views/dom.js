@@ -405,7 +405,7 @@ export function hideElement(element) {
 
 export function removeElement(parent, element) {
   setTimeout(() => {
-    if (parent.contains(element)) {
+    if (parent && parent.contains(element)) {
       parent.removeChild(element)
       if (parent !== state.iframeDocument.body) {
         checkIfNotifications()
@@ -444,10 +444,12 @@ export function removeNotification(notification) {
   hideElement(notification)
   removeElement(notificationsList, notification)
   const scrollContainer = getByQuery('.bn-notifications-scroll')
-  setTimeout(
-    () => setHeight(scrollContainer, 'initial', 'auto'),
-    timeouts.changeUI
-  )
+  if (scrollContainer) {
+    setTimeout(
+      () => setHeight(scrollContainer, 'initial', 'auto'),
+      timeouts.changeUI
+    )
+  }
 }
 
 export function removeAllNotifications(notifications) {
@@ -483,6 +485,8 @@ export function removeContainer() {
 
 export function setNotificationsHeight() {
   const scrollContainer = getByQuery('.bn-notifications-scroll')
+  // if no notifications to manipulate return
+  if (!scrollContainer) return
   const maxHeight = window.innerHeight
   const brandingHeight = getById('bn-transaction-branding').clientHeight + 26
   const widgetHeight = scrollContainer.scrollHeight + brandingHeight

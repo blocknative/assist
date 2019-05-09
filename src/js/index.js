@@ -4,6 +4,7 @@ import assistStyles from '~/css/styles.css'
 
 import { state, updateState } from './helpers/state'
 import { handleEvent } from './helpers/events'
+import notify from './logic/user-initiated-notify'
 import {
   legacyCall,
   legacySend,
@@ -96,7 +97,8 @@ function init(config) {
     onboard,
     Contract,
     Transaction,
-    getState
+    getState,
+    notify
   }
 
   getState().then(state => {

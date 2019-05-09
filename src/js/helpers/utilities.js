@@ -106,6 +106,7 @@ export function eventCodeToType(eventCode) {
     case 'txSent':
     case 'txSpeedUp':
     case 'txCancel':
+    case 'pending':
       return 'progress'
     case 'txSendFail':
     case 'txStall':
@@ -114,9 +115,11 @@ export function eventCodeToType(eventCode) {
     case 'txRepeat':
     case 'txAwaitingApproval':
     case 'txConfirmReminder':
+    case 'error':
       return 'failed'
     case 'txConfirmed':
     case 'txConfirmedClient':
+    case 'success':
       return 'complete'
     default:
       return undefined
