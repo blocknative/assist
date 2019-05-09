@@ -17,7 +17,7 @@ import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
 import { getOverloadedMethodKeys } from './helpers/utilities'
-import { createIframe } from './helpers/iframe'
+import { createIframe, updateStyle } from './helpers/iframe'
 import {
   getTransactionQueueFromStorage,
   storeTransactionQueue,
@@ -98,6 +98,7 @@ function init(config) {
     Contract,
     Transaction,
     getState,
+    updateStyle,
     notify
   }
 

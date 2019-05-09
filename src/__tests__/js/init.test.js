@@ -41,6 +41,7 @@ test('Returns the dassist object', () => {
   expect(assist).toHaveProperty('Contract')
   expect(assist).toHaveProperty('Transaction')
   expect(assist).toHaveProperty('getState')
+  expect(assist).toHaveProperty('updateStyle')
   expect(assist).toHaveProperty('notify')
 })
 

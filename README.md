@@ -411,6 +411,37 @@ assistInstance.getState()
   })
 ```
 
+### `updateStyle(style)`
+
+#### Parameters
+
+`style` - `Object`: Object containing new style information (**Required**)
+
+```javascript
+const style = {
+    darkMode: Boolean, // Set Assist UI to dark mode
+    css: String, // Custom css string to overide Assist default styles
+    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+}
+```
+
+#### Examples
+
+```javascript
+// Enable dark mode
+const style = {
+  darkMode: true
+}
+assistInstance.updateStyle(style)
+
+// Disable dark mode and set notification background to black
+const style = {
+  darkMode: false,
+  css: `.bn-notification { background: black }`
+}
+assistInstance.updateStyle(style)
+```
+
 ### `notify(type, message, options)`
 
 Trigger a custom UI notification
@@ -423,7 +454,7 @@ Trigger a custom UI notification
 
 `options` - `Object`: Further customize the notification
 
-```js
+```javascript
 options = {
   customTimeout: Number, // Specify how many ms the notification should exist. Set to -1 for no timeout.
   customCode: String // An identifier for this notify call
