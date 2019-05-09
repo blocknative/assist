@@ -58,7 +58,7 @@ test('Fails if we try to decorate without a web3 instance', () => {
   }
 })
 
-test.only('Does not delete any methods from the contract object when decorating', () => {
+test('Does not delete any methods from the contract object when decorating', () => {
   const web3 = new Web3('ws://example.com')
   stateMock.state.web3Instance = web3
   stateMock.state.config = {}
