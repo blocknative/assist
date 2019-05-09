@@ -2181,3 +2181,67 @@ exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM rend
     </div>
   </div>"
 `;
+
+exports[`dom-rendering event userInitiatedNotify-error should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-failed bn-error bn-undefined \\" style=\\"transform: translate(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>error custom msg</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration bn-duration-hidden\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">NaN sec</span>
+				</span>
+			</p>
+		</div>
+	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
+`;
+
+exports[`dom-rendering event userInitiatedNotify-pending should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-pending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translate(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      <div class=\\"progress-tooltip \\">
+				<div class=\\"progress-tooltip-inner\\">
+					You will be notified when this transaction is completed.
+				</div>
+			</div>
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>pending custom msg</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">606 min</span>
+				</span>
+			</p>
+		</div>
+	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
+`;
+
+exports[`dom-rendering event userInitiatedNotify-success should trigger correct DOM render 1`] = `
+"
+    
+  <div class=\\"\\" id=\\"blocknative-notifications\\" style=\\"transform: translate(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-complete bn-success bn-undefined \\" style=\\"transform: translate(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>success custom msg</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration bn-duration-hidden\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">NaN sec</span>
+				</span>
+			</p>
+		</div>
+	</li></ul></div><a class=\\"\\" id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\" style=\\"float: right;\\"></a></div>"
+`;
