@@ -9,6 +9,11 @@
     "lint": "eslint src/ --fix",
     "test": "TZ=Europe/Paris jest"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && yarn test"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/blocknative/assist.git"
