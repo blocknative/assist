@@ -7,6 +7,7 @@
     "build": "yarn lint && yarn test && node build.js",
     "build:dev": "node build.js",
     "lint": "eslint src/ --fix",
+    "pretest": "multidep multidep.json",
     "test": "TZ=Europe/Paris jest"
   },
   "husky": {
@@ -62,6 +63,7 @@
     "jest-dom": "^3.0.0",
     "mock-socket": "^8.0.5",
     "mockdate": "^2.0.2",
+    "multidep": "^2.0.2",
     "prettier": "^1.15.2",
     "regenerator-runtime": "^0.13.1",
     "rollup": "^0.67.3",
