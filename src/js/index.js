@@ -4,6 +4,7 @@ import assistStyles from '~/css/styles.css'
 
 import { state, updateState } from './helpers/state'
 import { handleEvent } from './helpers/events'
+import notify from './logic/user-initiated-notify'
 import {
   legacyCall,
   legacySend,
@@ -97,7 +98,8 @@ function init(config) {
     Contract,
     Transaction,
     getState,
-    updateStyle
+    updateStyle,
+    notify
   }
 
   getState().then(state => {
@@ -278,9 +280,10 @@ function init(config) {
     const abi =
       contractObj.abi ||
       contractObj._jsonInterface ||
-      Object.keys(contractObj.abiModel.abi.methods).map(
-        key => contractObj.abiModel.abi.methods[key].abiItem
-      )
+      Object.keys(contractObj.abiModel.abi.methods)
+        // remove any arrays from the ABI, they contain redundant information
+        .filter(key => !Array.isArray(contractObj.abiModel.abi.methods[key]))
+        .map(key => contractObj.abiModel.abi.methods[key].abiItem)
 
     const contractClone = Object.create(Object.getPrototypeOf(contractObj))
     const contractKeys = Object.keys(contractObj)
@@ -362,46 +365,44 @@ function init(config) {
           }
         }
 
-        const methodsKeys = Object.keys(contractObj[key])
-
-        newContractObj.methods = abi.reduce((obj, methodAbi) => {
-          const { name, type, constant } = methodAbi
+        // go through all the methods in the contract ABI and derive
+        // the 'methods' key of the delegated contract from them
+        newContractObj.methods = abi.reduce((methodsObj, methodAbi) => {
+          const { name, type, constant, inputs } = methodAbi
 
           // if not function, do nothing with it
           if (type !== 'function') {
-            return obj
+            return methodsObj
           }
 
-          // if we have seen this key, then we have already dealt with it
-          if (seenMethods.includes(name)) {
-            return obj
+          // every method can called like contract.methods[methodName](...args).
+          // add a methodName key to methodsObj allowing it to be called that way.
+          // it only needs to be assigned once
+          if (!seenMethods.includes(name)) {
+            const method = contractObj.methods[name]
+            methodsObj[name] = (...args) =>
+              constant
+                ? modernCall(method, name, args)
+                : modernSend(method, name, args)
+            seenMethods.push(name)
           }
 
-          seenMethods.push(name)
+          // add a key to methods allowing the current method to be called
+          // like contract.methods[`${methodName}(${...args})`](...args)
+          let overloadedMethodKey
+          if (inputs.length > 0) {
+            overloadedMethodKey = `${name}(${getOverloadedMethodKeys(inputs)})`
+          } else {
+            overloadedMethodKey = `${name}()`
+          }
 
-          const method = contractObj.methods[name]
-
-          const overloadedMethodKeys = methodsKeys.filter(
-            methodKey => methodKey.split('(')[0] === name && methodKey !== name
-          )
-
-          obj[name] = (...args) =>
+          const overloadedMethod = contractObj.methods[overloadedMethodKey]
+          methodsObj[overloadedMethodKey] = (...args) =>
             constant
-              ? modernCall(method, name, args)
-              : modernSend(method, name, args)
+              ? modernCall(overloadedMethod, name, args)
+              : modernSend(overloadedMethod, name, args)
 
-          if (overloadedMethodKeys.length > 0) {
-            overloadedMethodKeys.forEach(key => {
-              const method = contractObj.methods[key]
-
-              obj[key] = (...args) =>
-                constant
-                  ? modernCall(method, name, args)
-                  : modernSend(method, name, args)
-            })
-          }
-
-          return obj
+          return methodsObj
         }, {})
       }
 

@@ -42,6 +42,7 @@ test('Returns the dassist object', () => {
   expect(assist).toHaveProperty('Transaction')
   expect(assist).toHaveProperty('getState')
   expect(assist).toHaveProperty('updateStyle')
+  expect(assist).toHaveProperty('notify')
 })
 
 test('Fails if we try to decorate without a web3 instance', () => {

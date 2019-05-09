@@ -219,9 +219,7 @@ function checkAccountAccess() {
         walletEnabled: true
       })
     } else {
-      const loggedIn = state.modernWallet
-        ? await checkUnlocked().catch(resolve)
-        : false
+      const loggedIn = state.modernWallet ? await checkUnlocked() : false
 
       updateState({
         accessToAccounts: false,
