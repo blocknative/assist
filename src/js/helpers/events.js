@@ -23,7 +23,7 @@ export function handleEvent(eventObj, clickHandlers) {
     eventToLog = {
       ...eventToLog,
       categoryCode: 'custom',
-      eventCode: 'txNotification'
+      eventCode: 'notification'
     }
   }
 
