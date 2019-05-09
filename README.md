@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.6.2.
+The current version is 0.7.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-6-2/assist.js"></script>
+<script src="https://assist.blocknative.com/0-7-0/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-6-2/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-7-0/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -409,6 +409,79 @@ assistInstance.getState()
       console.log('valid browser')
     }
   })
+```
+
+### `updateStyle(style)`
+
+#### Parameters
+
+`style` - `Object`: Object containing new style information (**Required**)
+
+```javascript
+const style = {
+    darkMode: Boolean, // Set Assist UI to dark mode
+    css: String, // Custom css string to overide Assist default styles
+    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+}
+```
+
+#### Examples
+
+```javascript
+// Enable dark mode
+const style = {
+  darkMode: true
+}
+assistInstance.updateStyle(style)
+
+// Disable dark mode and set notification background to black
+const style = {
+  darkMode: false,
+  css: `.bn-notification { background: black }`
+}
+assistInstance.updateStyle(style)
+```
+
+### `notify(type, message, options)`
+
+Trigger a custom UI notification
+
+#### Parameters
+
+`type` - `String`: One of: ['success', 'pending', 'error'] (**Required**)
+
+`message` - `String`: The message to display in the notification. HTML can be embedded in the string. (**Required**)
+
+`options` - `Object`: Further customize the notification
+
+```javascript
+options = {
+  customTimeout: Number, // Specify how many ms the notification should exist. Set to -1 for no timeout.
+  customCode: String // An identifier for this notify call
+}
+```
+
+options.customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
+
+#### Returns
+
+`Function`
+
+- a function that when called will dismiss the notification
+
+#### Examples
+
+```javascript
+// Display a success notification with an embedded link for 5000ms
+assistInstance.notify('success', 'Operation was a success! Click <a href="https://example.com" target="_blank">here</a> to view more', { customTimeout: 5000 });
+
+// Display a pending notification, load data from an imaginary backend
+// and dismiss the pending notification only when the data is loaded
+const dismiss = assistInstance.notify('pending', 'Loading data...', { customTimeout: -1 });
+myEventEmitter.emit('fetch-data-from-backend')
+myEventEmitter.on('data-from-backend-loaded', () => {
+  dismiss()
+})
 ```
 
 ## Contribute

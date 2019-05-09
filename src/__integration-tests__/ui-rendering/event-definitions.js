@@ -32,6 +32,25 @@ const mockTxFactory = ({ nonce, startTime } = {}) => {
  * }
  */
 export default {
+  success: {
+    categories: ['userInitiatedNotify'],
+    customStates: [
+      { config: { messages: { success: () => 'success custom msg' } } }
+    ]
+  },
+  pending: {
+    categories: ['userInitiatedNotify'],
+    params: { transaction: mockTxFactory({ startTime: true }) },
+    customStates: [
+      { config: { messages: { pending: () => 'pending custom msg' } } }
+    ]
+  },
+  error: {
+    categories: ['userInitiatedNotify'],
+    customStates: [
+      { config: { messages: { error: () => 'error custom msg' } } }
+    ]
+  },
   browserFail: {
     categories: ['onboard'],
     clickHandlers: new Set(['onClose'])
