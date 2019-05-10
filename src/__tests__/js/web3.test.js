@@ -43,6 +43,22 @@ describe(`web3.js tests`, () => {
               else expect(networkId).toEqual('5') // 0.20 returns networkId as a string
             })
           })
+          describe('bigNumber', () => {
+            test('should return the expected bigNumber', async () => {
+              const bigNum1 = await web3Functions.bigNumber(simpleVersion)(5)
+              const bigNum2 = await web3Functions.bigNumber(simpleVersion)('10')
+              expect(typeof bigNum1).toEqual('object')
+              expect(bigNum1.toString()).toEqual('5')
+              expect(bigNum1.toNumber()).toEqual(5)
+              expect(bigNum1.add(bigNum2).toString()).toEqual('15')
+            })
+          })
+          describe('gasPrice', () => {
+            test('should return the expected gasPrice', async () => {
+              const gasPrice = await web3Functions.gasPrice(simpleVersion)()
+              expect(gasPrice.toString()).toEqual('20000000000')
+            })
+          })
         })
       })
     })
