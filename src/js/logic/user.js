@@ -235,13 +235,15 @@ function checkAccountAccess() {
 export function checkNetwork() {
   return new Promise(async resolve => {
     const networkId = await getNetworkId().catch(handleWeb3Error)
+    const correctNetwork =
+      Number(networkId) === (Number(state.config.networkId) || 1)
 
     updateState({
-      correctNetwork:
-        Number(networkId) === (Number(state.config.networkId) || 1),
+      correctNetwork,
       userCurrentNetworkId: networkId
     })
-    resolve && resolve()
+
+    resolve(correctNetwork)
   })
 }
 
@@ -585,7 +587,7 @@ function modernAccountAccess(categoryCode, originalResolve) {
   })
 }
 
-function getCorrectNetwork(categoryCode) {
+export function getCorrectNetwork(categoryCode) {
   return new Promise(async (resolve, reject) => {
     handleEvent(
       {
@@ -605,6 +607,8 @@ function getCorrectNetwork(categoryCode) {
           await checkNetwork()
           if (!state.correctNetwork) {
             addOnboardWarning('network')
+          } else {
+            resolve(true)
           }
         }
       }
