@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.7.1.
+The current version is 0.7.2.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-7-1/assist.js"></script>
+<script src="https://assist.blocknative.com/0-7-2/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-7-1/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-7-2/assist.min.js"></script>
 ```
 
 ### Initialize the Library
