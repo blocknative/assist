@@ -7,6 +7,14 @@ const { spawn } = require('child_process')
 const port = 8546
 
 class Reporter {
+  constructor(globalConfig) {
+    this._globalConfig = globalConfig
+  }
+
+  watching() {
+    return this._globalConfig.watch || this._globalConfig.watchAll
+  }
+
   // Start a ganache instance
   async onRunStart() {
     console.log(`Starting Ganache on port ${port}`)
@@ -16,8 +24,11 @@ class Reporter {
     ])
 
     this.ganacheProcess.on('close', code => {
-      if (code !== 0) console.log(`Ganache process closed with code ${code}`)
-      process.exit(code)
+      if (code !== 0 && code !== 137) {
+        console.log(`Ganache process closed with code ${code}`)
+        process.exit(code)
+      }
+      !this.watching() && process.exit(code)
     })
     this.ganacheProcess.on('error', code => {
       console.error(`ERROR: Ganache exited with code ${code}`)
@@ -29,8 +40,9 @@ class Reporter {
         console.error(
           `Is there already a process already running on port ${port}?`
         )
+        process.exit(code)
       }
-      process.exit(code)
+      !this.watching() && process.exit(code)
     })
 
     // Wait until ganache is running before starting test run
