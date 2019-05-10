@@ -6,7 +6,11 @@ import { web3Functions } from '~/js/helpers/web3'
 
 const multidepRequire = require('multidep')('multidep.json')
 
-const someAddress = '0x0000000000000000000000000000000000000000'
+const zeroAddress = '0x0000000000000000000000000000000000000000'
+const accounts = [
+  '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+  '0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0'
+]
 
 const initWeb3 = (simpleVersion, Web3) => {
   if (simpleVersion === '1.0') {
@@ -64,19 +68,81 @@ describe(`web3.js tests`, () => {
             })
           })
           describe('contractGas', () => {
-            test('should return the expected contractGas', async () => {
-              const expected = 21400 // setOwner should cost 21400
+            test('should return the expected gas cost', async () => {
+              const expected = 21400 // gas the setOwner call should cost
               const contract = web3.eth.contract
-                ? web3.eth.contract(abi).at(someAddress) // web3 0.20
-                : new web3.eth.Contract(abi, someAddress) // web3 1.0
+                ? web3.eth.contract(abi).at(zeroAddress) // web3 0.20
+                : new web3.eth.Contract(abi, zeroAddress) // web3 1.0
               const contractMethod = contract.methods
                 ? contract.methods.setOwner // web3 1.0
                 : contract.setOwner // web3 0.20
-              const parameters = [someAddress]
+              const parameters = [zeroAddress]
               const contractGas = await web3Functions.contractGas(
                 simpleVersion
               )(contractMethod, parameters, {})
               expect(contractGas).toEqual(expected)
+            })
+          })
+          describe('transactionGas', () => {
+            test('should return the expected gas cost', async () => {
+              const expected = 21464 // gas this tx should cost
+              const estimate = await web3Functions.transactionGas(
+                simpleVersion
+              )({
+                to: '0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe',
+                data:
+                  '0xc6888fa10000000000000000000000000000000000000000000000000000000000000003'
+              })
+              expect(estimate).toEqual(expected)
+            })
+          })
+          describe('balance', () => {
+            test(`should return an address's balance`, async () => {
+              const expected = '100000000000000000000' // 100 ETH
+              const balance = await web3Functions.balance(simpleVersion)(
+                accounts[1]
+              )
+              expect(balance.toString()).toEqual(expected)
+            })
+          })
+          describe('accounts', () => {
+            test(`should return the correct list of accounts`, async () => {
+              const expected =
+                simpleVersion === '1.0'
+                  ? accounts
+                  : accounts.map(a => a.toLowerCase())
+              const res = await web3Functions.accounts(simpleVersion)()
+              expect(res).toEqual(expected)
+            })
+          })
+          describe('txReceipt', () => {
+            test(`should return the correct receipt`, async () => {
+              const hash = await new Promise(resolve => {
+                if (simpleVersion === '1.0') {
+                  web3.eth
+                    .sendTransaction({
+                      from: accounts[0],
+                      to: zeroAddress,
+                      value: 10
+                    })
+                    .on('transactionHash', hash => {
+                      resolve(hash)
+                    })
+                } else {
+                  web3.eth.sendTransaction(
+                    {
+                      from: accounts[0],
+                      to: zeroAddress,
+                      value: 10
+                    },
+                    (err, hash) => resolve(hash)
+                  )
+                }
+              })
+              const receipt = await web3Functions.txReceipt(hash)
+              expect(receipt.to).toEqual(zeroAddress)
+              expect(receipt).toHaveProperty('blockNumber')
+              expect(receipt).toHaveProperty('transactionHash')
             })
           })
         })
