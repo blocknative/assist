@@ -9,11 +9,29 @@ const port = 8546
 class Reporter {
   // Start a ganache instance
   async onRunStart() {
-    await kill(port)
+    console.log(`Starting Ganache on port ${port}`)
     this.ganacheProcess = spawn('./node_modules/.bin/ganache-cli', [
       '-i 5',
       `-p ${port}`
     ])
+
+    this.ganacheProcess.on('close', code => {
+      if (code !== 0) console.log(`Ganache process closed with code ${code}`)
+      process.exit(code)
+    })
+    this.ganacheProcess.on('error', code => {
+      console.error(`ERROR: Ganache exited with code ${code}`)
+      process.exit(code)
+    })
+    this.ganacheProcess.on('exit', code => {
+      if (code === 1) {
+        console.error(`ERROR: Ganache exited with code ${code}`)
+        console.error(
+          `Is there already a process already running on port ${port}?`
+        )
+      }
+      process.exit(code)
+    })
 
     // Wait until ganache is running before starting test run
     await new Promise(resolve => {
@@ -24,20 +42,13 @@ class Reporter {
           resolve()
         }
       })
-      this.ganacheProcess.on('close', () => {
-        process.exit(0)
-      })
-      this.ganacheProcess.on('error', e => {
-        console.error(`Ganache error: ${e}`)
-        process.exit(1)
-      })
     })
   }
 
   // Kill the ganache instance when run is complete
   async onRunComplete() {
     kill(port).catch(() =>
-      console.log(`Failed to kill ganache on port ${port}`)
+      console.error(`Failed to kill ganache on port ${port}`)
     )
   }
 }
