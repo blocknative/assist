@@ -20,7 +20,9 @@ class Reporter {
     console.log(`Starting Ganache on port ${port}`)
     this.ganacheProcess = spawn('./node_modules/.bin/ganache-cli', [
       '-i 5',
-      `-p ${port}`
+      `-p ${port}`,
+      '-a 2',
+      '--deterministic'
     ])
 
     this.ganacheProcess.on('close', code => {
