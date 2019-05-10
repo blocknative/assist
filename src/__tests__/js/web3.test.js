@@ -1,9 +1,12 @@
 import da from '~/js'
+import abi from '~/__tests__/res/dstoken.json'
 import { initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
 import { web3Functions } from '~/js/helpers/web3'
 
 const multidepRequire = require('multidep')('multidep.json')
+
+const someAddress = '0x0000000000000000000000000000000000000000'
 
 const initWeb3 = (simpleVersion, Web3) => {
   if (simpleVersion === '1.0') {
@@ -55,8 +58,25 @@ describe(`web3.js tests`, () => {
           })
           describe('gasPrice', () => {
             test('should return the expected gasPrice', async () => {
+              const expected = '20000000000' // recommended gasPrice should be 20000000000
               const gasPrice = await web3Functions.gasPrice(simpleVersion)()
-              expect(gasPrice.toString()).toEqual('20000000000')
+              expect(gasPrice.toString()).toEqual(expected)
+            })
+          })
+          describe('contractGas', () => {
+            test('should return the expected contractGas', async () => {
+              const expected = 21400 // setOwner should cost 21400
+              const contract = web3.eth.contract
+                ? web3.eth.contract(abi).at(someAddress) // web3 0.20
+                : new web3.eth.Contract(abi, someAddress) // web3 1.0
+              const contractMethod = contract.methods
+                ? contract.methods.setOwner // web3 1.0
+                : contract.setOwner // web3 0.20
+              const parameters = [someAddress]
+              const contractGas = await web3Functions.contractGas(
+                simpleVersion
+              )(contractMethod, parameters, {})
+              expect(contractGas).toEqual(expected)
             })
           })
         })
