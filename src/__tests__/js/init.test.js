@@ -45,6 +45,7 @@ test('Returns the dassist object', () => {
 })
 
 test('Fails if we try to decorate without a web3 instance', () => {
+  stateMock.state.config = {}
   const web3 = new Web3('ws://example.com')
   const contract = new web3.eth.Contract(
     abi,
