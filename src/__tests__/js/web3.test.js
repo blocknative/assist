@@ -112,7 +112,7 @@ describe(`web3.js tests`, () => {
               })
               // doesn't seem to work
               // see https://github.com/blocknative/assist/issues/171
-              xtest('should return the expected gas cost', async () => {
+              test('should return the expected gas cost', async () => {
                 const expected = 21988 // gas the convert call should cost
                 const contractMethod = contractInstance.convert
                 const parameters = [5, 10]

@@ -43,12 +43,12 @@ export const web3Functions = {
       case '0.2':
         return (contractMethod, parameters, txObject) =>
           state.config.truffleContract
-            ? contractMethod.estimateGas(...parameters, txObject)
+            ? contractMethod.estimateGas(...parameters)
             : promisify(contractMethod.estimateGas)(...parameters, txObject)
       case '1.0':
         return (contractMethod, parameters, txObject) =>
           state.config.truffleContract
-            ? contractMethod.estimateGas(...parameters, txObject)
+            ? contractMethod.estimateGas(...parameters)
             : contractMethod(...parameters).estimateGas(txObject)
       default:
         return () => Promise.reject(errorObj)
