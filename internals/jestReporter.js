@@ -12,14 +12,15 @@ class Reporter {
     this._globalConfig = globalConfig
   }
 
+  // checks if jest was run with --watch or --watchall
   watching() {
     return this._globalConfig.watch || this._globalConfig.watchAll
   }
 
-  // Start a ganache instance
+  // start a ganache instance before test run starts
   async onRunStart() {
-    await kill(port)
     console.log(`Starting Ganache on port ${port}`)
+    await kill(port)
     this.ganacheProcess = spawn('./node_modules/.bin/ganache-cli', args)
 
     this.ganacheProcess.on('close', code => {
@@ -55,7 +56,7 @@ class Reporter {
       })
     })
 
-    // Deploy a contracts required for truffle testing
+    // Deploy a contract for truffle testing
     this.web3 = new Web3(`ws://localhost:${port}`)
     const convertLibWeb3 = await new this.web3.eth.Contract(convertLib.abi)
     convertLibWeb3
