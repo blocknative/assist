@@ -24,7 +24,8 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-nested-ternary': 'off',
     'import/no-cycle': 'off',
-    'no-lonely-if': 'off'
+    'no-lonely-if': 'off',
+    'consistent-return': 'off'
   },
   settings: {
     'import/resolver': {

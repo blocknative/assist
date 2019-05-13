@@ -40,3 +40,35 @@ export let state = Object.assign({}, initialState)
 export function updateState(newState) {
   state = Object.assign({}, state, newState)
 }
+
+export function filteredState() {
+  const {
+    mobileDevice,
+    validBrowser,
+    currentProvider,
+    web3Wallet,
+    accessToAccounts,
+    walletLoggedIn,
+    walletEnabled,
+    accountAddress,
+    accountBalance,
+    minimumBalance,
+    userCurrentNetworkId,
+    correctNetwork
+  } = state
+
+  return {
+    mobileDevice,
+    validBrowser,
+    currentProvider,
+    web3Wallet,
+    accessToAccounts,
+    walletLoggedIn,
+    walletEnabled,
+    accountAddress,
+    accountBalance,
+    minimumBalance,
+    userCurrentNetworkId,
+    correctNetwork
+  }
+}

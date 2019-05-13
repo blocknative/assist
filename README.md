@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.6.0.
+The current version is 0.7.2.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-6-0/assist.js"></script>
+<script src="https://assist.blocknative.com/0-7-2/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-6-0/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-7-2/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -81,8 +81,9 @@ In any event, it is as simple as calling:
 
 ```javascript
 assistInstance.onboard()
-  .then(function(success) {
+  .then(function(state) {
     // User has been successfully onboarded and is ready to transact
+    // Will resolve with the current state of the user
     // This means we can be sure of the follwing user properties:
     //  - They are using a compatible browser
     //  - They have a web3-enabled wallet installed
@@ -90,10 +91,9 @@ assistInstance.onboard()
     //  - The wallet is unlocked and contains at least `minimumBalance` in wei
     //  - They have connected their wallet to the dapp, congruent with EIP1102
   })
-  .catch(function(error) {
+  .catch(function(state) {
     // The user exited onboarding before completion
-    // Will let you know what stage of onboarding the user was up to when they exited
-    console.log(error.message);
+    // Will let you know what stage of onboarding the user was up to when they exited via the state object
   })
 ```
 
@@ -249,6 +249,29 @@ The available ids for the `networkId` property of the config object:
 
 When you are running locally (e.g. using ganache), set `networkId` in the config to the network id that the local network is set to. Any number that is not `1`, `3`, `4` and `42` is valid and will be recognized as a local network. If using the Ganache CLI you can set the network id via the `--networkId` option.
 
+### State
+
+`Assist` keeps track of the current state of the user environment as a JavaScript Object
+
+```javascript
+state = {
+  mobileDevice: Boolean, // User is on a mobile device
+  validBrowser: Boolean, // User is on a valid web3 browser
+  currentProvider: String, // Current provider being used to connect to the network
+  web3Wallet: Boolean, // User has a web3Wallet installed
+  accessToAccounts: Boolean, // Dapp has access to accounts
+  walletLoggedIn: Boolean, // User is logged in to wallet
+  walletEnabled: Boolean, // User has enabled EIP 1102 compliant wallet
+  accountAddress: String, // Address of the user's selected account
+  accountBalance: String, // User account balance
+  minimumBalance: String, // User has the minimum balance specified in the config
+  userCurrentNetworkId: Number, // Network id of the network the user is currently on
+  correctNetwork: Boolean, // User is on the network specified in the config
+}
+```
+
+The promises that are returned from calls to `getState` and  `onboard` resolve and reject with this `state` object.
+
 ### Errors
 
 All errors are called with `eventCode` and `message` properties.
@@ -316,19 +339,18 @@ var assistInstance = assist.init(assistConfig)
 
 `Promise`
 
-- resolves with onboard success message if user has been successfully onboarded
-- rejects with an error message if the user exits onboarding before completion. The error will detail the stage of onboarding the user was up to when they exited
+- resolves with `state` object
+- rejects with `state` object
 
 #### Example
 
 ```javascript
 assistInstance.onboard()
-  .then(function(success) {
+  .then(function(state) {
     // User has been successfully onboarded and is ready to transact
   })
-  .catch(function(error) {
+  .catch(function(state) {
     // The user exited onboarding before completion
-    console.log(error.message) // Will let you know what stage of onboarding the user was up to when they exited
   })
 ```
 
@@ -383,24 +405,7 @@ assistInstance.Transaction(txObject)
 
 `Promise`
 
-- resolves with the current state of the app represented as a JavaScript Object
-
-```javascript
-state = {
-  mobileDevice: Boolean, // User is on a mobile device
-  validBrowser: Boolean, // User is on a valid web3 browser
-  currentProvider: String, // Current provider being used to connect to the network
-  web3Wallet: Boolean, // User has a web3Wallet installed
-  accessToAccounts: Boolean, // Dapp has access to accounts
-  walletLoggedIn: Boolean, // User is logged in to wallet
-  walletEnabled: Boolean, // User has enabled EIP 1102 compliant wallet
-  accountAddress: String, // Address of the user's selected account
-  accountBalance: String, // User account balance
-  minimumBalance: String, // User has the minimum balance specified in the config
-  userCurrentNetworkId: Number, // Network id of the network the user is currently on
-  correctNetwork: Boolean, // User is on the network specified in the config
-}
-```
+- resolves with the `state` object that represents the current user environment
 
 #### Example
 
@@ -411,6 +416,79 @@ assistInstance.getState()
       console.log('valid browser')
     }
   })
+```
+
+### `updateStyle(style)`
+
+#### Parameters
+
+`style` - `Object`: Object containing new style information (**Required**)
+
+```javascript
+const style = {
+    darkMode: Boolean, // Set Assist UI to dark mode
+    css: String, // Custom css string to overide Assist default styles
+    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+}
+```
+
+#### Examples
+
+```javascript
+// Enable dark mode
+const style = {
+  darkMode: true
+}
+assistInstance.updateStyle(style)
+
+// Disable dark mode and set notification background to black
+const style = {
+  darkMode: false,
+  css: `.bn-notification { background: black }`
+}
+assistInstance.updateStyle(style)
+```
+
+### `notify(type, message, options)`
+
+Trigger a custom UI notification
+
+#### Parameters
+
+`type` - `String`: One of: ['success', 'pending', 'error'] (**Required**)
+
+`message` - `String`: The message to display in the notification. HTML can be embedded in the string. (**Required**)
+
+`options` - `Object`: Further customize the notification
+
+```javascript
+options = {
+  customTimeout: Number, // Specify how many ms the notification should exist. Set to -1 for no timeout.
+  customCode: String // An identifier for this notify call
+}
+```
+
+options.customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
+
+#### Returns
+
+`Function`
+
+- a function that when called will dismiss the notification
+
+#### Examples
+
+```javascript
+// Display a success notification with an embedded link for 5000ms
+assistInstance.notify('success', 'Operation was a success! Click <a href="https://example.com" target="_blank">here</a> to view more', { customTimeout: 5000 });
+
+// Display a pending notification, load data from an imaginary backend
+// and dismiss the pending notification only when the data is loaded
+const dismiss = assistInstance.notify('pending', 'Loading data...', { customTimeout: -1 });
+myEventEmitter.emit('fetch-data-from-backend')
+myEventEmitter.on('data-from-backend-loaded', () => {
+  dismiss()
+})
 ```
 
 ## Contribute

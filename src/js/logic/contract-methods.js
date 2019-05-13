@@ -3,6 +3,7 @@ import { state } from '~/js/helpers/state'
 import { handleEvent } from '~/js/helpers/events'
 import { separateArgs, handleError } from '~/js/helpers/utilities'
 import { getContractMethod } from '~/js/helpers/web3'
+import { checkNetwork, getCorrectNetwork } from '~/js/logic/user'
 
 import sendTransaction from './send-transaction'
 
@@ -17,8 +18,12 @@ export function modernCall({ contractObj, methodName, overloadKey, args }) {
   returnObject.call = (...innerArgs) =>
     new Promise(async (resolve, reject) => {
       const { callback, txOptions } = separateArgs(innerArgs, 0)
+      const {
+        mobileDevice,
+        config: { mobileBlocked, headlessMode }
+      } = state
 
-      if (state.mobileDevice && state.config.mobileBlocked) {
+      if (mobileDevice && mobileBlocked) {
         handleEvent(
           {
             eventCode: 'mobileBlocked',
@@ -33,6 +38,21 @@ export function modernCall({ contractObj, methodName, overloadKey, args }) {
             }
           }
         )
+      }
+
+      const correctNetwork = await checkNetwork()
+
+      if (!correctNetwork) {
+        if (!headlessMode) {
+          const result = await getCorrectNetwork('onboard').catch(
+            handleError({ resolve, reject, callback })
+          )
+          if (!result) return
+        } else {
+          const errorObj = new Error('User is on the wrong network')
+          errorObj.eventCode = 'networkFail'
+          return handleError({ resolve, reject, callback })(errorObj)
+        }
       }
 
       const result = await innerMethod(txOptions).catch(errorObj => {
@@ -104,12 +124,16 @@ export function legacyCall({
   argsLength
 }) {
   return new Promise(async (resolve, reject) => {
+    const {
+      mobileDevice,
+      config: { mobileBlocked, headlessMode, truffleContract, ethers }
+    } = state
     const { callback, methodArgs, txOptions, defaultBlock } = separateArgs(
       args,
       argsLength
     )
 
-    if (state.mobileDevice && state.config.mobileBlocked) {
+    if (mobileDevice && mobileBlocked) {
       handleEvent(
         {
           eventCode: 'mobileBlocked',
@@ -127,7 +151,20 @@ export function legacyCall({
       return resolve()
     }
 
-    const { truffleContract, ethers } = state.config
+    const correctNetwork = await checkNetwork()
+
+    if (!correctNetwork) {
+      if (!headlessMode) {
+        const result = await getCorrectNetwork('onboard').catch(
+          handleError({ resolve, reject, callback })
+        )
+        if (!result) return
+      } else {
+        const errorObj = new Error('User is on the wrong network')
+        errorObj.eventCode = 'networkFail'
+        handleError({ resolve, reject, callback })(errorObj)
+      }
+    }
 
     const contractMethod = getContractMethod({
       contractObj,
