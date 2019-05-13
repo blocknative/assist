@@ -1,11 +1,15 @@
+import truffleContract from 'truffle-contract'
 import da from '~/js'
 import abi from '~/__tests__/res/dstoken.json'
-import { initialState, updateState } from '~/js/helpers/state'
+import { state, initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
 import { web3Functions } from '~/js/helpers/web3'
-import { accounts } from '../../../internals/ganacheConfig'
+import convertLibJson from '~/__tests__/res/ConvertLib'
+import { accounts, convertLibAddress } from '../../../internals/ganacheConfig'
 
 const multidepRequire = require('multidep')('multidep.json')
+
+const Web3v0p20 = multidepRequire('web3', '0.20.6')
 
 const zeroAddress = '0x0000000000000000000000000000000000000000'
 
@@ -65,19 +69,52 @@ describe(`web3.js tests`, () => {
             })
           })
           describe('contractGas', () => {
-            test('should return the expected gas cost', async () => {
-              const expected = 21400 // gas the setOwner call should cost
-              const contract = web3.eth.contract
-                ? web3.eth.contract(abi).at(zeroAddress) // web3 0.20
-                : new web3.eth.Contract(abi, zeroAddress) // web3 1.0
-              const contractMethod = contract.methods
-                ? contract.methods.setOwner // web3 1.0
-                : contract.setOwner // web3 0.20
-              const parameters = [zeroAddress]
-              const contractGas = await web3Functions.contractGas(
-                simpleVersion
-              )(contractMethod, parameters, {})
-              expect(contractGas).toEqual(expected)
+            let contract
+            describe('from a web3 contract', () => {
+              beforeEach(() => {
+                contract = web3.eth.contract
+                  ? web3.eth.contract(abi).at(zeroAddress) // web3 0.20
+                  : new web3.eth.Contract(abi, zeroAddress) // web3 1.0
+              })
+              test('should return the expected gas cost', async () => {
+                const expected = 21400 // gas the setOwner call should cost
+                const contract = web3.eth.contract
+                  ? web3.eth.contract(abi).at(zeroAddress) // web3 0.20
+                  : new web3.eth.Contract(abi, zeroAddress) // web3 1.0
+                const contractMethod = contract.methods
+                  ? contract.methods.setOwner // web3 1.0
+                  : contract.setOwner // web3 0.20
+                const parameters = [zeroAddress]
+                const contractGas = await web3Functions.contractGas(
+                  simpleVersion
+                )(contractMethod, parameters, {})
+                expect(contractGas).toEqual(expected)
+              })
+            })
+            describe('from a truffle contract', () => {
+              let contractInstance
+              beforeEach(async () => {
+                state.config.truffleContract = true
+                contract = truffleContract(convertLibJson)
+                contract.setProvider(
+                  new Web3v0p20.providers.HttpProvider('http://localhost:8546')
+                )
+                contractInstance = await contract.at(convertLibAddress)
+              })
+              afterEach(() => {
+                state.config.truffleContract = false
+              })
+              // doesn't seem to work
+              // see https://github.com/blocknative/assist/issues/171
+              xtest('should return the expected gas cost', async () => {
+                const expected = 21988 // gas the convert call should cost
+                const contractMethod = contractInstance.convert
+                const parameters = [5, 10]
+                const contractGas = await web3Functions.contractGas(
+                  simpleVersion
+                )(contractMethod, parameters)
+                expect(contractGas).toEqual(expected)
+              })
             })
           })
           describe('transactionGas', () => {
