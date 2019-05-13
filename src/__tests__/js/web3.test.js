@@ -5,7 +5,11 @@ import { state, initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
 import { web3Functions } from '~/js/helpers/web3'
 import convertLibJson from '~/__tests__/res/ConvertLib'
-import { accounts, convertLibAddress } from '../../../internals/ganacheConfig'
+import {
+  accounts,
+  convertLibAddress,
+  port
+} from '../../../internals/ganacheConfig'
 
 const multidepRequire = require('multidep')('multidep.json')
 
@@ -15,9 +19,9 @@ const zeroAddress = '0x0000000000000000000000000000000000000000'
 
 const initWeb3 = (simpleVersion, Web3) => {
   if (simpleVersion === '1.0') {
-    return new Web3('ws://localhost:8546')
+    return new Web3(`ws://localhost:${port}`)
   }
-  const provider = new Web3.providers.HttpProvider('http://localhost:8546')
+  const provider = new Web3.providers.HttpProvider(`http://localhost:${port}`)
   return new Web3(provider)
 }
 
@@ -97,7 +101,9 @@ describe(`web3.js tests`, () => {
                 state.config.truffleContract = true
                 contract = truffleContract(convertLibJson)
                 contract.setProvider(
-                  new Web3v0p20.providers.HttpProvider('http://localhost:8546')
+                  new Web3v0p20.providers.HttpProvider(
+                    `http://localhost:${port}`
+                  )
                 )
                 contractInstance = await contract.at(convertLibAddress)
               })
