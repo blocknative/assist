@@ -76,6 +76,7 @@
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-uglify": "^6.0.0",
+    "truffle-contract": "^4.0.15",
     "web3": "^1.0.0-beta.37"
   },
   "eslintIgnore": [
