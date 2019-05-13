@@ -48,7 +48,6 @@ class Reporter {
     await new Promise(resolve => {
       this.ganacheProcess.stdout.setEncoding('utf8')
       this.ganacheProcess.stdout.on('data', chunk => {
-        console.log(chunk)
         if (chunk.includes('Listening')) {
           console.log(`Ganache running on port ${chunk.split(':')[1]}`)
           resolve()
