@@ -66,12 +66,12 @@ class Reporter {
     // Ganache setup done, tests will now execute
   }
 
-  // Kill the ganache instance when run is complete
+  // On completion kill the ganache instance and exit the test run
   async onRunComplete() {
     this.web3.currentProvider.connection.close()
-    kill(port).catch(() =>
-      console.error(`Failed to kill ganache on port ${port}`)
-    )
+    kill(port)
+      .then(() => !this.watching() && process.exit(0))
+      .catch(() => console.error(`Failed to kill ganache on port ${port}`))
   }
 }
 
