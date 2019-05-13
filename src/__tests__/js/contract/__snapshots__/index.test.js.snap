@@ -7614,7 +7614,7 @@ Object {
 }
 `;
 
-exports[`using web3 1.0.0-beta.54 Contract function is called it doesn't fail and returns the expected decorated contract 1`] = `
+exports[`using web3 1.0.0-beta.55 Contract function is called it doesn't fail and returns the expected decorated contract 1`] = `
 Object {
   "BatchRequest": [Function],
   "_jsonInterface": undefined,
