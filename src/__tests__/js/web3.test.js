@@ -3,14 +3,11 @@ import abi from '~/__tests__/res/dstoken.json'
 import { initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
 import { web3Functions } from '~/js/helpers/web3'
+import { accounts } from '../../../internals/ganacheConfig'
 
 const multidepRequire = require('multidep')('multidep.json')
 
 const zeroAddress = '0x0000000000000000000000000000000000000000'
-const accounts = [
-  '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-  '0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0'
-]
 
 const initWeb3 = (simpleVersion, Web3) => {
   if (simpleVersion === '1.0') {
