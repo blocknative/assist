@@ -4,7 +4,7 @@
 const kill = require('kill-port')
 const Web3 = require('web3')
 const { spawn } = require('child_process')
-const safeMath = require('../src/__tests__/res/SafeMath.json')
+const convertLib = require('../src/__tests__/res/ConvertLib.json')
 const { args, port, accounts } = require('./ganacheConfig.js')
 
 class Reporter {
@@ -57,9 +57,9 @@ class Reporter {
 
     // Deploy a contracts required for truffle testing
     this.web3 = new Web3(`ws://localhost:${port}`)
-    const safeMathWeb3 = await new this.web3.eth.Contract(safeMath.abi)
-    safeMathWeb3
-      .deploy({ data: safeMath.bytecode })
+    const convertLibWeb3 = await new this.web3.eth.Contract(convertLib.abi)
+    convertLibWeb3
+      .deploy({ data: convertLib.bytecode })
       .send({ from: accounts[0], gasLimit: 1500000 })
 
     // Ganache setup done, tests will now execute
