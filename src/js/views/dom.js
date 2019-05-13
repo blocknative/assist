@@ -17,6 +17,80 @@ import {
   onboardWarningMsg
 } from './content'
 
+// Update UI styles based on the current style.notificationsPosition value
+export function updateNotificationsPosition() {
+  const { notificationsPosition } = state.config.style
+  if (!notificationsPosition) return
+  positionElement(state.iframe)
+
+  // Position notificationsContainer and reorder it's elements
+  const notificationsContainer = state.iframeDocument.getElementById(
+    'blocknative-notifications'
+  )
+  if (notificationsContainer) {
+    const brand = notificationsContainer.querySelector(
+      '#bn-transaction-branding'
+    )
+    const scroll = notificationsContainer.querySelector(
+      '.bn-notifications-scroll'
+    )
+    if (notificationsPosition.includes('top')) {
+      notificationsContainer.insertBefore(brand, scroll)
+    } else {
+      notificationsContainer.insertBefore(scroll, brand)
+    }
+    positionElement(notificationsContainer)
+  }
+
+  // Update existing status-icon positions
+  const statusIcons = [
+    ...state.iframeDocument.getElementsByClassName('bn-status-icon')
+  ]
+  statusIcons.forEach(icon => {
+    notificationsPosition.includes('Left')
+      ? icon.classList.add('bn-float-right')
+      : icon.classList.remove('bn-float-right')
+  })
+
+  // Update existing progress tooltip positions
+  const progressTooltips = [
+    ...state.iframeDocument.getElementsByClassName('progress-tooltip')
+  ]
+  progressTooltips.forEach(tooltip => {
+    notificationsPosition.includes('Left')
+      ? tooltip.classList.add('bn-left')
+      : tooltip.classList.remove('bn-left')
+  })
+
+  // Update brand position
+  const brand = state.iframeDocument.getElementById('bn-transaction-branding')
+  if (brand) {
+    notificationsPosition.includes('Left')
+      ? (brand.style.float = 'initial')
+      : (brand.style.float = 'right')
+  }
+
+  // Update existing notifications borders
+  const notifications = [
+    ...state.iframeDocument.getElementsByClassName('bn-notification')
+  ]
+  notifications.forEach(n => {
+    notificationsPosition.includes('Left')
+      ? n.classList.add('bn-right-border')
+      : n.classList.remove('bn-right-border')
+  })
+
+  // Update notifications-scroll position
+  const scrolls = [
+    ...state.iframeDocument.getElementsByClassName('bn-notifications-scroll')
+  ]
+  scrolls.forEach(s => {
+    notificationsPosition === 'topRight'
+      ? (s.style.float = 'right')
+      : delete s.style.float
+  })
+}
+
 export function createElementString(type, className, innerHTML) {
   return `
 	  <${type} class="${className}">
@@ -405,7 +479,7 @@ export function hideElement(element) {
 
 export function removeElement(parent, element) {
   setTimeout(() => {
-    if (parent.contains(element)) {
+    if (parent && parent.contains(element)) {
       parent.removeChild(element)
       if (parent !== state.iframeDocument.body) {
         checkIfNotifications()
@@ -444,10 +518,12 @@ export function removeNotification(notification) {
   hideElement(notification)
   removeElement(notificationsList, notification)
   const scrollContainer = getByQuery('.bn-notifications-scroll')
-  setTimeout(
-    () => setHeight(scrollContainer, 'initial', 'auto'),
-    timeouts.changeUI
-  )
+  if (scrollContainer) {
+    setTimeout(
+      () => setHeight(scrollContainer, 'initial', 'auto'),
+      timeouts.changeUI
+    )
+  }
 }
 
 export function removeAllNotifications(notifications) {
@@ -483,6 +559,8 @@ export function removeContainer() {
 
 export function setNotificationsHeight() {
   const scrollContainer = getByQuery('.bn-notifications-scroll')
+  // if no notifications to manipulate return
+  if (!scrollContainer) return
   const maxHeight = window.innerHeight
   const brandingHeight = getById('bn-transaction-branding').clientHeight + 26
   const widgetHeight = scrollContainer.scrollHeight + brandingHeight
@@ -491,6 +569,7 @@ export function setNotificationsHeight() {
 
   if (tooBig) {
     setHeight(scrollContainer, 'scroll', maxHeight - brandingHeight)
+    scrollContainer.scrollTop = maxHeight * 4
   } else {
     setHeight(scrollContainer, 'initial', 'auto')
   }

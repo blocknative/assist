@@ -3,3 +3,4 @@
 .DS_Store
 /lib/assist.min.js
 /lib/assist.js
+.vscode/

@@ -41,12 +41,16 @@ function sendTransaction(
     )
 
     // Check user is ready to make the transaction
-    const [sufficientBalance] = await Promise.all([
+    const [sufficientBalance, ready] = await Promise.all([
       hasSufficientBalance(transactionParams),
       prepareForTransaction('activePreflight').catch(
         handleError({ resolve, reject, callback })
       )
     ])
+
+    if (!ready) {
+      return
+    }
 
     // Make sure that we have from address in txOptions
     if (!txOptions.from) {
