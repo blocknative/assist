@@ -263,7 +263,9 @@ export function getAccounts() {
 }
 
 export function checkUnlocked() {
-  return window.ethereum._metamask.isUnlocked()
+  return window.ethereum._metamask && window.ethereum._metamask.isUnlocked
+    ? window.ethereum._metamask.isUnlocked()
+    : Promise.resolve(true)
 }
 
 export function requestLoginEnable() {
