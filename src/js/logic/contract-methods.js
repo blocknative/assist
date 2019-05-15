@@ -85,8 +85,13 @@ export function modernCall(method, name, args) {
 }
 
 export function modernSend(method, name, args) {
-  const innerMethod = method(...args).send
-  const returnObject = {}
+  const originalReturnObject = method(...args)
+  const innerMethod = originalReturnObject.send
+
+  const returnObject = Object.keys(originalReturnObject).reduce((obj, key) => {
+    obj[key] = originalReturnObject[key]
+    return obj
+  }, {})
 
   returnObject.send = (...innerArgs) => {
     const { callback, txObject, inlineCustomMsgs } = separateArgs(innerArgs, 0)
