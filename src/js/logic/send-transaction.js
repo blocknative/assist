@@ -218,7 +218,7 @@ function sendTransaction(
       txPromise
         .on('transactionHash', async hash => {
           onTxHash(transactionId, hash, categoryCode)
-
+          
           resolve(hash)
           callback && callback(null, hash)
         })
@@ -260,7 +260,7 @@ function onTxHash(id, hash, categoryCode) {
 
     if (
       txObj &&
-      txObj.transaction.status !== 'pending' &&
+      txObj.transaction.status === 'pending' &&
       state.socketConnection
     ) {
       updateTransactionInQueue(id, { status: 'stalled' })
