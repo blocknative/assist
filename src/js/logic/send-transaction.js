@@ -218,7 +218,7 @@ function sendTransaction(
       txPromise
         .on('transactionHash', async hash => {
           onTxHash(transactionId, hash, categoryCode)
-          
+
           resolve(hash)
           callback && callback(null, hash)
         })
@@ -257,11 +257,14 @@ function onTxHash(id, hash, categoryCode) {
   // Check if transaction is in txPool after timeout
   setTimeout(() => {
     const txObj = getTxObjFromQueue(id)
+    if (!txObj) return
+
+    const { transaction: {status} } = txObj
 
     if (
-      txObj &&
-      txObj.transaction.status === 'pending' &&
-      state.socketConnection
+      state.socketConnection &&
+      (status === 'approved' ||
+        status === 'pending')
     ) {
       updateTransactionInQueue(id, { status: 'stalled' })
 
