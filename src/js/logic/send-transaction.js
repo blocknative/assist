@@ -215,21 +215,21 @@ function sendTransaction(
           handleError({ resolve, reject, callback })(errorObj)
         })
     } else {
-      // resolve the promiEvent so that "on" methods can be used by dev
-      resolve({ txPromise })
+      new Promise(confirmed => {
+        txPromise
+          .on('transactionHash', async hash => {
+            onTxHash(transactionId, hash, categoryCode)
 
-      txPromise
-        .on('transactionHash', async hash => {
-          onTxHash(transactionId, hash, categoryCode)
-          callback && callback(null, hash)
-        })
-        .on('receipt', async () => {
-          onTxReceipt(transactionId, categoryCode)
-        })
-        .on('error', async errorObj => {
-          onTxError(transactionId, errorObj, categoryCode)
-          handleError({ resolve, reject, callback })(errorObj)
-        })
+            resolve(hash)
+            callback && callback(null, hash)
+          })
+          .on('receipt', confirmed)
+          .once('confirmation', confirmed)
+          .on('error', async errorObj => {
+            onTxError(transactionId, errorObj, categoryCode)
+            handleError({ resolve, reject, callback })(errorObj)
+          })
+      }).then(() => onTxReceipt(transactionId, categoryCode))
     }
   })
 }
