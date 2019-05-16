@@ -1,6 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`using web3 0.20.6 Contract function is called it doesn't fail and returns the expected decorated contract 1`] = `
+exports[`using web3 0.20.6 Contract is called with a truffle contract it doesn't fail and returns the expected decorated contract 1`] = `
+Object {
+  "BatchRequest": undefined,
+  "_jsonInterface": undefined,
+  "abiModel": undefined,
+  "events": Object {
+    "contract": null,
+  },
+  "givenProvider": undefined,
+  "methods": Object {
+    "convert(uint256,uint256)": [Function],
+    "subtract(uint256,uint256)": [Function],
+  },
+  "options": undefined,
+}
+`;
+
+exports[`using web3 0.20.6 Contract is called with a web3 contract it doesn't fail and returns the expected decorated contract 1`] = `
 Object {
   "Approval": [Function],
   "Burn": [Function],
@@ -684,7 +701,24 @@ Object {
 }
 `;
 
-exports[`using web3 1.0.0-beta.37 Contract function is called it doesn't fail and returns the expected decorated contract 1`] = `
+exports[`using web3 1.0.0-beta.37 Contract is called with a truffle contract it doesn't fail and returns the expected decorated contract 1`] = `
+Object {
+  "BatchRequest": undefined,
+  "_jsonInterface": undefined,
+  "abiModel": undefined,
+  "events": Object {
+    "contract": null,
+  },
+  "givenProvider": undefined,
+  "methods": Object {
+    "convert(uint256,uint256)": [Function],
+    "subtract(uint256,uint256)": [Function],
+  },
+  "options": undefined,
+}
+`;
+
+exports[`using web3 1.0.0-beta.37 Contract is called with a web3 contract it doesn't fail and returns the expected decorated contract 1`] = `
 Object {
   "BatchRequest": [Function],
   "_jsonInterface": Array [
@@ -2061,7 +2095,24 @@ Object {
 }
 `;
 
-exports[`using web3 1.0.0-beta.46 Contract function is called it doesn't fail and returns the expected decorated contract 1`] = `
+exports[`using web3 1.0.0-beta.46 Contract is called with a truffle contract it doesn't fail and returns the expected decorated contract 1`] = `
+Object {
+  "BatchRequest": undefined,
+  "_jsonInterface": undefined,
+  "abiModel": undefined,
+  "events": Object {
+    "contract": null,
+  },
+  "givenProvider": undefined,
+  "methods": Object {
+    "convert(uint256,uint256)": [Function],
+    "subtract(uint256,uint256)": [Function],
+  },
+  "options": undefined,
+}
+`;
+
+exports[`using web3 1.0.0-beta.46 Contract is called with a web3 contract it doesn't fail and returns the expected decorated contract 1`] = `
 Object {
   "BatchRequest": [Function],
   "_jsonInterface": undefined,
@@ -7614,7 +7665,24 @@ Object {
 }
 `;
 
-exports[`using web3 1.0.0-beta.55 Contract function is called it doesn't fail and returns the expected decorated contract 1`] = `
+exports[`using web3 1.0.0-beta.55 Contract is called with a truffle contract it doesn't fail and returns the expected decorated contract 1`] = `
+Object {
+  "BatchRequest": undefined,
+  "_jsonInterface": undefined,
+  "abiModel": undefined,
+  "events": Object {
+    "contract": null,
+  },
+  "givenProvider": undefined,
+  "methods": Object {
+    "convert(uint256,uint256)": [Function],
+    "subtract(uint256,uint256)": [Function],
+  },
+  "options": undefined,
+}
+`;
+
+exports[`using web3 1.0.0-beta.55 Contract is called with a web3 contract it doesn't fail and returns the expected decorated contract 1`] = `
 Object {
   "BatchRequest": [Function],
   "_jsonInterface": undefined,
