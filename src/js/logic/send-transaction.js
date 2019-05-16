@@ -215,20 +215,21 @@ function sendTransaction(
           handleError({ resolve, reject, callback })(errorObj)
         })
     } else {
-      txPromise
-        .on('transactionHash', async hash => {
-          onTxHash(transactionId, hash, categoryCode)
+      new Promise(confirmed => {
+        txPromise
+          .on('transactionHash', async hash => {
+            onTxHash(transactionId, hash, categoryCode)
 
-          resolve(hash)
-          callback && callback(null, hash)
-        })
-        .on('receipt', async () => {
-          onTxReceipt(transactionId, categoryCode)
-        })
-        .on('error', async errorObj => {
-          onTxError(transactionId, errorObj, categoryCode)
-          handleError({ resolve, reject, callback })(errorObj)
-        })
+            resolve(hash)
+            callback && callback(null, hash)
+          })
+          .on('receipt', confirmed)
+          .once('confirmation', confirmed)
+          .on('error', async errorObj => {
+            onTxError(transactionId, errorObj, categoryCode)
+            handleError({ resolve, reject, callback })(errorObj)
+          })
+      }).then(() => onTxReceipt(transactionId, categoryCode))
     }
   })
 }
@@ -259,12 +260,13 @@ function onTxHash(id, hash, categoryCode) {
     const txObj = getTxObjFromQueue(id)
     if (!txObj) return
 
-    const { transaction: {status} } = txObj
+    const {
+      transaction: { status }
+    } = txObj
 
     if (
       state.socketConnection &&
-      (status === 'approved' ||
-        status === 'pending')
+      (status === 'approved' || status === 'pending')
     ) {
       updateTransactionInQueue(id, { status: 'stalled' })
 
