@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.7.3.
+The current version is 0.7.4.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-7-3/assist.js"></script>
+<script src="https://assist.blocknative.com/0-7-4/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-7-3/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-7-4/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -128,6 +128,18 @@ To speed things up, you can decorate the contract inline:
 
 ```javascript
 var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
+```
+
+### `promiEvent`
+
+If using web3 versions 1.0 and you would like to listen for the events triggered on the `promiEvent` that is normally returned from a transaction call, Assist returns the `promiEvent`, but it is wrapped in an object to prevent it from resolving internally in Assist.
+
+```javascript
+const { promiEvent } = await decoratedContract.myMethod(param).send(txOptions)
+
+promiEvent.on('receipt', () => {
+  // ...
+})
 ```
 
 ## API Reference
