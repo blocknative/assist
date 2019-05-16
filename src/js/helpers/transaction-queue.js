@@ -50,7 +50,6 @@ export function isDuplicateTransaction({ value, to }, contract) {
   })
 
   if (duplicate && duplicate.transaction.status === 'confirmed') {
-    removeTransactionFromQueue(duplicate.transaction.id)
     duplicate = false
   }
 
