@@ -216,11 +216,11 @@ function sendTransaction(
         })
     } else {
       new Promise(confirmed => {
+        // resolve the promiEvent so that "on" methods can be used by dev
+        resolve({ txPromise })
         txPromise
           .on('transactionHash', async hash => {
             onTxHash(transactionId, hash, categoryCode)
-
-            resolve(hash)
             callback && callback(null, hash)
           })
           .on('receipt', confirmed)

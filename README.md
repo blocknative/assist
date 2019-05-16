@@ -130,6 +130,18 @@ To speed things up, you can decorate the contract inline:
 var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
 ```
 
+### `promiEvent`
+
+If using web3 versions 1.0 and you would like to listen for the events triggered on the `promiEvent` that is normally returned from a transaction call, Assist returns the `promiEvent`, but it is wrapped in an object to prevent it from resolving internally in Assist.
+
+```javascript
+const { promiEvent } = await decoratedContract.myMethod(param).send(txOptions)
+
+promiEvent.on('receipt', () => {
+  // ...
+})
+```
+
 ## API Reference
 
 ### Config
