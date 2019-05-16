@@ -215,11 +215,12 @@ function sendTransaction(
           handleError({ resolve, reject, callback })(errorObj)
         })
     } else {
+      // resolve the promiEvent so that "on" methods can be used by dev
+      resolve({ txPromise })
+
       txPromise
         .on('transactionHash', async hash => {
           onTxHash(transactionId, hash, categoryCode)
-
-          resolve(hash)
           callback && callback(null, hash)
         })
         .on('receipt', async () => {
@@ -259,12 +260,13 @@ function onTxHash(id, hash, categoryCode) {
     const txObj = getTxObjFromQueue(id)
     if (!txObj) return
 
-    const { transaction: {status} } = txObj
+    const {
+      transaction: { status }
+    } = txObj
 
     if (
       state.socketConnection &&
-      (status === 'approved' ||
-        status === 'pending')
+      (status === 'approved' || status === 'pending')
     ) {
       updateTransactionInQueue(id, { status: 'stalled' })
 
