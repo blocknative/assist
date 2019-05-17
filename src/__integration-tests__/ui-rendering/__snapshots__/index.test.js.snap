@@ -798,7 +798,7 @@ exports[`dom-rendering event activePreflight-walletEnable should trigger correct
     <br>
     <br>
     <p class=\\"bn-onboard-button-section\\">
-      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I'M CONNECTED
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I’M CONNECTED
       </a>
     </p>
   
@@ -1909,7 +1909,7 @@ exports[`dom-rendering event onboard-walletEnable should trigger correct DOM ren
     <br>
     <br>
     <p class=\\"bn-onboard-button-section\\">
-      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I'M CONNECTED
+      <a href=\\"#\\" class=\\"bn-btn bn-btn-primary bn-btn-outline\\">CHECK THAT I’M CONNECTED
       </a>
     </p>
   
