@@ -81,10 +81,22 @@ export function openModal(modal, handlers = {}) {
     closeModal()
   }
 
+  if (state.mobileDevice) {
+    closeButton.ontouchstart = () => {
+      onClick && onClick()
+    }
+  }
+
   const completeStepButton = modal.querySelector('.bn-btn')
   if (completeStepButton) {
     completeStepButton.onclick = () => {
       onClick && onClick()
+    }
+
+    if (state.mobileDevice) {
+      completeStepButton.ontouchstart = () => {
+        onClick && onClick()
+      }
     }
   }
 
@@ -274,14 +286,24 @@ export function onboardMain(type, step) {
   const { images } = state.config
   const stepKey = stepToImageKey(step)
   const devImages = images && images[stepKey]
+  const onboardImages = {
+    src: (devImages && devImages.src) || (defaultImages && defaultImages.src),
+    srcset:
+      (devImages && devImages.srcset && devImages.srcset) ||
+      (defaultImages && defaultImages.srcset)
+  }
 
   return `
-    <img
+    ${
+      onboardImages.src
+        ? `<img
       src="${(devImages && devImages.src) || defaultImages.src}" 
       class="bn-onboard-img" 
       alt="Blocknative" 
       srcset="${(devImages && devImages.srcset && devImages.srcset) ||
-        defaultImages.srcset} 2x"/>
+        defaultImages.srcset} 2x"/>`
+        : ''
+    }
     <br>
     <h1 class="h4">${heading}</h1>
     <p>${description}</p>
