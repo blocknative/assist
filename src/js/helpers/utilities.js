@@ -133,6 +133,8 @@ export function eventCodeToStep(eventCode) {
       return 'mobileWallet'
     case 'mobileNetworkFail':
       return 'mobileNetwork'
+    case 'mobileWalletEnable':
+      return 'mobileWalletEnable'
     case 'welcomeUser':
       return 0
     case 'walletFail':

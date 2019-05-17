@@ -80,6 +80,7 @@ export const notSupported = {
 
 export const onboardHeading = {
   mobileNetwork: { advanced: 'Switch to the Correct Network' },
+  mobileWalletEnable: { advanced: 'Connect Wallet' },
   '0': { basic: 'Let’s Get You Started' },
   '1': { basic: 'Install MetaMask' },
   '2': {
@@ -110,6 +111,9 @@ export const onboardDescription = {
         'mainnet'} network for this application but you have MetaMask set to ${networkName(
         state.userCurrentNetworkId
       )}. Please switch to the correct network.`
+  },
+  mobileWalletEnable: {
+    advanced: () => 'Please allow connection to your wallet'
   },
   '0': {
     basic: () =>
@@ -164,6 +168,7 @@ export const onboardDescription = {
 export const onboardButton = {
   mobileWallet: { advanced: 'CHECK MY MOBILE WALLET' },
   mobileNetwork: { advanced: 'CHECK THAT I’M ON THE RIGHT NETWORK' },
+  mobileWalletEnable: { advanced: 'CHECK THAT I’M CONNECTED' },
   '0': { basic: 'I’M READY' },
   '1': {
     basic: 'CHECK THAT I HAVE METAMASK'
@@ -173,8 +178,8 @@ export const onboardButton = {
     advanced: 'CHECK THAT I’M LOGGED IN'
   },
   '3': {
-    basic: "CHECK THAT I'M CONNECTED",
-    advanced: "CHECK THAT I'M CONNECTED"
+    basic: 'CHECK THAT I’M CONNECTED',
+    advanced: 'CHECK THAT I’M CONNECTED'
   },
   '4': {
     basic: 'CHECK THAT I’M ON THE RIGHT NETWORK',

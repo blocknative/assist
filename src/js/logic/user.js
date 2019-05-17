@@ -350,7 +350,9 @@ function enableWallet(categoryCode, originalResolve) {
           // cancelling, so we show enable account UI
           handleEvent(
             {
-              eventCode: 'walletEnable',
+              eventCode: state.mobileDevice
+                ? 'mobileWalletEnable'
+                : 'walletEnable',
               categoryCode,
               wallet: {
                 provider: state.currentProvider
@@ -360,7 +362,9 @@ function enableWallet(categoryCode, originalResolve) {
               onClose: () =>
                 setTimeout(() => {
                   const errorObj = new Error('User needs to enable wallet')
-                  errorObj.eventCode = 'walletEnable'
+                  errorObj.eventCode = state.mobileDevice
+                    ? 'mobileWalletEnable'
+                    : 'walletEnable'
                   reject(errorObj)
                 }, timeouts.changeUI),
               onClick: async () => {
@@ -419,7 +423,7 @@ function enableWallet(categoryCode, originalResolve) {
       // Show UI to inform user to connect
       handleEvent(
         {
-          eventCode: 'walletEnable',
+          eventCode: state.mobileDevice ? 'mobileWalletEnable' : 'walletEnable',
           categoryCode,
           wallet: {
             provider: state.currentProvider
@@ -429,7 +433,9 @@ function enableWallet(categoryCode, originalResolve) {
           onClose: () =>
             setTimeout(() => {
               const errorObj = new Error('User needs to enable wallet')
-              errorObj.eventCode = 'walletEnable'
+              errorObj.eventCode = state.mobileDevice
+                ? 'mobileWalletEnable'
+                : 'walletEnable'
               reject(errorObj)
             }, timeouts.changeUI),
           onClick: async () => {
@@ -480,7 +486,7 @@ function enableWallet(categoryCode, originalResolve) {
       // Show UI to inform user to connect
       handleEvent(
         {
-          eventCode: 'walletEnable',
+          eventCode: state.mobileDevice ? 'mobileWalletEnable' : 'walletEnable',
           categoryCode,
           wallet: {
             provider: state.currentProvider
@@ -490,7 +496,9 @@ function enableWallet(categoryCode, originalResolve) {
           onClose: () =>
             setTimeout(() => {
               const errorObj = new Error('User needs to enable wallet')
-              errorObj.eventCode = 'walletEnable'
+              errorObj.eventCode = state.mobileDevice
+                ? 'mobileWalletEnable'
+                : 'walletEnable'
               reject(errorObj)
             }, timeouts.changeUI),
           onClick: async () => {
@@ -539,7 +547,9 @@ function unlockWallet(categoryCode, originalResolve) {
     // Show onboard login UI
     handleEvent(
       {
-        eventCode: 'walletLoginEnable',
+        eventCode: state.mobileDevice
+          ? 'mobileWalletEnable'
+          : 'walletLoginEnable',
         categoryCode,
         wallet: {
           provider: state.currentProvider
@@ -549,7 +559,9 @@ function unlockWallet(categoryCode, originalResolve) {
         onClose: () =>
           setTimeout(() => {
             const errorObj = new Error('User needs to login to wallet')
-            errorObj.eventCode = 'walletLoginEnable'
+            errorObj.eventCode = state.mobileDevice
+              ? 'mobileWalletEnable'
+              : 'walletLoginEnable'
             reject(errorObj)
           }, timeouts.changeUI),
         onClick: async () => {
