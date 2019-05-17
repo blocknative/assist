@@ -43,12 +43,12 @@ export const web3Functions = {
       case '0.2':
         return (contractMethod, parameters, txObject) =>
           state.config.truffleContract
-            ? contractMethod.estimateGas(...parameters, txObject)
+            ? contractMethod.estimateGas(...parameters)
             : promisify(contractMethod.estimateGas)(...parameters, txObject)
       case '1.0':
         return (contractMethod, parameters, txObject) =>
           state.config.truffleContract
-            ? contractMethod.estimateGas(...parameters, txObject)
+            ? contractMethod.estimateGas(...parameters)
             : contractMethod(...parameters).estimateGas(txObject)
       default:
         return () => Promise.reject(errorObj)
@@ -103,7 +103,11 @@ export function configureWeb3(web3) {
   let modernWeb3
   let web3Version
 
-  if (web3.version.api && typeof web3.version.api === 'string') {
+  if (
+    web3.version &&
+    web3.version.api &&
+    typeof web3.version.api === 'string'
+  ) {
     legacyWeb3 = true
     modernWeb3 = false
     web3Version = web3.version.api
@@ -127,7 +131,7 @@ export function configureWeb3(web3) {
 }
 
 export function checkForWallet() {
-  if (window.ethereum) {
+  if (window.ethereum && window.web3.version) {
     updateState({
       currentProvider: getCurrentProvider(),
       validBrowser: true,
@@ -135,7 +139,7 @@ export function checkForWallet() {
       legacyWallet: false,
       modernWallet: true
     })
-  } else if (window.web3) {
+  } else if (window.web3 && window.web3.version) {
     updateState({
       currentProvider: getCurrentProvider(),
       validBrowser: true,

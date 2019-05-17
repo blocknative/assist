@@ -15,8 +15,20 @@ export function handleEvent(eventObj, clickHandlers) {
     eventCode === 'txSpeedUp' ||
     eventCode === 'txCancel'
 
-  // If not a server event then log it
-  !serverEvent && lib.logEvent(eventObj)
+  let eventToLog = { ...eventObj }
+
+  // If dealing with a custom notification the logged event
+  // should have it's event and category code changed
+  if (categoryCode === 'userInitiatedNotify') {
+    eventToLog = {
+      ...eventToLog,
+      categoryCode: 'custom',
+      eventCode: 'notification'
+    }
+  }
+
+  // Log everything that isn't a server event
+  !serverEvent && lib.logEvent(eventToLog)
 
   // If tx status is 'completed', UI has been already handled
   if (eventCode === 'txConfirmed' || eventCode === 'txConfirmedClient') {

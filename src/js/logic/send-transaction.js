@@ -41,12 +41,16 @@ function sendTransaction(
     )
 
     // Check user is ready to make the transaction
-    const [sufficientBalance] = await Promise.all([
+    const [sufficientBalance, ready] = await Promise.all([
       hasSufficientBalance(transactionParams),
       prepareForTransaction('activePreflight').catch(
         handleError({ resolve, reject, callback })
       )
     ])
+
+    if (!ready) {
+      return
+    }
 
     // Make sure that we have from address in txOptions
     if (!txOptions.from) {
@@ -211,20 +215,21 @@ function sendTransaction(
           handleError({ resolve, reject, callback })(errorObj)
         })
     } else {
-      txPromise
-        .on('transactionHash', async hash => {
-          onTxHash(transactionId, hash, categoryCode)
-
-          resolve(hash)
-          callback && callback(null, hash)
-        })
-        .on('receipt', async () => {
-          onTxReceipt(transactionId, categoryCode)
-        })
-        .on('error', async errorObj => {
-          onTxError(transactionId, errorObj, categoryCode)
-          handleError({ resolve, reject, callback })(errorObj)
-        })
+      new Promise(confirmed => {
+        // resolve the promiEvent so that "on" methods can be used by dev
+        resolve({ txPromise })
+        txPromise
+          .on('transactionHash', async hash => {
+            onTxHash(transactionId, hash, categoryCode)
+            callback && callback(null, hash)
+          })
+          .on('receipt', confirmed)
+          .once('confirmation', confirmed)
+          .on('error', async errorObj => {
+            onTxError(transactionId, errorObj, categoryCode)
+            handleError({ resolve, reject, callback })(errorObj)
+          })
+      }).then(() => onTxReceipt(transactionId, categoryCode))
     }
   })
 }
@@ -253,11 +258,15 @@ function onTxHash(id, hash, categoryCode) {
   // Check if transaction is in txPool after timeout
   setTimeout(() => {
     const txObj = getTxObjFromQueue(id)
+    if (!txObj) return
+
+    const {
+      transaction: { status }
+    } = txObj
 
     if (
-      txObj &&
-      txObj.transaction.status !== 'pending' &&
-      state.socketConnection
+      state.socketConnection &&
+      (status === 'approved' || status === 'pending')
     ) {
       updateTransactionInQueue(id, { status: 'stalled' })
 

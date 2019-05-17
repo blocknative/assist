@@ -92,6 +92,11 @@ const eventToUI = {
     txFailed: notificationsUI,
     txSpeedUp: notificationsUI,
     txCancel: notificationsUI
+  },
+  userInitiatedNotify: {
+    success: notificationsUI,
+    pending: notificationsUI,
+    error: notificationsUI
   }
 }
 
@@ -173,7 +178,9 @@ function notificationsUI({
   transaction = {},
   contract = {},
   inlineCustomMsgs,
-  eventCode
+  eventCode,
+  categoryCode,
+  customTimeout
 }) {
   // treat txConfirmedClient as txConfirm
   if (eventCode === 'txConfirmedClient') eventCode = 'txConfirmed'
@@ -189,7 +196,8 @@ function notificationsUI({
     eventCode === 'txPending' ||
     eventCode === 'txSent' ||
     eventCode === 'txStall' ||
-    eventCode === 'txSpeedUp'
+    eventCode === 'txSpeedUp' ||
+    eventCode === 'pending'
 
   const showTime =
     hasTimer || eventCode === 'txConfirmed' || eventCode === 'txFailed'
@@ -312,14 +320,17 @@ function notificationsUI({
     })
   }
 
-  if (type === 'complete') {
+  const notificationShouldTimeout =
+    (type === 'complete' && categoryCode !== 'userInitiatedNotify') ||
+    customTimeout
+  if (notificationShouldTimeout) {
     setTimeout(() => {
       if (state.mobileDevice) {
         removeTouchHandlers(notification, 'notification')
       }
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
-    }, timeouts.autoRemoveNotification)
+    }, customTimeout || timeouts.autoRemoveNotification)
   }
 }
 

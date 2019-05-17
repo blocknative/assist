@@ -1,8 +1,9 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
 
-import { state, updateState } from './helpers/state'
+import { state, updateState, filteredState } from './helpers/state'
 import { handleEvent } from './helpers/events'
+import notify from './logic/user-initiated-notify'
 import {
   legacyCall,
   legacySend,
@@ -15,7 +16,7 @@ import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
 import { getOverloadedMethodKeys } from './helpers/utilities'
-import { createIframe } from './helpers/iframe'
+import { createIframe, updateStyle } from './helpers/iframe'
 import {
   getTransactionQueueFromStorage,
   storeTransactionQueue,
@@ -95,7 +96,9 @@ function init(config) {
     onboard,
     Contract,
     Transaction,
-    getState
+    getState,
+    updateStyle,
+    notify
   }
 
   getState().then(state => {
@@ -133,104 +136,89 @@ function init(config) {
   // ONBOARD FUNCTION //
 
   function onboard() {
-    if (state.config.headlessMode) {
+    const {
+      validApiKey,
+      supportedNetwork,
+      config: { headlessMode, mobileBlocked }
+    } = state
+
+    if (!validApiKey) {
+      const errorObj = new Error('Your api key is not valid')
+      errorObj.eventCode = 'initFail'
+      throw errorObj
+    }
+
+    if (!supportedNetwork) {
+      const errorObj = new Error('This network is not supported')
+      errorObj.eventCode = 'initFail'
+      throw errorObj
+    }
+
+    if (headlessMode) {
       return new Promise(async (resolve, reject) => {
         await checkUserEnvironment().catch(reject)
 
-        if (!state.validBrowser && !state.mobileDevice) {
-          const error = new Error('User has an invalid browser')
-          error.eventCode = 'browserFail'
-          reject(error)
+        const {
+          mobileDevice,
+          validBrowser,
+          web3Wallet,
+          accessToAccounts,
+          correctNetwork,
+          minimumBalance
+        } = state
+
+        if (
+          (mobileDevice && mobileBlocked) ||
+          (!validBrowser && !mobileDevice) ||
+          !web3Wallet ||
+          !accessToAccounts ||
+          !correctNetwork ||
+          !minimumBalance
+        ) {
+          reject(filteredState())
         }
 
-        if (!state.web3Wallet) {
-          const error = new Error('User does not have a web3 wallet installed')
-          error.eventCode = 'walletFail'
-          reject(error)
-        }
-
-        if (!state.accessToAccounts) {
-          if (state.legacyWallet) {
-            const error = new Error('User needs to login to their account')
-            error.eventCode = 'walletLogin'
-            reject(error)
-          }
-
-          if (state.modernWallet) {
-            if (!state.walletLoggedIn) {
-              const error = new Error('User needs to login to wallet')
-              error.eventCode = 'walletLoginEnable'
-              reject(error)
-            }
-
-            if (!state.walletEnabled) {
-              const error = new Error('User needs to enable wallet')
-              error.eventCode = 'walletEnable'
-              reject(error)
-            }
-          }
-        }
-
-        if (!state.correctNetwork) {
-          const error = new Error('User is on the wrong network')
-          error.eventCode = 'networkFail'
-          reject(error)
-        }
-
-        if (!state.minimumBalance) {
-          const error = new Error(
-            'User does not have the minimum balance specified in the config'
-          )
-          error.eventCode = 'nsfFail'
-          reject(error)
-        }
-
-        resolve('User is ready to transact')
+        resolve(filteredState())
       })
-    }
-
-    if (!state.validApiKey) {
-      const errorObj = new Error('Your api key is not valid')
-      errorObj.eventCode = 'initFail'
-      return Promise.reject(errorObj)
-    }
-
-    if (!state.supportedNetwork) {
-      const errorObj = new Error('This network is not supported')
-      errorObj.eventCode = 'initFail'
-      return Promise.reject(errorObj)
     }
 
     return new Promise(async (resolve, reject) => {
       storeItem('onboarding', 'true')
 
-      const ready = await prepareForTransaction('onboard').catch(error => {
+      await prepareForTransaction('onboard').catch(() => {
         removeItem('onboarding')
-        reject(error)
+        reject(filteredState())
       })
 
       removeItem('onboarding')
-      resolve(ready)
+      resolve(filteredState())
     })
   }
 
   // CONTRACT FUNCTION //
 
   function Contract(contractObj) {
-    if (!state.validApiKey) {
+    const {
+      validApiKey,
+      supportedNetwork,
+      web3Instance,
+      config: { truffleContract }
+    } = state
+
+    if (!validApiKey) {
       const errorObj = new Error('Your API key is not valid')
       errorObj.eventCode = 'initFail'
       throw errorObj
     }
 
-    if (!state.supportedNetwork) {
+    if (!supportedNetwork) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
       throw errorObj
     }
 
     // Check if we have an instance of web3
-    if (!state.web3Instance) {
+    if (!web3Instance) {
       if (window.web3) {
         configureWeb3()
       } else {
@@ -242,14 +230,13 @@ function init(config) {
       }
     }
 
-    const { legacyWeb3 } = state
-
     const abi =
       contractObj.abi ||
       contractObj._jsonInterface ||
-      Object.keys(contractObj.abiModel.abi.methods).map(
-        key => contractObj.abiModel.abi.methods[key].abiItem
-      )
+      Object.keys(contractObj.abiModel.abi.methods)
+        // remove any arrays from the ABI, they contain redundant information
+        .filter(key => !Array.isArray(contractObj.abiModel.abi.methods[key]))
+        .map(key => contractObj.abiModel.abi.methods[key].abiItem)
 
     const contractClone = Object.create(Object.getPrototypeOf(contractObj))
     const contractKeys = Object.keys(contractObj)
@@ -257,7 +244,7 @@ function init(config) {
     const seenMethods = []
 
     const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
-      if (legacyWeb3 || state.config.truffleContract) {
+      if (state.legacyWeb3 || truffleContract) {
         // if we have seen this key, then we have already dealt with it
         if (seenMethods.includes(key)) {
           return newContractObj
@@ -331,46 +318,44 @@ function init(config) {
           }
         }
 
-        const methodsKeys = Object.keys(contractObj[key])
-
-        newContractObj.methods = abi.reduce((obj, methodAbi) => {
-          const { name, type, constant } = methodAbi
+        // go through all the methods in the contract ABI and derive
+        // the 'methods' key of the delegated contract from them
+        newContractObj.methods = abi.reduce((methodsObj, methodAbi) => {
+          const { name, type, constant, inputs } = methodAbi
 
           // if not function, do nothing with it
           if (type !== 'function') {
-            return obj
+            return methodsObj
           }
 
-          // if we have seen this key, then we have already dealt with it
-          if (seenMethods.includes(name)) {
-            return obj
+          // every method can called like contract.methods[methodName](...args).
+          // add a methodName key to methodsObj allowing it to be called that way.
+          // it only needs to be assigned once
+          if (!seenMethods.includes(name)) {
+            const method = contractObj.methods[name]
+            methodsObj[name] = (...args) =>
+              constant
+                ? modernCall(method, name, args)
+                : modernSend(method, name, args)
+            seenMethods.push(name)
           }
 
-          seenMethods.push(name)
+          // add a key to methods allowing the current method to be called
+          // like contract.methods[`${methodName}(${...args})`](...args)
+          let overloadedMethodKey
+          if (inputs.length > 0) {
+            overloadedMethodKey = `${name}(${getOverloadedMethodKeys(inputs)})`
+          } else {
+            overloadedMethodKey = `${name}()`
+          }
 
-          const method = contractObj.methods[name]
-
-          const overloadedMethodKeys = methodsKeys.filter(
-            methodKey => methodKey.split('(')[0] === name && methodKey !== name
-          )
-
-          obj[name] = (...args) =>
+          const overloadedMethod = contractObj.methods[overloadedMethodKey]
+          methodsObj[overloadedMethodKey] = (...args) =>
             constant
-              ? modernCall(method, name, args)
-              : modernSend(method, name, args)
+              ? modernCall(overloadedMethod, name, args)
+              : modernSend(overloadedMethod, name, args)
 
-          if (overloadedMethodKeys.length > 0) {
-            overloadedMethodKeys.forEach(key => {
-              const method = contractObj.methods[key]
-
-              obj[key] = (...args) =>
-                constant
-                  ? modernCall(method, name, args)
-                  : modernSend(method, name, args)
-            })
-          }
-
-          return obj
+          return methodsObj
         }, {})
       }
 
@@ -426,35 +411,7 @@ function init(config) {
 function getState() {
   return new Promise(async resolve => {
     await checkUserEnvironment()
-    const {
-      mobileDevice,
-      validBrowser,
-      currentProvider,
-      web3Wallet,
-      accessToAccounts,
-      walletLoggedIn,
-      walletEnabled,
-      accountAddress,
-      accountBalance,
-      minimumBalance,
-      userCurrentNetworkId,
-      correctNetwork
-    } = state
-
-    resolve({
-      mobileDevice,
-      validBrowser,
-      currentProvider,
-      web3Wallet,
-      accessToAccounts,
-      walletLoggedIn,
-      walletEnabled,
-      accountAddress,
-      accountBalance,
-      minimumBalance,
-      userCurrentNetworkId,
-      correctNetwork
-    })
+    resolve(filteredState())
   })
 }
 

@@ -2,6 +2,7 @@ import { promisify } from 'bluebird'
 import { state } from '~/js/helpers/state'
 import { handleEvent } from '~/js/helpers/events'
 import { separateArgs, handleError } from '~/js/helpers/utilities'
+import { checkNetwork, getCorrectNetwork } from '~/js/logic/user'
 
 import sendTransaction from './send-transaction'
 
@@ -12,8 +13,12 @@ export function modernCall(method, name, args) {
   returnObject.call = (...innerArgs) =>
     new Promise(async (resolve, reject) => {
       const { callback, txObject } = separateArgs(innerArgs, 0)
+      const {
+        mobileDevice,
+        config: { mobileBlocked, headlessMode }
+      } = state
 
-      if (state.mobileDevice && state.config.mobileBlocked) {
+      if (mobileDevice && mobileBlocked) {
         handleEvent(
           {
             eventCode: 'mobileBlocked',
@@ -28,6 +33,21 @@ export function modernCall(method, name, args) {
             }
           }
         )
+      }
+
+      const correctNetwork = await checkNetwork()
+
+      if (!correctNetwork) {
+        if (!headlessMode) {
+          const result = await getCorrectNetwork('onboard').catch(
+            handleError({ resolve, reject, callback })
+          )
+          if (!result) return
+        } else {
+          const errorObj = new Error('User is on the wrong network')
+          errorObj.eventCode = 'networkFail'
+          return handleError({ resolve, reject, callback })(errorObj)
+        }
       }
 
       const result = await innerMethod(txObject).catch(errorObj => {
@@ -65,8 +85,13 @@ export function modernCall(method, name, args) {
 }
 
 export function modernSend(method, name, args) {
-  const innerMethod = method(...args).send
-  const returnObject = {}
+  const originalReturnObject = method(...args)
+  const innerMethod = originalReturnObject.send
+
+  const returnObject = Object.keys(originalReturnObject).reduce((obj, key) => {
+    obj[key] = originalReturnObject[key]
+    return obj
+  }, {})
 
   returnObject.send = (...innerArgs) => {
     const { callback, txObject, inlineCustomMsgs } = separateArgs(innerArgs, 0)
@@ -87,12 +112,16 @@ export function modernSend(method, name, args) {
 
 export function legacyCall(method, name, allArgs, argsLength) {
   return new Promise(async (resolve, reject) => {
+    const {
+      mobileDevice,
+      config: { mobileBlocked, headlessMode, truffleContract }
+    } = state
     const { callback, args, txObject, defaultBlock } = separateArgs(
       allArgs,
       argsLength
     )
 
-    if (state.mobileDevice && state.config.mobileBlocked) {
+    if (mobileDevice && mobileBlocked) {
       handleEvent(
         {
           eventCode: 'mobileBlocked',
@@ -110,8 +139,23 @@ export function legacyCall(method, name, allArgs, argsLength) {
       return resolve()
     }
 
+    const correctNetwork = await checkNetwork()
+
+    if (!correctNetwork) {
+      if (!headlessMode) {
+        const result = await getCorrectNetwork('onboard').catch(
+          handleError({ resolve, reject, callback })
+        )
+        if (!result) return
+      } else {
+        const errorObj = new Error('User is on the wrong network')
+        errorObj.eventCode = 'networkFail'
+        handleError({ resolve, reject, callback })(errorObj)
+      }
+    }
+
     // Only promisify method if it isn't a truffle contract
-    method = state.config.truffleContract ? method : promisify(method)
+    method = truffleContract ? method : promisify(method)
 
     const result = await method(...args, txObject, defaultBlock).catch(
       errorObj => {

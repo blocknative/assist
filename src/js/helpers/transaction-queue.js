@@ -31,23 +31,29 @@ export function getTxObjFromQueue(id) {
   return transactionQueue.find(txObj => txObj.transaction.id === id)
 }
 
-export function isDuplicateTransaction({ value, to }, contract = {}) {
+export function isDuplicateTransaction({ value, to }, contract) {
   const { transactionQueue } = state
+  let duplicate = transactionQueue.find(txObj => {
+    const sameMethod = contract
+      ? contract.methodName === txObj.contract.methodName
+      : true
+    const sameParams = contract
+      ? argsEqual(contract.parameters, txObj.contract.parameters)
+      : true
 
-  return Boolean(
-    transactionQueue.find(txObj => {
-      const { methodName, parameters } = contract
+    return (
+      sameMethod &&
+      sameParams &&
+      txObj.transaction.value === value &&
+      txObj.transaction.to === to
+    )
+  })
 
-      if (
-        methodName === (txObj.contract && txObj.contract.methodName) &&
-        argsEqual(parameters, txObj.contract && txObj.contract.parameters)
-      ) {
-        return txObj.transaction.value === value && txObj.transaction.to === to
-      }
+  if (duplicate && duplicate.transaction.status === 'confirmed') {
+    duplicate = false
+  }
 
-      return false
-    })
-  )
+  return Boolean(duplicate)
 }
 
 export function getTransactionsAwaitingApproval() {
