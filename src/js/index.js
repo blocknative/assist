@@ -141,7 +141,7 @@ function init(config) {
       mobileDevice,
       validApiKey,
       supportedNetwork,
-      config: { headlessMode }
+      config: { headlessMode, mobileBlocked }
     } = state
 
     if (!validApiKey) {
@@ -156,12 +156,33 @@ function init(config) {
       throw errorObj
     }
 
-    if (headlessMode) {
+    if (headlessMode || mobileDevice) {
+      // If user is on mobile and it is blocked, warn that it isn't supported
+      if (mobileBlocked) {
+        return new Promise((resolve, reject) => {
+          handleEvent(
+            { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
+            {
+              onClose: () => {
+                const errorObj = new Error('User is on a mobile device')
+                errorObj.eventCode = 'mobileBlocked'
+                reject(errorObj)
+              }
+            }
+          )
+
+          updateState({ validBrowser: false })
+        })
+      }
+
       return new Promise(async (resolve, reject) => {
-        await checkUserEnvironment().catch(reject)
+        if (mobileDevice && window.ethereum) {
+          await window.ethereum.enable().catch()
+        }
+
+        await checkUserEnvironment().catch()
 
         const {
-          mobileDevice,
           validBrowser,
           web3Wallet,
           accessToAccounts,
@@ -181,24 +202,6 @@ function init(config) {
         }
 
         resolve(filteredState())
-      })
-    }
-
-    // If user is on mobile, warn that it isn't supported
-    if (mobileDevice) {
-      return new Promise((resolve, reject) => {
-        handleEvent(
-          { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
-          {
-            onClose: () => {
-              const errorObj = new Error('User is on a mobile device')
-              errorObj.eventCode = 'mobileBlocked'
-              reject(errorObj)
-            }
-          }
-        )
-
-        updateState({ validBrowser: false })
       })
     }
 
