@@ -131,7 +131,7 @@ export function configureWeb3(web3) {
 }
 
 export function checkForWallet() {
-  if (window.ethereum && window.web3.version) {
+  if (window.ethereum) {
     updateState({
       currentProvider: getCurrentProvider(),
       validBrowser: true,
