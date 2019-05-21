@@ -1,5 +1,6 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
+import assistStyles from '~/css/styles.css'
 
 import { state, updateState, filteredState } from './helpers/state'
 import { handleEvent } from './helpers/events'
@@ -76,7 +77,7 @@ function init(config) {
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
   if (!state.iframe && !headlessMode) {
-    createIframe(document, style)
+    createIframe(document, assistStyles, style)
   }
 
   // Check if on mobile and mobile is blocked
@@ -137,6 +138,7 @@ function init(config) {
 
   function onboard() {
     const {
+      mobileDevice,
       validApiKey,
       supportedNetwork,
       config: { headlessMode, mobileBlocked }
@@ -154,25 +156,25 @@ function init(config) {
       throw errorObj
     }
 
-    if (headlessMode || mobileDevice) {
-      // If user is on mobile and it is blocked, warn that it isn't supported
-      if (mobileBlocked) {
-        return new Promise((resolve, reject) => {
-          handleEvent(
-            { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
-            {
-              onClose: () => {
-                const errorObj = new Error('User is on a mobile device')
-                errorObj.eventCode = 'mobileBlocked'
-                reject(errorObj)
-              }
+    // If user is on mobile and it is blocked, warn that it isn't supported
+    if (mobileDevice && mobileBlocked) {
+      return new Promise((resolve, reject) => {
+        handleEvent(
+          { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
+          {
+            onClose: () => {
+              const errorObj = new Error('User is on a mobile device')
+              errorObj.eventCode = 'mobileBlocked'
+              reject(errorObj)
             }
-          )
+          }
+        )
 
-          updateState({ validBrowser: false })
-        })
-      }
+        updateState({ validBrowser: false })
+      })
+    }
 
+    if (headlessMode) {
       return new Promise(async (resolve, reject) => {
         if (mobileDevice && window.ethereum) {
           await window.ethereum.enable().catch()
@@ -189,7 +191,6 @@ function init(config) {
         } = state
 
         if (
-          (mobileDevice && mobileBlocked) ||
           (!validBrowser && !mobileDevice) ||
           !web3Wallet ||
           !accessToAccounts ||
