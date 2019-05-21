@@ -1,6 +1,5 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
-import assistStyles from '~/css/styles.css'
 
 import { state, updateState, filteredState } from './helpers/state'
 import { handleEvent } from './helpers/events'
@@ -77,7 +76,7 @@ function init(config) {
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
   if (!state.iframe && !headlessMode) {
-    createIframe(document, assistStyles, style)
+    createIframe(document, style)
   }
 
   // Check if on mobile and mobile is blocked
@@ -408,11 +407,6 @@ function init(config) {
     if (!state.web3Instance) {
       configureWeb3()
     }
-
-    // // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
-    // if (state.mobileDevice && !state.config.mobileBlocked) {
-    //   return state.web3Instance.eth.sendTransaction(txObject, callback)
-    // }
 
     const sendMethod = state.legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
