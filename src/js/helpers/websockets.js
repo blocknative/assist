@@ -119,8 +119,10 @@ export function handleSocketMessage(msg) {
         })
         break
       case 'confirmed':
-        // handle race condition: https://github.com/blocknative/assist/issues/174
-        if (eventCode === 'txConfirmedClient') return
+        // have already dealt with txConfirmedClient event
+        if (eventCode === 'txConfirmedClient') {
+          return
+        }
 
         txObj = getTxObjFromQueue(transaction.id)
 

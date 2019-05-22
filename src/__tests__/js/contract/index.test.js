@@ -108,18 +108,6 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
               }).toThrowError('This network is not supported')
             })
           })
-          describe('when user is on mobile and mobile is not blocked', () => {
-            beforeEach(() => {
-              updateState({
-                mobileDevice: true,
-                config: { mobileBlocked: false }
-              })
-            })
-            test('it should return the contract unmodified', () => {
-              const decoratedContract = assistInstance.Contract(contract)
-              expect(decoratedContract).toEqual(contract)
-            })
-          })
           describe('when state.web3Instance is falsy', () => {
             beforeEach(() => {
               updateState({ web3Instance: undefined })

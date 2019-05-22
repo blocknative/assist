@@ -25,7 +25,9 @@ import {
   setNotificationsHeight,
   startTimerInterval,
   removeAllNotifications,
-  positionElement
+  positionElement,
+  addTouchHandlers,
+  removeTouchHandlers
 } from './dom'
 import { transactionMsgs } from './content'
 
@@ -38,10 +40,13 @@ const eventToUI = {
     mobileBlocked: notSupportedUI,
     welcomeUser: onboardingUI,
     walletFail: onboardingUI,
+    mobileWalletFail: notSupportedUI,
     walletLogin: onboardingUI,
+    mobileWalletEnable: onboardingUI,
     walletLoginEnable: onboardingUI,
     walletEnable: onboardingUI,
     networkFail: onboardingUI,
+    mobileNetworkFail: onboardingUI,
     nsfFail: onboardingUI,
     newOnboardComplete: onboardingUI
   },
@@ -49,10 +54,13 @@ const eventToUI = {
     mobileBlocked: notSupportedUI,
     welcomeUser: onboardingUI,
     walletFail: onboardingUI,
+    mobileWalletFail: notSupportedUI,
     walletLogin: onboardingUI,
+    mobileWalletEnable: onboardingUI,
     walletLoginEnable: onboardingUI,
     walletEnable: onboardingUI,
     networkFail: onboardingUI,
+    mobileNetworkFail: onboardingUI,
     nsfFail: notificationsUI,
     newOnboardComplete: onboardingUI,
     txRepeat: notificationsUI
@@ -128,6 +136,11 @@ function onboardingUI(eventObj, handlers) {
     'bn-onboard-modal-shade',
     onboardModal(type, eventCodeToStep(eventCode))
   )
+
+  if (state.mobileDevice) {
+    addTouchHandlers(modal.children[0], 'modal')
+  }
+
   openModal(modal, handlers)
 }
 
@@ -243,11 +256,22 @@ function notificationsUI({
     createElement(
       'li',
       `bn-notification bn-${type} bn-${eventCode} bn-${id} ${
-        position.includes('Left') ? 'bn-right-border' : ''
+        state.mobileDevice
+          ? position.includes('top')
+            ? 'bn-bottom-border'
+            : 'bn-top-border'
+          : position.includes('Left')
+          ? 'bn-right-border'
+          : ''
       }`,
       notificationContent(type, message, { startTime, showTime, timeStamp })
     )
   )
+
+  if (state.mobileDevice) {
+    notification.appendChild(createTransactionBranding())
+    addTouchHandlers(notification, 'notification')
+  }
 
   notificationsList.appendChild(notification)
 
@@ -255,11 +279,15 @@ function notificationsUI({
     notificationsScroll.appendChild(notificationsList)
 
     if (position.includes('top')) {
-      notificationsContainer.appendChild(blockNativeBrand)
+      if (!state.mobileDevice) {
+        notificationsContainer.appendChild(blockNativeBrand)
+      }
       notificationsContainer.appendChild(notificationsScroll)
     } else {
       notificationsContainer.appendChild(notificationsScroll)
-      notificationsContainer.appendChild(blockNativeBrand)
+      if (!state.mobileDevice) {
+        notificationsContainer.appendChild(blockNativeBrand)
+      }
     }
     state.iframeDocument.body.appendChild(notificationsContainer)
     showElement(notificationsContainer, timeouts.showElement)
@@ -283,11 +311,23 @@ function notificationsUI({
     setTimeout(setNotificationsHeight, timeouts.changeUI)
   }
 
+  if (state.mobileDevice) {
+    dismissButton.addEventListener('touchstart', () => {
+      intervalId && clearInterval(intervalId)
+      removeTouchHandlers(notification, 'notification')
+      removeNotification(notification)
+      setTimeout(setNotificationsHeight, timeouts.changeUI)
+    })
+  }
+
   const notificationShouldTimeout =
     (type === 'complete' && categoryCode !== 'userInitiatedNotify') ||
     customTimeout
   if (notificationShouldTimeout) {
     setTimeout(() => {
+      if (state.mobileDevice) {
+        removeTouchHandlers(notification, 'notification')
+      }
       removeNotification(notification)
       setTimeout(setNotificationsHeight, timeouts.changeUI)
     }, customTimeout || timeouts.autoRemoveNotification)

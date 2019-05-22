@@ -46,6 +46,18 @@ import chromeLogo2x from '../../../lib/images/maxXVIH.png'
 import firefoxLogo from '../../../lib/images/WjOSJTh.png'
 import firefoxLogo2x from '../../../lib/images/kodZvyO.png'
 
+import mobileWalletLight from '../../../lib/images/mobile-wallet-required-white.png'
+import mobileWalletLight2x from '../../../lib/images/mobile-wallet-required-white@2x.png'
+
+import mobileWallet from '../../../lib/images/mobile-wallet-required.png'
+import mobileWallet2x from '../../../lib/images/mobile-wallet-required@2x.png'
+
+import trustLogo from '../../../lib/images/trust.png'
+import trustLogo2x from '../../../lib/images/trust@2x.png'
+
+import coinbaseLogo from '../../../lib/images/coinbase.png'
+import coinbaseLogo2x from '../../../lib/images/coinbase@2x.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -58,10 +70,17 @@ export const notSupported = {
       `This Dapp is not supported in ${
         state.userAgent.browser.name
       }. Please visit us in one of the following browsers. Thank You!`
+  },
+  mobileWalletNotSupported: {
+    heading: 'Install A Mobile Dapp Wallet',
+    description: () =>
+      'A mobile ethereum wallet is needed to use this dapp. We recommend Trust or Coinbase wallet.'
   }
 }
 
 export const onboardHeading = {
+  mobileNetwork: { advanced: 'Switch to the Correct Network' },
+  mobileWalletEnable: { advanced: 'Connect Wallet' },
   '0': { basic: 'Let’s Get You Started' },
   '1': { basic: 'Install MetaMask' },
   '2': {
@@ -84,6 +103,18 @@ export const onboardHeading = {
 }
 
 export const onboardDescription = {
+  mobileNetwork: {
+    advanced: () =>
+      `We’ve detected that you need to be on the ${networkName(
+        state.config.networkId
+      ) ||
+        'mainnet'} network for this application but you have MetaMask set to ${networkName(
+        state.userCurrentNetworkId
+      )}. Please switch to the correct network.`
+  },
+  mobileWalletEnable: {
+    advanced: () => 'Please allow connection to your wallet'
+  },
   '0': {
     basic: () =>
       'To use this feature you’ll need to be set up and ready to use the blockchain. This onboarding guide will walk you through each step of the process. It won’t take long and at any time you can come back and pick up where you left off.'
@@ -135,6 +166,9 @@ export const onboardDescription = {
 }
 
 export const onboardButton = {
+  mobileWallet: { advanced: 'CHECK MY MOBILE WALLET' },
+  mobileNetwork: { advanced: 'CHECK MY NETWORK' },
+  mobileWalletEnable: { advanced: 'CHECK THAT I’M CONNECTED' },
   '0': { basic: 'I’M READY' },
   '1': {
     basic: 'CHECK THAT I HAVE METAMASK'
@@ -144,8 +178,8 @@ export const onboardButton = {
     advanced: 'CHECK THAT I’M LOGGED IN'
   },
   '3': {
-    basic: "CHECK THAT I'M CONNECTED",
-    advanced: "CHECK THAT I'M CONNECTED"
+    basic: 'CHECK THAT I’M CONNECTED',
+    advanced: 'CHECK THAT I’M CONNECTED'
   },
   '4': {
     basic: 'CHECK THAT I’M ON THE RIGHT NETWORK',
@@ -212,6 +246,26 @@ export const imageSrc = {
   firefoxLogo: {
     src: firefoxLogo,
     srcset: firefoxLogo2x
+  },
+  trustLogo: {
+    src: trustLogo,
+    srcset: trustLogo2x
+  },
+  coinbaseLogo: {
+    src: coinbaseLogo,
+    srcset: coinbaseLogo2x
+  },
+  mobileWallet: {
+    src: mobileWallet,
+    srcset: mobileWallet2x
+  },
+  mobileWalletLight: {
+    src: mobileWalletLight,
+    srcset: mobileWalletLight2x
+  },
+  mobileNetwork: {
+    src: network,
+    srcset: network2x
   },
   '0': {
     src: welcome,

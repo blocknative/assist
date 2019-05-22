@@ -218,7 +218,11 @@ export function getTransactionParams(
   })
 }
 
-export function hasSufficientBalance({ value = 0, gas = 0, gasPrice = 0 }) {
+export async function hasSufficientBalance({
+  value = 0,
+  gas = 0,
+  gasPrice = 0
+}) {
   return new Promise(async resolve => {
     const version = state.web3Version && state.web3Version.slice(0, 3)
 
@@ -263,11 +267,9 @@ export function getAccounts() {
 }
 
 export function checkUnlocked() {
-  return (
-    window.ethereum &&
-    window.ethereum._metamask &&
-    window.ethereum._metamask.isUnlocked()
-  )
+  return window.ethereum._metamask && window.ethereum._metamask.isUnlocked
+    ? window.ethereum._metamask.isUnlocked()
+    : Promise.resolve(true)
 }
 
 export function requestLoginEnable() {

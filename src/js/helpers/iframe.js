@@ -1,5 +1,7 @@
 import { positionElement, updateNotificationsPosition } from '~/js/views/dom'
 import darkModeStyles from '~/css/dark-mode.css'
+import assistStyles from '~/css/styles.css'
+import mediaQueries from '~/css/media-queries.css'
 
 import { updateState, state } from './state'
 
@@ -52,12 +54,15 @@ export function updateStyle({ darkMode, css, notificationsPosition }) {
   }
 }
 
-export function createIframe(browserDocument, assistStyles, style = {}) {
+export function createIframe(browserDocument, style = {}) {
   const initialIframeContent = `
     <html>
       <head>
         <style>
           ${assistStyles}
+        </style>
+        <style>
+          ${mediaQueries}
         </style>
         <style id="dark-mode-style"></style>
         <style id="custom-css-style"></style>
@@ -94,7 +99,7 @@ export function hideIframe() {
   state.iframe.style.pointerEvents = 'none'
 }
 
-export function resizeIframe({ height, width, transitionHeight }) {
+export async function resizeIframe({ height, width, transitionHeight }) {
   if (transitionHeight) {
     state.iframe.style.transition = 'height 200ms ease-in-out'
   } else {
