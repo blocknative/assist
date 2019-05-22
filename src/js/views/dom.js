@@ -135,6 +135,7 @@ export function closeModal() {
     })
   } else {
     hideIframe()
+    resizeIframe({ height: 0, width: 0 })
   }
 
   setTimeout(() => {
