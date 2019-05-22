@@ -23,12 +23,21 @@ export function capitalize(str) {
 }
 
 export function formatNumber(num) {
+  // if already bignumber instance return it
+  if (typeof num === 'object') return num
   const numString = String(num)
   if (numString.includes('+')) {
-    const exponent = numString.split('+')[1]
-    const precision = Number(exponent) + 1
+    let exponent = Number(numString.split('+')[1])
+    // non firefox limits precision to 21
+    if (exponent >= 21) {
+      exponent = 20
+      num = 1e20
+    }
+    const precision = exponent + 1
+
     return num.toPrecision(precision)
   }
+
   return num
 }
 
@@ -132,6 +141,12 @@ export function eventCodeToStep(eventCode) {
       return 'mobile'
     case 'browserFail':
       return 'browser'
+    case 'mobileWalletFail':
+      return 'mobileWallet'
+    case 'mobileNetworkFail':
+      return 'mobileNetwork'
+    case 'mobileWalletEnable':
+      return 'mobileWalletEnable'
     case 'welcomeUser':
       return 0
     case 'walletFail':
@@ -182,7 +197,9 @@ export const timeouts = {
   hideElement: 200,
   showElement: 120,
   autoRemoveNotification: 4000,
-  pollForReceipt: 1000
+  pollForReceipt: 1000,
+  swipeTime: 250,
+  lockScreen: 500
 }
 
 export function stepToImageKey(step) {

@@ -1,6 +1,6 @@
 {
   "name": "bnc-assist",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
@@ -19,10 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/blocknative/assist.git"
   },
-  "keywords": [
-    "dapp",
-    "ethereum"
-  ],
+  "keywords": ["dapp", "ethereum"],
   "author": "Block Native",
   "license": "MIT",
   "bugs": {
@@ -79,7 +76,5 @@
     "truffle-contract": "^4.0.15",
     "web3": "^1.0.0-beta.37"
   },
-  "eslintIgnore": [
-    "package.json"
-  ]
+  "eslintIgnore": ["package.json"]
 }

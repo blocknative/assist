@@ -1,6 +1,5 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
-import assistStyles from '~/css/styles.css'
 
 import { state, updateState, filteredState } from './helpers/state'
 import { handleEvent } from './helpers/events'
@@ -77,7 +76,7 @@ function init(config) {
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
   if (!state.iframe && !headlessMode) {
-    createIframe(document, assistStyles, style)
+    createIframe(document, style)
   }
 
   // Check if on mobile and mobile is blocked
@@ -156,25 +155,25 @@ function init(config) {
       throw errorObj
     }
 
-    if (headlessMode || mobileDevice) {
-      // If user is on mobile and it is blocked, warn that it isn't supported
-      if (mobileBlocked) {
-        return new Promise((resolve, reject) => {
-          handleEvent(
-            { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
-            {
-              onClose: () => {
-                const errorObj = new Error('User is on a mobile device')
-                errorObj.eventCode = 'mobileBlocked'
-                reject(errorObj)
-              }
+    // If user is on mobile and it is blocked, warn that it isn't supported
+    if (mobileDevice && mobileBlocked) {
+      return new Promise((resolve, reject) => {
+        handleEvent(
+          { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
+          {
+            onClose: () => {
+              const errorObj = new Error('User is on a mobile device')
+              errorObj.eventCode = 'mobileBlocked'
+              reject(errorObj)
             }
-          )
+          }
+        )
 
-          updateState({ validBrowser: false })
-        })
-      }
+        updateState({ validBrowser: false })
+      })
+    }
 
+    if (headlessMode) {
       return new Promise(async (resolve, reject) => {
         if (mobileDevice && window.ethereum) {
           await window.ethereum.enable().catch()
@@ -191,8 +190,7 @@ function init(config) {
         } = state
 
         if (
-          mobileDevice ||
-          !validBrowser ||
+          (!validBrowser && !mobileDevice) ||
           !web3Wallet ||
           !accessToAccounts ||
           !correctNetwork ||
@@ -224,9 +222,8 @@ function init(config) {
     const {
       validApiKey,
       supportedNetwork,
-      mobileDevice,
       web3Instance,
-      config: { mobileBlocked, truffleContract }
+      config: { truffleContract }
     } = state
 
     if (!validApiKey) {
@@ -239,11 +236,6 @@ function init(config) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
       throw errorObj
-    }
-
-    // if user is on mobile, and mobile is allowed by Dapp then just pass the contract back
-    if (mobileDevice && !mobileBlocked) {
-      return contractObj
     }
 
     // Check if we have an instance of web3
@@ -414,11 +406,6 @@ function init(config) {
     // Check if we have an instance of web3
     if (!state.web3Instance) {
       configureWeb3()
-    }
-
-    // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
-    if (state.mobileDevice && !state.config.mobileBlocked) {
-      return state.web3Instance.eth.sendTransaction(txObject, callback)
     }
 
     const sendMethod = state.legacyWeb3
