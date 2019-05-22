@@ -167,7 +167,7 @@ export const onboardDescription = {
 
 export const onboardButton = {
   mobileWallet: { advanced: 'CHECK MY MOBILE WALLET' },
-  mobileNetwork: { advanced: 'CHECK THAT I’M ON THE RIGHT NETWORK' },
+  mobileNetwork: { advanced: 'CHECK MY NETWORK' },
   mobileWalletEnable: { advanced: 'CHECK THAT I’M CONNECTED' },
   '0': { basic: 'I’M READY' },
   '1': {
