@@ -2,7 +2,7 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports `web3.js` versions 0.20 and 1.0, `ethers.js` versions 4.0.
+setup. Supports `web3.js` versions 0.20 and 1.0.
 
 _note: `web3.js` 1.0.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
@@ -114,7 +114,6 @@ Decorating your contracts is simple:
 
 ```javascript
 var myContract = new web3.eth.Contract(abi, address)
-// Assist can decorate ethers instantiated contracts as well
 var myDecoratedContract = assistInstance.Contract(myContract)
 
 // and then replace `myContract` with `myDecoratedContract`
@@ -154,7 +153,6 @@ var config = {
   networkId: Number, // The network id of the Ethereum network your dapp is working with (REQUIRED)
   dappId: String, // The API key supplied to you by Blocknative (REQUIRED)
   web3: Object, // The instantiated version of web3 that the dapp is using
-  ethers: Object, // Pass in ethers if using instead of web3
   mobileBlocked: Boolean, // Defines if the dapp works on mobile [false]
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the dapp [0]
   headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
