@@ -64,7 +64,7 @@ is as follows:
 var bncAssistConfig = {
   dappId: apiKey,       // [String] The API key created on https://account.blocknative.com
 
-  networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployd on.
+  networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployed on.
                         //           See below for instructions on how to setup for local blockchains.
 };
 
@@ -84,7 +84,7 @@ assistInstance.onboard()
   .then(function(state) {
     // User has been successfully onboarded and is ready to transact
     // Will resolve with the current state of the user
-    // This means we can be sure of the follwing user properties:
+    // This means we can be sure of the following user properties:
     //  - They are using a compatible browser
     //  - They have a web3-enabled wallet installed
     //  - The wallet is connected to the config-specified networkId
@@ -141,6 +141,27 @@ promiEvent.on('receipt', () => {
   // ...
 })
 ```
+
+### Initializing `web3` and including it in the `config`
+
+`web3` isn't a required parameter as you might not have access to a web3 provider to instantiate web3 with until after the user has been onboarded and has a wallet installed. A typical pattern for instantiating `web3` before initializing Assist:
+
+```javascript
+let web3Instance
+
+if (window.ethereum) {
+  web3Instance = new Web3(window.ethereum)
+} 
+
+if (window.web3) {
+  web3Instance = new Web3(window.web3.currentProvider)
+}
+```
+
+
+
+
+It is recommended that you include it in the config to avoid some issues that can occur. when a user does not have a web3 wallet installed, you might not yet have and intialized instance to pass in. Assist will grab `web3` from the window object if it isn't passed in. However this can cause issues. `web3` isn't always 
 
 ## API Reference
 
