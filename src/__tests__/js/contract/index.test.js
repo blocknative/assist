@@ -66,6 +66,16 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
             })
             const decoratedContract = assistInstance.Contract(contract)
 
+            // check that methods on truffle and 0.20 the object retain their keys
+            if (name === 'truffle' || version.includes('0.20')) {
+              const methodName = name === 'truffle' ? 'subtract' : 'setOwner'
+              const originalKeys = new Set(Object.keys(contract[methodName]))
+              const decoratedKeys = new Set(
+                Object.keys(decoratedContract[methodName])
+              )
+              expect(originalKeys).toEqual(decoratedKeys)
+            }
+
             if (decoratedContract.methods) {
               // test web3js v1.0.0-beta.X
               expect({

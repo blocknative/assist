@@ -301,7 +301,12 @@ function init(config) {
         newContractObj[name].sendTransaction = (...args) =>
           legacySend(method, name, args, argsLength)
 
-        newContractObj[name].getData = contractObj[name].getData
+        // Add any additional properties onto the method function
+        Object.entries(contractObj[name]).forEach(([k, v]) => {
+          if (!newContractObj[name][k]) {
+            newContractObj[name][k] = v
+          }
+        })
 
         if (overloadedMethodKeys) {
           overloadedMethodKeys.forEach(key => {
@@ -323,7 +328,12 @@ function init(config) {
             newContractObj[name][key].sendTransaction = (...args) =>
               legacySend(method, name, args, argsLength)
 
-            newContractObj[name][key].getData = contractObj[name][key].getData
+            // Add any additional properties onto the method function
+            Object.entries(contractObj[name]).forEach(([k, v]) => {
+              if (!newContractObj[name][k]) {
+                newContractObj[name][k] = v
+              }
+            })
           })
         }
       } else {
