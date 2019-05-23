@@ -158,7 +158,8 @@ export function openModal(modal, handlers = {}) {
 
   if (state.mobileDevice) {
     closeButton.ontouchstart = () => {
-      onClick && onClick()
+      onClose && onClose()
+      closeModal()
     }
   }
 
