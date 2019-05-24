@@ -35,11 +35,14 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       let web3
       let contract
       let mockServer
-      const config = { dappId: '123' }
-      const fakeURL = 'ws://localhost:8080'
+      let config
       beforeEach(() => {
-        mockServer = new Server(fakeURL)
-        web3 = new Web3(fakeURL)
+        mockServer = new Server('ws://localhost:8080')
+        const provider = version.includes('0.20')
+          ? new Web3.providers.HttpProvider(`http://localhost:${port}`)
+          : `ws://localhost${port}`
+        web3 = new Web3(provider)
+        config = { dappId: '123', web3, networkId: '1' }
         assistInstance = da.init(config)
       })
       afterEach(() => {
@@ -58,22 +61,25 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
           afterEach(() => {
             if (name === 'truffle') state.config.truffleContract = false
           })
-          test(`it doesn't fail and returns the expected decorated contract`, () => {
-            const assistInstance = da.init({
-              dappId: '123',
-              web3,
-              networkId: '1'
-            })
+          test.only(`it doesn't fail and returns the expected decorated contract`, () => {
             const decoratedContract = assistInstance.Contract(contract)
 
-            // check that methods on truffle and 0.20 the object retain their keys
+            // check that methods on truffle and web3v0.20 contracts retain their properties
             if (name === 'truffle' || version.includes('0.20')) {
               const methodName = name === 'truffle' ? 'subtract' : 'setOwner'
-              const originalKeys = new Set(Object.keys(contract[methodName]))
-              const decoratedKeys = new Set(
-                Object.keys(decoratedContract[methodName])
+              const originalKeys = Object.keys(contract[methodName])
+              const decoratedKeys = Object.keys(decoratedContract[methodName])
+              expect(new Set(originalKeys)).toEqual(new Set(decoratedKeys))
+            }
+
+            // check that methods on non-truffle web3v1 contracts retain their properties
+            if (version.includes('1.0') && name !== 'truffle') {
+              const methodName = 'setOwner'
+              const originalKeys = Object.keys(contract.methods[methodName])
+              const decoratedKeys = Object.keys(
+                decoratedContract.methods[methodName]
               )
-              expect(originalKeys).toEqual(decoratedKeys)
+              expect(new Set(originalKeys)).toEqual(new Set(decoratedKeys))
             }
 
             if (decoratedContract.methods) {
