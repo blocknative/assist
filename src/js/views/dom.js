@@ -135,6 +135,7 @@ export function closeModal() {
     })
   } else {
     hideIframe()
+    resizeIframe({ height: 0, width: 0 })
   }
 
   setTimeout(() => {
@@ -157,7 +158,8 @@ export function openModal(modal, handlers = {}) {
 
   if (state.mobileDevice) {
     closeButton.ontouchstart = () => {
-      onClick && onClick()
+      onClose && onClose()
+      closeModal()
     }
   }
 
@@ -703,8 +705,8 @@ export function handleTouchStart(element) {
     e.stopPropagation()
     e.preventDefault()
     const touch = e.changedTouches[0]
-    element.attributes['data-startY'] = touch.pageY
-    element.attributes['data-startX'] = touch.pageX
+    element.attributes['data-startY'] = touch.screenY
+    element.attributes['data-startX'] = touch.screenX
     element.attributes['data-startTime'] = Date.now()
     element.attributes['data-translateY'] = 0
   }
@@ -717,7 +719,7 @@ export function handleTouchMove(element) {
     const touch = e.changedTouches[0]
     const startY = element.attributes['data-startY']
     const translateY = element.attributes['data-translateY']
-    const distanceY = touch.pageY - startY
+    const distanceY = touch.screenY - startY
 
     const newTranslateY = distanceY + translateY
 
@@ -736,8 +738,8 @@ export function handleTouchEnd(element, type) {
     const startY = element.attributes['data-startY']
     const startX = element.attributes['data-startX']
     const startTime = element.attributes['data-startTime']
-    const distanceY = touch.pageY - startY
-    const distanceX = touch.pageX - startX
+    const distanceY = touch.screenY - startY
+    const distanceX = touch.screenX - startX
     const elapsedTime = Date.now() - startTime
     const validDistance =
       distanceY <= -40 || distanceY >= 40 || distanceX <= -40 || distanceX >= 40
