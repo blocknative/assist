@@ -61,25 +61,52 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
           afterEach(() => {
             if (name === 'truffle') state.config.truffleContract = false
           })
-          test.only(`it doesn't fail and returns the expected decorated contract`, () => {
+          test(`it doesn't fail and returns the expected decorated contract`, () => {
             const decoratedContract = assistInstance.Contract(contract)
 
-            // check that methods on truffle and web3v0.20 contracts retain their properties
-            if (name === 'truffle' || version.includes('0.20')) {
-              const methodName = name === 'truffle' ? 'subtract' : 'setOwner'
+            // check that methods on truffle contracts retain their properties
+            if (name === 'truffle') {
+              const methodName = 'subtract'
               const originalKeys = Object.keys(contract[methodName])
               const decoratedKeys = Object.keys(decoratedContract[methodName])
-              expect(new Set(originalKeys)).toEqual(new Set(decoratedKeys))
+              expect(new Set(decoratedKeys)).toEqual(new Set(originalKeys))
             }
 
-            // check that methods on non-truffle web3v1 contracts retain their properties
-            if (version.includes('1.0') && name !== 'truffle') {
+            // check that methods on web3 v0.20 contracts retain their properties
+            if (version.includes('0.20') && name !== 'truffle') {
               const methodName = 'setOwner'
-              const originalKeys = Object.keys(contract.methods[methodName])
-              const decoratedKeys = Object.keys(
-                decoratedContract.methods[methodName]
-              )
-              expect(new Set(originalKeys)).toEqual(new Set(decoratedKeys))
+              const originalKeys = Object.keys(contract[methodName])
+              const decoratedKeys = Object.keys(decoratedContract[methodName])
+              expect(new Set(decoratedKeys)).toEqual(new Set(originalKeys))
+
+              const overLoadedMethodName = 'approve'
+              const overLoadedMethodArgs = ['address', 'address,uint256']
+              overLoadedMethodArgs.forEach(args => {
+                const originalKeys = Object.keys(
+                  contract[overLoadedMethodName][args]
+                )
+                const decoratedKeys = Object.keys(
+                  decoratedContract[overLoadedMethodName][args]
+                )
+                expect(new Set(decoratedKeys)).toEqual(new Set(originalKeys))
+              })
+            }
+
+            // check that methods on web3 v1 contracts retain their properties
+            if (version.includes('1.0') && name !== 'truffle') {
+              const methodsToTest = [
+                'setOwner',
+                'start()',
+                'mint(uint256)',
+                'mint(address,uint256)'
+              ]
+              methodsToTest.forEach(methodName => {
+                const originalKeys = Object.keys(contract.methods[methodName])
+                const decoratedKeys = Object.keys(
+                  decoratedContract.methods[methodName]
+                )
+                expect(new Set(originalKeys)).toEqual(new Set(decoratedKeys))
+              })
             }
 
             if (decoratedContract.methods) {

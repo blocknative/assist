@@ -329,9 +329,9 @@ function init(config) {
               legacySend(method, name, args, argsLength)
 
             // Add any additional properties onto the method function
-            Object.entries(contractObj[name]).forEach(([k, v]) => {
-              if (!newContractObj[name][k]) {
-                newContractObj[name][k] = v
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(newContractObj[name][key]).includes(k)) {
+                newContractObj[name][key][k] = v
               }
             })
           })
@@ -368,6 +368,14 @@ function init(config) {
               constant
                 ? modernCall(method, name, args)
                 : modernSend(method, name, args)
+
+            // Add any additional properties onto the method function
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(methodsObj[name]).includes(k)) {
+                methodsObj[name][k] = v
+              }
+            })
+
             seenMethods.push(name)
           }
 
@@ -385,6 +393,13 @@ function init(config) {
             constant
               ? modernCall(overloadedMethod, name, args)
               : modernSend(overloadedMethod, name, args)
+
+          // Add any additional properties onto the method function
+          Object.entries(overloadedMethod).forEach(([k, v]) => {
+            if (!Object.keys(methodsObj[overloadedMethodKey]).includes(k)) {
+              methodsObj[overloadedMethodKey][k] = v
+            }
+          })
 
           return methodsObj
         }, {})
