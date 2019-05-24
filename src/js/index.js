@@ -303,7 +303,7 @@ function init(config) {
 
         // Add any additional properties onto the method function
         Object.entries(contractObj[name]).forEach(([k, v]) => {
-          if (!newContractObj[name][k]) {
+          if (!Object.keys(newContractObj[name]).includes(k)) {
             newContractObj[name][k] = v
           }
         })
