@@ -207,6 +207,7 @@ var config = {
     css: String // Custom css string to overide Assist default styles
   },
   truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
+  handleNotificationEvent: Function // Called on every tx notification event with a transaction event object
 }
 ```
 
@@ -264,6 +265,22 @@ myContract.vote(param1, param2).send(options, {messages: {txPending: () => `Voti
 ```
 
 The `messages` object _must_ always be the _last_ argument provided to the send method for it to be recognized.
+
+### Transaction Events
+
+By defining a function and including it in the config on the `handleNotificationEvent` property you can hook in to all of the transaction events within Assist. The function will be called with a transaction event object which has the following properties:
+
+```javascript
+{
+  categoryCode: "activeTransaction"
+  contract: Object { methodName: "highFive", parameters: (1) […] }
+  eventCode: "txPending"
+  inlineCustomMsgs: false
+  transaction: Object { id: "f64a4c67-f349-4da7-8d6b-55e92525e60b", gas: "24268", gasPrice: "1000000000", … }
+}
+```
+
+If you want Assist to still go ahead and show the notification, return `true` from the function. If you don't want the notification to display, then return `false`.
 
 ### Ethereum Network Ids
 
