@@ -203,7 +203,7 @@ var config = {
   },
   style: {
     darkMode: Boolean, // Set Assist UI to dark mode
-    notificationsPosition: Object, // Defines where in the viewport notifications will be positioned. See below: 'Notification Positioning'
+    notificationsPosition: Object || String, // Defines where in the viewport notifications will be positioned. See below: 'Notification Positioning'
     css: String // Custom css string to overide Assist default styles
   },
   truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
@@ -212,9 +212,17 @@ var config = {
 
 ### Notification Positioning
 
-By default, `Assist` positions notifications at the top of the viewport on mobile, and the bottom right of the viewport on desktop.
+The position that notifications appear in the viewport can be configured by defining `style.notificationsPosition` in your config when initializing assist.
 
-To override these values, you can define `style.notificationsPosition` in your config when initializing assist.
+`notificationsPosition` can be either a `String` which will set only the desktop position, or an `Object` containing params `desktop` and/or `mobile` which set the notification position on desktop and mobile respectively.
+
+Options for setting `desktop` positions: `['topLeft', 'topRight', 'bottomLeft', 'bottomRight']`
+
+Options for setting `mobile` positions: `['top', 'bottom']`
+
+By default, `Assist` positions notifications at the `top` of the viewport on mobile, and the `bottomRight` of the viewport on desktop.
+
+#### Examples
 
 ```javascript
 // Set notifications to bottom on mobile and top right on desktop
@@ -228,9 +236,15 @@ const config = {
 }
 ```
 
-Options for `desktop` param: ['topLeft', 'topRight', 'bottomRight', 'bottomLeft']
+```javascript
+// Sets only the desktop position
+const config = {
+  style: {
+    notificationsPosition: 'bottomRight'
+  }
+}
+```
 
-Options for `mobile` param: ['top', 'bottom']
 
 ### Custom Transaction Messages
 
