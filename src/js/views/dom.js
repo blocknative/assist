@@ -4,7 +4,8 @@ import {
   timeString,
   timeouts,
   stepToImageKey,
-  first
+  first,
+  getNotificationsPosition
 } from '~/js/helpers/utilities'
 import { showIframe, hideIframe, resizeIframe } from '~/js/helpers/iframe'
 
@@ -19,8 +20,7 @@ import {
 
 // Update UI styles based on the current style.notificationsPosition value
 export function updateNotificationsPosition() {
-  const { notificationsPosition } = state.config.style
-  if (!notificationsPosition) return
+  const notificationsPosition = getNotificationsPosition()
   positionElement(state.iframe)
 
   // Position notificationsContainer and reorder it's elements
@@ -456,8 +456,7 @@ export function getAllByQuery(query) {
 }
 
 export function createTransactionBranding() {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   const blockNativeBrand = createElement(
     'a',
@@ -485,8 +484,7 @@ export function createTransactionBranding() {
 export function notificationContent(type, message, time = {}) {
   const { showTime, startTime, timeStamp } = time
   const elapsedTime = timeString(Date.now() - startTime)
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   return `
 		<span class="bn-status-icon ${
@@ -571,8 +569,7 @@ export function removeElement(parent, element) {
 }
 
 function getPolarity() {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   if (state.mobileDevice) {
     return position.includes('top') ? '-' : ''
@@ -589,8 +586,7 @@ export function offsetElement(el) {
 }
 
 export function positionElement(el) {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   el.style.left = state.mobileDevice
     ? 'initial'
