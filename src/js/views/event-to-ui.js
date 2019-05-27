@@ -16,7 +16,6 @@ import {
   onboardModal,
   getById,
   getByQuery,
-  getAllByQuery,
   offsetElement,
   removeNotification,
   createTransactionBranding,
@@ -24,10 +23,10 @@ import {
   showElement,
   setNotificationsHeight,
   startTimerInterval,
-  removeAllNotifications,
   positionElement,
   addTouchHandlers,
-  removeTouchHandlers
+  removeTouchHandlers,
+  removeUnwantedNotifications
 } from './dom'
 import { transactionMsgs } from './content'
 
@@ -172,8 +171,6 @@ function getCustomTxMsg(eventCode, data, inlineCustomMsgs = {}) {
   }
 }
 
-const eventCodesNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
-
 function notificationsUI({
   transaction = {},
   contract = {},
@@ -215,26 +212,7 @@ function notificationsUI({
     existingNotifications = true
     notificationsList = getByQuery('.bn-notifications')
 
-    const notificationsNoRepeat = eventCodesNoRepeat.reduce(
-      (acc, eventCode) => [...acc, ...getAllByQuery(`.bn-${eventCode}`)],
-      []
-    )
-
-    // remove all notifications we don't want to repeat
-    removeAllNotifications(notificationsNoRepeat)
-
-    // We want to keep the txRepeat notification if the new notification is a txRequest or txConfirmReminder
-    const keepTxRepeatNotification =
-      eventCode === 'txRequest' || eventCode === 'txConfirmReminder'
-
-    const notificationsWithSameId = keepTxRepeatNotification
-      ? getAllByQuery(`.bn-${id}`).filter(
-          n => !n.classList.contains('bn-txRepeat')
-        )
-      : getAllByQuery(`.bn-${id}`)
-
-    // if notification with the same id we can remove it to be replaced with new status
-    removeAllNotifications(notificationsWithSameId)
+    removeUnwantedNotifications(eventCode, id)
   } else {
     existingNotifications = false
     notificationsContainer = positionElement(
