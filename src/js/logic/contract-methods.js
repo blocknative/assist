@@ -157,21 +157,25 @@ export function legacyCall(method, name, allArgs, argsLength) {
     // Only promisify method if it isn't a truffle contract
     method = truffleContract ? method : promisify(method)
 
-    const result = await method(...args, txObject, defaultBlock).catch(
-      errorObj => {
-        handleEvent({
-          eventCode: 'contractQueryFail',
-          categoryCode: 'activeContract',
-          contract: {
-            methodName: name,
-            parameters: args
-          },
-          reason: errorObj.message || errorObj
-        })
+    // Truffle contracts don't support passing txObj or defaultBlock
+    // in the method call
+    const argsToPass = truffleContract
+      ? args
+      : [...args, txObject, defaultBlock]
 
-        handleError({ resolve, reject, callback })(errorObj)
-      }
-    )
+    const result = await method(...argsToPass).catch(errorObj => {
+      handleEvent({
+        eventCode: 'contractQueryFail',
+        categoryCode: 'activeContract',
+        contract: {
+          methodName: name,
+          parameters: args
+        },
+        reason: errorObj.message || errorObj
+      })
+
+      handleError({ resolve, reject, callback })(errorObj)
+    })
 
     handleEvent({
       eventCode: 'contractQuery',
