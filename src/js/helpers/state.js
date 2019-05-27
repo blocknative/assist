@@ -2,7 +2,7 @@ export const initialState = {
   version: null,
   validApiKey: 'unknown',
   supportedNetwork: 'unknown',
-  config: null,
+  config: undefined,
   userAgent: null,
   mobileDevice: null,
   validBrowser: null,
