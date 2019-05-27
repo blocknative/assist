@@ -212,7 +212,7 @@ var config = {
 
 ### Notification Positioning
 
-By default, `Assist` positions notifications on the top of the viewport on mobile, and the bottom right of the viewport on desktop.
+By default, `Assist` positions notifications at the top of the viewport on mobile, and the bottom right of the viewport on desktop.
 
 To override these values, you can define `style.notificationsPosition` in your config when initializing assist.
 
