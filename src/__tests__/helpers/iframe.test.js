@@ -27,6 +27,10 @@ describe('when the initial notification position is bottomRight', () => {
       const da = assist.init(config)
       da.updateStyle({ notificationsPosition: 'topLeft' })
     })
+    test(`changing the notification position to {desktop: 'topLeft'} doesn't throw`, () => {
+      const da = assist.init(config)
+      da.updateStyle({ notificationsPosition: { desktop: 'topLeft' } })
+    })
   })
   describe('and there are notifications in the DOM', () => {
     test(`changing the notification position to topLeft doesn't throw`, () => {
@@ -35,6 +39,48 @@ describe('when the initial notification position is bottomRight', () => {
       handleEvent({ eventCode: 'txSent', categoryCode: 'activeTransaction' })
       handleEvent({ eventCode: 'txFailed', categoryCode: 'activeTransaction' })
       da.updateStyle({ notificationsPosition: 'topLeft' })
+    })
+    test(`changing the notification position to {desktop: 'topLeft'} doesn't throw`, () => {
+      const da = assist.init(config)
+      handleEvent({ eventCode: 'txPending', categoryCode: 'activeTransaction' })
+      handleEvent({ eventCode: 'txSent', categoryCode: 'activeTransaction' })
+      handleEvent({ eventCode: 'txFailed', categoryCode: 'activeTransaction' })
+      da.updateStyle({ notificationsPosition: { desktop: 'topLeft' } })
+    })
+  })
+})
+
+describe(`when the initial notification position is {desktop: 'bottomRight'}`, () => {
+  let notificationsPosition
+  let config
+  beforeEach(() => {
+    notificationsPosition = { desktop: 'bottomRight' }
+    config = { dappId: '123', style: { notificationsPosition } }
+  })
+  describe('and there are no notifications in the DOM', () => {
+    test(`changing the notification position to topLeft doesn't throw`, () => {
+      const da = assist.init(config)
+      da.updateStyle({ notificationsPosition: 'topLeft' })
+    })
+    test(`changing the notification position to {desktop: 'topLeft'} doesn't throw`, () => {
+      const da = assist.init(config)
+      da.updateStyle({ notificationsPosition: { desktop: 'topLeft' } })
+    })
+  })
+  describe('and there are notifications in the DOM', () => {
+    test(`changing the notification position to topLeft doesn't throw`, () => {
+      const da = assist.init(config)
+      handleEvent({ eventCode: 'txPending', categoryCode: 'activeTransaction' })
+      handleEvent({ eventCode: 'txSent', categoryCode: 'activeTransaction' })
+      handleEvent({ eventCode: 'txFailed', categoryCode: 'activeTransaction' })
+      da.updateStyle({ notificationsPosition: 'topLeft' })
+    })
+    test(`changing the notification position to {desktop: 'topLeft'} doesn't throw`, () => {
+      const da = assist.init(config)
+      handleEvent({ eventCode: 'txPending', categoryCode: 'activeTransaction' })
+      handleEvent({ eventCode: 'txSent', categoryCode: 'activeTransaction' })
+      handleEvent({ eventCode: 'txFailed', categoryCode: 'activeTransaction' })
+      da.updateStyle({ notificationsPosition: { desktop: 'topLeft' } })
     })
   })
 })
