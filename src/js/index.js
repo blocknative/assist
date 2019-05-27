@@ -1,7 +1,12 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
 
-import { state, updateState, filteredState } from './helpers/state'
+import {
+  state,
+  updateState,
+  filteredState,
+  initializeConfig
+} from './helpers/state'
 import { handleEvent } from './helpers/events'
 import notify from './logic/user-initiated-notify'
 import {
@@ -45,7 +50,7 @@ function init(config) {
     errorObj.eventCode = 'initFail'
     throw errorObj
   } else {
-    updateState({ config })
+    initializeConfig(config)
   }
 
   const { web3, dappId, mobileBlocked, headlessMode, style } = config

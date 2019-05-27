@@ -7,7 +7,6 @@ import { updateState, initialState } from '~/js/helpers/state'
 import { handleEvent } from '~/js/helpers/events'
 
 test('iframe gets rendered to document', () => {
-  updateState({ config: {} })
   createIframe(window.document, styles)
 
   const iframe = document.querySelector('iframe')
