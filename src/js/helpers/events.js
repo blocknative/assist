@@ -5,15 +5,19 @@ import { networkName, timeouts } from './utilities'
 import { getTxObjFromQueue } from './transaction-queue'
 import { openWebsocketConnection } from './websockets'
 import { getItem } from './storage'
+import { removeUnwantedNotifications } from '../views/dom'
 
 export function handleEvent(eventObj, clickHandlers) {
-  const { eventCode, categoryCode } = eventObj
+  const { eventCode, categoryCode, transaction } = eventObj
+  const { handleNotificationEvent, headlessMode } = state.config || {}
   const serverEvent =
     eventCode === 'txPending' ||
     eventCode === 'txConfirmed' ||
     eventCode === 'txFailed' ||
     eventCode === 'txSpeedUp' ||
     eventCode === 'txCancel'
+
+  const notificationEvent = eventCode.includes('tx')
 
   let eventToLog = { ...eventObj }
 
@@ -30,6 +34,21 @@ export function handleEvent(eventObj, clickHandlers) {
   // Log everything that isn't a server event
   !serverEvent && lib.logEvent(eventToLog)
 
+  let showNotification = true
+
+  if (notificationEvent) {
+    showNotification =
+      handleNotificationEvent &&
+      typeof handleNotificationEvent === 'function' &&
+      categoryCode !== 'userInitiatedNotify'
+        ? handleNotificationEvent(eventObj)
+        : true
+
+    if (!showNotification) {
+      removeUnwantedNotifications(eventCode, transaction.id)
+    }
+  }
+
   // If tx status is 'completed', UI has been already handled
   if (eventCode === 'txConfirmed' || eventCode === 'txConfirmedClient') {
     const txObj = getTxObjFromQueue(eventObj.transaction.id)
@@ -40,7 +59,7 @@ export function handleEvent(eventObj, clickHandlers) {
   }
 
   // Show UI
-  if (state.config && !state.config.headlessMode) {
+  if (!headlessMode && showNotification) {
     eventToUI[categoryCode] &&
       eventToUI[categoryCode][eventCode] &&
       eventToUI[categoryCode][eventCode](eventObj, clickHandlers)
