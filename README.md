@@ -501,23 +501,24 @@ assistInstance.getState()
 const style = {
     darkMode: Boolean, // Set Assist UI to dark mode
     css: String, // Custom css string to overide Assist default styles
-    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+    notificationsPosition: String || Object, // Defines which corner transaction notifications will be positioned. See 'Notification Positioning'
 }
 ```
 
 #### Examples
 
 ```javascript
-// Enable dark mode
+// Enable dark mode and position notifications at the bottom left on desktop
 const style = {
-  darkMode: true
+  darkMode: true,
+  notificationsPosition: 'bottomLeft'
 }
 assistInstance.updateStyle(style)
 
-// Disable dark mode and set notification background to black
+// Position notifications at the bottom of the viewport on mobile and set their background to black
 const style = {
-  darkMode: false,
-  css: `.bn-notification { background: black }`
+  css: `.bn-notification { background: black }`,
+  notificationsPosition: { mobile: 'bottom' }
 }
 assistInstance.updateStyle(style)
 ```
