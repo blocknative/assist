@@ -301,7 +301,12 @@ function init(config) {
         newContractObj[name].sendTransaction = (...args) =>
           legacySend(method, name, args, argsLength)
 
-        newContractObj[name].getData = contractObj[name].getData
+        // Add any additional properties onto the method function
+        Object.entries(contractObj[name]).forEach(([k, v]) => {
+          if (!Object.keys(newContractObj[name]).includes(k)) {
+            newContractObj[name][k] = v
+          }
+        })
 
         if (overloadedMethodKeys) {
           overloadedMethodKeys.forEach(key => {
@@ -323,7 +328,12 @@ function init(config) {
             newContractObj[name][key].sendTransaction = (...args) =>
               legacySend(method, name, args, argsLength)
 
-            newContractObj[name][key].getData = contractObj[name][key].getData
+            // Add any additional properties onto the method function
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(newContractObj[name][key]).includes(k)) {
+                newContractObj[name][key][k] = v
+              }
+            })
           })
         }
       } else {
@@ -358,6 +368,14 @@ function init(config) {
               constant
                 ? modernCall(method, name, args)
                 : modernSend(method, name, args)
+
+            // Add any additional properties onto the method function
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(methodsObj[name]).includes(k)) {
+                methodsObj[name][k] = v
+              }
+            })
+
             seenMethods.push(name)
           }
 
@@ -375,6 +393,13 @@ function init(config) {
             constant
               ? modernCall(overloadedMethod, name, args)
               : modernSend(overloadedMethod, name, args)
+
+          // Add any additional properties onto the method function
+          Object.entries(overloadedMethod).forEach(([k, v]) => {
+            if (!Object.keys(methodsObj[overloadedMethodKey]).includes(k)) {
+              methodsObj[overloadedMethodKey][k] = v
+            }
+          })
 
           return methodsObj
         }, {})
