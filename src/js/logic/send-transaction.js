@@ -202,7 +202,8 @@ function sendTransaction(
         })
     } else if (state.config.truffleContract) {
       txPromise
-        .then(async hash => {
+        .then(async txObj => {
+          const hash = txObj.tx
           onTxHash(transactionId, hash, categoryCode)
 
           const receipt = await waitForTransactionReceipt(hash)

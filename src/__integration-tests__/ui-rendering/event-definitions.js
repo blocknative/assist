@@ -35,20 +35,24 @@ export default {
   success: {
     categories: ['userInitiatedNotify'],
     customStates: [
-      { config: { messages: { success: () => 'success custom msg' } } }
+      {
+        config: { messages: { success: () => 'success custom msg' }, style: {} }
+      }
     ]
   },
   pending: {
     categories: ['userInitiatedNotify'],
     params: { transaction: mockTxFactory({ startTime: true }) },
     customStates: [
-      { config: { messages: { pending: () => 'pending custom msg' } } }
+      {
+        config: { messages: { pending: () => 'pending custom msg' }, style: {} }
+      }
     ]
   },
   error: {
     categories: ['userInitiatedNotify'],
     customStates: [
-      { config: { messages: { error: () => 'error custom msg' } } }
+      { config: { messages: { error: () => 'error custom msg' }, style: {} } }
     ]
   },
   browserFail: {
@@ -64,7 +68,10 @@ export default {
       },
       {
         transactionQueue: [{ transaction: mockTransaction }],
-        config: { messages: { txSpeedUp: () => 'txSpeedUp custom msg' } }
+        config: {
+          messages: { txSpeedUp: () => 'txSpeedUp custom msg' },
+          style: {}
+        }
       }
     ]
   },
@@ -87,7 +94,8 @@ export default {
         config: {
           images: {
             complete: { src: 'custom-img-src', srcset: 'custom-img-srcset' }
-          }
+          },
+          style: {}
         }
       }
     ]
@@ -105,7 +113,7 @@ export default {
     clickHandlers: new Set(['onClose', 'onClick']),
     customStates: [
       initialState,
-      { userCurrentNetworkId: 42, config: { networkId: 4 } }
+      { userCurrentNetworkId: 42, config: { networkId: 4, style: {} } }
     ]
   },
   welcomeUser: {
@@ -118,7 +126,8 @@ export default {
         config: {
           images: {
             welcome: { src: 'custom-img-src', srcset: 'custom-img-srcset' }
-          }
+          },
+          style: {}
         }
       }
     ]
@@ -135,7 +144,8 @@ export default {
       {
         config: {
           minimumBalance: '12300000000000000000',
-          messages: { nsfFail: () => 'nsfFail custom msg' }
+          messages: { nsfFail: () => 'nsfFail custom msg' },
+          style: {}
         }
       }
     ]
@@ -145,7 +155,12 @@ export default {
     params: { transaction: mockTxFactory() },
     customStates: [
       initialState,
-      { config: { messages: { txRepeat: () => 'txRepeat custom msg' } } }
+      {
+        config: {
+          messages: { txRepeat: () => 'txRepeat custom msg' },
+          style: {}
+        }
+      }
     ]
   },
   txAwaitingApproval: {
@@ -157,7 +172,8 @@ export default {
         config: {
           messages: {
             txAwaitingApproval: () => 'txAwaitingApproval custom msg'
-          }
+          },
+          style: {}
         }
       }
     ]
@@ -167,7 +183,12 @@ export default {
     params: { transaction: mockTxFactory() },
     customStates: [
       initialState,
-      { config: { messages: { txRequest: () => 'txRequest custom msg' } } }
+      {
+        config: {
+          messages: { txRequest: () => 'txRequest custom msg' },
+          style: {}
+        }
+      }
     ]
   },
   txConfirmReminder: {
@@ -177,7 +198,8 @@ export default {
       initialState,
       {
         config: {
-          messages: { txConfirmReminder: () => 'txConfirmReminder custom msg' }
+          messages: { txConfirmReminder: () => 'txConfirmReminder custom msg' },
+          style: {}
         }
       }
     ]
@@ -187,7 +209,12 @@ export default {
     params: { transaction: mockTxFactory() },
     customStates: [
       initialState,
-      { config: { messages: { txSendFail: () => 'txSendFail custom msg' } } }
+      {
+        config: {
+          messages: { txSendFail: () => 'txSendFail custom msg' },
+          style: {}
+        }
+      }
     ]
   },
   txSent: {
@@ -195,7 +222,7 @@ export default {
     params: { transaction: mockTxFactory({ startTime: true }) },
     customStates: [
       initialState,
-      { config: { messages: { txSent: () => 'txSent custom msg' } } }
+      { config: { messages: { txSent: () => 'txSent custom msg' }, style: {} } }
     ]
   },
   txStall: {
@@ -203,7 +230,9 @@ export default {
     params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
     customStates: [
       initialState,
-      { config: { messages: { txStall: () => 'txStall custom msg' } } }
+      {
+        config: { messages: { txStall: () => 'txStall custom msg' }, style: {} }
+      }
     ]
   },
   txPending: {
@@ -211,7 +240,12 @@ export default {
     params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
     customStates: [
       initialState,
-      { config: { messages: { txPending: () => 'txPending custom msg' } } }
+      {
+        config: {
+          messages: { txPending: () => 'txPending custom msg' },
+          style: {}
+        }
+      }
     ]
   },
   txConfirmed: {
@@ -223,7 +257,10 @@ export default {
       },
       {
         transactionQueue: [{ transaction: mockTransaction }],
-        config: { messages: { txConfirmed: () => 'txConfirmed custom msg' } }
+        config: {
+          messages: { txConfirmed: () => 'txConfirmed custom msg' },
+          style: {}
+        }
       }
     ]
   },
@@ -237,7 +274,8 @@ export default {
       {
         transactionQueue: [{ transaction: mockTransaction }],
         config: {
-          messages: { txConfirmed: () => 'txConfirmedClient custom msg' }
+          messages: { txConfirmed: () => 'txConfirmedClient custom msg' },
+          style: {}
         }
       }
     ]
@@ -247,7 +285,12 @@ export default {
     params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
     customStates: [
       initialState,
-      { config: { messages: { txFailed: () => 'txFailed custom msg' } } }
+      {
+        config: {
+          messages: { txFailed: () => 'txFailed custom msg' },
+          style: {}
+        }
+      }
     ]
   }
 }

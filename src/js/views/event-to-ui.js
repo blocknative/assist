@@ -6,7 +6,8 @@ import {
   eventCodeToStep,
   eventCodeToType,
   timeouts,
-  assistLog
+  assistLog,
+  getNotificationsPosition
 } from '~/js/helpers/utilities'
 
 import {
@@ -208,8 +209,7 @@ function notificationsUI({
   let notificationsScroll
   let notificationsContainer = getById('blocknative-notifications')
 
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   if (notificationsContainer) {
     existingNotifications = true
