@@ -110,7 +110,7 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       }
     }
 
-    if (!state.web3Instance) {
+    if (!state.web3Instance || !state.web3Wallet) {
       if (state.mobileDevice) {
         try {
           await getWeb3Wallet(categoryCode)
