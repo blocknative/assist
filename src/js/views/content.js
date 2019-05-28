@@ -108,7 +108,7 @@ export const onboardDescription = {
       `We’ve detected that you need to be on the ${networkName(
         state.config.networkId
       ) ||
-        'mainnet'} network for this application but you have MetaMask set to ${networkName(
+        'mainnet'} network for this application but you have your wallet set to ${networkName(
         state.userCurrentNetworkId
       )}. Please switch to the correct network.`
   },
