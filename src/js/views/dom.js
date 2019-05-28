@@ -4,7 +4,8 @@ import {
   timeString,
   timeouts,
   stepToImageKey,
-  first
+  first,
+  getNotificationsPosition
 } from '~/js/helpers/utilities'
 import { showIframe, hideIframe, resizeIframe } from '~/js/helpers/iframe'
 
@@ -19,8 +20,7 @@ import {
 
 // Update UI styles based on the current style.notificationsPosition value
 export function updateNotificationsPosition() {
-  const { notificationsPosition } = state.config.style
-  if (!notificationsPosition) return
+  const notificationsPosition = getNotificationsPosition()
   positionElement(state.iframe)
 
   // Position notificationsContainer and reorder it's elements
@@ -158,7 +158,8 @@ export function openModal(modal, handlers = {}) {
 
   if (state.mobileDevice) {
     closeButton.ontouchstart = () => {
-      onClick && onClick()
+      onClose && onClose()
+      closeModal()
     }
   }
 
@@ -455,8 +456,7 @@ export function getAllByQuery(query) {
 }
 
 export function createTransactionBranding() {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   const blockNativeBrand = createElement(
     'a',
@@ -484,8 +484,7 @@ export function createTransactionBranding() {
 export function notificationContent(type, message, time = {}) {
   const { showTime, startTime, timeStamp } = time
   const elapsedTime = timeString(Date.now() - startTime)
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   return `
 		<span class="bn-status-icon ${
@@ -570,8 +569,7 @@ export function removeElement(parent, element) {
 }
 
 function getPolarity() {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   if (state.mobileDevice) {
     return position.includes('top') ? '-' : ''
@@ -588,8 +586,7 @@ export function offsetElement(el) {
 }
 
 export function positionElement(el) {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   el.style.left = state.mobileDevice
     ? 'initial'
@@ -704,8 +701,8 @@ export function handleTouchStart(element) {
     e.stopPropagation()
     e.preventDefault()
     const touch = e.changedTouches[0]
-    element.attributes['data-startY'] = touch.pageY
-    element.attributes['data-startX'] = touch.pageX
+    element.attributes['data-startY'] = touch.screenY
+    element.attributes['data-startX'] = touch.screenX
     element.attributes['data-startTime'] = Date.now()
     element.attributes['data-translateY'] = 0
   }
@@ -718,7 +715,7 @@ export function handleTouchMove(element) {
     const touch = e.changedTouches[0]
     const startY = element.attributes['data-startY']
     const translateY = element.attributes['data-translateY']
-    const distanceY = touch.pageY - startY
+    const distanceY = touch.screenY - startY
 
     const newTranslateY = distanceY + translateY
 
@@ -737,8 +734,8 @@ export function handleTouchEnd(element, type) {
     const startY = element.attributes['data-startY']
     const startX = element.attributes['data-startX']
     const startTime = element.attributes['data-startTime']
-    const distanceY = touch.pageY - startY
-    const distanceX = touch.pageX - startX
+    const distanceY = touch.screenY - startY
+    const distanceX = touch.screenX - startX
     const elapsedTime = Date.now() - startTime
     const validDistance =
       distanceY <= -40 || distanceY >= 40 || distanceX <= -40 || distanceX >= 40
