@@ -130,18 +130,6 @@ To speed things up, you can decorate the contract inline:
 var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
 ```
 
-### `promiEvent`
-
-If using web3 versions 1.0 and you would like to listen for the events triggered on the `promiEvent` that is normally returned from a transaction call, Assist returns the `promiEvent`, but it is wrapped in an object to prevent it from resolving internally in Assist. To get access to the `promiEvent` object you can call your methods like this:
-
-```javascript
-const { promiEvent } = await decoratedContract.myMethod(param).send(txOptions)
-
-promiEvent.on('receipt', () => {
-  // ...
-})
-```
-
 ### Initializing `web3` and including it in the `config`
 
 `web3` isn't a required parameter as you might not have access to a web3 provider to instantiate web3 with until after the user has been onboarded and has a wallet installed. We recommend instantiating `web3` at the top level of your dapp once the window object is available like this:
