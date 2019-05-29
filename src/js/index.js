@@ -22,6 +22,7 @@ import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
 import { getOverloadedMethodKeys } from './helpers/utilities'
 import { createIframe, updateStyle } from './helpers/iframe'
+import { validateConfig } from './helpers/validation'
 import {
   getTransactionQueueFromStorage,
   storeTransactionQueue,
@@ -34,43 +35,23 @@ import { version } from '../../package.json'
 function init(config) {
   updateState({ version })
 
+  // Validate the config and initialize our state with it
+  try {
+    validateConfig(config)
+  } catch (error) {
+    handleEvent({
+      eventCode: 'initFail',
+      categoryCode: 'initialize',
+      reason: error.message
+    })
+    throw error
+  }
+
   openWebsocketConnection()
 
-  // Make sure we have a config object
-  if (!config || typeof config !== 'object') {
-    const reason = 'A config object is needed to initialize assist'
+  initializeConfig(config)
 
-    handleEvent({
-      eventCode: 'initFail',
-      categoryCode: 'initialize',
-      reason
-    })
-
-    const errorObj = new Error(reason)
-    errorObj.eventCode = 'initFail'
-    throw errorObj
-  } else {
-    initializeConfig(config)
-  }
-
-  const { web3, dappId, mobileBlocked, headlessMode, style } = config
-
-  // Check that an api key has been provided to the config object
-  if (!dappId) {
-    handleEvent({
-      eventCode: 'initFail',
-      categoryCode: 'initialize',
-      reason: 'No API key provided to init function'
-    })
-
-    updateState({
-      validApiKey: false
-    })
-
-    const errorObj = new Error('API key is required')
-    errorObj.eventCode = 'initFail'
-    throw errorObj
-  }
+  const { web3, mobileBlocked, headlessMode, style } = config
 
   if (web3) {
     configureWeb3(web3)

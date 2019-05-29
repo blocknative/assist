@@ -19,7 +19,10 @@
     "type": "git",
     "url": "git+https://github.com/blocknative/assist.git"
   },
-  "keywords": ["dapp", "ethereum"],
+  "keywords": [
+    "dapp",
+    "ethereum"
+  ],
   "author": "Block Native",
   "license": "MIT",
   "bugs": {
@@ -31,6 +34,8 @@
     "bluebird": "^3.5.3",
     "bowser": "^2.0.0-beta.3",
     "core-js": "2",
+    "ow": "^0.13.2",
+    "rollup-plugin-node-builtins": "^2.1.2",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -76,5 +81,7 @@
     "truffle-contract": "^4.0.15",
     "web3": "^1.0.0-beta.37"
   },
-  "eslintIgnore": ["package.json"]
+  "eslintIgnore": [
+    "package.json"
+  ]
 }
