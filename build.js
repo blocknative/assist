@@ -5,7 +5,7 @@ const babel = require('rollup-plugin-babel')
 const { eslint } = require('rollup-plugin-eslint')
 const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
-const { uglify } = require('rollup-plugin-uglify')
+const { terser } = require('rollup-plugin-terser')
 const string = require('rollup-plugin-string')
 const json = require('rollup-plugin-json')
 const builtins = require('rollup-plugin-node-builtins')
@@ -41,7 +41,7 @@ const defaultPlugins = [
 
 const inputOptions = min => ({
   input: 'src/js/index.js',
-  plugins: min ? [...defaultPlugins, uglify()] : defaultPlugins
+  plugins: min ? [...defaultPlugins, terser()] : defaultPlugins
 })
 
 const outputOptions = min => ({
