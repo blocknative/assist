@@ -113,7 +113,7 @@ describe('user-initiated-notify.js', () => {
 })
 
 beforeEach(() => {
-  da.init({ dappId: '123' })
+  da.init({ dappId: '123', networkId: 1 })
 })
 
 afterEach(() => {

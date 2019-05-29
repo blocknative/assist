@@ -42,7 +42,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
           ? new Web3.providers.HttpProvider(`http://localhost:${port}`)
           : `ws://localhost${port}`
         web3 = new Web3(provider)
-        config = { dappId: '123', web3, networkId: '1' }
+        config = { dappId: '123', web3, networkId: 1 }
         assistInstance = da.init(config)
       })
       afterEach(() => {
