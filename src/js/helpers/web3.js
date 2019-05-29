@@ -159,7 +159,9 @@ export function checkForWallet() {
 
 export function getNetworkId() {
   const version = state.web3Version && state.web3Version.slice(0, 3)
-  return web3Functions.networkId(version)()
+  return web3Functions
+    .networkId(version)()
+    .then(id => Number(id))
 }
 
 export function getTransactionParams(
