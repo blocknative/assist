@@ -35,7 +35,10 @@ describe(`web3.js tests`, () => {
         beforeEach(() => {
           jest
             .spyOn(websockets, 'openWebsocketConnection')
-            .mockImplementation(() => {})
+            .mockImplementation(() => Promise.resolve(true))
+          jest
+            .spyOn(websockets, 'checkForSocketConnection')
+            .mockImplementation(() => Promise.resolve(true))
           simpleVersion = version.slice(0, 3)
           web3 = initWeb3(simpleVersion, Web3)
           config = { dappId: '123', web3, networkId: '5' }

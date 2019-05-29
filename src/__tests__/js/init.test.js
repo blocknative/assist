@@ -13,9 +13,13 @@ jest.mock('../../js/helpers/iframe')
 events.handleEvent = jest.fn()
 
 // this is a little hacky but it's easier than creating a __mocks__ directory just for this case
-websocket.openWebsocketConnection = jest.fn(() => {
-  jest.fn()
-})
+websocket.openWebsocketConnection = jest
+  .fn()
+  .mockImplementation(() => Promise.resolve(true))
+
+websocket.checkForSocketConnection = jest
+  .fn()
+  .mockImplementation(() => Promise.resolve(true))
 
 const assist = da.init({ dappId: 'something' })
 
