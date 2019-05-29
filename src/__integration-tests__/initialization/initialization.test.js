@@ -6,6 +6,7 @@
 import bowser from 'bowser'
 import da from '~/js'
 import * as events from '~/js/helpers/events'
+import * as websockets from '~/js/helpers/websockets'
 import { state, initialState, updateState } from '~/js/helpers/state'
 import { storeTransactionQueue } from '~/js/helpers/storage'
 import { version as packageVersion } from '../../../package.json'
@@ -227,6 +228,10 @@ describe('init is called', () => {
       expect(state.web3Instance).toEqual(mockModernWeb3)
     })
   })
+})
+
+beforeAll(() => {
+  jest.spyOn(websockets, 'openWebsocketConnection').mockImplementation(() => {})
 })
 
 afterEach(() => {
