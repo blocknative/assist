@@ -35,7 +35,7 @@ export const web3Functions = {
           Promise.resolve(state.web3Instance.utils.toBN(formatNumber(value)))
       case 'ethers':
         return value =>
-          Promise.resolve(state.config.ethers.utils.bigNumberify(value))
+          Promise.resolve(state.config.ethers.BigNumber.from(value))
       default:
         return () => Promise.reject(errorObj)
     }
