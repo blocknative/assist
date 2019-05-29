@@ -34,7 +34,7 @@ import { version } from '../../package.json'
 function init(config) {
   updateState({ version })
 
-  openWebsocketConnection()
+  openWebsocketConnection().catch()
 
   // Make sure we have a config object
   if (!config || typeof config !== 'object') {

@@ -1,7 +1,7 @@
 import { state, updateState } from './state'
 import { handleEvent } from './events'
 import { storeItem, getItem } from './storage'
-import { assistLog } from './utilities'
+import { timeouts } from './utilities'
 import {
   updateTransactionInQueue,
   getTxObjFromQueue,
@@ -10,35 +10,58 @@ import {
 
 // Create websocket connection
 export function openWebsocketConnection() {
-  updateState({ pendingSocketConnection: true })
+  return new Promise((resolve, reject) => {
+    updateState({ pendingSocketConnection: true })
 
-  let socket
-  try {
-    socket = new WebSocket('wss://api.blocknative.com/v0')
-  } catch (errorObj) {
-    assistLog(errorObj)
-  }
+    let socket
+    try {
+      socket = new WebSocket('wss://api.blocknative.com/v0')
+    } catch (errorObj) {
+      updateState({ pendingSocketConnection: false })
+      reject(false)
+    }
 
-  socket.addEventListener('message', handleSocketMessage)
-  socket.addEventListener('close', () =>
-    updateState({ socketConnection: false })
-  )
-  socket.addEventListener('error', () => {
-    updateState({ pendingSocketConnection: false })
-  })
-  socket.addEventListener('open', () => {
-    updateState({
-      socket,
-      socketConnection: true,
-      pendingSocketConnection: false
+    socket.addEventListener('message', handleSocketMessage)
+    socket.addEventListener('close', () =>
+      updateState({ socketConnection: false })
+    )
+    socket.addEventListener('error', () => {
+      updateState({ pendingSocketConnection: false })
+      reject(false)
     })
+    socket.addEventListener('open', () => {
+      updateState({
+        socket,
+        socketConnection: true,
+        pendingSocketConnection: false
+      })
 
-    handleEvent({
-      categoryCode: 'initialize',
-      eventCode: 'checkDappId',
-      connectionId: getItem('connectionId')
+      handleEvent({
+        categoryCode: 'initialize',
+        eventCode: 'checkDappId',
+        connectionId: getItem('connectionId')
+      })
+
+      resolve(true)
     })
   })
+}
+
+export function checkForSocketConnection() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      if (!state.socketConnection) {
+        resolve(false)
+      }
+      resolve(true)
+    }, timeouts.checkSocketConnection)
+  })
+}
+
+export function retryLogEvent(logFunc) {
+  openWebsocketConnection()
+    .then(logFunc)
+    .catch(() => setTimeout(logFunc, timeouts.checkSocketConnection))
 }
 
 // Handle in coming socket messages
