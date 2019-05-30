@@ -7,8 +7,13 @@ import { checkNetwork, getCorrectNetwork } from '~/js/logic/user'
 import sendTransaction from './send-transaction'
 
 export function modernCall(method, name, args) {
+  const originalReturnObject = method(...args)
   const innerMethod = method(...args).call
-  const returnObject = {}
+
+  const returnObject = Object.keys(originalReturnObject).reduce((obj, key) => {
+    obj[key] = originalReturnObject[key]
+    return obj
+  }, {})
 
   returnObject.call = (...innerArgs) =>
     new Promise(async (resolve, reject) => {
