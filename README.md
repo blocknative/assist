@@ -2,7 +2,7 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports `web3.js` versions 0.20 and 1.0, `ethers.js` versions 4.0.
+setup. Supports `web3.js` versions 0.20 and 1.0, `ethers.js` versions 5.0-beta
 
 _note: `web3.js` 1.0.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
@@ -141,6 +141,18 @@ const { promiEvent } = await decoratedContract.myMethod(param).send(txOptions)
 promiEvent.on('receipt', () => {
   // ...
 })
+```
+
+### Ethers
+
+If you are using `ethers.js` (v5 beta) you will need to use the `UncheckedSigner` when you instantiate your contract. This is critical for Assist's transaction notifications to work correctly. An example of how to create and decorate an `ethers` contract:
+
+```javascript
+var web3Provider = window.ethereum || window.web3.currentProvider
+var ethersProvider = new ethers.providers.Web3Provider(web3Provider)
+
+var myContract = new ethers.Contract(address, abi, ethersProvider.getUncheckedSigner())
+var myDecoratedContract = assistInstance.Contract(myContract)
 ```
 
 ### Initializing `web3` and including it in the `config`
