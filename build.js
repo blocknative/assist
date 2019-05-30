@@ -4,6 +4,7 @@ const rollup = require('rollup')
 const babel = require('rollup-plugin-babel')
 const { eslint } = require('rollup-plugin-eslint')
 const resolve = require('rollup-plugin-node-resolve')
+const replace = require('rollup-plugin-replace')
 const commonjs = require('rollup-plugin-commonjs')
 const { uglify } = require('rollup-plugin-uglify')
 const string = require('rollup-plugin-string')
@@ -29,6 +30,9 @@ const defaultPlugins = [
   }),
   eslint({
     exclude: ['src/css/**', 'node_modules/**', 'lib/images/**']
+  }),
+  replace({
+    'process.env.BN_WS_ENDPOINT': JSON.stringify(process.env.BN_WS_ENDPOINT)
   }),
   babel({
     exclude: 'node_modules/**',
