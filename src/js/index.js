@@ -260,7 +260,8 @@ function init(config) {
     const abi =
       contractObj.abi ||
       contractObj._jsonInterface ||
-      (contractObj.interface && contractObj.interface.abi) ||
+      (contractObj.interface &&
+        Object.values(contractObj.interface.functions)) ||
       Object.keys(contractObj.abiModel.abi.methods)
         // remove any arrays from the ABI, they contain redundant information
         .filter(key => !Array.isArray(contractObj.abiModel.abi.methods[key]))
@@ -457,7 +458,7 @@ function init(config) {
     const sendMethod = ethers
       ? txOptions =>
           getEthersProvider()
-            .getSigner()
+            .getUncheckedSigner()
             .sendTransaction(txOptions)
       : legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
