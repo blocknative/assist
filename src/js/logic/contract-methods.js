@@ -7,11 +7,10 @@ import { checkNetwork, getCorrectNetwork } from '~/js/logic/user'
 
 import sendTransaction from './send-transaction'
 
-export function modernCall({ contractObj, methodName, overloadKey, args }) {
+export function modernCall({ contractObj, methodName, args }) {
   const innerMethod = getContractMethod({
     contractObj,
-    methodName,
-    overloadKey
+    methodName
   })(...args).call
   const returnObject = {}
 
@@ -74,7 +73,7 @@ export function modernCall({ contractObj, methodName, overloadKey, args }) {
           eventCode: 'contractQuery',
           categoryCode: 'activeContract',
           contract: {
-            methodName: overloadKey || methodName,
+            methodName,
             parameters: args,
             result: JSON.stringify(result)
           }
@@ -89,11 +88,10 @@ export function modernCall({ contractObj, methodName, overloadKey, args }) {
   return returnObject
 }
 
-export function modernSend({ contractObj, methodName, overloadKey, args }) {
+export function modernSend({ contractObj, methodName, args }) {
   const originalReturnObject = getContractMethod({
     contractObj,
-    methodName,
-    overloadKey
+    methodName
   })(...args)
 
   const innerMethod = originalReturnObject.send
@@ -114,7 +112,6 @@ export function modernSend({ contractObj, methodName, overloadKey, args }) {
       inlineCustomMsgs,
       contractObj,
       methodName,
-      overloadKey,
       methodArgs: args
     })
   }

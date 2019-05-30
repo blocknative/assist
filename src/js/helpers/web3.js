@@ -339,7 +339,7 @@ export function getAccountBalance() {
 }
 
 export function getContractMethod({ contractObj, methodName, overloadKey }) {
-  return state.legacyWeb3
+  return state.legacyWeb3 || state.config.truffleContract
     ? overloadKey
       ? contractObj[methodName][overloadKey]
       : contractObj[methodName]

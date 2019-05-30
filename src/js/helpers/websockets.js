@@ -134,11 +134,20 @@ export function handleSocketMessage(msg) {
           txObj = updateTransactionInQueue(transaction.id, {
             status: 'confirmed'
           })
-
-          if (txObj.transaction.status === 'completed') {
-            removeTransactionFromQueue(transaction.id)
-          }
         }
+
+        handleEvent({
+          eventCode: 'txConfirmed',
+          categoryCode: 'activeTransaction',
+          transaction: txObj.transaction,
+          contract: txObj.contract,
+          inlineCustomMsgs: txObj.inlineCustomMsgs
+        })
+
+        if (txObj.transaction.status === 'completed') {
+          removeTransactionFromQueue(transaction.id)
+        }
+
         break
       case 'failed':
         txObj = updateTransactionInQueue(transaction.id, { status: 'failed' })

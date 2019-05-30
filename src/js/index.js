@@ -361,8 +361,8 @@ function init(config) {
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
-              if (!Object.keys(newContractObj[name][key]).includes(k)) {
-                newContractObj[name][key][k] = v
+              if (!Object.keys(newContractObj[name][overloadKey]).includes(k)) {
+                newContractObj[name][overloadKey][k] = v
               }
             })
           })
@@ -397,8 +397,16 @@ function init(config) {
             const method = contractObj.methods[name]
             methodsObj[name] = (...args) =>
               constant
-                ? modernCall(method, name, args)
-                : modernSend(method, name, args)
+                ? modernCall({
+                    contractObj,
+                    methodName: name,
+                    args
+                  })
+                : modernSend({
+                    contractObj,
+                    methodName: name,
+                    args
+                  })
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
@@ -419,10 +427,20 @@ function init(config) {
             overloadedMethodKey = `${name}()`
           }
 
+          const overloadedMethod = contractObj.methods[overloadedMethodKey]
+
           methodsObj[overloadedMethodKey] = (...args) =>
             constant
-              ? modernCall({ contractObj, methodName: name, args })
-              : modernSend({ contractObj, methodName: name, args })
+              ? modernCall({
+                  contractObj,
+                  methodName: overloadedMethodKey,
+                  args
+                })
+              : modernSend({
+                  contractObj,
+                  methodName: overloadedMethodKey,
+                  args
+                })
 
           // Add any additional properties onto the method function
           Object.entries(overloadedMethod).forEach(([k, v]) => {
@@ -448,8 +466,7 @@ function init(config) {
       validApiKey,
       supportedNetwork,
       web3Instance,
-      config: { ethers, mobileBlocked },
-      mobileDevice,
+      config: { ethers },
       legacyWeb3
     } = state
 
