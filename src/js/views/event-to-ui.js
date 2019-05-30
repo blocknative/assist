@@ -6,7 +6,8 @@ import {
   eventCodeToStep,
   eventCodeToType,
   timeouts,
-  assistLog
+  assistLog,
+  getNotificationsPosition
 } from '~/js/helpers/utilities'
 
 import {
@@ -114,6 +115,11 @@ function notSupportedUI(eventObj, handlers) {
     'bn-onboard-modal-shade',
     notSupportedModal(eventCodeToStep(eventCode))
   )
+
+  if (state.mobileDevice) {
+    addTouchHandlers(modal.children[0], 'modal')
+  }
+
   openModal(modal, handlers)
 }
 
@@ -205,8 +211,7 @@ function notificationsUI({
   let notificationsScroll
   let notificationsContainer = getById('blocknative-notifications')
 
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   if (notificationsContainer) {
     existingNotifications = true

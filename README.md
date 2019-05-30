@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.8.1.
+The current version is 0.8.3.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-8-1/assist.js"></script>
+<script src="https://assist.blocknative.com/0-8-3/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-8-1/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-8-3/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -203,13 +203,49 @@ var config = {
   },
   style: {
     darkMode: Boolean, // Set Assist UI to dark mode
-    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+    notificationsPosition: Object || String, // Defines where in the viewport notifications will be positioned. See below: 'Notification Positioning'
     css: String // Custom css string to overide Assist default styles
   },
   truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
   handleNotificationEvent: Function // Called on every tx notification event with a transaction event object
 }
 ```
+
+### Notification Positioning
+
+The position that notifications appear in the viewport can be configured by defining `style.notificationsPosition` in your config when initializing assist.
+
+`notificationsPosition` can be either a `String` which will set only the desktop position, or an `Object` containing params `desktop` and/or `mobile` which set the notification position on desktop and mobile respectively.
+
+Options for setting `desktop` positions: `['topLeft', 'topRight', 'bottomLeft', 'bottomRight']`
+
+Options for setting `mobile` positions: `['top', 'bottom']`
+
+By default, `Assist` positions notifications at the `top` of the viewport on mobile, and the `bottomRight` of the viewport on desktop.
+
+#### Examples
+
+```javascript
+// Set notifications to bottom on mobile and top right on desktop
+const config = {
+  style: {
+    notificationsPosition: {
+      desktop: 'topLeft',
+      mobile: 'bottom'
+    }
+  }
+}
+```
+
+```javascript
+// Sets only the desktop position
+const config = {
+  style: {
+    notificationsPosition: 'bottomRight'
+  }
+}
+```
+
 
 ### Custom Transaction Messages
 
@@ -482,23 +518,24 @@ assistInstance.getState()
 const style = {
     darkMode: Boolean, // Set Assist UI to dark mode
     css: String, // Custom css string to overide Assist default styles
-    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+    notificationsPosition: String || Object, // Defines which corner transaction notifications will be positioned. See 'Notification Positioning'
 }
 ```
 
 #### Examples
 
 ```javascript
-// Enable dark mode
+// Enable dark mode and position notifications at the bottom left on desktop
 const style = {
-  darkMode: true
+  darkMode: true,
+  notificationsPosition: 'bottomLeft'
 }
 assistInstance.updateStyle(style)
 
-// Disable dark mode and set notification background to black
+// Position notifications at the bottom of the viewport on mobile and set their background to black
 const style = {
-  darkMode: false,
-  css: `.bn-notification { background: black }`
+  css: `.bn-notification { background: black }`,
+  notificationsPosition: { mobile: 'bottom' }
 }
 assistInstance.updateStyle(style)
 ```

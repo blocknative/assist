@@ -1,7 +1,12 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
 
-import { state, updateState, filteredState } from './helpers/state'
+import {
+  state,
+  updateState,
+  filteredState,
+  initializeConfig
+} from './helpers/state'
 import { handleEvent } from './helpers/events'
 import notify from './logic/user-initiated-notify'
 import {
@@ -45,7 +50,7 @@ function init(config) {
     errorObj.eventCode = 'initFail'
     throw errorObj
   } else {
-    updateState({ config })
+    initializeConfig(config)
   }
 
   const { web3, dappId, mobileBlocked, headlessMode, style } = config
@@ -301,7 +306,12 @@ function init(config) {
         newContractObj[name].sendTransaction = (...args) =>
           legacySend(method, name, args, argsLength)
 
-        newContractObj[name].getData = contractObj[name].getData
+        // Add any additional properties onto the method function
+        Object.entries(contractObj[name]).forEach(([k, v]) => {
+          if (!Object.keys(newContractObj[name]).includes(k)) {
+            newContractObj[name][k] = v
+          }
+        })
 
         if (overloadedMethodKeys) {
           overloadedMethodKeys.forEach(key => {
@@ -323,7 +333,12 @@ function init(config) {
             newContractObj[name][key].sendTransaction = (...args) =>
               legacySend(method, name, args, argsLength)
 
-            newContractObj[name][key].getData = contractObj[name][key].getData
+            // Add any additional properties onto the method function
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(newContractObj[name][key]).includes(k)) {
+                newContractObj[name][key][k] = v
+              }
+            })
           })
         }
       } else {
@@ -358,6 +373,14 @@ function init(config) {
               constant
                 ? modernCall(method, name, args)
                 : modernSend(method, name, args)
+
+            // Add any additional properties onto the method function
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(methodsObj[name]).includes(k)) {
+                methodsObj[name][k] = v
+              }
+            })
+
             seenMethods.push(name)
           }
 
@@ -375,6 +398,13 @@ function init(config) {
             constant
               ? modernCall(overloadedMethod, name, args)
               : modernSend(overloadedMethod, name, args)
+
+          // Add any additional properties onto the method function
+          Object.entries(overloadedMethod).forEach(([k, v]) => {
+            if (!Object.keys(methodsObj[overloadedMethodKey]).includes(k)) {
+              methodsObj[overloadedMethodKey][k] = v
+            }
+          })
 
           return methodsObj
         }, {})
@@ -417,7 +447,7 @@ function init(config) {
       txObject,
       sendMethod,
       callback,
-      inlineCustomMsgs
+      inlineCustomMsgs.messages
     )
   }
 }

@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4'
 import { handleEvent } from './events'
+import { state } from './state'
 
 // Nice time format
 export function formatTime(number) {
@@ -9,6 +10,32 @@ export function formatTime(number) {
     minute: 'numeric',
     hour12: true
   })
+}
+
+// notificationPosition can be a string, or an object containing
+// 'mobile' and 'desktop' keys. Return the correct notificationPosition
+// based on the current config and user environment
+export function getNotificationsPosition() {
+  const defaults = {
+    mobile: 'top',
+    desktop: 'bottomRight'
+  }
+  const { mobileDevice } = state
+  const { notificationsPosition } = state.config.style
+
+  // Default on desktop is bottom right, mobile top
+  if (!notificationsPosition)
+    return mobileDevice ? defaults.mobile : defaults.desktop
+
+  // If notificationsPosition is a string (old API), use the value only on desktop
+  if (typeof notificationsPosition === 'string') {
+    return mobileDevice ? defaults.mobile : notificationsPosition
+  }
+
+  // If notificationsPosition is an object, set the val based on the user environment
+  return mobileDevice
+    ? notificationsPosition.mobile || defaults.mobile
+    : notificationsPosition.desktop || defaults.desktop
 }
 
 export function timeString(time) {
