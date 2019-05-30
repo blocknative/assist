@@ -8,13 +8,16 @@ import {
   removeTransactionFromQueue
 } from './transaction-queue'
 
+export const bnWsEndpoint =
+  process.env.BN_WS_ENDPOINT || 'wss://api.blocknative.com/v0'
+
 // Create websocket connection
 export function openWebsocketConnection() {
   updateState({ pendingSocketConnection: true })
 
   let socket
   try {
-    socket = new WebSocket('wss://api.blocknative.com/v0')
+    socket = new WebSocket(bnWsEndpoint)
   } catch (errorObj) {
     assistLog(errorObj)
   }
