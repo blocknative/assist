@@ -371,7 +371,16 @@ export function requestLoginEnable() {
 }
 
 export function getCurrentProvider() {
+  if (window.ethereum) {
+    if (window.ethereum.isMetaMask) {
+      return 'metamask'
+    }
+    return
+  }
+
   const web3 = state.web3Instance || window.web3
+  if (!web3) return
+
   if (web3.currentProvider.isMetaMask) {
     return 'metamask'
   }
@@ -405,8 +414,6 @@ export function getCurrentProvider() {
   if (web3.currentProvider.connection) {
     return 'Infura Websocket'
   }
-
-  return undefined
 }
 
 // Poll for a tx receipt
