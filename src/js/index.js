@@ -418,7 +418,7 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txObject, callback, inlineCustomMsgs) {
+  function Transaction(txObject, callback, inlineCustomMsgs = {}) {
     if (!state.validApiKey) {
       const errorObj = new Error('Your api key is not valid')
       errorObj.eventCode = 'initFail'
