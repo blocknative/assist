@@ -1,8 +1,12 @@
 import '@babel/polyfill'
 import { promisify } from 'bluebird'
-import assistStyles from '~/css/styles.css'
 
-import { state, updateState, filteredState } from './helpers/state'
+import {
+  state,
+  updateState,
+  filteredState,
+  initializeConfig
+} from './helpers/state'
 import { handleEvent } from './helpers/events'
 import notify from './logic/user-initiated-notify'
 import {
@@ -47,7 +51,7 @@ function init(config) {
     errorObj.eventCode = 'initFail'
     throw errorObj
   } else {
-    updateState({ config })
+    initializeConfig(config)
   }
 
   const { web3, dappId, mobileBlocked, headlessMode, style } = config
@@ -78,7 +82,7 @@ function init(config) {
 
   // Commit a cardinal sin and create an iframe (to isolate the CSS)
   if (!state.iframe && !headlessMode) {
-    createIframe(document, assistStyles, style)
+    createIframe(document, style)
   }
 
   // Check if on mobile and mobile is blocked
@@ -142,7 +146,7 @@ function init(config) {
       mobileDevice,
       validApiKey,
       supportedNetwork,
-      config: { headlessMode }
+      config: { headlessMode, mobileBlocked }
     } = state
 
     if (!validApiKey) {
@@ -157,36 +161,8 @@ function init(config) {
       throw errorObj
     }
 
-    if (headlessMode) {
-      return new Promise(async (resolve, reject) => {
-        await checkUserEnvironment().catch(reject)
-
-        const {
-          mobileDevice,
-          validBrowser,
-          web3Wallet,
-          accessToAccounts,
-          correctNetwork,
-          minimumBalance
-        } = state
-
-        if (
-          mobileDevice ||
-          !validBrowser ||
-          !web3Wallet ||
-          !accessToAccounts ||
-          !correctNetwork ||
-          !minimumBalance
-        ) {
-          reject(filteredState())
-        }
-
-        resolve(filteredState())
-      })
-    }
-
-    // If user is on mobile, warn that it isn't supported
-    if (mobileDevice) {
+    // If user is on mobile and it is blocked, warn that it isn't supported
+    if (mobileDevice && mobileBlocked) {
       return new Promise((resolve, reject) => {
         handleEvent(
           { eventCode: 'mobileBlocked', categoryCode: 'onboard' },
@@ -200,6 +176,36 @@ function init(config) {
         )
 
         updateState({ validBrowser: false })
+      })
+    }
+
+    if (headlessMode) {
+      return new Promise(async (resolve, reject) => {
+        if (mobileDevice && window.ethereum) {
+          await window.ethereum.enable().catch()
+        }
+
+        await checkUserEnvironment().catch()
+
+        const {
+          validBrowser,
+          web3Wallet,
+          accessToAccounts,
+          correctNetwork,
+          minimumBalance
+        } = state
+
+        if (
+          (!validBrowser && !mobileDevice) ||
+          !web3Wallet ||
+          !accessToAccounts ||
+          !correctNetwork ||
+          !minimumBalance
+        ) {
+          reject(filteredState())
+        }
+
+        resolve(filteredState())
       })
     }
 
@@ -222,9 +228,8 @@ function init(config) {
     const {
       validApiKey,
       supportedNetwork,
-      mobileDevice,
       web3Instance,
-      config: { mobileBlocked, truffleContract, ethers }
+      config: { truffleContract, ethers }
     } = state
 
     if (!validApiKey) {
@@ -237,11 +242,6 @@ function init(config) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
       throw errorObj
-    }
-
-    // if user is on mobile, and mobile is allowed by Dapp then just pass the contract back
-    if (mobileDevice && !mobileBlocked) {
-      return contractObj
     }
 
     // Check if we have an instance of web3
@@ -308,7 +308,12 @@ function init(config) {
         newContractObj[name].sendTransaction = (...args) =>
           legacySend({ contractObj, methodName: name, args, argsLength })
 
-        newContractObj[name].getData = contractObj[name].getData
+        // Add any additional properties onto the method function
+        Object.entries(contractObj[name]).forEach(([k, v]) => {
+          if (!Object.keys(newContractObj[name]).includes(k)) {
+            newContractObj[name][k] = v
+          }
+        })
 
         if (overloadedMethodKeys) {
           overloadedMethodKeys.forEach(overloadKey => {
@@ -354,8 +359,12 @@ function init(config) {
                 argsLength
               })
 
-            newContractObj[name][overloadKey].getData =
-              contractObj[name][overloadKey].getData
+            // Add any additional properties onto the method function
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(newContractObj[name][key]).includes(k)) {
+                newContractObj[name][key][k] = v
+              }
+            })
           })
         }
       } else {
@@ -390,6 +399,14 @@ function init(config) {
               constant
                 ? modernCall(method, name, args)
                 : modernSend(method, name, args)
+
+            // Add any additional properties onto the method function
+            Object.entries(method).forEach(([k, v]) => {
+              if (!Object.keys(methodsObj[name]).includes(k)) {
+                methodsObj[name][k] = v
+              }
+            })
+
             seenMethods.push(name)
           }
 
@@ -406,6 +423,13 @@ function init(config) {
             constant
               ? modernCall({ contractObj, methodName: name, args })
               : modernSend({ contractObj, methodName: name, args })
+
+          // Add any additional properties onto the method function
+          Object.entries(overloadedMethod).forEach(([k, v]) => {
+            if (!Object.keys(methodsObj[overloadedMethodKey]).includes(k)) {
+              methodsObj[overloadedMethodKey][k] = v
+            }
+          })
 
           return methodsObj
         }, {})
@@ -448,13 +472,6 @@ function init(config) {
       configureWeb3()
     }
 
-    // if user is on mobile, and mobile is allowed by Dapp just put the transaction through
-    if (mobileDevice && !mobileBlocked) {
-      return ethers
-        ? getEthersProvider().sendTransaction(txOptions, callback)
-        : web3Instance.eth.sendTransaction(txOptions, callback)
-    }
-
     const sendMethod = ethers
       ? txOptions =>
           getEthersProvider()
@@ -469,7 +486,7 @@ function init(config) {
       txOptions,
       sendMethod,
       callback,
-      inlineCustomMsgs
+      inlineCustomMsgs: inlineCustomMsgs.messages
     })
   }
 }

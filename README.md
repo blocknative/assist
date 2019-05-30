@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.7.2.
+The current version is 0.8.3.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-7-2/assist.js"></script>
+<script src="https://assist.blocknative.com/0-8-3/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-7-2/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-8-3/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -64,7 +64,7 @@ is as follows:
 var bncAssistConfig = {
   dappId: apiKey,       // [String] The API key created on https://account.blocknative.com
 
-  networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployd on.
+  networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployed on.
                         //           See below for instructions on how to setup for local blockchains.
 };
 
@@ -84,7 +84,7 @@ assistInstance.onboard()
   .then(function(state) {
     // User has been successfully onboarded and is ready to transact
     // Will resolve with the current state of the user
-    // This means we can be sure of the follwing user properties:
+    // This means we can be sure of the following user properties:
     //  - They are using a compatible browser
     //  - They have a web3-enabled wallet installed
     //  - The wallet is connected to the config-specified networkId
@@ -131,6 +131,38 @@ To speed things up, you can decorate the contract inline:
 var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
 ```
 
+### `promiEvent`
+
+If using web3 versions 1.0 and you would like to listen for the events triggered on the `promiEvent` that is normally returned from a transaction call, Assist returns the `promiEvent`, but it is wrapped in an object to prevent it from resolving internally in Assist. To get access to the `promiEvent` object you can call your methods like this:
+
+```javascript
+const { promiEvent } = await decoratedContract.myMethod(param).send(txOptions)
+
+promiEvent.on('receipt', () => {
+  // ...
+})
+```
+
+### Initializing `web3` and including it in the `config`
+
+`web3` isn't a required parameter as you might not have access to a web3 provider to instantiate web3 with until after the user has been onboarded and has a wallet installed. We recommend instantiating `web3` at the top level of your dapp once the window object is available like this:
+
+```javascript
+let web3Instance
+
+if (window.ethereum) {
+  web3Instance = new Web3(window.ethereum)
+}
+
+if (window.web3) {
+  web3Instance = new Web3(window.web3.currentProvider)
+}
+```
+
+Pass this instance in to the config (even if it is undefined). If the user didn't have a wallet when first arriving to your dapp, they will go through onboarding which will refresh the page once they have a wallet. On the refresh, the above web3 instantiation code will now get initialized with the provider.
+
+If you _don't_ include your instantiated web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then you're contracts won't be decorated correctly.
+
 ## API Reference
 
 ### Config
@@ -173,12 +205,48 @@ var config = {
   },
   style: {
     darkMode: Boolean, // Set Assist UI to dark mode
-    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+    notificationsPosition: Object || String, // Defines where in the viewport notifications will be positioned. See below: 'Notification Positioning'
     css: String // Custom css string to overide Assist default styles
   },
   truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
 }
 ```
+
+### Notification Positioning
+
+The position that notifications appear in the viewport can be configured by defining `style.notificationsPosition` in your config when initializing assist.
+
+`notificationsPosition` can be either a `String` which will set only the desktop position, or an `Object` containing params `desktop` and/or `mobile` which set the notification position on desktop and mobile respectively.
+
+Options for setting `desktop` positions: `['topLeft', 'topRight', 'bottomLeft', 'bottomRight']`
+
+Options for setting `mobile` positions: `['top', 'bottom']`
+
+By default, `Assist` positions notifications at the `top` of the viewport on mobile, and the `bottomRight` of the viewport on desktop.
+
+#### Examples
+
+```javascript
+// Set notifications to bottom on mobile and top right on desktop
+const config = {
+  style: {
+    notificationsPosition: {
+      desktop: 'topLeft',
+      mobile: 'bottom'
+    }
+  }
+}
+```
+
+```javascript
+// Sets only the desktop position
+const config = {
+  style: {
+    notificationsPosition: 'bottomRight'
+  }
+}
+```
+
 
 ### Custom Transaction Messages
 
@@ -305,7 +373,14 @@ By default, Assist will create UI elements in your application at certain times 
 
 ### Mobile Dapps
 
-Assist doesn't currently support mobile dapp browsers. If your dapp also _doesn't_ support mobile browsers, setting `mobileBlocked: true` in the config will detect mobile user agents and show UI that will direct them to use a desktop browser instead. If your dapp _does_ support mobile devices then Assist will be disabled and your transactions and contracts will work as normal. However if you call the `onboard` function when a user is on a mobile device, Assist will show a mobile not supported UI as onboarding isn't supported on mobile. So it is advised to check if a user is on a mobile device before calling `onboard`. Calling `getState` and referring to the `mobileDevice` property is an easy way of doing that.
+If your dapp _doesn't_ support mobile browsers, setting `mobileBlocked: true` in the config will detect mobile user agents and show UI that will direct them to use a desktop browser instead.
+
+Assist supports mobile onboarding and transaction support. The onboarding UI has a modal for making sure that the user:
+
+- Is on a mobile dapp browser/wallet
+- Is on the correct network
+- Has enabled connection to their wallet (if the wallet is using a modern ethereum provider)
+- Has the minimum balance (if set in the config)
 
 ### Minimum Balance
 
@@ -428,23 +503,24 @@ assistInstance.getState()
 const style = {
     darkMode: Boolean, // Set Assist UI to dark mode
     css: String, // Custom css string to overide Assist default styles
-    notificationsPosition: String, // Defines which corner transaction notifications will be positioned. Options: 'topLeft', 'topRight', 'bottomRight', 'bottomLeft'. ['bottomRight']
+    notificationsPosition: String || Object, // Defines which corner transaction notifications will be positioned. See 'Notification Positioning'
 }
 ```
 
 #### Examples
 
 ```javascript
-// Enable dark mode
+// Enable dark mode and position notifications at the bottom left on desktop
 const style = {
-  darkMode: true
+  darkMode: true,
+  notificationsPosition: 'bottomLeft'
 }
 assistInstance.updateStyle(style)
 
-// Disable dark mode and set notification background to black
+// Position notifications at the bottom of the viewport on mobile and set their background to black
 const style = {
-  darkMode: false,
-  css: `.bn-notification { background: black }`
+  css: `.bn-notification { background: black }`,
+  notificationsPosition: { mobile: 'bottom' }
 }
 assistInstance.updateStyle(style)
 ```

@@ -61,7 +61,7 @@ export const web3Functions = {
   contractGas: version => {
     switch (version) {
       case '0.2':
-        return ({ contractObj, methodName, overloadKey, args, txOptions }) => {
+        return ({ contractObj, methodName, overloadKey, args }) => {
           const contractMethod = getContractMethod({
             contractObj,
             methodName,
@@ -69,8 +69,8 @@ export const web3Functions = {
           })
 
           return state.config.truffleContract
-            ? contractMethod.estimateGas(...args, txOptions)
-            : promisify(contractMethod.estimateGas)(...args, txOptions)
+            ? contractMethod.estimateGas(...args)
+            : promisify(contractMethod.estimateGas)(...args)
         }
 
       case '1.0':
@@ -82,12 +82,12 @@ export const web3Functions = {
           })
 
           return state.config.truffleContract
-            ? contractMethod.estimateGas(...args, txOptions)
+            ? contractMethod.estimateGas(...args)
             : contractMethod(...args).estimateGas(txOptions)
         }
       case 'ethers':
-        return ({ contractObj, methodName, overloadKey, args, txOptions }) =>
-          contractObj.estimate[overloadKey || methodName](...args, txOptions)
+        return ({ contractObj, methodName, overloadKey, args }) =>
+          contractObj.estimate[overloadKey || methodName](...args)
       default:
         return () => Promise.reject(errorObj)
     }
@@ -194,7 +194,7 @@ export function configureWeb3(web3) {
 }
 
 export function checkForWallet() {
-  if (window.ethereum && window.web3.version) {
+  if (window.ethereum) {
     updateState({
       currentProvider: getCurrentProvider(),
       validBrowser: true,
@@ -289,7 +289,11 @@ export function getTransactionParams({
   })
 }
 
-export function hasSufficientBalance({ value = 0, gas = 0, gasPrice = 0 }) {
+export async function hasSufficientBalance({
+  value = 0,
+  gas = 0,
+  gasPrice = 0
+}) {
   return new Promise(async resolve => {
     const version = state.config.ethers
       ? 'ethers'
@@ -357,11 +361,9 @@ export function getAccounts() {
 }
 
 export function checkUnlocked() {
-  return (
-    window.ethereum &&
-    window.ethereum._metamask &&
-    window.ethereum._metamask.isUnlocked()
-  )
+  return window.ethereum._metamask && window.ethereum._metamask.isUnlocked
+    ? window.ethereum._metamask.isUnlocked()
+    : Promise.resolve(true)
 }
 
 export function requestLoginEnable() {

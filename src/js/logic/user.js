@@ -17,12 +17,17 @@ import { closeModal, addOnboardWarning } from '~/js/views/dom'
 
 export function checkUserEnvironment() {
   return new Promise(async resolve => {
-    checkValidBrowser()
+    if (!state.mobileDevice) {
+      checkValidBrowser()
+    }
 
     checkForWallet()
 
     if (!state.web3Wallet) {
-      storeItem('_assist_newUser', 'true')
+      if (!state.mobileDevice) {
+        storeItem('_assist_newUser', 'true')
+      }
+
       resolve()
       return
     }
@@ -66,7 +71,7 @@ export function prepareForTransaction(categoryCode, originalResolve) {
     }
 
     if (getItem('_assist_newUser') === 'true') {
-      if (!state.validBrowser) {
+      if (!state.validBrowser && !state.mobileDevice) {
         handleEvent(
           {
             eventCode: 'browserFail',
@@ -105,7 +110,15 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       }
     }
 
-    if (!state.web3Instance && !state.config.ethers) {
+    if ((!state.web3Instance && !state.config.ethers) || !state.web3Wallet) {
+      if (state.mobileDevice) {
+        try {
+          await getWeb3Wallet(categoryCode)
+        } catch (errorObj) {
+          reject(errorObj)
+        }
+        return
+      }
       configureWeb3()
     }
 
@@ -185,7 +198,7 @@ function getWeb3Wallet(categoryCode) {
   return new Promise((resolve, reject) => {
     handleEvent(
       {
-        eventCode: 'walletFail',
+        eventCode: state.mobileDevice ? 'mobileWalletFail' : 'walletFail',
         categoryCode,
         wallet: {
           provider: state.currentProvider
@@ -197,11 +210,19 @@ function getWeb3Wallet(categoryCode) {
             const errorObj = new Error(
               'User does not have a web3 wallet installed'
             )
-            errorObj.eventCode = 'walletFail'
+            errorObj.eventCode = state.mobileDevice
+              ? 'mobileWalletFail'
+              : 'walletFail'
             reject(errorObj)
           }, timeouts.changeUI),
         onClick: () => {
-          window.location.reload()
+          if (state.mobileDevice) {
+            window.location = `https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
+              window.location.href
+            }`
+          } else {
+            window.location.reload()
+          }
         }
       }
     )
@@ -331,7 +352,9 @@ function enableWallet(categoryCode, originalResolve) {
           // cancelling, so we show enable account UI
           handleEvent(
             {
-              eventCode: 'walletEnable',
+              eventCode: state.mobileDevice
+                ? 'mobileWalletEnable'
+                : 'walletEnable',
               categoryCode,
               wallet: {
                 provider: state.currentProvider
@@ -341,7 +364,9 @@ function enableWallet(categoryCode, originalResolve) {
               onClose: () =>
                 setTimeout(() => {
                   const errorObj = new Error('User needs to enable wallet')
-                  errorObj.eventCode = 'walletEnable'
+                  errorObj.eventCode = state.mobileDevice
+                    ? 'mobileWalletEnable'
+                    : 'walletEnable'
                   reject(errorObj)
                 }, timeouts.changeUI),
               onClick: async () => {
@@ -400,7 +425,7 @@ function enableWallet(categoryCode, originalResolve) {
       // Show UI to inform user to connect
       handleEvent(
         {
-          eventCode: 'walletEnable',
+          eventCode: state.mobileDevice ? 'mobileWalletEnable' : 'walletEnable',
           categoryCode,
           wallet: {
             provider: state.currentProvider
@@ -410,7 +435,9 @@ function enableWallet(categoryCode, originalResolve) {
           onClose: () =>
             setTimeout(() => {
               const errorObj = new Error('User needs to enable wallet')
-              errorObj.eventCode = 'walletEnable'
+              errorObj.eventCode = state.mobileDevice
+                ? 'mobileWalletEnable'
+                : 'walletEnable'
               reject(errorObj)
             }, timeouts.changeUI),
           onClick: async () => {
@@ -461,7 +488,7 @@ function enableWallet(categoryCode, originalResolve) {
       // Show UI to inform user to connect
       handleEvent(
         {
-          eventCode: 'walletEnable',
+          eventCode: state.mobileDevice ? 'mobileWalletEnable' : 'walletEnable',
           categoryCode,
           wallet: {
             provider: state.currentProvider
@@ -471,7 +498,9 @@ function enableWallet(categoryCode, originalResolve) {
           onClose: () =>
             setTimeout(() => {
               const errorObj = new Error('User needs to enable wallet')
-              errorObj.eventCode = 'walletEnable'
+              errorObj.eventCode = state.mobileDevice
+                ? 'mobileWalletEnable'
+                : 'walletEnable'
               reject(errorObj)
             }, timeouts.changeUI),
           onClick: async () => {
@@ -520,7 +549,9 @@ function unlockWallet(categoryCode, originalResolve) {
     // Show onboard login UI
     handleEvent(
       {
-        eventCode: 'walletLoginEnable',
+        eventCode: state.mobileDevice
+          ? 'mobileWalletEnable'
+          : 'walletLoginEnable',
         categoryCode,
         wallet: {
           provider: state.currentProvider
@@ -530,7 +561,9 @@ function unlockWallet(categoryCode, originalResolve) {
         onClose: () =>
           setTimeout(() => {
             const errorObj = new Error('User needs to login to wallet')
-            errorObj.eventCode = 'walletLoginEnable'
+            errorObj.eventCode = state.mobileDevice
+              ? 'mobileWalletEnable'
+              : 'walletLoginEnable'
             reject(errorObj)
           }, timeouts.changeUI),
         onClick: async () => {
@@ -593,7 +626,7 @@ export function getCorrectNetwork(categoryCode) {
   return new Promise(async (resolve, reject) => {
     handleEvent(
       {
-        eventCode: 'networkFail',
+        eventCode: state.mobileDevice ? 'mobileNetworkFail' : 'networkFail',
         categoryCode,
         walletNetworkID: state.userCurrentNetworkId,
         walletName: state.currentProvider
@@ -602,7 +635,9 @@ export function getCorrectNetwork(categoryCode) {
         onClose: () =>
           setTimeout(() => {
             const errorObj = new Error('User is on the wrong network')
-            errorObj.eventCode = 'networkFail'
+            errorObj.eventCode = state.mobileDevice
+              ? 'mobileNetworkFail'
+              : 'networkFail'
             reject(errorObj)
           }, timeouts.changeUI),
         onClick: async () => {

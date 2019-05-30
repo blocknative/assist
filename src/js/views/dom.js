@@ -4,7 +4,8 @@ import {
   timeString,
   timeouts,
   stepToImageKey,
-  first
+  first,
+  getNotificationsPosition
 } from '~/js/helpers/utilities'
 import { showIframe, hideIframe, resizeIframe } from '~/js/helpers/iframe'
 
@@ -19,8 +20,7 @@ import {
 
 // Update UI styles based on the current style.notificationsPosition value
 export function updateNotificationsPosition() {
-  const { notificationsPosition } = state.config.style
-  if (!notificationsPosition) return
+  const notificationsPosition = getNotificationsPosition()
   positionElement(state.iframe)
 
   // Position notificationsContainer and reorder it's elements
@@ -125,6 +125,7 @@ export function closeModal() {
   window.removeEventListener('resize', handleWindowResize)
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
+  removeTouchHandlers(modal)
 
   const notifications = getById('blocknative-notifications')
   if (notifications) {
@@ -134,6 +135,7 @@ export function closeModal() {
     })
   } else {
     hideIframe()
+    resizeIframe({ height: 0, width: 0 })
   }
 
   setTimeout(() => {
@@ -154,10 +156,23 @@ export function openModal(modal, handlers = {}) {
     closeModal()
   }
 
+  if (state.mobileDevice) {
+    closeButton.ontouchstart = () => {
+      onClose && onClose()
+      closeModal()
+    }
+  }
+
   const completeStepButton = modal.querySelector('.bn-btn')
   if (completeStepButton) {
     completeStepButton.onclick = () => {
       onClick && onClick()
+    }
+
+    if (state.mobileDevice) {
+      completeStepButton.ontouchstart = () => {
+        onClick && onClick()
+      }
     }
   }
 
@@ -200,6 +215,35 @@ export function browserLogos() {
   `
 }
 
+function walletLogos() {
+  const { trustLogo, coinbaseLogo } = imageSrc
+
+  return `
+    <p class="flex-row">
+      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
+        window.location.href
+      }" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <img
+        src="${trustLogo.src}" 
+        alt="Chrome Logo" 
+        srcset="${trustLogo.srcset} 2x"
+      />
+      <br>
+      Trust
+      </a>
+      <a href="https://go.cb-w.com/" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <img
+        src="${coinbaseLogo.src}" 
+        alt="Firefox Logo" 
+        srcset="${coinbaseLogo.srcset} 2x"
+      />
+      <br>
+      Coinbase
+      </a>
+    </p>
+  `
+}
+
 export function onboardBranding() {
   const { blockNativeLogo, blockNativeLogoLight } = imageSrc
   const { style } = state.config
@@ -225,6 +269,7 @@ export function notSupportedModal(type) {
   const info = notSupported[`${type}NotSupported`]
   const { style } = state.config
   const darkMode = style && style.darkMode
+  const variant = darkMode ? 'Light' : ''
 
   return `
     <div id="bn-${type}-not-supported" class="bn-onboard">
@@ -232,12 +277,19 @@ export function notSupportedModal(type) {
         <a href="#" class="bn-onboard-close">
           <span class="bn-onboard-close-x"></span>
         </a>
-        ${notSupportedImage(`${type}${darkMode ? 'Light' : ''}`)}
+        ${notSupportedImage(type + variant)}
         <br><br>
         <h1 class="h4">${info.heading}</h1>
         <p>${info.description()}</p>
         <br>
-        ${type === 'browser' ? `${browserLogos()}<br>` : ''}
+        ${
+          type === 'browser'
+            ? browserLogos()
+            : type === 'mobileWallet'
+            ? walletLogos()
+            : ''
+        }
+        <br>
         ${onboardBranding()}
       </div>
     </div>
@@ -298,19 +350,36 @@ export function onboardMain(type, step) {
       ? onboardButton[step][type]()
       : onboardButton[step][type]
 
-  const defaultImages = imageSrc[step]
+  const {
+    config: { style }
+  } = state
+
+  const darkMode = style && style.darkMode
+  const variant = darkMode ? 'Light' : ''
+
+  const defaultImages = imageSrc[step + variant] || imageSrc[step]
 
   const { images } = state.config
   const stepKey = stepToImageKey(step)
   const devImages = images && images[stepKey]
+  const onboardImages = {
+    src: (devImages && devImages.src) || (defaultImages && defaultImages.src),
+    srcset:
+      (devImages && devImages.srcset && devImages.srcset) ||
+      (defaultImages && defaultImages.srcset)
+  }
 
   return `
-    <img
+    ${
+      onboardImages.src
+        ? `<img
       src="${(devImages && devImages.src) || defaultImages.src}" 
       class="bn-onboard-img" 
       alt="Blocknative" 
       srcset="${(devImages && devImages.srcset && devImages.srcset) ||
-        defaultImages.srcset} 2x"/>
+        defaultImages.srcset} 2x"/>`
+        : ''
+    }
     <br>
     <h1 class="h4">${heading}</h1>
     <p>${description}</p>
@@ -387,6 +456,8 @@ export function getAllByQuery(query) {
 }
 
 export function createTransactionBranding() {
+  const position = getNotificationsPosition()
+
   const blockNativeBrand = createElement(
     'a',
     null,
@@ -395,9 +466,17 @@ export function createTransactionBranding() {
   )
   blockNativeBrand.href = 'https://www.blocknative.com/'
   blockNativeBrand.target = '_blank'
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
-  blockNativeBrand.style.float = position.includes('Left') ? 'initial' : 'right'
+  if (state.mobileDevice) {
+    blockNativeBrand.classList.add('mobile-margin')
+  } else {
+    if (position.includes('Left')) {
+      blockNativeBrand.classList.add('align-start')
+    }
+
+    if (position.includes('top')) {
+      blockNativeBrand.classList.add('margin-top')
+    }
+  }
 
   return blockNativeBrand
 }
@@ -405,8 +484,7 @@ export function createTransactionBranding() {
 export function notificationContent(type, message, time = {}) {
   const { showTime, startTime, timeStamp } = time
   const elapsedTime = timeString(Date.now() - startTime)
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
   return `
 		<span class="bn-status-icon ${
@@ -432,7 +510,7 @@ export function notificationContent(type, message, time = {}) {
 					<i class="bn-clock"></i>
 					<span class="bn-duration-time">${elapsedTime}</span>
 				</span>
-			</p>
+      </p>
 		</div>
 	`
 }
@@ -473,7 +551,9 @@ export function showElement(element, timeout) {
 export function hideElement(element) {
   setTimeout(() => {
     element.style.opacity = '0'
-    element.style.transform = `translateX(${getPolarity()}600px)`
+    element.style.transform = `translate${
+      state.mobileDevice ? 'Y' : 'X'
+    }(${getPolarity()}${state.mobileDevice ? '150' : '600'}px)`
   }, timeouts.hideElement)
 }
 
@@ -489,23 +569,35 @@ export function removeElement(parent, element) {
 }
 
 function getPolarity() {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
+
+  if (state.mobileDevice) {
+    return position.includes('top') ? '-' : ''
+  }
 
   return position.includes('Left') ? '-' : ''
 }
 
 export function offsetElement(el) {
-  el.style.transform = `translate(${getPolarity()}600px)`
+  el.style.transform = `translate${
+    state.mobileDevice ? 'Y' : 'X'
+  }(${getPolarity()}${state.mobileDevice ? '150' : '600'}px)`
   return el
 }
 
 export function positionElement(el) {
-  const position =
-    (state.config.style && state.config.style.notificationsPosition) || ''
+  const position = getNotificationsPosition()
 
-  el.style.left = position.includes('Left') ? '0px' : 'initial'
-  el.style.right = position.includes('Right') || !position ? '0px' : 'initial'
+  el.style.left = state.mobileDevice
+    ? 'initial'
+    : position.includes('Left')
+    ? '0px'
+    : 'initial'
+  el.style.right = state.mobileDevice
+    ? 'initial'
+    : position.includes('Right') || !position
+    ? '0px'
+    : 'initial'
   el.style.bottom = position.includes('bottom') || !position ? '0px' : 'initial'
   el.style.top = position.includes('top') ? '0px' : 'initial'
 
@@ -562,8 +654,9 @@ export function setNotificationsHeight() {
   // if no notifications to manipulate return
   if (!scrollContainer) return
   const maxHeight = window.innerHeight
-  const brandingHeight = getById('bn-transaction-branding').clientHeight + 26
-  const widgetHeight = scrollContainer.scrollHeight + brandingHeight
+  const branding = getById('bn-transaction-branding')
+  const brandingHeight = branding ? branding.clientHeight + 26 : 0
+  const widgetHeight = scrollContainer.clientHeight + brandingHeight
 
   const tooBig = widgetHeight > maxHeight
 
@@ -575,16 +668,89 @@ export function setNotificationsHeight() {
   }
 
   const notificationsContainer = getById('blocknative-notifications')
-  const toolTipBuffer = !tooBig ? 50 : 0
+  const toolTipBuffer = !tooBig && !state.mobileDevice ? 50 : 0
 
   resizeIframe({
     height: notificationsContainer.clientHeight + toolTipBuffer,
-    width: 371,
+    width: state.mobileDevice ? window.innerWidth : 371,
     transitionHeight: true
   })
 }
 
 function setHeight(el, overflow, height) {
-  el.style['overflow-y'] = overflow
-  el.style.height = height
+  if (el) {
+    el.style['overflow-y'] = overflow
+    el.style.height = height
+  }
+}
+
+export function addTouchHandlers(element, type) {
+  element.addEventListener('touchstart', handleTouchStart(element), false)
+  element.addEventListener('touchmove', handleTouchMove(element), false)
+  element.addEventListener('touchend', handleTouchEnd(element, type), false)
+}
+
+export function removeTouchHandlers(element, type) {
+  element.removeEventListener('touchstart', handleTouchStart(element), false)
+  element.removeEventListener('touchmove', handleTouchMove(element), false)
+  element.removeEventListener('touchend', handleTouchEnd(element, type), false)
+}
+
+export function handleTouchStart(element) {
+  return e => {
+    e.stopPropagation()
+    e.preventDefault()
+    const touch = e.changedTouches[0]
+    element.attributes['data-startY'] = touch.screenY
+    element.attributes['data-startX'] = touch.screenX
+    element.attributes['data-startTime'] = Date.now()
+    element.attributes['data-translateY'] = 0
+  }
+}
+
+export function handleTouchMove(element) {
+  return e => {
+    e.stopPropagation()
+    e.preventDefault()
+    const touch = e.changedTouches[0]
+    const startY = element.attributes['data-startY']
+    const translateY = element.attributes['data-translateY']
+    const distanceY = touch.screenY - startY
+
+    const newTranslateY = distanceY + translateY
+
+    if (newTranslateY > -40 && newTranslateY < 40) {
+      element.style.transform = `translateY(${newTranslateY}px)`
+      element.attributes['data-translateY'] = newTranslateY
+    }
+  }
+}
+
+export function handleTouchEnd(element, type) {
+  return e => {
+    e.stopPropagation()
+    e.preventDefault()
+    const touch = e.changedTouches[0]
+    const startY = element.attributes['data-startY']
+    const startX = element.attributes['data-startX']
+    const startTime = element.attributes['data-startTime']
+    const distanceY = touch.screenY - startY
+    const distanceX = touch.screenX - startX
+    const elapsedTime = Date.now() - startTime
+    const validDistance =
+      distanceY <= -40 || distanceY >= 40 || distanceX <= -40 || distanceX >= 40
+    const validSwipe = elapsedTime <= timeouts.swipeTime && validDistance
+
+    if (!validSwipe) {
+      element.style.transform = 'translateY(0)'
+      element.attributes['data-translateY'] = 0
+    } else {
+      removeTouchHandlers(element)
+      if (type === 'notification') {
+        removeNotification(element)
+      } else {
+        closeModal()
+      }
+    }
+  }
 }

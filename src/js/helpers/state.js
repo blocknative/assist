@@ -2,7 +2,11 @@ export const initialState = {
   version: null,
   validApiKey: 'unknown',
   supportedNetwork: 'unknown',
-  config: null,
+  config: {
+    style: {},
+    messages: {},
+    images: { welcome: null, complete: null }
+  },
   userAgent: null,
   mobileDevice: null,
   validBrowser: null,
@@ -35,7 +39,23 @@ export const initialState = {
   connectionId: null
 }
 
-export let state = Object.assign({}, initialState)
+export let state = { ...initialState }
+
+// Set the config without overriding any existing values
+export function initializeConfig(initialConfig) {
+  const newConfig = {
+    ...state.config,
+    ...initialConfig
+  }
+
+  if (initialConfig.images) {
+    newConfig.images = {
+      ...state.config.images,
+      ...initialConfig.images
+    }
+  }
+  updateState({ config: newConfig })
+}
 
 export function updateState(newState) {
   state = Object.assign({}, state, newState)

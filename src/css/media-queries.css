@@ -1,0 +1,15 @@
+@media only screen and (min-device-width: 320px) and (max-device-width: 736px) {
+  #blocknative-notifications {
+    padding: 0;
+  }
+  li.bn-notification {
+    border-width: 0px 2px 0px 0px;
+    position: relative;
+  }
+
+  a#bn-transaction-branding {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  }
+}

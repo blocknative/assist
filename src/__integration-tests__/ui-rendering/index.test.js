@@ -18,8 +18,7 @@ export const initialState = Object.assign({}, state, {
     engine: { name: 'Blink' },
     os: { name: 'Linux' },
     platform: { type: 'desktop' }
-  },
-  config: {}
+  }
 })
 
 // Generates the suffix to append to test names that are

@@ -90,12 +90,18 @@ export function modernCall({ contractObj, methodName, overloadKey, args }) {
 }
 
 export function modernSend({ contractObj, methodName, overloadKey, args }) {
-  const innerMethod = getContractMethod({
+  const originalReturnObject = getContractMethod({
     contractObj,
     methodName,
     overloadKey
-  })(...args).send
-  const returnObject = {}
+  })(...args)
+
+  const innerMethod = originalReturnObject.send
+
+  const returnObject = Object.keys(originalReturnObject).reduce((obj, key) => {
+    obj[key] = originalReturnObject[key]
+    return obj
+  }, {})
 
   returnObject.send = (...innerArgs) => {
     const { callback, txOptions, inlineCustomMsgs } = separateArgs(innerArgs, 0)
@@ -176,21 +182,25 @@ export function legacyCall({
     const method =
       truffleContract || ethers ? contractMethod : promisify(contractMethod)
 
-    const result = await method(...methodArgs, txOptions, defaultBlock).catch(
-      errorObj => {
-        handleEvent({
-          eventCode: 'contractQueryFail',
-          categoryCode: 'activeContract',
-          contract: {
-            methodName: overloadKey || methodName,
-            parameters: methodArgs
-          },
-          reason: errorObj.message || errorObj
-        })
+    // Truffle contracts don't support passing txObj or defaultBlock
+    // in the method call
+    const argsToPass = truffleContract
+      ? methodArgs
+      : [...methodArgs, txOptions, defaultBlock]
 
-        handleError({ resolve, reject, callback })(errorObj)
-      }
-    )
+    const result = await method(...argsToPass).catch(errorObj => {
+      handleEvent({
+        eventCode: 'contractQueryFail',
+        categoryCode: 'activeContract',
+        contract: {
+          methodName: overloadKey || methodName,
+          parameters: methodArgs
+        },
+        reason: errorObj.message || errorObj
+      })
+
+      handleError({ resolve, reject, callback })(errorObj)
+    })
 
     handleEvent({
       eventCode: 'contractQuery',

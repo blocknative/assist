@@ -119,25 +119,20 @@ export function handleSocketMessage(msg) {
         })
         break
       case 'confirmed':
-        if (eventCode === 'txConfirmed') {
-          txObj = getTxObjFromQueue(transaction.id)
+        // have already dealt with txConfirmedClient event
+        if (eventCode === 'txConfirmedClient') {
+          return
+        }
 
-          if (txObj.transaction.status === 'confirmed') {
-            txObj = updateTransactionInQueue(transaction.id, {
-              status: 'completed'
-            })
-          } else {
-            txObj = updateTransactionInQueue(transaction.id, {
-              status: 'confirmed'
-            })
-          }
+        txObj = getTxObjFromQueue(transaction.id)
 
-          handleEvent({
-            eventCode: 'txConfirmed',
-            categoryCode: 'activeTransaction',
-            transaction: txObj.transaction,
-            contract: txObj.contract,
-            inlineCustomMsgs: txObj.inlineCustomMsgs
+        if (txObj.transaction.status === 'confirmed') {
+          txObj = updateTransactionInQueue(transaction.id, {
+            status: 'completed'
+          })
+        } else {
+          txObj = updateTransactionInQueue(transaction.id, {
+            status: 'confirmed'
           })
 
           if (txObj.transaction.status === 'completed') {
