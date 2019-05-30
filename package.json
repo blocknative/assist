@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn lint && yarn test && node build.js",
     "build:dev": "node build.js",
-    "build:local-ws": "BN_WS_ENDPOINT='ws://localhost:54100/v0' node build.js",
+    "build:local-bn-server": "BN_WS_ENDPOINT='ws://localhost:54100/v0' node build.js",
     "lint": "eslint src/ --fix",
     "pretest": "multidep multidep.json",
     "test": "TZ=Europe/Paris jest"
