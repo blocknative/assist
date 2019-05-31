@@ -25,7 +25,8 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/no-cycle': 'off',
     'no-lonely-if': 'off',
-    'consistent-return': 'off'
+    'consistent-return': 'off',
+    'no-case-declarations': 'off'
   },
   settings: {
     'import/resolver': {
