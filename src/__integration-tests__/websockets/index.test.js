@@ -6,12 +6,14 @@ import * as websockets from '~/js/helpers/websockets'
 import * as utilities from '~/js/helpers/utilities'
 import * as events from '~/js/helpers/events'
 
+const socketUrl = 'wss://api.blocknative.com/v0'
+
 describe('a websocket connection is requested', () => {
   let mockServer
   const config = { dappId: '123', networkId: '1' }
   beforeEach(() => {
     da.init(config)
-    mockServer = new Server(websockets.bnWsEndpoint)
+    mockServer = new Server(socketUrl)
   })
   afterEach(() => {
     mockServer.close()
@@ -41,7 +43,7 @@ describe('a websocket connection is requested', () => {
       expect(state.socketConnection).toEqual(true)
     })
     test('state.socket refs the socket', () => {
-      expect(state.socket.url).toEqual(websockets.bnWsEndpoint)
+      expect(state.socket.url).toEqual(socketUrl)
     })
     test('event checkDappId is emitted with correct payload', () => {
       expect(handleEventSpy).toBeCalledWith({
@@ -86,7 +88,7 @@ describe('assist is connected to a websocket', () => {
   let mockServer
   beforeEach(() => {
     da.init(config)
-    mockServer = new Server(websockets.bnWsEndpoint)
+    mockServer = new Server(socketUrl)
     websockets.openWebsocketConnection()
     mockServer.emit('open')
   })
