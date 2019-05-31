@@ -17,7 +17,7 @@ import {
 } from './logic/contract-methods'
 import { openWebsocketConnection } from './helpers/websockets'
 import { getUserAgent } from './helpers/browser'
-import getEthersProvider from './helpers/ethers-provider'
+import { getUncheckedSigner } from './helpers/ethers-provider'
 import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
@@ -224,13 +224,21 @@ function init(config) {
 
   // CONTRACT FUNCTION //
 
-  function Contract(contractObj) {
+  function Contract(contractObjOrAddress, ethersAbi) {
     const {
       validApiKey,
       supportedNetwork,
       web3Instance,
       config: { truffleContract, ethers }
     } = state
+
+    const contractObj = ethers
+      ? new ethers.Contract(
+          contractObjOrAddress,
+          ethersAbi,
+          getUncheckedSigner()
+        )
+      : contractObjOrAddress
 
     if (!validApiKey) {
       const errorObj = new Error('Your API key is not valid')
@@ -260,8 +268,7 @@ function init(config) {
     const abi =
       contractObj.abi ||
       contractObj._jsonInterface ||
-      (contractObj.interface &&
-        Object.values(contractObj.interface.functions)) ||
+      (ethers && ethersAbi) ||
       Object.keys(contractObj.abiModel.abi.methods)
         // remove any arrays from the ABI, they contain redundant information
         .filter(key => !Array.isArray(contractObj.abiModel.abi.methods[key]))
@@ -490,10 +497,7 @@ function init(config) {
     }
 
     const sendMethod = ethers
-      ? txOptions =>
-          getEthersProvider()
-            .getUncheckedSigner()
-            .sendTransaction(txOptions)
+      ? txOptions => getUncheckedSigner().sendTransaction(txOptions)
       : legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
       : state.web3Instance.eth.sendTransaction
