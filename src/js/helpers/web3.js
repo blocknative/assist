@@ -1,7 +1,7 @@
 import { promisify } from 'bluebird'
 import { state, updateState } from './state'
 import { formatNumber, handleWeb3Error, timeouts } from './utilities'
-import getEthersProvider from './ethers-provider'
+import { getEthersProvider } from './ethers-provider'
 
 const errorObj = new Error('undefined version of web3')
 errorObj.eventCode = 'initFail'
@@ -34,8 +34,14 @@ export const web3Functions = {
         return value =>
           Promise.resolve(state.web3Instance.utils.toBN(formatNumber(value)))
       case 'ethers':
+        const { ethers } = state.config
+        const ethersVersion = Number(ethers.version[0])
         return value =>
-          Promise.resolve(state.config.ethers.BigNumber.from(value))
+          Promise.resolve(
+            ethersVersion <= 4
+              ? ethers.utils.bigNumberify(value)
+              : ethers.BigNumber.from(value)
+          )
       default:
         return () => Promise.reject(errorObj)
     }

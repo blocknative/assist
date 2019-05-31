@@ -52,9 +52,7 @@ export function checkUserEnvironment() {
 export function prepareForTransaction(categoryCode, originalResolve) {
   return new Promise(async (resolve, reject) => {
     originalResolve = originalResolve || resolve
-
     await checkUserEnvironment()
-
     if (state.mobileDevice && state.config.mobileBlocked) {
       handleEvent(
         { eventCode: 'mobileBlocked', categoryCode },
@@ -271,6 +269,7 @@ export function checkNetwork() {
 function checkMinimumBalance() {
   return new Promise(async (resolve, reject) => {
     await checkAccountAccess()
+
     if (!state.accessToAccounts) {
       resolve()
     }
@@ -278,14 +277,18 @@ function checkMinimumBalance() {
     const version = state.config.ethers
       ? 'ethers'
       : web3Version && web3Version.slice(0, 3)
+
     const minimum = state.config.minimumBalance || 0
-    const account = await getAccountBalance().catch(resolve)
+    const balance = await getAccountBalance().catch(resolve)
+
     const minimumBalance = await web3Functions
       .bigNumber(version)(minimum)
       .catch(reject)
+
     const accountBalance = await web3Functions
-      .bigNumber(version)(account)
+      .bigNumber(version)(balance)
       .catch(reject)
+
     const sufficientBalance = accountBalance.gte(minimumBalance)
 
     updateState({
