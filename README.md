@@ -132,7 +132,7 @@ var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
 
 ### `promiEvent`
 
-If using Web3 versions 1.0 and you would like to listen for the events triggered on the `promiEvent` that is normally returned from a transaction call, Assist returns the `promiEvent`, but it is wrapped in an object to prevent it from resolving internally in Assist. To get access to the `promiEvent` object you can call your methods like this:
+If using `web3.js` version 1.0 and you would like to listen for the events triggered on the `promiEvent` that is normally returned from a transaction call, Assist returns the `promiEvent`, but it is wrapped in an object to prevent it from resolving internally in Assist. To get access to the `promiEvent` object you can call your methods like this:
 
 ```javascript
 const { promiEvent } = await decoratedContract.myMethod(param).send(txOptions)
@@ -144,7 +144,7 @@ promiEvent.on('receipt', () => {
 
 ### Initializing `web3` and including it in the `config`
 
-`web3` isn't a required parameter as you might not have access to a web3 provider to instantiate Web3 with until after the user has been onboarded and has a wallet installed. We recommend instantiating `web3` at the top level of your Dapp once the window object is available like this:
+`web3` isn't a required parameter as you might not have access to a provider to instantiate Web3 with until after the user has been onboarded and has a wallet installed. We recommend instantiating `web3` at the top level of your Dapp once the window object is available like this:
 
 ```javascript
 let web3Instance
@@ -160,7 +160,7 @@ if (window.web3) {
 
 Pass this instance in to the config (even if it is undefined). If the user didn't have a wallet when first arriving to your Dapp, they will go through onboarding which will refresh the page once they have a wallet. On the refresh, the above Web3 instantiation code will now get initialized with the provider.
 
-If you _don't_ include your instantiated web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then your contracts won't be decorated correctly.
+If you _don't_ include your instantiated Web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then your contracts won't be decorated correctly.
 
 ## API Reference
 
