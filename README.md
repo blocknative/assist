@@ -245,7 +245,6 @@ const config = {
 }
 ```
 
-
 ### Custom Transaction Messages
 
 Custom transaction messages can be set to override the default messages `Assist` provides. To do this you provide callback functions for each `eventCode` that you want to override. The callback functions must return a `String` and will be called with the following object to provide context information about the transaction:
@@ -288,6 +287,20 @@ var config = {
 ```
 
 Sometimes you want more granular control over the transaction messages and you have all the relevant information you need to create a custom transaction message at the time of calling the method. In that case you can also add custom transactions messages inline with your transaction calls which take precedent over the messages set globally in the config.
+
+#### Messages Object
+
+The messages object takes the following shape:
+
+```javascript
+var customMsgs = {
+  messages: {
+    txPending: () => 'sending Eth',
+    txConfirmed: () => 'Eth sent!',
+    // more message callbacks here
+  }
+}
+```
 
 #### Example
 
