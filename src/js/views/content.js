@@ -207,7 +207,7 @@ export function onboardWarningMsg(type) {
         ${state.config.minimumBalance / 1000000000000000000} ${capitalize(
         networkName(state.userCurrentNetworkId)
       )} ${
-        state.userCurrentNetworkId === '1' ? 'Ethereum' : 'Test'
+        state.userCurrentNetworkId === 1 ? 'Ethereum' : 'Test'
       } Network Ether (ETH).`
     default:
       return undefined
