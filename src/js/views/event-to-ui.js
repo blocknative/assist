@@ -116,6 +116,11 @@ function notSupportedUI(eventObj, handlers) {
     'bn-onboard-modal-shade',
     notSupportedModal(eventCodeToStep(eventCode))
   )
+
+  if (state.mobileDevice) {
+    addTouchHandlers(modal.children[0], 'modal')
+  }
+
   openModal(modal, handlers)
 }
 

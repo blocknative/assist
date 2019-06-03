@@ -1,4 +1,5 @@
 import '@babel/polyfill'
+import PromiEventLib from 'web3-core-promievent'
 import { promisify } from 'bluebird'
 
 import {
@@ -423,12 +424,26 @@ function init(config) {
       ? promisify(state.web3Instance.eth.sendTransaction)
       : state.web3Instance.eth.sendTransaction
 
+    if (state.modernWeb3) {
+      const promiEvent = new PromiEventLib.PromiEvent()
+      sendTransaction(
+        'activeTransaction',
+        txObject,
+        sendMethod,
+        callback,
+        inlineCustomMsgs,
+        undefined,
+        undefined,
+        promiEvent
+      )
+      return promiEvent
+    }
     return sendTransaction(
       'activeTransaction',
       txObject,
       sendMethod,
       callback,
-      inlineCustomMsgs
+      inlineCustomMsgs.messages
     )
   }
 }

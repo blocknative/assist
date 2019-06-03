@@ -1,6 +1,6 @@
 {
   "name": "bnc-assist",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
@@ -36,7 +36,8 @@
     "core-js": "2",
     "ow": "^0.13.2",
     "rollup-plugin-node-builtins": "^2.1.2",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "web3-core-promievent": "^1.0.0-beta.48"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
