@@ -19,6 +19,7 @@ export function validateConfig(config) {
       networkId: ow.number,
       dappId: ow.string,
       web3: ow.optional.object,
+      ethers: ow.optional.object,
       mobileBlocked: ow.optional.boolean,
       minimumBalance: ow.optional.number,
       headlessMode: ow.optional.boolean,
