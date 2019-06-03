@@ -1,9 +1,9 @@
 import eventToUI from '~/js/views/event-to-ui'
 
 import { state } from './state'
-import { networkName, timeouts } from './utilities'
+import { networkName } from './utilities'
 import { getTxObjFromQueue } from './transaction-queue'
-import { openWebsocketConnection } from './websockets'
+import { checkForSocketConnection, retryLogEvent } from './websockets'
 import { getItem } from './storage'
 import { removeUnwantedNotifications } from '../views/dom'
 
@@ -100,17 +100,9 @@ export function logEvent(eventObj) {
 
   // Need to check if connection dropped
   // as we don't know until after we try to send a message
-  setTimeout(() => {
-    if (!state.socketConnection) {
-      if (!state.pendingSocketConnection) {
-        openWebsocketConnection()
-      }
-
-      setTimeout(() => {
-        logEvent(eventObj)
-      }, timeouts.checkSocketConnection)
-    }
-  }, timeouts.checkSocketConnection)
+  checkForSocketConnection().then(
+    connected => !connected && retryLogEvent(() => logEvent(eventObj))
+  )
 }
 
 export const lib = {
