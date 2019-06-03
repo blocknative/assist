@@ -1,6 +1,6 @@
 {
   "name": "bnc-assist",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
@@ -19,7 +19,10 @@
     "type": "git",
     "url": "git+https://github.com/blocknative/assist.git"
   },
-  "keywords": ["dapp", "ethereum"],
+  "keywords": [
+    "dapp",
+    "ethereum"
+  ],
   "author": "Block Native",
   "license": "MIT",
   "bugs": {
@@ -31,7 +34,10 @@
     "bluebird": "^3.5.3",
     "bowser": "^2.0.0-beta.3",
     "core-js": "2",
-    "uuid": "^3.3.2"
+    "ow": "^0.13.2",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "uuid": "^3.3.2",
+    "web3-core-promievent": "^1.0.0-beta.48"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -72,9 +78,11 @@
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-string": "^2.0.2",
-    "rollup-plugin-uglify": "^6.0.0",
+    "rollup-plugin-terser": "^5.0.0",
     "truffle-contract": "^4.0.15",
     "web3": "^1.0.0-beta.37"
   },
-  "eslintIgnore": ["package.json"]
+  "eslintIgnore": [
+    "package.json"
+  ]
 }

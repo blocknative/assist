@@ -17,23 +17,27 @@ websocket.openWebsocketConnection = jest.fn(() => {
   jest.fn()
 })
 
-const assist = da.init({ dappId: 'something' })
+const assist = da.init({ dappId: 'something', networkId: 1 })
 
 test('Fails if we try to initialise without a config object', () => {
   try {
     da.init()
   } catch (e) {
     expect(events.handleEvent).toHaveBeenCalledTimes(1)
-    expect(e.eventCode).toBe('initFail')
+    expect(e.message).toEqual(
+      'Expected `config` to be of type `object` but received type `undefined`'
+    )
   }
 })
 
 test('Fails if we try to initialise without a dappId', () => {
   try {
-    da.init({ some: 'value ' })
+    da.init({ some: 'value ', networkId: 1 })
   } catch (e) {
     expect(events.handleEvent).toHaveBeenCalledTimes(1)
-    expect(e.eventCode).toBe('initFail')
+    expect(e.message).toEqual(
+      'Expected property `dappId` to be of type `string` but received type `undefined` in object `config`'
+    )
   }
 })
 
@@ -65,6 +69,7 @@ test('Does not delete any methods from the contract object when decorating', () 
   stateMock.state.config = {}
   const assistWithWeb3 = da.init({
     dappId: 'something',
+    networkId: 1,
     web3
   })
   const contract = new web3.eth.Contract(
@@ -105,7 +110,7 @@ test('Does not allow sending transactions on the wrong network', async () => {
 test('Does not create an iframe in headless mode', async () => {
   const web3 = new Web3('ws://example.com')
   stateMock.state = { validApiKey: true, accessToAccounts: true }
-  da.init({ dappId: 'something', web3, headlessMode: true })
+  da.init({ dappId: 'something', web3, headlessMode: true, networkId: 1 })
   expect(iframeMock.createIframe).toHaveBeenCalledTimes(0)
 })
 

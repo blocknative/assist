@@ -20,7 +20,7 @@ describe('when the initial notification position is bottomRight', () => {
   let config
   beforeEach(() => {
     notificationsPosition = 'bottomRight'
-    config = { dappId: '123', style: { notificationsPosition } }
+    config = { dappId: '123', networkId: 1, style: { notificationsPosition } }
   })
   describe('and there are no notifications in the DOM', () => {
     test(`changing the notification position to topLeft doesn't throw`, () => {
@@ -55,7 +55,7 @@ describe(`when the initial notification position is {desktop: 'bottomRight'}`, (
   let config
   beforeEach(() => {
     notificationsPosition = { desktop: 'bottomRight' }
-    config = { dappId: '123', style: { notificationsPosition } }
+    config = { dappId: '123', networkId: 1, style: { notificationsPosition } }
   })
   describe('and there are no notifications in the DOM', () => {
     test(`changing the notification position to topLeft doesn't throw`, () => {
@@ -90,7 +90,7 @@ describe('when the initial notification position is topLeft', () => {
   let config
   beforeEach(() => {
     notificationsPosition = 'topLeft'
-    config = { dappId: '123', style: { notificationsPosition } }
+    config = { dappId: '123', networkId: 1, style: { notificationsPosition } }
   })
   describe('and there are no notifications in the DOM', () => {
     test(`changing the notification position to bottomRight doesn't throw`, () => {

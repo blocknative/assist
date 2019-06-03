@@ -10,7 +10,7 @@ const socketUrl = 'wss://api.blocknative.com/v0'
 
 describe('a websocket connection is requested', () => {
   let mockServer
-  const config = { dappId: '123', networkId: '1' }
+  const config = { dappId: '123', networkId: 1 }
   beforeEach(() => {
     da.init(config)
     mockServer = new Server(socketUrl)
@@ -84,7 +84,7 @@ describe('a websocket connection is requested', () => {
 })
 
 describe('assist is connected to a websocket', () => {
-  const config = { dappId: '123', networkId: '1' }
+  const config = { dappId: '123', networkId: 1 }
   let mockServer
   beforeEach(() => {
     da.init(config)

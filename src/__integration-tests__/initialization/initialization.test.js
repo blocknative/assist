@@ -4,15 +4,18 @@
  */
 
 import bowser from 'bowser'
+import Web3 from 'web3'
 import da from '~/js'
 import * as events from '~/js/helpers/events'
+import * as websockets from '~/js/helpers/websockets'
 import { state, initialState, updateState } from '~/js/helpers/state'
 import { storeTransactionQueue } from '~/js/helpers/storage'
+import { port } from '../../../internals/ganacheConfig'
 import { version as packageVersion } from '../../../package.json'
 
 describe('init is called', () => {
   describe('with a basic valid config', () => {
-    const config = { dappId: '123', networkId: '1' }
+    const config = { dappId: '123', networkId: 1 }
     test('state.version should be set correctly', () => {
       da.init(config)
       expect(state.version).toEqual(packageVersion)
@@ -163,7 +166,8 @@ describe('init is called', () => {
       expect(handleEventSpy).toHaveBeenCalledWith({
         eventCode: 'initFail',
         categoryCode: 'initialize',
-        reason: 'A config object is needed to initialize assist'
+        reason:
+          'Expected `config` to be of type `object` but received type `undefined`'
       })
       handleEventSpy.mockRestore()
     })
@@ -184,20 +188,113 @@ describe('init is called', () => {
       expect(events.handleEvent).toHaveBeenCalledWith({
         eventCode: 'initFail',
         categoryCode: 'initialize',
-        reason: 'No API key provided to init function'
+        reason:
+          'Expected property `dappId` to be of type `string` but received type `undefined` in object `config`'
       })
       handleEventSpy.mockRestore()
     })
-    test(`state.validApiKey should be set to false`, () => {
+  })
+
+  describe(`with a config with an unexpected property`, () => {
+    const config = { networkId: 1, dappId: '123', hheadlessMode: true }
+    test(`should throw`, () => {
       expect(() => {
         da.init(config)
       }).toThrow()
-      expect(state.validApiKey).toEqual(false)
+    })
+    test(`event initFail should be emitted correctly`, () => {
+      const handleEventSpy = jest.spyOn(events, 'handleEvent')
+      expect(() => {
+        da.init(config)
+      }).toThrow()
+      expect(events.handleEvent).toHaveBeenCalledWith({
+        eventCode: 'initFail',
+        categoryCode: 'initialize',
+        reason:
+          'Did not expect property `hheadlessMode` to exist, got `true` in object `config`'
+      })
+      handleEventSpy.mockRestore()
+    })
+  })
+
+  describe(`with a config with an invalid notificationsPosition`, () => {
+    const config = {
+      networkId: 1,
+      dappId: '123',
+      style: {
+        notificationsPosition: {
+          mobile: 'top',
+          desktop: 'rightBottom'
+        }
+      }
+    }
+    test(`should throw`, () => {
+      expect(() => {
+        da.init(config)
+      }).toThrow()
+    })
+    test(`event initFail should be emitted correctly`, () => {
+      const handleEventSpy = jest.spyOn(events, 'handleEvent')
+      expect(() => {
+        da.init(config)
+      }).toThrow()
+      expect(events.handleEvent).toHaveBeenCalledWith({
+        eventCode: 'initFail',
+        categoryCode: 'initialize',
+        reason:
+          'Any predicate failed with the following errors:\n- Expected property property `notificationsPosition` to be of type `string` but received type `Object`\n- Expected property string `desktop` `rightBottom` to pass custom validation function in object `notificationsPosition` in object `style` in object `config`'
+      })
+      handleEventSpy.mockRestore()
+    })
+  })
+
+  describe(`with a config with all possible fields specified`, () => {
+    const config = {
+      networkId: 1,
+      dappId: '123',
+      web3: new Web3(`ws://localhost:${port}`),
+      mobileBlocked: true,
+      headlessMode: true,
+      messages: {
+        txRequest: () => {},
+        txSent: () => {},
+        txPending: () => {},
+        txSendFail: () => {},
+        txStall: () => {},
+        txFailed: () => {},
+        nsfFail: () => {},
+        txRepeat: () => {},
+        txAwaitingApproval: () => {},
+        txConfirmReminder: () => {},
+        txConfirmed: () => {},
+        txSpeedUp: () => {}
+      },
+      images: {
+        welcome: {
+          src: '123',
+          srcset: '321'
+        },
+        complete: {
+          src: '123',
+          srcset: '321'
+        }
+      },
+      style: {
+        darkMode: true,
+        notificationsPosition: { mobile: 'top', desktop: 'bottomLeft' },
+        css: '123'
+      },
+      truffleContract: true
+    }
+    test(`should not throw`, () => {
+      expect(() => {
+        da.init(config)
+      }).not.toThrow()
     })
   })
 
   describe('with headlessMode: true', () => {
-    const config = { dappId: '123', networkId: '1', headlessMode: true }
+    const config = { dappId: '123', networkId: 1, headlessMode: true }
     test('no iframe should be created', () => {
       da.init(config)
       expect(document.body.innerHTML.includes('iframe')).toEqual(false)
@@ -206,7 +303,7 @@ describe('init is called', () => {
 
   describe('with a legacy web3 object', () => {
     const mockLegacyWeb3 = { version: { api: '0.20' } }
-    const config = { dappId: '123', networkId: '1', web3: mockLegacyWeb3 }
+    const config = { dappId: '123', networkId: 1, web3: mockLegacyWeb3 }
     test('web3 state should be set correctly', () => {
       da.init(config)
       expect(state.legacyWeb3).toEqual(true)
@@ -218,7 +315,7 @@ describe('init is called', () => {
 
   describe('with a modern web3 object', () => {
     const mockModernWeb3 = { version: '1.20' }
-    const config = { dappId: '123', networkId: '1', web3: mockModernWeb3 }
+    const config = { dappId: '123', networkId: 1, web3: mockModernWeb3 }
     test('web3 state should be set correctly', () => {
       da.init(config)
       expect(state.legacyWeb3).toEqual(false)
@@ -227,6 +324,10 @@ describe('init is called', () => {
       expect(state.web3Instance).toEqual(mockModernWeb3)
     })
   })
+})
+
+beforeAll(() => {
+  jest.spyOn(websockets, 'openWebsocketConnection').mockImplementation(() => {})
 })
 
 afterEach(() => {
