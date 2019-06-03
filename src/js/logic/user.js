@@ -32,7 +32,7 @@ export function checkUserEnvironment() {
       return
     }
 
-    if (!state.web3Instance) {
+    if (!state.web3Instance && !state.config.ethers) {
       configureWeb3()
     }
 
@@ -52,9 +52,7 @@ export function checkUserEnvironment() {
 export function prepareForTransaction(categoryCode, originalResolve) {
   return new Promise(async (resolve, reject) => {
     originalResolve = originalResolve || resolve
-
     await checkUserEnvironment()
-
     if (state.mobileDevice && state.config.mobileBlocked) {
       handleEvent(
         { eventCode: 'mobileBlocked', categoryCode },
@@ -110,7 +108,7 @@ export function prepareForTransaction(categoryCode, originalResolve) {
       }
     }
 
-    if (!state.web3Instance || !state.web3Wallet) {
+    if ((!state.web3Instance && !state.config.ethers) || !state.web3Wallet) {
       if (state.mobileDevice) {
         try {
           await getWeb3Wallet(categoryCode)
@@ -270,19 +268,26 @@ export function checkNetwork() {
 function checkMinimumBalance() {
   return new Promise(async (resolve, reject) => {
     await checkAccountAccess()
+
     if (!state.accessToAccounts) {
       resolve()
     }
     const { web3Version } = state
-    const version = web3Version && web3Version.slice(0, 3)
+    const version = state.config.ethers
+      ? 'ethers'
+      : web3Version && web3Version.slice(0, 3)
+
     const minimum = state.config.minimumBalance || 0
-    const account = await getAccountBalance().catch(resolve)
+    const balance = await getAccountBalance().catch(resolve)
+
     const minimumBalance = await web3Functions
       .bigNumber(version)(minimum)
       .catch(reject)
+
     const accountBalance = await web3Functions
-      .bigNumber(version)(account)
+      .bigNumber(version)(balance)
       .catch(reject)
+
     const sufficientBalance = accountBalance.gte(minimumBalance)
 
     updateState({

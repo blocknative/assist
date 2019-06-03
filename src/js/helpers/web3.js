@@ -1,6 +1,7 @@
 import { promisify } from 'bluebird'
 import { state, updateState } from './state'
 import { formatNumber, handleWeb3Error, timeouts } from './utilities'
+import { getEthersProvider } from './ethers-provider'
 
 const errorObj = new Error('undefined version of web3')
 errorObj.eventCode = 'initFail'
@@ -12,6 +13,14 @@ export const web3Functions = {
         return promisify(state.web3Instance.version.getNetwork)
       case '1.0':
         return state.web3Instance.eth.net.getId
+      case 'ethers':
+        return () =>
+          new Promise(async (resolve, reject) => {
+            const { chainId } = await getEthersProvider()
+              .getNetwork()
+              .catch(reject)
+            resolve(chainId)
+          })
       default:
         return () => Promise.reject(errorObj)
     }
@@ -24,6 +33,15 @@ export const web3Functions = {
       case '1.0':
         return value =>
           Promise.resolve(state.web3Instance.utils.toBN(formatNumber(value)))
+      case 'ethers':
+        const { ethers } = state.config
+        const ethersVersion = Number(ethers.version[0])
+        return value =>
+          Promise.resolve(
+            ethersVersion <= 4
+              ? ethers.utils.bigNumberify(value)
+              : ethers.BigNumber.from(value)
+          )
       default:
         return () => Promise.reject(errorObj)
     }
@@ -34,6 +52,14 @@ export const web3Functions = {
         return promisify(state.web3Instance.eth.getGasPrice)
       case '1.0':
         return state.web3Instance.eth.getGasPrice
+      case 'ethers':
+        return () =>
+          new Promise(async (resolve, reject) => {
+            const gasPrice = await getEthersProvider()
+              .getGasPrice()
+              .catch(reject)
+            resolve(gasPrice.toString())
+          })
       default:
         return () => Promise.reject(errorObj)
     }
@@ -41,15 +67,33 @@ export const web3Functions = {
   contractGas: version => {
     switch (version) {
       case '0.2':
-        return (contractMethod, parameters, txObject) =>
-          state.config.truffleContract
-            ? contractMethod.estimateGas(...parameters)
-            : promisify(contractMethod.estimateGas)(...parameters, txObject)
+        return ({ contractObj, methodName, overloadKey, args }) => {
+          const contractMethod = getContractMethod({
+            contractObj,
+            methodName,
+            overloadKey
+          })
+
+          return state.config.truffleContract
+            ? contractMethod.estimateGas(...args)
+            : promisify(contractMethod.estimateGas)(...args)
+        }
+
       case '1.0':
-        return (contractMethod, parameters, txObject) =>
-          state.config.truffleContract
-            ? contractMethod.estimateGas(...parameters)
-            : contractMethod(...parameters).estimateGas(txObject)
+        return ({ contractObj, methodName, overloadKey, args, txOptions }) => {
+          const contractMethod = getContractMethod({
+            contractObj,
+            methodName,
+            overloadKey
+          })
+
+          return state.config.truffleContract
+            ? contractMethod.estimateGas(...args)
+            : contractMethod(...args).estimateGas(txOptions)
+        }
+      case 'ethers':
+        return ({ contractObj, methodName, overloadKey, args }) =>
+          contractObj.estimate[overloadKey || methodName](...args)
       default:
         return () => Promise.reject(errorObj)
     }
@@ -60,6 +104,14 @@ export const web3Functions = {
         return promisify(state.web3Instance.eth.estimateGas)
       case '1.0':
         return state.web3Instance.eth.estimateGas
+      case 'ethers':
+        return txOptions =>
+          new Promise(async (resolve, reject) => {
+            const transactionGas = await getEthersProvider()
+              .estimateGas(txOptions)
+              .catch(reject)
+            resolve(transactionGas)
+          })
       default:
         return () => Promise.reject(errorObj)
     }
@@ -70,6 +122,15 @@ export const web3Functions = {
         return promisify(state.web3Instance.eth.getBalance)
       case '1.0':
         return state.web3Instance.eth.getBalance
+      case 'ethers':
+        return address =>
+          new Promise(async (resolve, reject) => {
+            const balance = await getEthersProvider()
+              .getBalance(address)
+              .catch(reject)
+
+            resolve(balance)
+          })
       default:
         return () => Promise.reject(errorObj)
     }
@@ -80,6 +141,14 @@ export const web3Functions = {
         return promisify(state.web3Instance.eth.getAccounts)
       case '1.0':
         return state.web3Instance.eth.getAccounts
+      case 'ethers':
+        return () =>
+          new Promise(async (resolve, reject) => {
+            const accounts = await getEthersProvider()
+              .listAccounts()
+              .catch(reject)
+            resolve(accounts)
+          })
       default:
         return () => Promise.reject(errorObj)
     }
@@ -158,34 +227,40 @@ export function checkForWallet() {
 }
 
 export function getNetworkId() {
-  const version = state.web3Version && state.web3Version.slice(0, 3)
+  const version = state.config.ethers
+    ? 'ethers'
+    : state.web3Version && state.web3Version.slice(0, 3)
   return web3Functions
     .networkId(version)()
     .then(id => Number(id))
 }
 
-export function getTransactionParams(
-  txObject = {},
-  contractMethod,
-  contractEventObj
-) {
+export function getTransactionParams({
+  txOptions,
+  contractObj,
+  methodName,
+  overloadKey,
+  args
+}) {
   return new Promise(async resolve => {
-    const version = state.web3Version && state.web3Version.slice(0, 3)
+    const version = state.config.ethers
+      ? 'ethers'
+      : state.web3Version && state.web3Version.slice(0, 3)
 
     // Sometimes value is in exponent notation and needs to be formatted
-    if (txObject.value) {
-      txObject.value = formatNumber(txObject.value)
+    if (txOptions.value) {
+      txOptions.value = formatNumber(txOptions.value)
     }
 
-    const valuePromise = txObject.value
-      ? web3Functions.bigNumber(version)(txObject.value)
+    const valuePromise = txOptions.value
+      ? web3Functions.bigNumber(version)(txOptions.value)
       : web3Functions.bigNumber(version)('0')
 
     const gasPricePromise = new Promise(async (resolve, reject) => {
       try {
         // If gasPrice isn't passed explicitly, ask web3 for a suitable one
-        const gasPrice = txObject.gasPrice
-          ? txObject.gasPrice
+        const gasPrice = txOptions.gasPrice
+          ? txOptions.gasPrice
           : await web3Functions.gasPrice(version)()
         resolve(web3Functions.bigNumber(version)(gasPrice))
       } catch (e) {
@@ -197,13 +272,15 @@ export function getTransactionParams(
       try {
         // Get a gas estimate based on if the tx is a contract method call
         // or regular transaction
-        const gas = contractMethod
-          ? await web3Functions.contractGas(version)(
-              contractMethod,
-              contractEventObj.parameters,
-              txObject
-            )
-          : await web3Functions.transactionGas(version)(txObject)
+        const gas = contractObj
+          ? await web3Functions.contractGas(version)({
+              contractObj,
+              methodName,
+              overloadKey,
+              args,
+              txOptions
+            })
+          : await web3Functions.transactionGas(version)(txOptions)
         resolve(web3Functions.bigNumber(version)(gas))
       } catch (e) {
         reject(e)
@@ -226,7 +303,9 @@ export async function hasSufficientBalance({
   gasPrice = 0
 }) {
   return new Promise(async resolve => {
-    const version = state.web3Version && state.web3Version.slice(0, 3)
+    const version = state.config.ethers
+      ? 'ethers'
+      : state.web3Version && state.web3Version.slice(0, 3)
 
     const gasCost = gas.mul(gasPrice)
 
@@ -239,6 +318,7 @@ export async function hasSufficientBalance({
     const transactionCost = gasCost.add(value).add(buffer)
 
     const balance = await getAccountBalance().catch(handleWeb3Error)
+
     const accountBalance = await web3Functions
       .bigNumber(version)(balance)
       .catch(handleWeb3Error)
@@ -252,9 +332,12 @@ export async function hasSufficientBalance({
 export function getAccountBalance() {
   return new Promise(async resolve => {
     const accounts = await getAccounts().catch(handleWeb3Error)
+
     updateState({ accountAddress: accounts && accounts[0] })
 
-    const version = state.web3Version && state.web3Version.slice(0, 3)
+    const version = state.config.ethers
+      ? 'ethers'
+      : state.web3Version && state.web3Version.slice(0, 3)
     const balance = await web3Functions
       .balance(version)(accounts[0])
       .catch(handleWeb3Error)
@@ -263,8 +346,25 @@ export function getAccountBalance() {
   })
 }
 
+export function getContractMethod({ contractObj, methodName, overloadKey }) {
+  return state.legacyWeb3 || state.config.truffleContract
+    ? overloadKey
+      ? contractObj[methodName][overloadKey]
+      : contractObj[methodName]
+    : state.config.ethers
+    ? overloadKey
+      ? contractObj[overloadKey]
+      : contractObj[methodName]
+    : overloadKey
+    ? contractObj.methods[overloadKey]
+    : contractObj.methods[methodName]
+}
+
 export function getAccounts() {
-  const version = state.web3Version && state.web3Version.slice(0, 3)
+  const version = state.config.ethers
+    ? 'ethers'
+    : state.web3Version && state.web3Version.slice(0, 3)
+
   return web3Functions.accounts(version)()
 }
 
@@ -279,7 +379,16 @@ export function requestLoginEnable() {
 }
 
 export function getCurrentProvider() {
+  if (window.ethereum) {
+    if (window.ethereum.isMetaMask) {
+      return 'metamask'
+    }
+    return
+  }
+
   const web3 = state.web3Instance || window.web3
+  if (!web3) return
+
   if (web3.currentProvider.isMetaMask) {
     return 'metamask'
   }
@@ -313,8 +422,6 @@ export function getCurrentProvider() {
   if (web3.currentProvider.connection) {
     return 'Infura Websocket'
   }
-
-  return undefined
 }
 
 // Poll for a tx receipt

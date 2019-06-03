@@ -257,7 +257,7 @@ describe('assist is connected to a websocket', () => {
       contract: 'some-contract',
       inlineCustomMsgs: { '1': 'msg' }
     }
-    const payload = { event: { transaction } }
+    const payload = { event: { transaction, eventCode: 'txConfirmed' } }
     let existingTxStatus = 'pending'
     let handleEventSpy
     beforeEach(() => {

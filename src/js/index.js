@@ -18,6 +18,7 @@ import {
 } from './logic/contract-methods'
 import { openWebsocketConnection } from './helpers/websockets'
 import { getUserAgent } from './helpers/browser'
+import { getUncheckedSigner } from './helpers/ethers-provider'
 import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
@@ -205,13 +206,21 @@ function init(config) {
 
   // CONTRACT FUNCTION //
 
-  function Contract(contractObj) {
+  function Contract(contractObjOrAddress, ethersAbi) {
     const {
       validApiKey,
       supportedNetwork,
       web3Instance,
-      config: { truffleContract }
+      config: { truffleContract, ethers }
     } = state
+
+    const contractObj = ethers
+      ? new ethers.Contract(
+          contractObjOrAddress,
+          ethersAbi,
+          getUncheckedSigner()
+        )
+      : contractObjOrAddress
 
     if (!validApiKey) {
       const errorObj = new Error('Your API key is not valid')
@@ -226,7 +235,7 @@ function init(config) {
     }
 
     // Check if we have an instance of web3
-    if (!web3Instance) {
+    if (!web3Instance && !ethers) {
       if (window.web3) {
         configureWeb3()
       } else {
@@ -241,6 +250,7 @@ function init(config) {
     const abi =
       contractObj.abi ||
       contractObj._jsonInterface ||
+      (ethers && ethersAbi) ||
       Object.keys(contractObj.abiModel.abi.methods)
         // remove any arrays from the ABI, they contain redundant information
         .filter(key => !Array.isArray(contractObj.abiModel.abi.methods[key]))
@@ -252,7 +262,7 @@ function init(config) {
     const seenMethods = []
 
     const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
-      if (state.legacyWeb3 || truffleContract) {
+      if (state.legacyWeb3 || truffleContract || ethers) {
         // if we have seen this key, then we have already dealt with it
         if (seenMethods.includes(key)) {
           return newContractObj
@@ -274,19 +284,18 @@ function init(config) {
           methodAbiArray.map(abi => getOverloadedMethodKeys(abi.inputs))
 
         const { name, inputs, constant } = methodAbiArray[0]
-        const method = contractObj[name]
         const argsLength = inputs.length
 
         newContractObj[name] = (...args) =>
           constant
-            ? legacyCall(method, name, args, argsLength)
-            : legacySend(method, name, args, argsLength)
+            ? legacyCall({ contractObj, methodName: name, args, argsLength })
+            : legacySend({ contractObj, methodName: name, args, argsLength })
 
         newContractObj[name].call = (...args) =>
-          legacyCall(method, name, args, argsLength)
+          legacyCall({ contractObj, methodName: name, args, argsLength })
 
         newContractObj[name].sendTransaction = (...args) =>
-          legacySend(method, name, args, argsLength)
+          legacySend({ contractObj, methodName: name, args, argsLength })
 
         // Add any additional properties onto the method function
         Object.entries(contractObj[name]).forEach(([k, v]) => {
@@ -296,29 +305,53 @@ function init(config) {
         })
 
         if (overloadedMethodKeys) {
-          overloadedMethodKeys.forEach(key => {
-            const method = contractObj[name][key]
+          overloadedMethodKeys.forEach(overloadKey => {
+            const method = contractObj[name][overloadKey]
 
             if (!method) {
               // no method, then overloaded methods not supported on this object
               return
             }
 
-            newContractObj[name][key] = (...args) =>
+            newContractObj[name][overloadKey] = (...args) =>
               constant
-                ? legacyCall(method, name, args, argsLength)
-                : legacySend(method, name, args, argsLength)
+                ? legacyCall({
+                    contractObj,
+                    methodName: name,
+                    overloadKey,
+                    args,
+                    argsLength
+                  })
+                : legacySend({
+                    contractObj,
+                    methodName: name,
+                    overloadKey,
+                    args,
+                    argsLength
+                  })
 
-            newContractObj[name][key].call = (...args) =>
-              legacyCall(method, name, args, argsLength)
+            newContractObj[name][overloadKey].call = (...args) =>
+              legacyCall({
+                contractObj,
+                methodName: name,
+                overloadKey,
+                args,
+                argsLength
+              })
 
-            newContractObj[name][key].sendTransaction = (...args) =>
-              legacySend(method, name, args, argsLength)
+            newContractObj[name][overloadKey].sendTransaction = (...args) =>
+              legacySend({
+                contractObj,
+                methodName: name,
+                overloadKey,
+                args,
+                argsLength
+              })
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
-              if (!Object.keys(newContractObj[name][key]).includes(k)) {
-                newContractObj[name][key][k] = v
+              if (!Object.keys(newContractObj[name][overloadKey]).includes(k)) {
+                newContractObj[name][overloadKey][k] = v
               }
             })
           })
@@ -353,8 +386,16 @@ function init(config) {
             const method = contractObj.methods[name]
             methodsObj[name] = (...args) =>
               constant
-                ? modernCall(method, name, args)
-                : modernSend(method, name, args)
+                ? modernCall({
+                    contractObj,
+                    methodName: name,
+                    args
+                  })
+                : modernSend({
+                    contractObj,
+                    methodName: name,
+                    args
+                  })
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
@@ -376,10 +417,19 @@ function init(config) {
           }
 
           const overloadedMethod = contractObj.methods[overloadedMethodKey]
+
           methodsObj[overloadedMethodKey] = (...args) =>
             constant
-              ? modernCall(overloadedMethod, name, args)
-              : modernSend(overloadedMethod, name, args)
+              ? modernCall({
+                  contractObj,
+                  methodName: overloadedMethodKey,
+                  args
+                })
+              : modernSend({
+                  contractObj,
+                  methodName: overloadedMethodKey,
+                  args
+                })
 
           // Add any additional properties onto the method function
           Object.entries(overloadedMethod).forEach(([k, v]) => {
@@ -400,15 +450,23 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txObject, callback, inlineCustomMsgs = {}) {
-    if (!state.validApiKey) {
+  function Transaction(txOptions, callback, inlineCustomMsgs) {
+    const {
+      validApiKey,
+      supportedNetwork,
+      web3Instance,
+      config: { ethers },
+      legacyWeb3
+    } = state
+
+    if (!validApiKey) {
       const errorObj = new Error('Your api key is not valid')
       errorObj.eventCode = 'initFail'
 
       throw errorObj
     }
 
-    if (!state.supportedNetwork) {
+    if (!supportedNetwork) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
 
@@ -416,35 +474,36 @@ function init(config) {
     }
 
     // Check if we have an instance of web3
-    if (!state.web3Instance) {
+    if (!web3Instance && !ethers) {
       configureWeb3()
     }
 
-    const sendMethod = state.legacyWeb3
+    const sendMethod = ethers
+      ? txOptions => getUncheckedSigner().sendTransaction(txOptions)
+      : legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
       : state.web3Instance.eth.sendTransaction
 
     if (state.modernWeb3) {
       const promiEvent = new PromiEventLib.PromiEvent()
-      sendTransaction(
-        'activeTransaction',
-        txObject,
+      sendTransaction({
+        categoryCode: 'activeTransaction',
+        txOptions,
         sendMethod,
         callback,
-        inlineCustomMsgs,
-        undefined,
-        undefined,
+        inlineCustomMsgs: inlineCustomMsgs.messages,
         promiEvent
-      )
+      })
       return promiEvent
     }
-    return sendTransaction(
-      'activeTransaction',
-      txObject,
+
+    return sendTransaction({
+      categoryCode: 'activeTransaction',
+      txOptions,
       sendMethod,
       callback,
-      inlineCustomMsgs.messages
-    )
+      inlineCustomMsgs: inlineCustomMsgs.messages
+    })
   }
 }
 

@@ -90,6 +90,7 @@ test('Does not delete any methods from the contract object when decorating', () 
 
 test('Does not allow sending transactions without a valid API key', async () => {
   stateMock.state.validApiKey = false
+  stateMock.state.config = {}
 
   try {
     assist.Transaction({ some: 'property' })
@@ -102,6 +103,7 @@ test('Does not allow sending transactions without a valid API key', async () => 
 test('Does not allow sending transactions on the wrong network', async () => {
   stateMock.state.validApiKey = true
   stateMock.state.supportedNetwork = false
+  stateMock.state.config = {}
 
   try {
     assist.Transaction({ some: 'property' })

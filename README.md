@@ -2,7 +2,7 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports `web3.js` versions 0.20 and 1.0.
+setup. Supports `web3.js` versions `0.20` and `1.0`, `ethers.js` versions `^4.0.20` and `^5.0-beta-137`
 
 _note: `web3.js` 1.0.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
@@ -114,6 +114,7 @@ Decorating your contracts is simple:
 
 ```javascript
 var myContract = new web3.eth.Contract(abi, address)
+// Assist can decorate ethers instantiated contracts as well
 var myDecoratedContract = assistInstance.Contract(myContract)
 
 // and then replace `myContract` with `myDecoratedContract`
@@ -128,6 +129,14 @@ To speed things up, you can decorate the contract inline:
 
 ```javascript
 var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
+```
+
+### Ethers Contracts
+
+If you are using `ethers.js` you will need to pass in the `address` and the `abi` to Assist's `Contract` function so that Assist can instantiate it with the `UncheckedJsonRpcSigner`. This is critical for Assist's transaction notifications to work correctly. An example of how to create an ethers contract:
+
+```javascript
+var myContract = assistInstance.Contract(address, abi)
 ```
 
 ### Initializing `web3` and including it in the `config`
@@ -161,6 +170,7 @@ var config = {
   networkId: Number, // The network id of the Ethereum network your Dapp is working with (REQUIRED)
   dappId: String, // The API key supplied to you by Blocknative (REQUIRED)
   web3: Object, // The instantiated version of web3 that the Dapp is using
+  ethers: Object, // Pass in ethers if using instead of web3 (this is required if you are using ethers)
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile [false]
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp [0]
   headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
@@ -215,7 +225,7 @@ By default, `Assist` positions notifications at the `top` of the viewport on mob
 
 ```javascript
 // Set notifications to bottom on mobile and top right on desktop
-const config = {
+var config = {
   style: {
     notificationsPosition: {
       desktop: 'topLeft',
@@ -227,13 +237,12 @@ const config = {
 
 ```javascript
 // Sets only the desktop position
-const config = {
+var config = {
   style: {
     notificationsPosition: 'bottomRight'
   }
 }
 ```
-
 
 ### Custom Transaction Messages
 
@@ -435,11 +444,13 @@ assistInstance.onboard()
   })
 ```
 
-### `Contract(contractInstance)`
+### `Contract(contractInstanceOrAddress [, abi])`
 
 #### Parameters
 
-`contractInstance` - `Object`: Instantiated web3 `contract` object (**Required**)
+`contractInstanceOrAddress` - `Object` | `String`: Instantiated web3 `contract` object (**Required**) or an address if you are using `ethers` instead if `web3`
+
+`abi` - `Array`: Abi array if you are using `ethers`
 
 #### Returns
 
@@ -448,10 +459,17 @@ A decorated `contract` to be used instead of the original instance
 #### Example
 
 ```javascript
-const myContract = new web3.eth.Contract(abi, address)
-const myDecoratedContract = assistInstance.Contract(myContract)
+// web3
+var myContract = new web3.eth.Contract(abi, address)
+var myDecoratedContract = assistInstance.Contract(myContract)
+myDecoratedContract.myMethod().call()
 
-mydecoratedContract.myMethod().call()
+// OR
+
+// ethers
+var myContract = assistInstance.Contract(address, abi)
+myContract.myMethod().call()
+
 ```
 
 ### `Transaction(txObject [, callback] [, inlineCustomMsgs])`
@@ -509,7 +527,7 @@ assistInstance.getState()
 `style` - `Object`: Object containing new style information (**Required**)
 
 ```javascript
-const style = {
+var style = {
     darkMode: Boolean, // Set Assist UI to dark mode
     css: String, // Custom css string to overide Assist default styles
     notificationsPosition: String || Object, // Defines which corner transaction notifications will be positioned. See 'Notification Positioning'
@@ -520,14 +538,14 @@ const style = {
 
 ```javascript
 // Enable dark mode and position notifications at the bottom left on desktop
-const style = {
+var style = {
   darkMode: true,
   notificationsPosition: 'bottomLeft'
 }
 assistInstance.updateStyle(style)
 
 // Position notifications at the bottom of the viewport on mobile and set their background to black
-const style = {
+var style = {
   css: `.bn-notification { background: black }`,
   notificationsPosition: { mobile: 'bottom' }
 }
@@ -569,7 +587,7 @@ assistInstance.notify('success', 'Operation was a success! Click <a href="https:
 
 // Display a pending notification, load data from an imaginary backend
 // and dismiss the pending notification only when the data is loaded
-const dismiss = assistInstance.notify('pending', 'Loading data...', { customTimeout: -1 });
+var dismiss = assistInstance.notify('pending', 'Loading data...', { customTimeout: -1 });
 myEventEmitter.emit('fetch-data-from-backend')
 myEventEmitter.on('data-from-backend-loaded', () => {
   dismiss()
