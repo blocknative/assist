@@ -30,7 +30,8 @@ function sendTransaction(
   callback,
   inlineCustomMsgs,
   contractMethod,
-  contractEventObj
+  contractEventObj,
+  promiEvent
 ) {
   return new Promise(async (resolve, reject) => {
     // Get information like gasPrice and gas
@@ -217,19 +218,32 @@ function sendTransaction(
         })
     } else {
       new Promise(confirmed => {
-        // resolve the promiEvent so that "on" methods can be used by dev
-        resolve({ txPromise })
+        /* In web3 v1 instead of resolving the promise returned by sendTransaction
+         * we need to setup the promiEvent argument to mirror the behavior of the
+         * promiEvent returned by web3 when we call .send on the contract method.
+         */
+
         txPromise
-          .on('transactionHash', async hash => {
+          .on('transactionHash', hash => {
+            promiEvent.emit('transactionHash', hash)
             onTxHash(transactionId, hash, categoryCode)
             callback && callback(null, hash)
           })
-          .on('receipt', confirmed)
+          .on('receipt', receipt => {
+            promiEvent.emit('receipt', receipt)
+            confirmed(receipt)
+          })
           .once('confirmation', confirmed)
-          .on('error', async errorObj => {
+          .on('confirmation', (confirmation, receipt) => {
+            promiEvent.emit('confirmation', confirmation, receipt)
+          })
+          .on('error', errorObj => {
+            promiEvent.emit('error', errorObj)
             onTxError(transactionId, errorObj, categoryCode)
             handleError({ resolve, reject, callback })(errorObj)
           })
+          .then(promiEvent.resolve)
+          .catch(promiEvent.reject)
       }).then(() => onTxReceipt(transactionId, categoryCode))
     }
   })

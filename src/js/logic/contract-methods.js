@@ -1,4 +1,5 @@
 import { promisify } from 'bluebird'
+import PromiEventLib from 'web3-core-promievent'
 import { state } from '~/js/helpers/state'
 import { handleEvent } from '~/js/helpers/events'
 import { separateArgs, handleError } from '~/js/helpers/utilities'
@@ -94,17 +95,21 @@ export function modernSend(method, name, args) {
   }, {})
 
   returnObject.send = (...innerArgs) => {
+    const promiEvent = new PromiEventLib.PromiEvent()
     const { callback, txObject, inlineCustomMsgs } = separateArgs(innerArgs, 0)
 
-    return sendTransaction(
+    sendTransaction(
       'activeContract',
       txObject,
       innerMethod,
       callback,
       inlineCustomMsgs,
       method,
-      { methodName: name, parameters: args }
+      { methodName: name, parameters: args },
+      promiEvent
     )
+
+    return promiEvent
   }
 
   return returnObject
