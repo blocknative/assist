@@ -619,11 +619,34 @@ export function removeNotification(notification) {
 }
 
 export function removeAllNotifications(notifications) {
+  if (!notifications || notifications.length <= 0) {
+    return
+  }
+
   notifications.forEach(notification => {
     if (notification) {
       removeNotification(notification)
     }
   })
+}
+
+export function removeUnwantedNotifications(eventCode, id) {
+  const eventCodesNoRepeat = ['nsfFail', 'txSendFail', 'txUnderPriced']
+  const notificationsNoRepeat = eventCodesNoRepeat.reduce(
+    (acc, eventCode) => [...acc, ...getAllByQuery(`.bn-${eventCode}`)],
+    []
+  )
+
+  const keepTxRepeatNotification =
+    eventCode === 'txRequest' || eventCode === 'txConfirmReminder'
+
+  const notificationsWithSameId = keepTxRepeatNotification
+    ? getAllByQuery(`.bn-${id}`).filter(
+        n => !n.classList.contains('bn-txRepeat')
+      )
+    : getAllByQuery(`.bn-${id}`)
+
+  removeAllNotifications([...notificationsNoRepeat, ...notificationsWithSameId])
 }
 
 export function checkIfNotifications() {
