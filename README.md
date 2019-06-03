@@ -285,6 +285,9 @@ myContract.vote(param1, param2, options, callback, {messages: {txPending: () => 
 
 // 1.0 style send
 myContract.vote(param1, param2).send(options, {messages: {txPending: () => `Voting for ${param1} in progress`}})
+
+// Transaction
+Transaction(txObject, callback, {messages: {txPending: () => 'Sending ETH...'}})
 ```
 
 The `messages` object _must_ always be the _last_ argument provided to the send method for it to be recognized.
@@ -434,12 +437,15 @@ const myDecoratedContract = assistInstance.Contract(myContract)
 mydecoratedContract.myMethod().call()
 ```
 
-### `Transaction(txObject [, callback])`
+### `Transaction(txObject [, callback] [, inlineCustomMsgs])`
 
 #### Parameters
 
 `txObject` - `Object`: Transaction object (**Required**)
+
 `callback` - `Function`: Optional error first style callback if you don't want to use promises
+
+`inlineCustomMsgs` - `Object`: Optional notification message overrides
 
 #### Returns
 
@@ -511,7 +517,7 @@ const style = {
 assistInstance.updateStyle(style)
 ```
 
-### `notify(type, message, options)`
+### `notify(type, message [, options])`
 
 Trigger a custom UI notification
 
@@ -521,7 +527,7 @@ Trigger a custom UI notification
 
 `message` - `String`: The message to display in the notification. HTML can be embedded in the string. (**Required**)
 
-`options` - `Object`: Further customize the notification
+`options` - `Object`: Optionally further customize the notification
 
 ```javascript
 options = {
