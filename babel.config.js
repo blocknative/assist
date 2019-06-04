@@ -27,12 +27,12 @@ module.exports = {
       }
     ],
     ['@babel/plugin-proposal-object-rest-spread'],
-    ['inline-import-data-uri', {
-      'extensions': [
-        '.png',
-        '.jpg'
-      ]
-    }]
+    [
+      'inline-import-data-uri',
+      {
+        extensions: ['.png', '.jpg']
+      }
+    ]
   ],
   env: {
     test: {
