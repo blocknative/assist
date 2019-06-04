@@ -42,8 +42,8 @@ const defaultPlugins = [
 
 function transpileEs5NodeModules() {
   // specify any non-es5 modules here
-  const es5Modules = ['ow', 'punycode']
-  es5Modules.forEach(m =>
+  const nonEs5Modules = ['ow', 'punycode']
+  nonEs5Modules.forEach(m =>
     execSync(
       `node_modules/.bin/babel node_modules/${m} --out-dir node_modules/${m} --presets=@babel/preset-env`
     )
