@@ -18,7 +18,7 @@ _note: `web3.js` 1.0.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs wh
 
 ## Getting Started
 
-To integrate Assist.js into your dapp, you'll need to do 5 things:
+To integrate Assist.js into your Dapp, you'll need to do 5 things:
 
 1. Create a free account and get an API key from [account.blocknative.com](https://account.blocknative.com)
 2. Install the widget
@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.8.3.
+The current version is 0.8.5.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-8-3/assist.js"></script>
+<script src="https://assist.blocknative.com/0-8-5/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-8-3/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-8-5/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -73,9 +73,9 @@ var assistInstance = assist.init(bncAssistConfig);
 
 ### Call `onboard`
 
-At some point in your dapp's workflow, you'll want to ensure users are within an environment which
+At some point in your Dapp's workflow, you'll want to ensure users are within an environment which
 will allow them to make transactions, such as a browser with MetaMask, unlocked wallet, etc.
-This is done by calling `onboard`. Some dapps might want to call `onboard` immediately upon any page
+This is done by calling `onboard`. Some Dapps might want to call `onboard` immediately upon any page
 load. Others may wait until loading certain pages or until a certain button is clicked.
 In any event, it is as simple as calling:
 
@@ -108,7 +108,7 @@ you insights into things including but not limited to:
 
 - How many transactions fail because a user doesn't have enough Ether
 - How many transactions are started but rejected by the user
-- How many users come to your dapp without a web3 wallet
+- How many users come to your Dapp without a Web3 wallet
 
 Decorating your contracts is simple:
 
@@ -130,21 +130,9 @@ To speed things up, you can decorate the contract inline:
 var myContract = assistInstance.Contract(new web3.eth.Contract(abi, address))
 ```
 
-### `promiEvent`
-
-If using web3 versions 1.0 and you would like to listen for the events triggered on the `promiEvent` that is normally returned from a transaction call, Assist returns the `promiEvent`, but it is wrapped in an object to prevent it from resolving internally in Assist. To get access to the `promiEvent` object you can call your methods like this:
-
-```javascript
-const { promiEvent } = await decoratedContract.myMethod(param).send(txOptions)
-
-promiEvent.on('receipt', () => {
-  // ...
-})
-```
-
 ### Initializing `web3` and including it in the `config`
 
-`web3` isn't a required parameter as you might not have access to a web3 provider to instantiate web3 with until after the user has been onboarded and has a wallet installed. We recommend instantiating `web3` at the top level of your dapp once the window object is available like this:
+`web3` isn't a required parameter as you might not have access to a provider to instantiate Web3 with until after the user has been onboarded and has a wallet installed. We recommend instantiating `web3` at the top level of your Dapp once the window object is available like this:
 
 ```javascript
 let web3Instance
@@ -158,9 +146,9 @@ if (window.web3) {
 }
 ```
 
-Pass this instance in to the config (even if it is undefined). If the user didn't have a wallet when first arriving to your dapp, they will go through onboarding which will refresh the page once they have a wallet. On the refresh, the above web3 instantiation code will now get initialized with the provider.
+Pass this instance in to the config (even if it is undefined). If the user didn't have a wallet when first arriving to your Dapp, they will go through onboarding which will refresh the page once they have a wallet. On the refresh, the above Web3 instantiation code will now get initialized with the provider.
 
-If you _don't_ include your instantiated web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then you're contracts won't be decorated correctly.
+If you _don't_ include your instantiated Web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then your contracts won't be decorated correctly.
 
 ## API Reference
 
@@ -170,11 +158,11 @@ A JavaScript Object that is passed to the `init` function. Default values are in
 
 ```javascript
 var config = {
-  networkId: Number, // The network id of the Ethereum network your dapp is working with (REQUIRED)
+  networkId: Number, // The network id of the Ethereum network your Dapp is working with (REQUIRED)
   dappId: String, // The API key supplied to you by Blocknative (REQUIRED)
-  web3: Object, // The instantiated version of web3 that the dapp is using
-  mobileBlocked: Boolean, // Defines if the dapp works on mobile [false]
-  minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the dapp [0]
+  web3: Object, // The instantiated version of web3 that the Dapp is using
+  mobileBlocked: Boolean, // Defines if the Dapp works on mobile [false]
+  minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp [0]
   headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
   messages: {
     // See custom transaction messages section below for more details
@@ -287,7 +275,7 @@ var config = {
 }
 ```
 
-Sometimes you want more granular control over the transaction messages and you have all the relevant information you need to create a custom transaction message at the time of calling the method. In that case you can also add custom transactions messages inline with your transaction calls which take precedent over the messages set globally in the config.
+Sometimes you want more granular control over the transaction messages and you have all the relevant information you need to create a custom transaction message at the time of calling the method. In that case, you can also add custom transactions messages inline with your transaction calls which take precedent over the messages set globally in the config.
 
 #### Example
 
@@ -297,6 +285,9 @@ myContract.vote(param1, param2, options, callback, {messages: {txPending: () => 
 
 // 1.0 style send
 myContract.vote(param1, param2).send(options, {messages: {txPending: () => `Voting for ${param1} in progress`}})
+
+// Transaction
+Transaction(txObject, callback, {messages: {txPending: () => 'Sending ETH...'}})
 ```
 
 The `messages` object _must_ always be the _last_ argument provided to the send method for it to be recognized.
@@ -371,18 +362,18 @@ By default, Assist will create UI elements in your application at certain times 
 
 ### Mobile Dapps
 
-If your dapp _doesn't_ support mobile browsers, setting `mobileBlocked: true` in the config will detect mobile user agents and show UI that will direct them to use a desktop browser instead.
+If your Dapp _doesn't_ support mobile browsers, setting `mobileBlocked: true` in the config will detect mobile user agents and show UI that will direct them to use a desktop browser instead.
 
 Assist supports mobile onboarding and transaction support. The onboarding UI has a modal for making sure that the user:
 
-- Is on a mobile dapp browser/wallet
+- Is on a mobile Dapp browser/wallet
 - Is on the correct network
-- Has enabled connection to their wallet (if the wallet is using a modern ethereum provider)
+- Has enabled connection to their wallet (if the wallet is using a modern Ethereum provider)
 - Has the minimum balance (if set in the config)
 
 ### Minimum Balance
 
-By supplying an amount of wei to the `minimumBalance` option of the config, developers can limit access to their dapp to users who have at least this much Ether in their wallet.
+By supplying an amount of wei to the `minimumBalance` option of the config, developers can limit access to their Dapp to users who have at least this much Ether in their wallet.
 
 ### Repeat Transactions
 
@@ -446,12 +437,15 @@ const myDecoratedContract = assistInstance.Contract(myContract)
 mydecoratedContract.myMethod().call()
 ```
 
-### `Transaction(txObject [, callback])`
+### `Transaction(txObject [, callback] [, inlineCustomMsgs])`
 
 #### Parameters
 
 `txObject` - `Object`: Transaction object (**Required**)
+
 `callback` - `Function`: Optional error first style callback if you don't want to use promises
+
+`inlineCustomMsgs` - `Object`: Optional notification message overrides
 
 #### Returns
 
@@ -523,7 +517,7 @@ const style = {
 assistInstance.updateStyle(style)
 ```
 
-### `notify(type, message, options)`
+### `notify(type, message [, options])`
 
 Trigger a custom UI notification
 
@@ -533,7 +527,7 @@ Trigger a custom UI notification
 
 `message` - `String`: The message to display in the notification. HTML can be embedded in the string. (**Required**)
 
-`options` - `Object`: Further customize the notification
+`options` - `Object`: Optionally further customize the notification
 
 ```javascript
 options = {

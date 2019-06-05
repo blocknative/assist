@@ -196,7 +196,7 @@ export function eventCodeToStep(eventCode) {
 }
 
 export function networkName(id) {
-  switch (Number(id)) {
+  switch (id) {
     case 1:
       return 'main'
     case 3:

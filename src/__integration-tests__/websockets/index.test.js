@@ -8,7 +8,7 @@ import * as events from '~/js/helpers/events'
 
 describe('a websocket connection is requested', () => {
   let mockServer
-  const config = { dappId: '123', networkId: '1' }
+  const config = { dappId: '123', networkId: 1 }
   beforeEach(() => {
     da.init(config)
     mockServer = new Server(websockets.bnWsEndpoint)
@@ -82,7 +82,7 @@ describe('a websocket connection is requested', () => {
 })
 
 describe('assist is connected to a websocket', () => {
-  const config = { dappId: '123', networkId: '1' }
+  const config = { dappId: '123', networkId: 1 }
   let mockServer
   beforeEach(() => {
     da.init(config)

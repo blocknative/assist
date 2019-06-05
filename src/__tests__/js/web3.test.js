@@ -38,7 +38,7 @@ describe(`web3.js tests`, () => {
             .mockImplementation(() => {})
           simpleVersion = version.slice(0, 3)
           web3 = initWeb3(simpleVersion, Web3)
-          config = { dappId: '123', web3, networkId: '5' }
+          config = { dappId: '123', web3, networkId: 5 }
           da.init(config)
         })
         afterEach(() => {

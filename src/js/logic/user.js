@@ -256,8 +256,7 @@ function checkAccountAccess() {
 export function checkNetwork() {
   return new Promise(async resolve => {
     const networkId = await getNetworkId().catch(handleWeb3Error)
-    const correctNetwork =
-      Number(networkId) === (Number(state.config.networkId) || 1)
+    const correctNetwork = networkId === (state.config.networkId || 1)
 
     updateState({
       correctNetwork,

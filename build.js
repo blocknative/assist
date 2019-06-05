@@ -1,5 +1,6 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 
+const { execSync } = require('child_process')
 const rollup = require('rollup')
 const babel = require('rollup-plugin-babel')
 const { eslint } = require('rollup-plugin-eslint')
@@ -9,6 +10,7 @@ const commonjs = require('rollup-plugin-commonjs')
 const { uglify } = require('rollup-plugin-uglify')
 const string = require('rollup-plugin-string')
 const json = require('rollup-plugin-json')
+const builtins = require('rollup-plugin-node-builtins')
 
 const defaultPlugins = [
   json({
@@ -20,7 +22,8 @@ const defaultPlugins = [
   resolve({
     jsnext: true,
     main: true,
-    browser: true
+    browser: true,
+    preferBuiltins: false
   }),
   commonjs({
     include: 'node_modules/**',
@@ -37,8 +40,19 @@ const defaultPlugins = [
   babel({
     exclude: 'node_modules/**',
     runtimeHelpers: true
-  })
+  }),
+  builtins()
 ]
+
+function transpileEs5NodeModules() {
+  // specify any non-es5 modules here
+  const nonEs5Modules = ['ow', 'punycode']
+  nonEs5Modules.forEach(m =>
+    execSync(
+      `node_modules/.bin/babel node_modules/${m} --out-dir node_modules/${m} --presets=@babel/preset-env`
+    )
+  )
+}
 
 const inputOptions = min => ({
   input: 'src/js/index.js',
@@ -57,6 +71,9 @@ const outputOptions = min => ({
 })
 
 async function build() {
+  // transpile non-es5 node_modules
+  transpileEs5NodeModules()
+
   // create a regular bundle
   const bundle = await rollup.rollup(inputOptions())
   await bundle.write(outputOptions())
