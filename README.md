@@ -434,7 +434,7 @@ A decorated `contract` to be used instead of the original instance
 const myContract = new web3.eth.Contract(abi, address)
 const myDecoratedContract = assistInstance.Contract(myContract)
 
-mydecoratedContract.myMethod().call()
+mydecoratedContract.methods.myMethod(params).call()
 ```
 
 ### `Transaction(txObject [, callback] [, inlineCustomMsgs])`
