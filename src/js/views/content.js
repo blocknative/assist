@@ -193,17 +193,26 @@ export const onboardButton = {
 }
 
 export function onboardWarningMsg(type) {
+  const { mobileDevice } = state
   switch (type) {
     case 'loggedIn':
-      return 'You are not currently logged in to MetaMask.'
+      return `You are not currently logged in to ${
+        mobileDevice ? 'your wallet' : 'MetaMask'
+      }.`
     case 'enabled':
-      return 'You have not yet approved the Connect request in MetaMask.'
+      return `You have not yet approved the Connect request in ${
+        mobileDevice ? 'your wallet' : 'MetaMask'
+      }.`
     case 'network':
-      return `You currently have MetaMask set to the ${capitalize(
-        networkName(state.userCurrentNetworkId)
-      )} ${state.userCurrentNetworkId === 1 ? 'Ethereum' : 'Test'} Network.`
+      return `You currently have ${
+        mobileDevice ? 'your wallet' : 'MetaMask'
+      } set to the ${capitalize(networkName(state.userCurrentNetworkId))} ${
+        state.userCurrentNetworkId === 1 ? 'Ethereum' : 'Test'
+      } Network.`
     case 'minimumBalance':
-      return `Your current MetaMask account has less than the necessary minimum balance of
+      return `Your current ${
+        mobileDevice ? 'wallet' : 'MetaMask'
+      } account has less than the necessary minimum balance of
         ${state.config.minimumBalance / 1000000000000000000} ${capitalize(
         networkName(state.userCurrentNetworkId)
       )} ${
