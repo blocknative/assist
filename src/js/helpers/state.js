@@ -36,7 +36,8 @@ export const initialState = {
   iframe: null,
   iframeDocument: null,
   iframeWindow: null,
-  connectionId: null
+  connectionId: null,
+  onboardPromise: null
 }
 
 export let state = { ...initialState }
