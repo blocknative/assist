@@ -112,7 +112,13 @@ function init(config) {
   const onboardingInProgress = getItem('onboarding') === 'true'
 
   if (onboardingInProgress) {
-    onboard().catch(() => {})
+    const onboardPromise = onboard()
+    updateState({ onboardPromise })
+
+    // once the promise resolves, clear it from state
+    onboardPromise
+      .catch(() => {})
+      .finally(() => updateState({ onboardPromise: null }))
   }
 
   // return the API
@@ -127,8 +133,13 @@ function init(config) {
       mobileDevice,
       validApiKey,
       supportedNetwork,
-      config: { headlessMode, mobileBlocked }
+      config: { headlessMode, mobileBlocked },
+      onboardPromise
     } = state
+
+    if (onboardPromise) {
+      return onboardPromise
+    }
 
     if (!validApiKey) {
       const errorObj = new Error('Your api key is not valid')

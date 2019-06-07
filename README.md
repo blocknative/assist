@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.8.5.
+The current version is 0.8.6.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-8-5/assist.js"></script>
+<script src="https://assist.blocknative.com/0-8-6/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-8-5/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-8-6/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -434,7 +434,7 @@ A decorated `contract` to be used instead of the original instance
 const myContract = new web3.eth.Contract(abi, address)
 const myDecoratedContract = assistInstance.Contract(myContract)
 
-mydecoratedContract.myMethod().call()
+mydecoratedContract.methods.myMethod(params).call()
 ```
 
 ### `Transaction(txObject [, callback] [, inlineCustomMsgs])`
