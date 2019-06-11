@@ -279,19 +279,16 @@ export function requestLoginEnable() {
 }
 
 export function getCurrentProvider() {
-  if (window.ethereum) {
-    if (window.ethereum.isDapper) {
-      return 'dapper'
-    }
+  const web3 = state.web3Instance
 
-    if (window.ethereum.isMetaMask) {
-      return 'metamask'
-    }
+  if (!web3) {
+    return 'unknown'
   }
-
-  const web3 = state.web3Instance || window.web3
   if (web3.currentProvider.isMetaMask) {
     return 'metamask'
+  }
+  if (web3.currentProvider.isDapper) {
+    return 'dapper'
   }
   if (web3.currentProvider.isTrust) {
     return 'trust'
