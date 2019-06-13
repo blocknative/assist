@@ -70,7 +70,7 @@ export function modernCall(method, name, args) {
         handleError({ resolve, reject, callback })(errorObj)
       })
 
-      if (result) {
+      if (result != null) {
         handleEvent({
           eventCode: 'contractQuery',
           categoryCode: 'activeContract',
