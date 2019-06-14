@@ -193,20 +193,26 @@ export function getTransactionParams(
       }
     })
 
-    const gasPromise = new Promise(async (resolve, reject) => {
+    const gasPromise = new Promise(async resolve => {
+      let gas
       try {
         // Get a gas estimate based on if the tx is a contract method call
         // or regular transaction
-        const gas = contractMethod
+        gas = contractMethod
           ? await web3Functions.contractGas(version)(
               contractMethod,
               contractEventObj.parameters,
               txObject
             )
           : await web3Functions.transactionGas(version)(txObject)
-        resolve(web3Functions.bigNumber(version)(gas))
       } catch (e) {
-        reject(e)
+        // Sometimes MM can't estimate the gas, and will throw.
+        // In this case, use either the gas specified by the dapp
+        // dev, or if that doesn't exist 0 as we are unable to predict
+        // how much gas the transaction will consume.
+        gas = txObject.gas ? txObject.gas : 0
+      } finally {
+        resolve(web3Functions.bigNumber(version)(gas))
       }
     })
 
