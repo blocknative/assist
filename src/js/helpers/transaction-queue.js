@@ -34,9 +34,12 @@ export function getTxObjFromQueue(id) {
 export function isDuplicateTransaction({ value, to }, contract) {
   const { transactionQueue } = state
   let duplicate = transactionQueue.find(txObj => {
+    if (contract && typeof txObj.contract === 'undefined') return false
+
     const sameMethod = contract
       ? contract.methodName === txObj.contract.methodName
       : true
+
     const sameParams = contract
       ? argsEqual(contract.parameters, txObj.contract.parameters)
       : true
