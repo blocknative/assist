@@ -58,6 +58,9 @@ function init(config) {
     configureWeb3(web3)
   }
 
+  // This is needed to ensure MetaMask will reload on every network change
+  window.web3 && window.web3.eth
+
   // Get browser info
   getUserAgent()
 
