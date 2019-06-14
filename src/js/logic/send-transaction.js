@@ -45,7 +45,7 @@ function sendTransaction(
     const [sufficientBalance, ready] = await Promise.all([
       hasSufficientBalance(transactionParams),
       prepareForTransaction('activePreflight').catch(
-        handleError({ resolve, reject, callback })
+        handleError({ resolve, reject, callback, promiEvent })
       )
     ])
 
@@ -88,7 +88,7 @@ function sendTransaction(
       )
       errorObj.eventCode = 'nsfFail'
 
-      handleError({ resolve, reject, callback })(errorObj)
+      handleError({ resolve, reject, callback, promiEvent })(errorObj)
       return
     }
 
