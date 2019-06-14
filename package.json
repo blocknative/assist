@@ -1,6 +1,6 @@
 {
   "name": "bnc-assist",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
