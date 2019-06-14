@@ -242,7 +242,13 @@ export function stepToImageKey(step) {
 
 export function handleError(handlers = {}) {
   return errorObj => {
-    const { callback, reject, resolve } = handlers
+    const { callback, reject, resolve, promiEvent } = handlers
+
+    if (promiEvent) {
+      promiEvent.emit('error', errorObj)
+      resolve()
+      return
+    }
 
     if (callback) {
       callback(errorObj)
