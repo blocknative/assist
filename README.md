@@ -193,8 +193,7 @@ var config = {
     darkMode: Boolean, // Set Assist UI to dark mode
     notificationsPosition: Object || String, // Defines where in the viewport notifications will be positioned. See below: 'Notification Positioning'
     css: String // Custom css string to overide Assist default styles
-  },
-  truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
+  }
 }
 ```
 

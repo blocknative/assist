@@ -31,6 +31,7 @@ function sendTransaction(
   inlineCustomMsgs,
   contractMethod,
   contractEventObj,
+  truffleContract,
   promiEvent
 ) {
   return new Promise(async (resolve, reject) => {
@@ -38,7 +39,8 @@ function sendTransaction(
     const transactionParams = await getTransactionParams(
       txOptions,
       contractMethod,
-      contractEventObj
+      contractEventObj,
+      truffleContract
     )
 
     // Check user is ready to make the transaction
@@ -131,16 +133,14 @@ function sendTransaction(
 
     let txPromise
 
-    if (state.legacyWeb3 || state.config.truffleContract) {
-      if (contractEventObj) {
-        txPromise = sendTransactionMethod(
-          ...contractEventObj.parameters,
-          txOptions
-        )
-      } else {
-        txPromise = sendTransactionMethod(txOptions)
-      }
+    if ((state.legacyWeb3 || truffleContract) && contractEventObj) {
+      // legacy contract call
+      txPromise = sendTransactionMethod(
+        ...contractEventObj.parameters,
+        txOptions
+      )
     } else {
+      // modern contract call or basic transaction
       txPromise = sendTransactionMethod(txOptions)
     }
 
@@ -201,7 +201,7 @@ function sendTransaction(
           onTxError(transactionId, errorObj, categoryCode)
           handleError({ resolve, reject, callback })(errorObj)
         })
-    } else if (state.config.truffleContract) {
+    } else if (truffleContract) {
       txPromise
         .then(async txObj => {
           const hash = txObj.tx

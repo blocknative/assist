@@ -90,7 +90,7 @@ export function modernCall(method, name, args) {
   return returnObject
 }
 
-export function modernSend(method, name, args) {
+export function modernSend(method, name, args, truffleContract) {
   const originalReturnObject = method(...args)
   const innerMethod = originalReturnObject.send
 
@@ -111,6 +111,7 @@ export function modernSend(method, name, args) {
       inlineCustomMsgs,
       method,
       { methodName: name, parameters: args },
+      truffleContract,
       promiEvent
     )
 
@@ -120,11 +121,11 @@ export function modernSend(method, name, args) {
   return returnObject
 }
 
-export function legacyCall(method, name, allArgs, argsLength) {
+export function legacyCall(method, name, allArgs, argsLength, truffleContract) {
   return new Promise(async (resolve, reject) => {
     const {
       mobileDevice,
-      config: { mobileBlocked, headlessMode, truffleContract }
+      config: { mobileBlocked, headlessMode }
     } = state
     const { callback, args, txObject, defaultBlock } = separateArgs(
       allArgs,
@@ -202,13 +203,19 @@ export function legacyCall(method, name, allArgs, argsLength) {
   })
 }
 
-export async function legacySend(method, name, allArgs, argsLength) {
+export async function legacySend(
+  method,
+  name,
+  allArgs,
+  argsLength,
+  truffleContract
+) {
   const { callback, txObject, args, inlineCustomMsgs } = separateArgs(
     allArgs,
     argsLength
   )
 
-  const sendMethod = state.config.truffleContract
+  const sendMethod = truffleContract
     ? method.sendTransaction
     : promisify(method)
 
@@ -222,6 +229,7 @@ export async function legacySend(method, name, allArgs, argsLength) {
     {
       methodName: name,
       parameters: args
-    }
+    },
+    truffleContract
   )
 }
