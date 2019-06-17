@@ -121,17 +121,6 @@ export function createElement(el, className, children, id) {
 const handleWindowResize = () =>
   resizeIframe({ height: window.innerHeight, width: window.innerWidth })
 
-function handleKeyPress(onClose) {
-  return function innerFunc(e) {
-    if (e.key === 'Escape') {
-      e.preventDefault()
-      onClose && onClose()
-      closeModal()
-      window.removeEventListener('keydown', innerFunc)
-    }
-  }
-}
-
 export function closeModal() {
   window.removeEventListener('resize', handleWindowResize)
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
@@ -156,12 +145,8 @@ export function closeModal() {
 
 export function openModal(modal, handlers = {}) {
   const { onClick, onClose } = handlers
-
   window.addEventListener('resize', handleWindowResize)
-  window.addEventListener('keydown', handleKeyPress(onClose))
-
   state.iframeDocument.body.appendChild(modal)
-
   showIframe()
   resizeIframe({ height: window.innerHeight, width: window.innerWidth })
 
