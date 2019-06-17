@@ -194,6 +194,9 @@ var config = {
     notificationsPosition: Object || String, // Defines where in the viewport notifications will be positioned. See below: 'Notification Positioning'
     css: String // Custom css string to overide Assist default styles
   },
+  timeouts: {
+    txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not in the mempool
+  }
   truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
 }
 ```
