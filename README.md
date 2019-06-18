@@ -170,7 +170,7 @@ var config = {
     txSent: Function, // Transaction has been sent to the network
     txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
-    txStall: Function, // Transaction was sent but not received in the mempool after 30 secs
+    txStall: Function, // Transaction was sent but not confirmed in the blockchain after 30 secs
     txFailed: Function, // Transaction failed
     nsfFail: Function, // User doesn't have enough funds to complete transaction
     txRepeat: Function, // Warning to user that they might be repeating a transaction
@@ -195,7 +195,7 @@ var config = {
     css: String // Custom css string to overide Assist default styles
   },
   timeouts: {
-    txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not in the mempool
+    txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not confirmed in the blockchain
   }
   truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
 }
