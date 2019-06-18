@@ -39,6 +39,8 @@ export function modernCall(method, name, args) {
             }
           }
         )
+
+        return
       }
 
       const correctNetwork = await checkNetwork()
@@ -146,21 +148,23 @@ export function legacyCall(method, name, allArgs, argsLength) {
         }
       )
 
-      return resolve()
+      return
     }
 
     const correctNetwork = await checkNetwork()
 
     if (!correctNetwork) {
       if (!headlessMode) {
-        const result = await getCorrectNetwork('onboard').catch(
+        const onCorrectNetwork = await getCorrectNetwork('onboard').catch(
           handleError({ resolve, reject, callback })
         )
-        if (!result) return
+        if (!onCorrectNetwork) return
       } else {
         const errorObj = new Error('User is on the wrong network')
         errorObj.eventCode = 'networkFail'
         handleError({ resolve, reject, callback })(errorObj)
+
+        return
       }
     }
 
@@ -187,18 +191,20 @@ export function legacyCall(method, name, allArgs, argsLength) {
       handleError({ resolve, reject, callback })(errorObj)
     })
 
-    handleEvent({
-      eventCode: 'contractQuery',
-      categoryCode: 'activeContract',
-      contract: {
-        methodName: name,
-        parameters: args,
-        result: JSON.stringify(result)
-      }
-    })
+    if (result != null) {
+      handleEvent({
+        eventCode: 'contractQuery',
+        categoryCode: 'activeContract',
+        contract: {
+          methodName: name,
+          parameters: args,
+          result: JSON.stringify(result)
+        }
+      })
 
-    callback && callback(null, result)
-    return resolve(result)
+      callback && callback(null, result)
+      resolve(result)
+    }
   })
 }
 
