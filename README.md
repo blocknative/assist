@@ -197,7 +197,6 @@ var config = {
   timeouts: {
     txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not confirmed in the blockchain
   }
-  truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
 }
 ```
 

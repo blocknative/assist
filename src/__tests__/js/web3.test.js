@@ -1,7 +1,7 @@
 import truffleContract from 'truffle-contract'
 import da from '~/js'
 import abi from '~/__tests__/res/dstoken.json'
-import { state, initialState, updateState } from '~/js/helpers/state'
+import { initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
 import { web3Functions } from '~/js/helpers/web3'
 import convertLibJson from '~/__tests__/res/ConvertLib'
@@ -98,7 +98,6 @@ describe(`web3.js tests`, () => {
             describe('from a truffle contract', () => {
               let contractInstance
               beforeEach(async () => {
-                state.config.truffleContract = true
                 contract = truffleContract(convertLibJson)
                 contract.setProvider(
                   new Web3v0p20.providers.HttpProvider(
@@ -107,9 +106,6 @@ describe(`web3.js tests`, () => {
                 )
                 contractInstance = await contract.at(convertLibAddress)
               })
-              afterEach(() => {
-                state.config.truffleContract = false
-              })
               // doesn't seem to work
               // see https://github.com/blocknative/assist/issues/171
               test('should return the expected gas cost', async () => {
@@ -117,7 +113,8 @@ describe(`web3.js tests`, () => {
                 const contractMethod = contractInstance.convert
                 const parameters = [5, 10]
                 const contractGas = await web3Functions.contractGas(
-                  simpleVersion
+                  simpleVersion,
+                  true
                 )(contractMethod, parameters)
                 expect(contractGas).toEqual(expected)
               })

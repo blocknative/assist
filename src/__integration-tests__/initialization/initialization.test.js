@@ -283,8 +283,7 @@ describe('init is called', () => {
         darkMode: true,
         notificationsPosition: { mobile: 'top', desktop: 'bottomLeft' },
         css: '123'
-      },
-      truffleContract: true
+      }
     }
     test(`should not throw`, () => {
       expect(() => {

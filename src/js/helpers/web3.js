@@ -38,16 +38,16 @@ export const web3Functions = {
         return () => Promise.reject(errorObj)
     }
   },
-  contractGas: version => {
+  contractGas: (version, truffleContract) => {
     switch (version) {
       case '0.2':
         return (contractMethod, parameters, txObject) =>
-          state.config.truffleContract
+          truffleContract
             ? contractMethod.estimateGas(...parameters)
             : promisify(contractMethod.estimateGas)(...parameters, txObject)
       case '1.0':
         return (contractMethod, parameters, txObject) =>
-          state.config.truffleContract
+          truffleContract
             ? contractMethod.estimateGas(...parameters)
             : contractMethod(...parameters).estimateGas(txObject)
       default:
@@ -167,7 +167,8 @@ export function getNetworkId() {
 export function getTransactionParams(
   txObject = {},
   contractMethod,
-  contractEventObj
+  contractEventObj,
+  truffleContract
 ) {
   return new Promise(async resolve => {
     const version = state.web3Version && state.web3Version.slice(0, 3)
@@ -199,7 +200,7 @@ export function getTransactionParams(
         // Get a gas estimate based on if the tx is a contract method call
         // or regular transaction
         gas = contractMethod
-          ? await web3Functions.contractGas(version)(
+          ? await web3Functions.contractGas(version, truffleContract)(
               contractMethod,
               contractEventObj.parameters,
               txObject

@@ -220,12 +220,9 @@ function init(config) {
   // CONTRACT FUNCTION //
 
   function Contract(contractObj) {
-    const {
-      validApiKey,
-      supportedNetwork,
-      web3Instance,
-      config: { truffleContract }
-    } = state
+    const { validApiKey, supportedNetwork, web3Instance } = state
+
+    const truffleContract = contractObj.constructor.name === 'TruffleContract'
 
     if (!validApiKey) {
       const errorObj = new Error('Your API key is not valid')
@@ -293,14 +290,14 @@ function init(config) {
 
         newContractObj[name] = (...args) =>
           constant
-            ? legacyCall(method, name, args, argsLength)
-            : legacySend(method, name, args, argsLength)
+            ? legacyCall(method, name, args, argsLength, truffleContract)
+            : legacySend(method, name, args, argsLength, truffleContract)
 
         newContractObj[name].call = (...args) =>
-          legacyCall(method, name, args, argsLength)
+          legacyCall(method, name, args, argsLength, truffleContract)
 
         newContractObj[name].sendTransaction = (...args) =>
-          legacySend(method, name, args, argsLength)
+          legacySend(method, name, args, argsLength, truffleContract)
 
         // Add any additional properties onto the method function
         Object.entries(contractObj[name]).forEach(([k, v]) => {
@@ -320,14 +317,14 @@ function init(config) {
 
             newContractObj[name][key] = (...args) =>
               constant
-                ? legacyCall(method, name, args, argsLength)
-                : legacySend(method, name, args, argsLength)
+                ? legacyCall(method, name, args, argsLength, truffleContract)
+                : legacySend(method, name, args, argsLength, truffleContract)
 
             newContractObj[name][key].call = (...args) =>
-              legacyCall(method, name, args, argsLength)
+              legacyCall(method, name, args, argsLength, truffleContract)
 
             newContractObj[name][key].sendTransaction = (...args) =>
-              legacySend(method, name, args, argsLength)
+              legacySend(method, name, args, argsLength, truffleContract)
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
@@ -368,7 +365,7 @@ function init(config) {
             methodsObj[name] = (...args) =>
               constant
                 ? modernCall(method, name, args)
-                : modernSend(method, name, args)
+                : modernSend(method, name, args, truffleContract)
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
@@ -393,7 +390,7 @@ function init(config) {
           methodsObj[overloadedMethodKey] = (...args) =>
             constant
               ? modernCall(overloadedMethod, name, args)
-              : modernSend(overloadedMethod, name, args)
+              : modernSend(overloadedMethod, name, args, truffleContract)
 
           // Add any additional properties onto the method function
           Object.entries(overloadedMethod).forEach(([k, v]) => {
@@ -448,6 +445,7 @@ function init(config) {
         inlineCustomMsgs.messages,
         undefined,
         undefined,
+        false,
         promiEvent
       )
       return promiEvent
@@ -457,7 +455,10 @@ function init(config) {
       txObject,
       sendMethod,
       callback,
-      inlineCustomMsgs.messages
+      inlineCustomMsgs.messages,
+      undefined,
+      undefined,
+      false
     )
   }
 }
