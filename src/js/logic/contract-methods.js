@@ -39,6 +39,8 @@ export function modernCall(method, name, args) {
             }
           }
         )
+
+        return
       }
 
       const correctNetwork = await checkNetwork()
@@ -146,7 +148,7 @@ export function legacyCall(method, name, allArgs, argsLength) {
         }
       )
 
-      return resolve()
+      return
     }
 
     const correctNetwork = await checkNetwork()
