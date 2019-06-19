@@ -90,18 +90,22 @@ export const onboardHeading = {
   },
   '2': {
     basic: () =>
-      `${state.currentProvider === 'metamask' ? 'MetaMask' : 'Wallet'} Login`,
+      `Login to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
+      }`,
     advanced: () =>
       `Login to ${
-        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
       }`
   },
   '3': {
     basic: () =>
-      `${state.currentProvider === 'metamask' ? 'MetaMask' : 'Wallet'} Connect`,
+      `Connect to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
+      }`,
     advanced: () =>
-      `Connect ${
-        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
+      `Connect to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
       }`
   },
   '4': {
