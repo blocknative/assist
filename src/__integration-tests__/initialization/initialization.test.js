@@ -284,7 +284,9 @@ describe('init is called', () => {
         notificationsPosition: { mobile: 'top', desktop: 'bottomLeft' },
         css: '123'
       },
-      truffleContract: true
+      timeouts: {
+        txStall: 1
+      }
     }
     test(`should not throw`, () => {
       expect(() => {
@@ -324,6 +326,12 @@ describe('init is called', () => {
       expect(state.web3Instance).toEqual(mockModernWeb3)
     })
   })
+})
+
+beforeEach(() => {
+  jest.spyOn(console, 'error')
+  // eslint-disable-next-line
+  console.error.mockImplementation(() => {})
 })
 
 beforeAll(() => {

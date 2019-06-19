@@ -3,7 +3,7 @@ import { Server } from 'mock-socket'
 import abi from '~/__tests__/res/dstoken.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
-import { state, initialState, updateState } from '~/js/helpers/state'
+import { initialState, updateState } from '~/js/helpers/state'
 import convertLibJson from '~/__tests__/res/ConvertLib.json'
 import { convertLibAddress, port } from '../../../../internals/ganacheConfig'
 
@@ -55,11 +55,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       contracts.forEach(([name, getContract]) => {
         describe(`with a ${name} contract`, () => {
           beforeEach(async () => {
-            if (name === 'truffle') state.config.truffleContract = true
             contract = await getContract(web3)
-          })
-          afterEach(() => {
-            if (name === 'truffle') state.config.truffleContract = false
           })
           test(`it doesn't fail and returns the expected decorated contract`, () => {
             const decoratedContract = assistInstance.Contract(contract)
