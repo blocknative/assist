@@ -140,7 +140,7 @@ function handleKeyPress(onClose) {
 export function closeModal() {
   window.removeEventListener('resize', handleWindowResize)
   if (listenerFunc) {
-    window.removeEventListener('keydown', listenerFunc)
+    state.iframeWindow.removeEventListener('keydown', listenerFunc)
     listenerFunc = null
   }
 
@@ -168,7 +168,8 @@ export function openModal(modal, handlers = {}) {
   const { onClick, onClose } = handlers
 
   window.addEventListener('resize', handleWindowResize)
-  window.addEventListener('keydown', handleKeyPress(onClose))
+  state.iframeWindow.addEventListener('keydown', handleKeyPress(onClose))
+  state.iframeWindow.focus()
 
   state.iframeDocument.body.appendChild(modal)
 
