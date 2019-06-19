@@ -141,7 +141,7 @@ export function closeModal() {
   window.removeEventListener('resize', handleWindowResize)
   if (listenerFunc) {
     window.removeEventListener('keydown', listenerFunc)
-    listenerFunc = undefined
+    listenerFunc = null
   }
 
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
