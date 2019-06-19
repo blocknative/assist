@@ -466,7 +466,7 @@ function init(config) {
         txObject,
         sendMethod,
         callback,
-        inlineCustomMsgs,
+        inlineCustomMsgs.messages,
         undefined,
         undefined,
         false,

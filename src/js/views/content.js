@@ -79,27 +79,44 @@ export const notSupported = {
 }
 
 export const onboardHeading = {
-  mobileNetwork: { advanced: 'Switch to the Correct Network' },
-  mobileWalletEnable: { advanced: 'Connect Wallet' },
-  '0': { basic: 'Let’s Get You Started' },
-  '1': { basic: 'Install MetaMask' },
+  mobileNetwork: { advanced: () => 'Switch to the Correct Network' },
+  mobileWalletEnable: { advanced: () => 'Connect Wallet' },
+  '0': { basic: () => 'Let’s Get You Started' },
+  '1': {
+    basic: () =>
+      `Install ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'a Wallet'
+      }`
+  },
   '2': {
-    basic: 'MetaMask Login',
-    advanced: 'Login to MetaMask'
+    basic: () =>
+      `Login to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
+      }`,
+    advanced: () =>
+      `Login to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
+      }`
   },
   '3': {
-    basic: 'MetaMask Connect',
-    advanced: 'Connect MetaMask'
+    basic: () =>
+      `Connect to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
+      }`,
+    advanced: () =>
+      `Connect to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
+      }`
   },
   '4': {
-    basic: 'Join the Correct Network',
-    advanced: 'Wrong Network'
+    basic: () => 'Join the Correct Network',
+    advanced: () => 'Wrong Network'
   },
   '5': {
-    basic: 'Get Some Ether',
-    advanced: 'Get Some ETH'
+    basic: () => 'Get Some Ether',
+    advanced: () => 'Get Some ETH'
   },
-  '6': { basic: 'Ready to Go' }
+  '6': { basic: () => 'Ready to Go' }
 }
 
 export const onboardDescription = {
@@ -121,13 +138,19 @@ export const onboardDescription = {
   },
   '1': {
     basic: () =>
-      'We use a product called MetaMask to manage everything you need to interact with a blockchain application like this one. MetaMask is free, installs right into your browser, hyper secure, and can be used for any other blockchain application you may want to use. <a href="https://metamask.io/" target="_blank">Get MetaMask now</a>'
+      state.currentProvider === 'metamask'
+        ? 'We use a product called MetaMask to manage everything you need to interact with a blockchain application like this one. MetaMask is free, installs right into your browser, hyper secure, and can be used for any other blockchain application you may want to use. <a href="https://metamask.io/" target="_blank">Get MetaMask now</a>'
+        : 'A wallet is used to manage everything you need to interact with a blockchain application like this one. Wallets are either built into your browser or an extension added to your browser. They are hyper secure, and can be used for any other blockchain application you may want to use.'
   },
   '2': {
     basic: () =>
-      'Now you have MetaMask installed, you’ll need to log into it. The first time you use it, you may need to set up an account with MetaMask which you can do right from the extension. When you’ve got that set up and you’re logged into MetaMask, let us know.',
+      `Now you have ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'a wallet'
+      } installed, you’ll need to log into it. The first time you use it, you may need to set up an account. When you’ve got that set up and you’re logged in, let us know.`,
     advanced: () =>
-      'We’ve detected you are not logged into MetaMask. Please log in to continue using the blockchain enabled features of this application.'
+      `We’ve detected you are not logged in to ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your wallet'
+      }. Please log in to continue using the blockchain enabled features of this application.`
   },
   '3': {
     basic: () => 'Please allow connection to your wallet',
@@ -137,15 +160,19 @@ export const onboardDescription = {
     basic: () =>
       `Blockchain applications have different networks they can work on. Think of this like making sure you’re on Netflix vs Hulu to watch your favorite show. We’ve detected that you need to be on the ${networkName(
         state.config.networkId
-      ) ||
-        'mainnet'} network for this application but you have MetaMask set to ${networkName(
+      ) || 'mainnet'} network for this application but you have ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your wallet'
+      } set to ${networkName(
         state.userCurrentNetworkId
-      )}. Switch the network name in MetaMask and you’ll be ready to go.`,
+      )}. Switch the network name in ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your wallet'
+      } and you’ll be ready to go.`,
     advanced: () =>
       `We’ve detected that you need to be on the ${networkName(
         state.config.networkId
-      ) ||
-        'mainnet'} network for this application but you have MetaMask set to ${networkName(
+      ) || 'mainnet'} network for this application but you have ${
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'your wallet'
+      } set to ${networkName(
         state.userCurrentNetworkId
       )}. Please switch to the correct network.`
   },
@@ -171,7 +198,10 @@ export const onboardButton = {
   mobileWalletEnable: { advanced: 'CHECK THAT I’M CONNECTED' },
   '0': { basic: 'I’M READY' },
   '1': {
-    basic: 'CHECK THAT I HAVE METAMASK'
+    basic: () =>
+      `CHECK THAT I HAVE ${
+        state.currentProvider === 'metamask' ? 'METAMASK' : 'A WALLET'
+      }`
   },
   '2': {
     basic: 'CHECK THAT I’M LOGGED IN',
@@ -193,25 +223,26 @@ export const onboardButton = {
 }
 
 export function onboardWarningMsg(type) {
-  const { mobileDevice } = state
+  const { mobileDevice, currentProvider } = state
+  const isMetaMask = currentProvider === 'metamask'
   switch (type) {
     case 'loggedIn':
       return `You are not currently logged in to ${
-        mobileDevice ? 'your wallet' : 'MetaMask'
+        mobileDevice || !isMetaMask ? 'your wallet' : 'MetaMask'
       }.`
     case 'enabled':
-      return `You have not yet approved the Connect request in ${
-        mobileDevice ? 'your wallet' : 'MetaMask'
+      return `You have not yet approved the connect request in ${
+        mobileDevice || !isMetaMask ? 'your wallet' : 'MetaMask'
       }.`
     case 'network':
       return `You currently have ${
-        mobileDevice ? 'your wallet' : 'MetaMask'
+        mobileDevice || !isMetaMask ? 'your wallet' : 'MetaMask'
       } set to the ${capitalize(networkName(state.userCurrentNetworkId))} ${
         state.userCurrentNetworkId === 1 ? 'Ethereum' : 'Test'
       } Network.`
     case 'minimumBalance':
       return `Your current ${
-        mobileDevice ? 'wallet' : 'MetaMask'
+        mobileDevice || !isMetaMask ? 'wallet' : 'MetaMask'
       } account has less than the necessary minimum balance of
         ${state.config.minimumBalance / 1000000000000000000} ${capitalize(
         networkName(state.userCurrentNetworkId)

@@ -255,6 +255,9 @@ function onTxHash(id, hash, categoryCode) {
     }
   })
 
+  const customStallTimeout =
+    state.config.timeouts && state.config.timeouts.txStall
+
   // Check if transaction is in txPool after timeout
   setTimeout(() => {
     const txObj = getTxObjFromQueue(id)
@@ -284,7 +287,7 @@ function onTxHash(id, hash, categoryCode) {
         }
       })
     }
-  }, timeouts.txStall)
+  }, customStallTimeout || timeouts.txStall)
 }
 
 async function onTxReceipt(id, categoryCode) {
