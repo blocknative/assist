@@ -283,6 +283,9 @@ describe('init is called', () => {
         darkMode: true,
         notificationsPosition: { mobile: 'top', desktop: 'bottomLeft' },
         css: '123'
+      },
+      timeouts: {
+        txStall: 1
       }
     }
     test(`should not throw`, () => {
