@@ -328,6 +328,12 @@ describe('init is called', () => {
   })
 })
 
+beforeEach(() => {
+  jest.spyOn(console, 'error')
+  // eslint-disable-next-line
+  console.error.mockImplementation(() => {})
+})
+
 beforeAll(() => {
   jest.spyOn(websockets, 'openWebsocketConnection').mockImplementation(() => {})
 })
