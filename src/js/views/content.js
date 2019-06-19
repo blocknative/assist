@@ -91,21 +91,21 @@ export const onboardHeading = {
   '2': {
     basic: () =>
       `Login to ${
-        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
       }`,
     advanced: () =>
       `Login to ${
-        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
       }`
   },
   '3': {
     basic: () =>
       `Connect to ${
-        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
       }`,
     advanced: () =>
       `Connect to ${
-        state.currentProvider === 'metamask' ? 'MetaMask' : 'your Wallet'
+        state.currentProvider === 'metamask' ? 'MetaMask' : 'Your Wallet'
       }`
   },
   '4': {

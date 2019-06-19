@@ -594,10 +594,10 @@ exports[`dom-rendering event activePreflight-newOnboardComplete should trigger c
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-check\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -658,10 +658,10 @@ exports[`dom-rendering event activePreflight-newOnboardComplete should trigger c
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-check\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -797,7 +797,7 @@ exports[`dom-rendering event activePreflight-walletEnable should trigger correct
 				
     
     <br>
-    <h1 class=\\"h4\\">Connect to your Wallet</h1>
+    <h1 class=\\"h4\\">Connect to Your Wallet</h1>
     <p>Connect your wallet to interact with this Dapp</p>
     <br>
     <br>
@@ -838,10 +838,10 @@ exports[`dom-rendering event activePreflight-walletFail should trigger correct D
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -897,7 +897,7 @@ exports[`dom-rendering event activePreflight-walletLogin should trigger correct 
 				
     
     <br>
-    <h1 class=\\"h4\\">Login to your Wallet</h1>
+    <h1 class=\\"h4\\">Login to Your Wallet</h1>
     <p>We’ve detected you are not logged in to your wallet. Please log in to continue using the blockchain enabled features of this application.</p>
     <br>
     <br>
@@ -933,7 +933,7 @@ exports[`dom-rendering event activePreflight-walletLoginEnable should trigger co
 				
     
     <br>
-    <h1 class=\\"h4\\">Login to your Wallet</h1>
+    <h1 class=\\"h4\\">Login to Your Wallet</h1>
     <p>We’ve detected you are not logged in to your wallet. Please log in to continue using the blockchain enabled features of this application.</p>
     <br>
     <br>
@@ -974,10 +974,10 @@ exports[`dom-rendering event activePreflight-welcomeUser should trigger correct 
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -1038,10 +1038,10 @@ exports[`dom-rendering event activePreflight-welcomeUser should trigger correct 
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -1723,10 +1723,10 @@ exports[`dom-rendering event onboard-newOnboardComplete should trigger correct D
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-check\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -1787,10 +1787,10 @@ exports[`dom-rendering event onboard-newOnboardComplete should trigger correct D
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-check\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-check\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -1918,7 +1918,7 @@ exports[`dom-rendering event onboard-walletEnable should trigger correct DOM ren
 				
     
     <br>
-    <h1 class=\\"h4\\">Connect to your Wallet</h1>
+    <h1 class=\\"h4\\">Connect to Your Wallet</h1>
     <p>Connect your wallet to interact with this Dapp</p>
     <br>
     <br>
@@ -1959,10 +1959,10 @@ exports[`dom-rendering event onboard-walletFail should trigger correct DOM rende
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -2018,7 +2018,7 @@ exports[`dom-rendering event onboard-walletLogin should trigger correct DOM rend
 				
     
     <br>
-    <h1 class=\\"h4\\">Login to your Wallet</h1>
+    <h1 class=\\"h4\\">Login to Your Wallet</h1>
     <p>We’ve detected you are not logged in to your wallet. Please log in to continue using the blockchain enabled features of this application.</p>
     <br>
     <br>
@@ -2054,7 +2054,7 @@ exports[`dom-rendering event onboard-walletLoginEnable should trigger correct DO
 				
     
     <br>
-    <h1 class=\\"h4\\">Login to your Wallet</h1>
+    <h1 class=\\"h4\\">Login to Your Wallet</h1>
     <p>We’ve detected you are not logged in to your wallet. Please log in to continue using the blockchain enabled features of this application.</p>
     <br>
     <br>
@@ -2095,10 +2095,10 @@ exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM rend
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
@@ -2159,10 +2159,10 @@ exports[`dom-rendering event onboard-welcomeUser should trigger correct DOM rend
             <span class=\\"bn-onboard-list-sprite\\"></span> Install a Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Login to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Login to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
-            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to your Wallet
+            <span class=\\"bn-onboard-list-sprite\\"></span> Connect to Your Wallet
           </li>
           <li class=\\"bn-inactive\\">
             <span class=\\"bn-onboard-list-sprite\\"></span> Join the Correct Network
