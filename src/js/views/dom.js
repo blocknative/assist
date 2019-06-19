@@ -121,19 +121,29 @@ export function createElement(el, className, children, id) {
 const handleWindowResize = () =>
   resizeIframe({ height: window.innerHeight, width: window.innerWidth })
 
+let listenerFunc
+
 function handleKeyPress(onClose) {
-  return function innerFunc(e) {
+  function innerFunc(e) {
     if (e.key === 'Escape') {
       e.preventDefault()
       onClose && onClose()
       closeModal()
-      window.removeEventListener('keydown', innerFunc)
     }
   }
+
+  listenerFunc = innerFunc
+
+  return listenerFunc
 }
 
 export function closeModal() {
   window.removeEventListener('resize', handleWindowResize)
+  if (listenerFunc) {
+    window.removeEventListener('keydown', listenerFunc)
+    listenerFunc = null
+  }
+
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
   removeTouchHandlers(modal)
