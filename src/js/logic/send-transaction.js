@@ -201,21 +201,6 @@ function sendTransaction(
           onTxError(transactionId, errorObj, categoryCode)
           handleError({ resolve, reject, callback })(errorObj)
         })
-    } else if (truffleContract) {
-      txPromise
-        .then(async txObj => {
-          const hash = txObj.tx
-          onTxHash(transactionId, hash, categoryCode)
-
-          const receipt = await waitForTransactionReceipt(hash)
-          onTxReceipt(transactionId, categoryCode)
-          resolve({ receipt })
-          callback && callback(null, receipt)
-        })
-        .catch(async errorObj => {
-          onTxError(transactionId, errorObj, categoryCode)
-          handleError({ resolve, reject, callback })(errorObj)
-        })
     } else {
       new Promise(confirmed => {
         /* In web3 v1 instead of resolving the promise returned by sendTransaction

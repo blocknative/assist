@@ -269,3 +269,12 @@ export function handleWeb3Error(errorObj) {
     reason: message || errorObj
   })
 }
+
+export function truffleContractUsesWeb3v1(contractObj) {
+  return (
+    contractObj.constructor &&
+    contractObj.constructor.web3 &&
+    contractObj.constructor.web3.version &&
+    contractObj.constructor.web3.version.substring(0, 1) === '1'
+  )
+}
