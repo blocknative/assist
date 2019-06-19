@@ -169,7 +169,7 @@ export function openModal(modal, handlers = {}) {
 
   window.addEventListener('resize', handleWindowResize)
   state.iframeWindow.addEventListener('keydown', handleKeyPress(onClose))
-  state.iframeWindow.focus()
+  state.iframeWindow.focus && state.iframeWindow.focus()
 
   state.iframeDocument.body.appendChild(modal)
 
