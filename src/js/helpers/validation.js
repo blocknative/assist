@@ -37,6 +37,7 @@ export function validateConfig(config) {
         txConfirmed: ow.optional.function,
         txSpeedUp: ow.optional.function
       }),
+      handleNotificationEvent: ow.optional.function,
       images: ow.optional.object.exactShape({
         welcome: ow.optional.object.exactShape({
           src: ow.string,
@@ -60,8 +61,7 @@ export function validateConfig(config) {
       }),
       timeouts: ow.optional.object.exactShape({
         txStall: ow.number
-      }),
-      truffleContract: ow.optional.boolean
+      })
     })
   )
 }
