@@ -92,7 +92,7 @@ export function modernCall(method, name, args) {
   return returnObject
 }
 
-export function modernSend(method, name, args, truffleContract) {
+export function modernSend(method, name, args) {
   const originalReturnObject = method(...args)
   const innerMethod = originalReturnObject.send
 
@@ -113,7 +113,7 @@ export function modernSend(method, name, args, truffleContract) {
       inlineCustomMsgs,
       method,
       { methodName: name, parameters: args },
-      truffleContract,
+      false,
       promiEvent
     )
 
@@ -209,21 +209,13 @@ export function legacyCall(method, name, allArgs, argsLength, truffleContract) {
   })
 }
 
-export async function legacySend(
-  method,
-  name,
-  allArgs,
-  argsLength,
-  truffleContract
-) {
+export async function legacySend(method, name, allArgs, argsLength) {
   const { callback, txObject, args, inlineCustomMsgs } = separateArgs(
     allArgs,
     argsLength
   )
 
-  const sendMethod = truffleContract
-    ? method.sendTransaction
-    : promisify(method)
+  const sendMethod = promisify(method)
 
   return sendTransaction(
     'activeContract',
@@ -236,6 +228,31 @@ export async function legacySend(
       methodName: name,
       parameters: args
     },
-    truffleContract
+    false
   )
+}
+
+export function truffleSend(method, name, allArgs, argsLength) {
+  const { callback, txObject, args, inlineCustomMsgs } = separateArgs(
+    allArgs,
+    argsLength
+  )
+
+  const promiEvent = new PromiEventLib.PromiEvent()
+  sendTransaction(
+    'activeContract',
+    txObject,
+    method,
+    callback,
+    inlineCustomMsgs,
+    method,
+    {
+      methodName: name,
+      parameters: args
+    },
+    true,
+    promiEvent
+  )
+
+  return promiEvent
 }
