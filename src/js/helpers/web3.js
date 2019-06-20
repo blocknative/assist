@@ -396,41 +396,59 @@ export function getCurrentProvider() {
   const web3 = state.web3Instance
 
   if (!web3) {
+    if (window.ethereum.isMetaMask) {
+      return 'metamask'
+    }
+
+    if (window.ethereum.isDapper) {
+      return 'dapper'
+    }
+
     return 'unknown'
   }
+
   if (web3.currentProvider.isMetaMask) {
     return 'metamask'
   }
+
   if (web3.currentProvider.isDapper) {
     return 'dapper'
   }
+
   if (web3.currentProvider.isTrust) {
     return 'trust'
   }
+
   if (typeof window.SOFA !== 'undefined') {
     return 'toshi'
   }
+
   if (typeof window.__CIPHER__ !== 'undefined') {
     return 'cipher'
   }
+
   if (web3.currentProvider.constructor.name === 'EthereumProvider') {
     return 'mist'
   }
+
   if (web3.currentProvider.constructor.name === 'Web3FrameProvider') {
     return 'parity'
   }
+
   if (
     web3.currentProvider.host &&
     web3.currentProvider.host.indexOf('infura') !== -1
   ) {
     return 'infura'
   }
+
   if (
     web3.currentProvider.host &&
     web3.currentProvider.host.indexOf('localhost') !== -1
   ) {
     return 'localhost'
   }
+
   if (web3.currentProvider.connection) {
     return 'Infura Websocket'
   }
