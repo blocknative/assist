@@ -8,10 +8,11 @@ import { checkNetwork, getCorrectNetwork } from '~/js/logic/user'
 
 import sendTransaction from './send-transaction'
 
-export function modernCall({ contractObj, methodName, args }) {
+export function modernCall({ contractObj, methodName, args, truffleContract }) {
   const originalReturnObject = getContractMethod({
     contractObj,
-    methodName
+    methodName,
+    truffleContract
   })(...args)
 
   const innerMethod = originalReturnObject.call
@@ -44,6 +45,8 @@ export function modernCall({ contractObj, methodName, args }) {
             }
           }
         )
+
+        return
       }
 
       const correctNetwork = await checkNetwork()
@@ -75,7 +78,7 @@ export function modernCall({ contractObj, methodName, args }) {
         handleError({ resolve, reject, callback })(errorObj)
       })
 
-      if (result) {
+      if (result != null) {
         handleEvent({
           eventCode: 'contractQuery',
           categoryCode: 'activeContract',
@@ -95,10 +98,11 @@ export function modernCall({ contractObj, methodName, args }) {
   return returnObject
 }
 
-export function modernSend({ contractObj, methodName, args }) {
+export function modernSend({ contractObj, methodName, args, truffleContract }) {
   const originalReturnObject = getContractMethod({
     contractObj,
-    methodName
+    methodName,
+    truffleContract
   })(...args)
 
   const innerMethod = originalReturnObject.send
@@ -135,13 +139,15 @@ export function legacyCall({
   methodName,
   overloadKey,
   args,
-  argsLength
+  argsLength,
+  truffleContract
 }) {
   return new Promise(async (resolve, reject) => {
     const {
       mobileDevice,
-      config: { mobileBlocked, headlessMode, truffleContract, ethers }
+      config: { mobileBlocked, headlessMode, ethers }
     } = state
+
     const { callback, methodArgs, txOptions, defaultBlock } = separateArgs(
       args,
       argsLength
@@ -162,28 +168,31 @@ export function legacyCall({
         }
       )
 
-      return resolve()
+      return
     }
 
     const correctNetwork = await checkNetwork()
 
     if (!correctNetwork) {
       if (!headlessMode) {
-        const result = await getCorrectNetwork('onboard').catch(
+        const onCorrectNetwork = await getCorrectNetwork('onboard').catch(
           handleError({ resolve, reject, callback })
         )
-        if (!result) return
+        if (!onCorrectNetwork) return
       } else {
         const errorObj = new Error('User is on the wrong network')
         errorObj.eventCode = 'networkFail'
         handleError({ resolve, reject, callback })(errorObj)
+
+        return
       }
     }
 
     const contractMethod = getContractMethod({
       contractObj,
       methodName,
-      overloadKey
+      overloadKey,
+      truffleContract
     })
 
     // Only promisify method if it isn't a truffle or ethers contract
@@ -210,18 +219,20 @@ export function legacyCall({
       handleError({ resolve, reject, callback })(errorObj)
     })
 
-    handleEvent({
-      eventCode: 'contractQuery',
-      categoryCode: 'activeContract',
-      contract: {
-        methodName: overloadKey || methodName,
-        parameters: methodArgs,
-        result: JSON.stringify(result)
-      }
-    })
+    if (result != null) {
+      handleEvent({
+        eventCode: 'contractQuery',
+        categoryCode: 'activeContract',
+        contract: {
+          methodName,
+          parameters: args,
+          result: JSON.stringify(result)
+        }
+      })
 
-    callback && callback(null, result)
-    return resolve(result)
+      callback && callback(null, result)
+      resolve(result)
+    }
   })
 }
 
@@ -230,23 +241,24 @@ export async function legacySend({
   methodName,
   overloadKey,
   args,
-  argsLength
+  argsLength,
+  truffleContract
 }) {
   const { callback, txOptions, methodArgs, inlineCustomMsgs } = separateArgs(
     args,
     argsLength
   )
 
-  const { truffleContract, ethers } = state.config
+  const { ethers } = state.config
 
   const contractMethod = getContractMethod({
     contractObj,
     methodName,
-    overloadKey
+    overloadKey,
+    truffleContract
   })
 
-  const sendMethod =
-    truffleContract || ethers ? contractMethod : promisify(contractMethod)
+  const sendMethod = ethers ? contractMethod : promisify(contractMethod)
 
   return sendTransaction({
     categoryCode: 'activeContract',
@@ -259,4 +271,41 @@ export async function legacySend({
     overloadKey,
     methodArgs
   })
+}
+
+export function truffleSend({
+  contractObj,
+  methodName,
+  overloadKey,
+  args,
+  argsLength
+}) {
+  const { callback, txOptions, methodArgs, inlineCustomMsgs } = separateArgs(
+    args,
+    argsLength
+  )
+
+  const sendMethod = getContractMethod({
+    contractObj,
+    methodName,
+    overloadKey,
+    truffleContract: true
+  })
+
+  const promiEvent = new PromiEventLib.PromiEvent()
+  sendTransaction({
+    categoryCode: 'activeContract',
+    txOptions,
+    sendMethod,
+    callback,
+    inlineCustomMsgs,
+    contractObj,
+    methodName,
+    overloadKey,
+    methodArgs,
+    truffleContract: true,
+    promiEvent
+  })
+
+  return promiEvent
 }

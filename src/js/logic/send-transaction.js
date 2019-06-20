@@ -33,6 +33,7 @@ function sendTransaction({
   methodName,
   overloadKey,
   methodArgs,
+  truffleContract,
   promiEvent
 }) {
   return new Promise(async (resolve, reject) => {
@@ -50,7 +51,8 @@ function sendTransaction({
       contractObj,
       methodName,
       overloadKey,
-      args: methodArgs
+      args: methodArgs,
+      truffleContract
     })
 
     const contractEventObj = {
@@ -62,7 +64,7 @@ function sendTransaction({
     const [sufficientBalance, ready] = await Promise.all([
       hasSufficientBalance(transactionParams),
       prepareForTransaction('activePreflight').catch(
-        handleError({ resolve, reject, callback })
+        handleError({ resolve, reject, callback, promiEvent })
       )
     ])
 
@@ -106,7 +108,7 @@ function sendTransaction({
       )
       errorObj.eventCode = 'nsfFail'
 
-      handleError({ resolve, reject, callback })(errorObj)
+      handleError({ resolve, reject, callback, promiEvent })(errorObj)
       return
     }
 
@@ -216,21 +218,6 @@ function sendTransaction({
           onTxError(transactionId, errorObj, categoryCode)
           handleError({ resolve, reject, callback })(errorObj)
         })
-    } else if (truffleContract) {
-      txPromise
-        .then(async txObj => {
-          const hash = txObj.tx
-          onTxHash(transactionId, hash, categoryCode)
-
-          const receipt = await waitForTransactionReceipt(hash)
-          onTxReceipt(transactionId, categoryCode)
-          resolve({ receipt })
-          callback && callback(null, receipt)
-        })
-        .catch(errorObj => {
-          onTxError(transactionId, errorObj, categoryCode)
-          handleError({ resolve, reject, callback })(errorObj)
-        })
     } else if (ethers) {
       txPromise
         .then(async tx => {
@@ -299,6 +286,9 @@ function onTxHash(id, hash, categoryCode) {
     }
   })
 
+  const customStallTimeout =
+    state.config.timeouts && state.config.timeouts.txStall
+
   // Check if transaction is in txPool after timeout
   setTimeout(() => {
     const txObj = getTxObjFromQueue(id)
@@ -328,7 +318,7 @@ function onTxHash(id, hash, categoryCode) {
         }
       })
     }
-  }, timeouts.txStall)
+  }, customStallTimeout || timeouts.txStall)
 }
 
 async function onTxReceipt(id, categoryCode) {

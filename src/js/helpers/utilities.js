@@ -242,7 +242,13 @@ export function stepToImageKey(step) {
 
 export function handleError(handlers = {}) {
   return errorObj => {
-    const { callback, reject, resolve } = handlers
+    const { callback, reject, resolve, promiEvent } = handlers
+
+    if (promiEvent) {
+      promiEvent.emit('error', errorObj)
+      resolve()
+      return
+    }
 
     if (callback) {
       callback(errorObj)
@@ -262,4 +268,13 @@ export function handleWeb3Error(errorObj) {
     categoryCode: 'web3',
     reason: message || errorObj
   })
+}
+
+export function truffleContractUsesWeb3v1(contractObj) {
+  return (
+    contractObj.constructor &&
+    contractObj.constructor.web3 &&
+    contractObj.constructor.web3.version &&
+    contractObj.constructor.web3.version.substring(0, 1) === '1'
+  )
 }

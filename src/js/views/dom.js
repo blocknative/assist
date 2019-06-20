@@ -121,8 +121,29 @@ export function createElement(el, className, children, id) {
 const handleWindowResize = () =>
   resizeIframe({ height: window.innerHeight, width: window.innerWidth })
 
+let listenerFunc
+
+function handleKeyPress(onClose) {
+  function innerFunc(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      onClose && onClose()
+      closeModal()
+    }
+  }
+
+  listenerFunc = innerFunc
+
+  return listenerFunc
+}
+
 export function closeModal() {
   window.removeEventListener('resize', handleWindowResize)
+  if (listenerFunc) {
+    state.iframeWindow.removeEventListener('keydown', listenerFunc)
+    listenerFunc = null
+  }
+
   const modal = state.iframeDocument.querySelector('.bn-onboard-modal-shade')
   modal.style.opacity = '0'
   removeTouchHandlers(modal)
@@ -145,8 +166,13 @@ export function closeModal() {
 
 export function openModal(modal, handlers = {}) {
   const { onClick, onClose } = handlers
+
   window.addEventListener('resize', handleWindowResize)
+  state.iframeWindow.addEventListener('keydown', handleKeyPress(onClose))
+  state.iframeWindow.focus && state.iframeWindow.focus()
+
   state.iframeDocument.body.appendChild(modal)
+
   showIframe()
   resizeIframe({ height: window.innerHeight, width: window.innerWidth })
 
@@ -299,51 +325,43 @@ export function notSupportedModal(type) {
 export function onboardSidebar(step) {
   return `
     <div class="bn-onboard-sidebar">
-      <h4>Setup Tasks</h4>
-      <ul class="bn-onboard-list">
-        <li class=${
-          step < 1 ? 'bn-inactive' : step > 1 ? 'bn-check' : 'bn-active'
-        }>
-          <span class="bn-onboard-list-sprite"></span> ${
-            onboardHeading[1].basic
-          }
-        </li>
-        <li class=${
-          step < 2 ? 'bn-inactive' : step > 2 ? 'bn-check' : 'bn-active'
-        }>
-          <span class="bn-onboard-list-sprite"></span> ${
-            onboardHeading[2].basic
-          }
-        </li>
-        <li class=${
-          step < 3 ? 'bn-inactive' : step > 3 ? 'bn-check' : 'bn-active'
-        }>
-          <span class="bn-onboard-list-sprite"></span> ${
-            onboardHeading[3].basic
-          }
-        </li>
-        <li class=${
-          step < 4 ? 'bn-inactive' : step > 4 ? 'bn-check' : 'bn-active'
-        }>
-          <span class="bn-onboard-list-sprite"></span> ${
-            onboardHeading[4].basic
-          }
-        </li>
-        <li class=${
-          step < 5 ? 'bn-inactive' : step > 5 ? 'bn-check' : 'bn-active'
-        }>
-          <span class="bn-onboard-list-sprite"></span> ${
-            onboardHeading[5].basic
-          }
-        </li>
-      </ul>
+      <div>
+        <h4>Setup Tasks</h4>
+        <ul class="bn-onboard-list">
+          <li class=${
+            step < 1 ? 'bn-inactive' : step > 1 ? 'bn-check' : 'bn-active'
+          }>
+            <span class="bn-onboard-list-sprite"></span> ${onboardHeading[1].basic()}
+          </li>
+          <li class=${
+            step < 2 ? 'bn-inactive' : step > 2 ? 'bn-check' : 'bn-active'
+          }>
+            <span class="bn-onboard-list-sprite"></span> ${onboardHeading[2].basic()}
+          </li>
+          <li class=${
+            step < 3 ? 'bn-inactive' : step > 3 ? 'bn-check' : 'bn-active'
+          }>
+            <span class="bn-onboard-list-sprite"></span> ${onboardHeading[3].basic()}
+          </li>
+          <li class=${
+            step < 4 ? 'bn-inactive' : step > 4 ? 'bn-check' : 'bn-active'
+          }>
+            <span class="bn-onboard-list-sprite"></span> ${onboardHeading[4].basic()}
+          </li>
+          <li class=${
+            step < 5 ? 'bn-inactive' : step > 5 ? 'bn-check' : 'bn-active'
+          }>
+            <span class="bn-onboard-list-sprite"></span> ${onboardHeading[5].basic()}
+          </li>
+        </ul>
+      </div>
       ${onboardBranding()}
     </div>
   `
 }
 
 export function onboardMain(type, step) {
-  const heading = onboardHeading[step][type]
+  const heading = onboardHeading[step][type]()
   const description = onboardDescription[step][type]()
   const buttonText =
     typeof onboardButton[step][type] === 'function'
@@ -351,7 +369,8 @@ export function onboardMain(type, step) {
       : onboardButton[step][type]
 
   const {
-    config: { style }
+    config: { style },
+    currentProvider
   } = state
 
   const darkMode = style && style.darkMode
@@ -359,25 +378,27 @@ export function onboardMain(type, step) {
 
   const defaultImages = imageSrc[step + variant] || imageSrc[step]
 
+  const isMetaMask = currentProvider === 'metamask'
   const { images } = state.config
   const stepKey = stepToImageKey(step)
   const devImages = images && images[stepKey]
   const onboardImages = {
-    src: (devImages && devImages.src) || (defaultImages && defaultImages.src),
+    src:
+      (devImages && devImages.src) ||
+      ((isMetaMask || stepKey) && defaultImages && defaultImages.src),
     srcset:
-      (devImages && devImages.srcset && devImages.srcset) ||
-      (defaultImages && defaultImages.srcset)
+      (devImages && devImages.srcset) ||
+      ((isMetaMask || stepKey) && defaultImages && defaultImages.srcset)
   }
 
   return `
     ${
       onboardImages.src
         ? `<img
-      src="${(devImages && devImages.src) || defaultImages.src}" 
+      src="${onboardImages.src}" 
       class="bn-onboard-img" 
       alt="Blocknative" 
-      srcset="${(devImages && devImages.srcset && devImages.srcset) ||
-        defaultImages.srcset} 2x"/>`
+      srcset="${onboardImages.srcset} 2x"/>`
         : ''
     }
     <br>

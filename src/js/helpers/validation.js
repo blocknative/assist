@@ -58,6 +58,9 @@ export function validateConfig(config) {
         ),
         css: ow.optional.string
       }),
+      timeouts: ow.optional.object.exactShape({
+        txStall: ow.number
+      }),
       truffleContract: ow.optional.boolean
     })
   )

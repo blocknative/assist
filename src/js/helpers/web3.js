@@ -64,17 +64,18 @@ export const web3Functions = {
         return () => Promise.reject(errorObj)
     }
   },
-  contractGas: version => {
+  contractGas: (version, truffleContract) => {
     switch (version) {
       case '0.2':
         return ({ contractObj, methodName, overloadKey, args }) => {
           const contractMethod = getContractMethod({
             contractObj,
             methodName,
-            overloadKey
+            overloadKey,
+            truffleContract
           })
 
-          return state.config.truffleContract
+          return truffleContract
             ? contractMethod.estimateGas(...args)
             : promisify(contractMethod.estimateGas)(...args)
         }
@@ -84,10 +85,11 @@ export const web3Functions = {
           const contractMethod = getContractMethod({
             contractObj,
             methodName,
-            overloadKey
+            overloadKey,
+            truffleContract
           })
 
-          return state.config.truffleContract
+          return truffleContract
             ? contractMethod.estimateGas(...args)
             : contractMethod(...args).estimateGas(txOptions)
         }
@@ -268,7 +270,8 @@ export function getTransactionParams({
       }
     })
 
-    const gasPromise = new Promise(async (resolve, reject) => {
+    const gasPromise = new Promise(async resolve => {
+      let gas
       try {
         // Get a gas estimate based on if the tx is a contract method call
         // or regular transaction
@@ -283,7 +286,13 @@ export function getTransactionParams({
           : await web3Functions.transactionGas(version)(txOptions)
         resolve(web3Functions.bigNumber(version)(gas))
       } catch (e) {
-        reject(e)
+        // Sometimes MM can't estimate the gas, and will throw.
+        // In this case, use either the gas specified by the dapp
+        // dev, or if that doesn't exist 0 as we are unable to predict
+        // how much gas the transaction will consume.
+        gas = txOptions.gas ? txOptions.gas : 0
+      } finally {
+        resolve(web3Functions.bigNumber(version)(gas))
       }
     })
 
@@ -346,8 +355,13 @@ export function getAccountBalance() {
   })
 }
 
-export function getContractMethod({ contractObj, methodName, overloadKey }) {
-  return state.legacyWeb3 || state.config.truffleContract
+export function getContractMethod({
+  contractObj,
+  methodName,
+  overloadKey,
+  truffleContract
+}) {
+  return state.legacyWeb3 || truffleContract
     ? overloadKey
       ? contractObj[methodName][overloadKey]
       : contractObj[methodName]
@@ -379,18 +393,16 @@ export function requestLoginEnable() {
 }
 
 export function getCurrentProvider() {
-  if (window.ethereum) {
-    if (window.ethereum.isMetaMask) {
-      return 'metamask'
-    }
-    return
+  const web3 = state.web3Instance
+
+  if (!web3) {
+    return 'unknown'
   }
-
-  const web3 = state.web3Instance || window.web3
-  if (!web3) return
-
   if (web3.currentProvider.isMetaMask) {
     return 'metamask'
+  }
+  if (web3.currentProvider.isDapper) {
+    return 'dapper'
   }
   if (web3.currentProvider.isTrust) {
     return 'trust'

@@ -133,6 +133,12 @@ describe('dom-rendering', () => {
   })
 })
 
+beforeEach(() => {
+  jest.spyOn(console, 'error')
+  // eslint-disable-next-line
+  console.error.mockImplementation(() => {})
+})
+
 // Reset the environment to a specified state and localstorage,
 // then create a new iframe
 // (not using beforeEach for this as it was behaiving strangely)

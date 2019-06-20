@@ -14,7 +14,8 @@ import {
   legacyCall,
   legacySend,
   modernSend,
-  modernCall
+  modernCall,
+  truffleSend
 } from './logic/contract-methods'
 import { openWebsocketConnection } from './helpers/websockets'
 import { getUserAgent } from './helpers/browser'
@@ -22,7 +23,10 @@ import { getUncheckedSigner } from './helpers/ethers-provider'
 import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
-import { getOverloadedMethodKeys } from './helpers/utilities'
+import {
+  getOverloadedMethodKeys,
+  truffleContractUsesWeb3v1
+} from './helpers/utilities'
 import { createIframe, updateStyle } from './helpers/iframe'
 import { validateConfig } from './helpers/validation'
 import {
@@ -58,6 +62,9 @@ function init(config) {
   if (web3) {
     configureWeb3(web3)
   }
+
+  // This is needed to ensure MetaMask will reload on every network change
+  window.web3 && window.web3.eth
 
   // Get browser info
   getUserAgent()
@@ -113,7 +120,13 @@ function init(config) {
   const onboardingInProgress = getItem('onboarding') === 'true'
 
   if (onboardingInProgress) {
-    onboard().catch(() => {})
+    const onboardPromise = onboard()
+    updateState({ onboardPromise })
+
+    // once the promise resolves, clear it from state
+    onboardPromise
+      .catch(() => {})
+      .finally(() => updateState({ onboardPromise: null }))
   }
 
   // return the API
@@ -128,8 +141,13 @@ function init(config) {
       mobileDevice,
       validApiKey,
       supportedNetwork,
-      config: { headlessMode, mobileBlocked }
+      config: { headlessMode, mobileBlocked },
+      onboardPromise
     } = state
+
+    if (onboardPromise) {
+      return onboardPromise
+    }
 
     if (!validApiKey) {
       const errorObj = new Error('Your api key is not valid')
@@ -211,16 +229,9 @@ function init(config) {
       validApiKey,
       supportedNetwork,
       web3Instance,
-      config: { truffleContract, ethers }
+      modernWeb3,
+      config: { ethers }
     } = state
-
-    const contractObj = ethers
-      ? new ethers.Contract(
-          contractObjOrAddress,
-          ethersAbi,
-          getUncheckedSigner()
-        )
-      : contractObjOrAddress
 
     if (!validApiKey) {
       const errorObj = new Error('Your API key is not valid')
@@ -245,6 +256,37 @@ function init(config) {
         errorObj.eventCode = 'initFail'
         throw errorObj
       }
+    }
+
+    const contractObj = ethers
+      ? new ethers.Contract(
+          contractObjOrAddress,
+          ethersAbi,
+          getUncheckedSigner()
+        )
+      : contractObjOrAddress
+
+    const truffleContract = contractObj.constructor.name === 'TruffleContract'
+
+    // Check using a version of truffle that uses web3 v1.x.x
+    if (truffleContract && !truffleContractUsesWeb3v1(contractObj)) {
+      throw new Error(
+        'Assist only supports truffle contracts using web3 v1.x.x. Please upgrade your truffle-contract dependency to >= verson 4.x.x.\nSee https://www.npmjs.com/package/truffle-contract?activeTab=versions for more information.'
+      )
+    }
+
+    // Set which types of send/call methods to use for this contract
+    let send
+    let call
+    if (truffleContract) {
+      send = truffleSend
+      call = legacyCall
+    } else if (modernWeb3) {
+      send = modernSend
+      call = modernCall
+    } else {
+      send = legacySend
+      call = legacyCall
     }
 
     const abi =
@@ -288,14 +330,38 @@ function init(config) {
 
         newContractObj[name] = (...args) =>
           constant
-            ? legacyCall({ contractObj, methodName: name, args, argsLength })
-            : legacySend({ contractObj, methodName: name, args, argsLength })
+            ? call({
+                contractObj,
+                methodName: name,
+                args,
+                argsLength,
+                truffleContract
+              })
+            : send({
+                contractObj,
+                methodName: name,
+                args,
+                argsLength,
+                truffleContract
+              })
 
         newContractObj[name].call = (...args) =>
-          legacyCall({ contractObj, methodName: name, args, argsLength })
+          call({
+            contractObj,
+            methodName: name,
+            args,
+            argsLength,
+            truffleContract
+          })
 
         newContractObj[name].sendTransaction = (...args) =>
-          legacySend({ contractObj, methodName: name, args, argsLength })
+          send({
+            contractObj,
+            methodName: name,
+            args,
+            argsLength,
+            truffleContract
+          })
 
         // Add any additional properties onto the method function
         Object.entries(contractObj[name]).forEach(([k, v]) => {
@@ -315,37 +381,37 @@ function init(config) {
 
             newContractObj[name][overloadKey] = (...args) =>
               constant
-                ? legacyCall({
+                ? call({
                     contractObj,
                     methodName: name,
-                    overloadKey,
                     args,
-                    argsLength
+                    argsLength,
+                    truffleContract
                   })
-                : legacySend({
+                : send({
                     contractObj,
                     methodName: name,
-                    overloadKey,
                     args,
-                    argsLength
+                    argsLength,
+                    truffleContract
                   })
 
             newContractObj[name][overloadKey].call = (...args) =>
-              legacyCall({
+              call({
                 contractObj,
                 methodName: name,
-                overloadKey,
                 args,
-                argsLength
+                argsLength,
+                truffleContract
               })
 
             newContractObj[name][overloadKey].sendTransaction = (...args) =>
-              legacySend({
+              send({
                 contractObj,
                 methodName: name,
-                overloadKey,
                 args,
-                argsLength
+                argsLength,
+                truffleContract
               })
 
             // Add any additional properties onto the method function
@@ -386,16 +452,8 @@ function init(config) {
             const method = contractObj.methods[name]
             methodsObj[name] = (...args) =>
               constant
-                ? modernCall({
-                    contractObj,
-                    methodName: name,
-                    args
-                  })
-                : modernSend({
-                    contractObj,
-                    methodName: name,
-                    args
-                  })
+                ? call({ contractObj, methodName: name, args, truffleContract })
+                : send({ contractObj, methodName: name, args, truffleContract })
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
@@ -420,15 +478,17 @@ function init(config) {
 
           methodsObj[overloadedMethodKey] = (...args) =>
             constant
-              ? modernCall({
+              ? call({
                   contractObj,
                   methodName: overloadedMethodKey,
-                  args
+                  args,
+                  truffleContract
                 })
-              : modernSend({
+              : send({
                   contractObj,
                   methodName: overloadedMethodKey,
-                  args
+                  args,
+                  truffleContract
                 })
 
           // Add any additional properties onto the method function
@@ -494,6 +554,7 @@ function init(config) {
         inlineCustomMsgs: inlineCustomMsgs.messages,
         promiEvent
       })
+
       return promiEvent
     }
 

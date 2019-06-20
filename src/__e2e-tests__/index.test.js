@@ -3,7 +3,7 @@ import truffleContract from 'truffle-contract'
 import convertLibJson, { abi } from '~/__tests__/res/ConvertLib.json'
 import da from '~/js'
 import * as websockets from '~/js/helpers/websockets'
-import { state, initialState, updateState } from '~/js/helpers/state'
+import { initialState, updateState } from '~/js/helpers/state'
 
 import {
   convertLibAddress,
@@ -117,12 +117,8 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       let decoratedContract
       let contract
       beforeAll(async () => {
-        state.config.truffleContract = true
         contract = await getTruffleContract(web3)
         decoratedContract = assistInstance.Contract(contract)
-      })
-      afterAll(() => {
-        state.config.truffleContract = false
       })
 
       test('they can estimate gas of a method call from the decorated contract', async () => {
@@ -134,7 +130,6 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       describe('the user makes a contract method call', () => {
         let res
         beforeAll(async () => {
-          state.config.truffleContract = true
           res = await decoratedContract.convert(2, 5)
         })
         test('results in the expected response', () => {

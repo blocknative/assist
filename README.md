@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.8.4.
+The current version is 0.8.10.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-8-4/assist.js"></script>
+<script src="https://assist.blocknative.com/0-8-10/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-8-4/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-8-10/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -180,7 +180,7 @@ var config = {
     txSent: Function, // Transaction has been sent to the network
     txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
-    txStall: Function, // Transaction was sent but not received in the mempool after 30 secs
+    txStall: Function, // Transaction was sent but not confirmed in the blockchain after 30 secs
     txFailed: Function, // Transaction failed
     nsfFail: Function, // User doesn't have enough funds to complete transaction
     txRepeat: Function, // Warning to user that they might be repeating a transaction
@@ -204,8 +204,10 @@ var config = {
     notificationsPosition: Object || String, // Defines where in the viewport notifications will be positioned. See below: 'Notification Positioning'
     css: String // Custom css string to overide Assist default styles
   },
-  truffleContract: Boolean, // Set to true if contract object has been instantiated with truffle-contract [false]
   handleNotificationEvent: Function // Called on every tx notification event with a transaction event object
+  timeouts: {
+    txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not confirmed in the blockchain
+  }
 }
 ```
 
@@ -462,14 +464,13 @@ A decorated `contract` to be used instead of the original instance
 // web3
 var myContract = new web3.eth.Contract(abi, address)
 var myDecoratedContract = assistInstance.Contract(myContract)
-myDecoratedContract.myMethod().call()
+mydecoratedContract.methods.myMethod(params).call()
 
 // OR
 
 // ethers
 var myContract = assistInstance.Contract(address, abi)
 myContract.myMethod().call()
-
 ```
 
 ### `Transaction(txObject [, callback] [, inlineCustomMsgs])`

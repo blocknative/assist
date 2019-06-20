@@ -274,6 +274,9 @@ body {
 }
 
 .bn-onboard-basic .bn-onboard-sidebar {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
   padding: 15px 20px;
   width: 34%;
   background: #eeeeee;
@@ -365,10 +368,6 @@ img.bn-onboard-img {
   font-size: 0.79em;
 }
 
-.bn-onboard-basic .bn-onboarding-branding {
-  position: absolute;
-  bottom: 15px;
-}
 .bn-onboard-basic .bn-onboarding-branding img {
   margin-top: 5px;
 }

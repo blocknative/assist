@@ -1,6 +1,6 @@
 {
   "name": "bnc-assist",
-  "version": "0.8.4",
+  "version": "0.8.10",
   "description": "Blocknative Assist js library for Dapp developers",
   "main": "lib/assist.min.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "web3-core-promievent": "^1.0.0-beta.48"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
     "@babel/plugin-transform-runtime": "^7.1.0",
@@ -78,7 +79,7 @@
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-string": "^2.0.2",
-    "rollup-plugin-terser": "^5.0.0",
+    "rollup-plugin-uglify": "^6.0.2",
     "truffle-contract": "^4.0.15",
     "web3": "^1.0.0-beta.37"
   },
