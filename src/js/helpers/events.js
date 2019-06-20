@@ -17,7 +17,7 @@ export function handleEvent(eventObj, clickHandlers) {
     eventCode === 'txSpeedUp' ||
     eventCode === 'txCancel'
 
-  const notificationEvent = eventCode.includes('tx')
+  const notificationEvent = eventCode.includes('tx') || eventCode === 'nsfFail'
 
   let eventToLog = { ...eventObj }
 
