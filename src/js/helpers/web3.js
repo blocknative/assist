@@ -264,6 +264,7 @@ export function getTransactionParams({
         const gasPrice = txOptions.gasPrice
           ? txOptions.gasPrice
           : await web3Functions.gasPrice(version)()
+
         resolve(web3Functions.bigNumber(version)(gasPrice))
       } catch (e) {
         reject(e)
@@ -275,7 +276,7 @@ export function getTransactionParams({
       try {
         // Get a gas estimate based on if the tx is a contract method call
         // or regular transaction
-        const gas = contractObj
+        gas = contractObj
           ? await web3Functions.contractGas(version)({
               contractObj,
               methodName,
@@ -284,7 +285,6 @@ export function getTransactionParams({
               txOptions
             })
           : await web3Functions.transactionGas(version)(txOptions)
-        resolve(web3Functions.bigNumber(version)(gas))
       } catch (e) {
         // Sometimes MM can't estimate the gas, and will throw.
         // In this case, use either the gas specified by the dapp
