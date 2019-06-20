@@ -67,9 +67,7 @@ export const notSupported = {
   browserNotSupported: {
     heading: 'This Browser is Not Supported',
     description: () =>
-      `This Dapp is not supported in ${
-        state.userAgent.browser.name
-      }. Please visit us in one of the following browsers. Thank You!`
+      `This Dapp is not supported in ${state.userAgent.browser.name}. Please visit us in one of the following browsers. Thank You!`
   },
   mobileWalletNotSupported: {
     heading: 'Install A Mobile Dapp Wallet',

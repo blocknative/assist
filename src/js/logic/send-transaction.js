@@ -42,7 +42,7 @@ function sendTransaction({
       currentProvider,
       accountAddress,
       accountBalance,
-      config: { truffleContract, ethers, minimumBalance }
+      config: { ethers, minimumBalance }
     } = state
 
     // Get information like gasPrice and gas
