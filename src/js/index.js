@@ -510,7 +510,7 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txOptions, callback, inlineCustomMsgs) {
+  function Transaction(txOptions, callback, inlineCustomMsgs = {}) {
     const {
       validApiKey,
       supportedNetwork,
