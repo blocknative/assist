@@ -35,7 +35,10 @@ describe(`web3.js tests`, () => {
         beforeEach(() => {
           jest
             .spyOn(websockets, 'openWebsocketConnection')
-            .mockImplementation(() => {})
+            .mockImplementation(() => Promise.resolve(true))
+          jest
+            .spyOn(websockets, 'checkForSocketConnection')
+            .mockImplementation(() => Promise.resolve(true))
           simpleVersion = version.slice(0, 3)
           web3 = initWeb3(simpleVersion, Web3)
           config = { dappId: '123', web3, networkId: 5 }
@@ -82,16 +85,13 @@ describe(`web3.js tests`, () => {
               })
               test('should return the expected gas cost', async () => {
                 const expected = 21400 // gas the setOwner call should cost
-                const contract = web3.eth.contract
+                const contractObj = web3.eth.contract
                   ? web3.eth.contract(abi).at(zeroAddress) // web3 0.20
                   : new web3.eth.Contract(abi, zeroAddress) // web3 1.0
-                const contractMethod = contract.methods
-                  ? contract.methods.setOwner // web3 1.0
-                  : contract.setOwner // web3 0.20
                 const parameters = [zeroAddress]
                 const contractGas = await web3Functions.contractGas(
                   simpleVersion
-                )(contractMethod, parameters, {})
+                )({ contractObj, methodName: 'setOwner', args: parameters })
                 expect(contractGas).toEqual(expected)
               })
             })
@@ -110,12 +110,12 @@ describe(`web3.js tests`, () => {
               // see https://github.com/blocknative/assist/issues/171
               test('should return the expected gas cost', async () => {
                 const expected = 21988 // gas the convert call should cost
-                const contractMethod = contractInstance.convert
+                const contractObj = contractInstance
                 const parameters = [5, 10]
                 const contractGas = await web3Functions.contractGas(
                   simpleVersion,
                   true
-                )(contractMethod, parameters)
+                )({ contractObj, methodName: 'convert', args: parameters })
                 expect(contractGas).toEqual(expected)
               })
             })

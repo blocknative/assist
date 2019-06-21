@@ -15,6 +15,8 @@ Object.defineProperty(window.navigator, 'userAgent', {
 // websocket provider we setup to deploy the smart contracts, ignore them
 process.on('unhandledRejection', (reason, p) => {
   if (
+    reason.target &&
+    reason.target.constructor &&
     reason.target.constructor.name === 'W3CWebSocket' &&
     reason.target.url === `ws://localhost:${ganachePort}` &&
     reason.type === 'error'

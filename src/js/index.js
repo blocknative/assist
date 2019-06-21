@@ -19,6 +19,7 @@ import {
 } from './logic/contract-methods'
 import { openWebsocketConnection } from './helpers/websockets'
 import { getUserAgent } from './helpers/browser'
+import { getUncheckedSigner } from './helpers/ethers-provider'
 import { checkUserEnvironment, prepareForTransaction } from './logic/user'
 import sendTransaction from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
@@ -223,8 +224,48 @@ function init(config) {
 
   // CONTRACT FUNCTION //
 
-  function Contract(contractObj) {
-    const { validApiKey, supportedNetwork, web3Instance, modernWeb3 } = state
+  function Contract(contractObjOrAddress, ethersAbi) {
+    const {
+      validApiKey,
+      supportedNetwork,
+      web3Instance,
+      modernWeb3,
+      config: { ethers }
+    } = state
+
+    if (!validApiKey) {
+      const errorObj = new Error('Your API key is not valid')
+      errorObj.eventCode = 'initFail'
+      throw errorObj
+    }
+
+    if (!supportedNetwork) {
+      const errorObj = new Error('This network is not supported')
+      errorObj.eventCode = 'initFail'
+      throw errorObj
+    }
+
+    // Check if we have an instance of web3
+    if (!web3Instance && !ethers) {
+      if (window.web3) {
+        configureWeb3()
+      } else {
+        const errorObj = new Error(
+          'A web3 instance is needed to decorate contract'
+        )
+        errorObj.eventCode = 'initFail'
+        throw errorObj
+      }
+    }
+
+    const contractObj = ethers
+      ? new ethers.Contract(
+          contractObjOrAddress,
+          ethersAbi,
+          getUncheckedSigner()
+        )
+      : contractObjOrAddress
+
     const truffleContract = contractObj.constructor.name === 'TruffleContract'
 
     // Check using a version of truffle that uses web3 v1.x.x
@@ -248,34 +289,10 @@ function init(config) {
       call = legacyCall
     }
 
-    if (!validApiKey) {
-      const errorObj = new Error('Your API key is not valid')
-      errorObj.eventCode = 'initFail'
-      throw errorObj
-    }
-
-    if (!supportedNetwork) {
-      const errorObj = new Error('This network is not supported')
-      errorObj.eventCode = 'initFail'
-      throw errorObj
-    }
-
-    // Check if we have an instance of web3
-    if (!web3Instance) {
-      if (window.web3) {
-        configureWeb3()
-      } else {
-        const errorObj = new Error(
-          'A web3 instance is needed to decorate contract'
-        )
-        errorObj.eventCode = 'initFail'
-        throw errorObj
-      }
-    }
-
     const abi =
       contractObj.abi ||
       contractObj._jsonInterface ||
+      (ethers && ethersAbi) ||
       Object.keys(contractObj.abiModel.abi.methods)
         // remove any arrays from the ABI, they contain redundant information
         .filter(key => !Array.isArray(contractObj.abiModel.abi.methods[key]))
@@ -287,7 +304,7 @@ function init(config) {
     const seenMethods = []
 
     const delegatedContractObj = contractKeys.reduce((newContractObj, key) => {
-      if (state.legacyWeb3 || truffleContract) {
+      if (state.legacyWeb3 || truffleContract || ethers) {
         // if we have seen this key, then we have already dealt with it
         if (seenMethods.includes(key)) {
           return newContractObj
@@ -309,19 +326,42 @@ function init(config) {
           methodAbiArray.map(abi => getOverloadedMethodKeys(abi.inputs))
 
         const { name, inputs, constant } = methodAbiArray[0]
-        const method = contractObj[name]
         const argsLength = inputs.length
 
         newContractObj[name] = (...args) =>
           constant
-            ? call(method, name, args, argsLength, truffleContract)
-            : send(method, name, args, argsLength)
+            ? call({
+                contractObj,
+                methodName: name,
+                args,
+                argsLength,
+                truffleContract
+              })
+            : send({
+                contractObj,
+                methodName: name,
+                args,
+                argsLength,
+                truffleContract
+              })
 
         newContractObj[name].call = (...args) =>
-          call(method, name, args, argsLength, truffleContract)
+          call({
+            contractObj,
+            methodName: name,
+            args,
+            argsLength,
+            truffleContract
+          })
 
         newContractObj[name].sendTransaction = (...args) =>
-          send(method, name, args, argsLength)
+          send({
+            contractObj,
+            methodName: name,
+            args,
+            argsLength,
+            truffleContract
+          })
 
         // Add any additional properties onto the method function
         Object.entries(contractObj[name]).forEach(([k, v]) => {
@@ -331,29 +371,53 @@ function init(config) {
         })
 
         if (overloadedMethodKeys) {
-          overloadedMethodKeys.forEach(key => {
-            const method = contractObj[name][key]
+          overloadedMethodKeys.forEach(overloadKey => {
+            const method = contractObj[name][overloadKey]
 
             if (!method) {
               // no method, then overloaded methods not supported on this object
               return
             }
 
-            newContractObj[name][key] = (...args) =>
+            newContractObj[name][overloadKey] = (...args) =>
               constant
-                ? call(method, name, args, argsLength, truffleContract)
-                : send(method, name, args, argsLength)
+                ? call({
+                    contractObj,
+                    methodName: name,
+                    args,
+                    argsLength,
+                    truffleContract
+                  })
+                : send({
+                    contractObj,
+                    methodName: name,
+                    args,
+                    argsLength,
+                    truffleContract
+                  })
 
-            newContractObj[name][key].call = (...args) =>
-              call(method, name, args, argsLength, truffleContract)
+            newContractObj[name][overloadKey].call = (...args) =>
+              call({
+                contractObj,
+                methodName: name,
+                args,
+                argsLength,
+                truffleContract
+              })
 
-            newContractObj[name][key].sendTransaction = (...args) =>
-              send(method, name, args, argsLength)
+            newContractObj[name][overloadKey].sendTransaction = (...args) =>
+              send({
+                contractObj,
+                methodName: name,
+                args,
+                argsLength,
+                truffleContract
+              })
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
-              if (!Object.keys(newContractObj[name][key]).includes(k)) {
-                newContractObj[name][key][k] = v
+              if (!Object.keys(newContractObj[name][overloadKey]).includes(k)) {
+                newContractObj[name][overloadKey][k] = v
               }
             })
           })
@@ -388,8 +452,8 @@ function init(config) {
             const method = contractObj.methods[name]
             methodsObj[name] = (...args) =>
               constant
-                ? call(method, name, args, truffleContract)
-                : send(method, name, args)
+                ? call({ contractObj, methodName: name, args, truffleContract })
+                : send({ contractObj, methodName: name, args, truffleContract })
 
             // Add any additional properties onto the method function
             Object.entries(method).forEach(([k, v]) => {
@@ -411,10 +475,21 @@ function init(config) {
           }
 
           const overloadedMethod = contractObj.methods[overloadedMethodKey]
+
           methodsObj[overloadedMethodKey] = (...args) =>
             constant
-              ? call(overloadedMethod, name, args, truffleContract)
-              : send(overloadedMethod, name, args)
+              ? call({
+                  contractObj,
+                  methodName: overloadedMethodKey,
+                  args,
+                  truffleContract
+                })
+              : send({
+                  contractObj,
+                  methodName: overloadedMethodKey,
+                  args,
+                  truffleContract
+                })
 
           // Add any additional properties onto the method function
           Object.entries(overloadedMethod).forEach(([k, v]) => {
@@ -435,15 +510,23 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txObject, callback, inlineCustomMsgs = {}) {
-    if (!state.validApiKey) {
+  function Transaction(txOptions, callback, inlineCustomMsgs = {}) {
+    const {
+      validApiKey,
+      supportedNetwork,
+      web3Instance,
+      config: { ethers },
+      legacyWeb3
+    } = state
+
+    if (!validApiKey) {
       const errorObj = new Error('Your api key is not valid')
       errorObj.eventCode = 'initFail'
 
       throw errorObj
     }
 
-    if (!state.supportedNetwork) {
+    if (!supportedNetwork) {
       const errorObj = new Error('This network is not supported')
       errorObj.eventCode = 'initFail'
 
@@ -451,39 +534,37 @@ function init(config) {
     }
 
     // Check if we have an instance of web3
-    if (!state.web3Instance) {
+    if (!web3Instance && !ethers) {
       configureWeb3()
     }
 
-    const sendMethod = state.legacyWeb3
+    const sendMethod = ethers
+      ? txOptions => getUncheckedSigner().sendTransaction(txOptions)
+      : legacyWeb3
       ? promisify(state.web3Instance.eth.sendTransaction)
       : state.web3Instance.eth.sendTransaction
 
     if (state.modernWeb3) {
       const promiEvent = new PromiEventLib.PromiEvent()
-      sendTransaction(
-        'activeTransaction',
-        txObject,
+      sendTransaction({
+        categoryCode: 'activeTransaction',
+        txOptions,
         sendMethod,
         callback,
-        inlineCustomMsgs.messages,
-        undefined,
-        undefined,
-        false,
+        inlineCustomMsgs: inlineCustomMsgs.messages,
         promiEvent
-      )
+      })
+
       return promiEvent
     }
-    return sendTransaction(
-      'activeTransaction',
-      txObject,
+
+    return sendTransaction({
+      categoryCode: 'activeTransaction',
+      txOptions,
       sendMethod,
       callback,
-      inlineCustomMsgs.messages,
-      undefined,
-      undefined,
-      false
-    )
+      inlineCustomMsgs: inlineCustomMsgs.messages
+    })
   }
 }
 
