@@ -280,7 +280,13 @@ The function that is defined on the `handleNotificationEvent` property of the co
 
 #### `eventCode`
 
-The list of event codes that can be included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config and is documented in the config section.
+The list of event codes that are included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config except for one:
+
+```javascript
+  txConfirmedClient: String // called when a client confirmation is received from the provider
+```
+
+For documentation on the rest of the event codes see the documentation for the messages parameter of the config object.
 
 #### `categoryCode`
 
