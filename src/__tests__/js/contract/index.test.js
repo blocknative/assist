@@ -1,9 +1,9 @@
 import truffleContract from 'truffle-contract'
-import { Server } from 'mock-socket'
 import abi from '~/__tests__/res/dstoken.json'
 import da from '~/js'
 import * as web3Helpers from '~/js/helpers/web3'
-import { initialState, updateState } from '~/js/helpers/state'
+import * as websockets from '~/js/helpers/websockets'
+import { state, initialState, updateState } from '~/js/helpers/state'
 import convertLibJson from '~/__tests__/res/ConvertLib.json'
 import { convertLibAddress, port } from '../../../../internals/ganacheConfig'
 
@@ -34,19 +34,25 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       let assistInstance
       let web3
       let contract
-      let mockServer
       let config
       beforeEach(() => {
-        mockServer = new Server('ws://localhost:8080')
+        jest
+          .spyOn(websockets, 'openWebsocketConnection')
+          .mockImplementation(() => Promise.resolve(true))
+        jest
+          .spyOn(websockets, 'checkForSocketConnection')
+          .mockImplementation(() => Promise.resolve(true))
+        updateState({
+          socket: { send: () => {} },
+          socketConnection: true,
+          pendingSocketConnection: false
+        })
         const provider = version.includes('0.20')
           ? new Web3.providers.HttpProvider(`http://localhost:${port}`)
           : `ws://localhost${port}`
         web3 = new Web3(provider)
         config = { dappId: '123', web3, networkId: 1 }
         assistInstance = da.init(config)
-      })
-      afterEach(() => {
-        mockServer.close()
       })
       const contracts = [
         ['truffle', getTruffleContract],
@@ -55,7 +61,11 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       contracts.forEach(([name, getContract]) => {
         describe(`with a ${name} contract`, () => {
           beforeEach(async () => {
+            if (name === 'truffle') state.config.truffleContract = true
             contract = await getContract(web3)
+          })
+          afterEach(() => {
+            if (name === 'truffle') state.config.truffleContract = false
           })
           test(`it doesn't fail and returns the expected decorated contract`, () => {
             const decoratedContract = assistInstance.Contract(contract)

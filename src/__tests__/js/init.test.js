@@ -13,9 +13,13 @@ jest.mock('../../js/helpers/iframe')
 events.handleEvent = jest.fn()
 
 // this is a little hacky but it's easier than creating a __mocks__ directory just for this case
-websocket.openWebsocketConnection = jest.fn(() => {
-  jest.fn()
-})
+websocket.openWebsocketConnection = jest
+  .fn()
+  .mockImplementation(() => Promise.resolve(true))
+
+websocket.checkForSocketConnection = jest
+  .fn()
+  .mockImplementation(() => Promise.resolve(true))
 
 const assist = da.init({ dappId: 'something', networkId: 1 })
 
@@ -86,6 +90,7 @@ test('Does not delete any methods from the contract object when decorating', () 
 
 test('Does not allow sending transactions without a valid API key', async () => {
   stateMock.state.validApiKey = false
+  stateMock.state.config = {}
 
   try {
     assist.Transaction({ some: 'property' })
@@ -98,6 +103,7 @@ test('Does not allow sending transactions without a valid API key', async () => 
 test('Does not allow sending transactions on the wrong network', async () => {
   stateMock.state.validApiKey = true
   stateMock.state.supportedNetwork = false
+  stateMock.state.config = {}
 
   try {
     assist.Transaction({ some: 'property' })

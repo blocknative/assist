@@ -3,7 +3,6 @@ import { WebSocket, Server } from 'mock-socket'
 import da from '~/js'
 import { state, updateState, initialState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
-import * as utilities from '~/js/helpers/utilities'
 import * as events from '~/js/helpers/events'
 
 const socketUrl = 'wss://api.blocknative.com/v0'
@@ -56,13 +55,14 @@ describe('a websocket connection is requested', () => {
 
   describe('socket refuses to connect', () => {
     beforeEach(() => {
-      websockets.openWebsocketConnection()
+      websockets.openWebsocketConnection().catch(() => {})
       mockServer.emit('error')
     })
     test('state.pendingSocketConnection is set to false', () => {
       expect(state.pendingSocketConnection).toEqual(false)
     })
   })
+
   describe('socket creation throws an error', () => {
     beforeEach(() => {
       global.WebSocket = null
@@ -70,15 +70,8 @@ describe('a websocket connection is requested', () => {
     afterEach(() => {
       global.WebSocket = WebSocket
     })
-    test('assistLog should be called with the error', () => {
-      const assistLogSpy = jest
-        .spyOn(utilities, 'assistLog')
-        .mockImplementation(() => {})
-      expect(() => {
-        websockets.openWebsocketConnection()
-      }).toThrow()
-      expect(assistLogSpy).toHaveBeenCalled()
-      assistLogSpy.mockRestore()
+    test('openWebsocketConnection should reject', () => {
+      expect(websockets.openWebsocketConnection()).rejects.toBe(false)
     })
   })
 })
@@ -264,7 +257,7 @@ describe('assist is connected to a websocket', () => {
       contract: 'some-contract',
       inlineCustomMsgs: { '1': 'msg' }
     }
-    const payload = { event: { transaction } }
+    const payload = { event: { transaction, eventCode: 'txConfirmed' } }
     let existingTxStatus = 'pending'
     let handleEventSpy
     beforeEach(() => {

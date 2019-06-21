@@ -23,25 +23,42 @@ import {
 
 import { prepareForTransaction } from './user'
 
-function sendTransaction(
+function sendTransaction({
   categoryCode,
   txOptions = {},
-  sendTransactionMethod,
+  sendMethod,
   callback,
   inlineCustomMsgs,
-  contractMethod,
-  contractEventObj,
+  contractObj,
+  methodName,
+  overloadKey,
+  methodArgs,
   truffleContract,
   promiEvent
-) {
+}) {
   return new Promise(async (resolve, reject) => {
+    const {
+      legacyWeb3,
+      currentProvider,
+      accountAddress,
+      accountBalance,
+      config: { ethers, minimumBalance }
+    } = state
+
     // Get information like gasPrice and gas
-    const transactionParams = await getTransactionParams(
+    const transactionParams = await getTransactionParams({
       txOptions,
-      contractMethod,
-      contractEventObj,
+      contractObj,
+      methodName,
+      overloadKey,
+      args: methodArgs,
       truffleContract
-    )
+    })
+
+    const contractEventObj = {
+      methodName,
+      parameters: methodArgs
+    }
 
     // Check user is ready to make the transaction
     const [sufficientBalance, ready] = await Promise.all([
@@ -56,7 +73,8 @@ function sendTransaction(
     }
 
     // Make sure that we have from address in txOptions
-    if (!txOptions.from) {
+    // @NOTE - ethers.js errors if you add a from address, but web3.js errors if you don't
+    if (!ethers && !txOptions.from) {
       txOptions.from = state.accountAddress
     }
 
@@ -67,7 +85,7 @@ function sendTransaction(
       gasPrice: transactionParams.gasPrice.toString(),
       value: transactionParams.value.toString(),
       to: txOptions.to,
-      from: txOptions.from
+      from: state.accountAddress
     }
 
     if (sufficientBalance === false) {
@@ -78,10 +96,10 @@ function sendTransaction(
         contract: contractEventObj,
         inlineCustomMsgs,
         wallet: {
-          provider: state.currentProvider,
-          address: state.accountAddress,
-          balance: state.accountBalance,
-          minimum: state.config.minimumBalance
+          provider: currentProvider,
+          address: accountAddress,
+          balance: accountBalance,
+          minimum: minimumBalance
         }
       })
 
@@ -107,10 +125,10 @@ function sendTransaction(
         contract: contractEventObj,
         inlineCustomMsgs,
         wallet: {
-          provider: state.currentProvider,
-          address: state.accountAddress,
-          balance: state.accountBalance,
-          minimum: state.config.minimumBalance
+          provider: currentProvider,
+          address: accountAddress,
+          balance: accountBalance,
+          minimum: minimumBalance
         }
       })
     }
@@ -123,25 +141,24 @@ function sendTransaction(
         contract: contractEventObj,
         inlineCustomMsgs,
         wallet: {
-          provider: state.currentProvider,
-          address: state.accountAddress,
-          balance: state.accountBalance,
-          minimum: state.config.minimumBalance
+          provider: currentProvider,
+          address: accountAddress,
+          balance: accountBalance,
+          minimum: minimumBalance
         }
       })
     }
 
     let txPromise
 
-    if ((state.legacyWeb3 || truffleContract) && contractEventObj) {
-      // legacy contract call
-      txPromise = sendTransactionMethod(
-        ...contractEventObj.parameters,
-        txOptions
-      )
+    if (legacyWeb3 || truffleContract || ethers) {
+      if (contractObj) {
+        txPromise = sendMethod(...methodArgs, txOptions)
+      } else {
+        txPromise = sendMethod(txOptions)
+      }
     } else {
-      // modern contract call or basic transaction
-      txPromise = sendTransactionMethod(txOptions)
+      txPromise = sendMethod(txOptions)
     }
 
     handleEvent({
@@ -151,10 +168,10 @@ function sendTransaction(
       contract: contractEventObj,
       inlineCustomMsgs,
       wallet: {
-        provider: state.currentProvider,
-        address: state.accountAddress,
-        balance: state.accountBalance,
-        minimum: state.config.minimumBalance
+        provider: currentProvider,
+        address: accountAddress,
+        balance: accountBalance,
+        minimum: minimumBalance
       }
     })
 
@@ -176,16 +193,16 @@ function sendTransaction(
           contract: contractEventObj,
           inlineCustomMsgs,
           wallet: {
-            provider: state.currentProvider,
-            address: state.accountAddress,
-            balance: state.accountBalance,
-            minimum: state.config.minimumBalance
+            provider: currentProvider,
+            address: accountAddress,
+            balance: accountBalance,
+            minimum: minimumBalance
           }
         })
       }
     }, timeouts.txConfirmReminder)
 
-    if (state.legacyWeb3) {
+    if (legacyWeb3) {
       txPromise
         .then(hash => {
           onTxHash(transactionId, hash, categoryCode)
@@ -198,6 +215,20 @@ function sendTransaction(
           })
         })
         .catch(async errorObj => {
+          onTxError(transactionId, errorObj, categoryCode)
+          handleError({ resolve, reject, callback })(errorObj)
+        })
+    } else if (ethers) {
+      txPromise
+        .then(async tx => {
+          onTxHash(transactionId, tx.hash, categoryCode)
+          resolve(tx)
+          callback && callback(null, tx)
+
+          await tx.wait()
+          onTxReceipt(transactionId, categoryCode)
+        })
+        .catch(errorObj => {
           onTxError(transactionId, errorObj, categoryCode)
           handleError({ resolve, reject, callback })(errorObj)
         })
