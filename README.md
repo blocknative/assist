@@ -246,6 +246,56 @@ var config = {
 }
 ```
 
+### Handling Notifications
+
+If you want more fine grained control over whether Assist's notifications are displayed or you just want to be informed of every event, you can define a function that will be called every time there is a notification event.
+
+The function that is defined on the `handleNotificationEvent` property of the config will be called with the following object:
+
+```javascript
+{
+  categoryCode: String, // event category - List detailed below
+  eventCode: String, // event type - List detailed below
+  contract: { // if not a contract method transaction, then this is undefined
+    methodName: String, // name of the method that was called
+    parameters: Array, // the parameters the method was called with
+  },
+  inlineCustomMsgs: Object | Boolean, // the inline custom messages passed to the transaction
+  transaction: {
+    id: String, // internal unique id for the transaction
+    from: String, // the address the transaction was sent from
+    gas: String, // the gas limit of the transaction
+    gasPrice: String, // the gas price of the transaction
+    to: String, // the address the transaction was sent to
+    value: String // the value of the transaction
+  },
+  wallet: {
+    address: String, // the account address of the wallet in use
+    balance: String, // the balance in wei of the wallet in use
+    minimum: Boolean, // whether the wallet has the minimum balance required (specified in config)
+    provider: String // the name of the wallet provider
+  }
+}
+```
+
+#### `eventCode`
+
+The list of event codes that can be included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config and is documented in the config section.
+
+#### `categoryCode`
+
+The following list of category codes can be included in the object that `handleNotificationEvent` is called with:
+
+```javascript
+  activePreflight: String, // called during preflight transaction checks
+  activeTransaction: String, // called during an active non-contract transaction
+  activeContract: String // called during an active contract transaction
+```
+
+#### Selectively display Notification UI
+
+If you would like Assist to display a notification for the current event, then return a "truthy" value from the `handleNotificationEvent` function. If you don't want a notification to be displayed then just return a "falsy" value.
+
 ### Custom Transaction Messages
 
 Custom transaction messages can be set to override the default messages `Assist` provides. To do this you provide callback functions for each `eventCode` that you want to override. The callback functions must return a `String` and will be called with the following object to provide context information about the transaction:
