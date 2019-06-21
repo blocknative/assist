@@ -220,6 +220,24 @@ export function notSupportedImage(type) {
 export function browserLogos() {
   const { chromeLogo, firefoxLogo } = imageSrc
   return `
+    <p class="btn-row">
+      <a href="https://www.google.com/chrome/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
+      <img
+        src="${chromeLogo.src}" 
+        alt="Chrome Logo" 
+        srcset="${chromeLogo.srcset} 2x" />
+      <br>
+      Chrome
+      </a>
+      <a href="https://www.mozilla.org/en-US/firefox/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
+      <img
+        src="${firefoxLogo.src}" 
+        alt="Firefox Logo" 
+        srcset="${firefoxLogo.srcset} 2x" />
+      <br>
+      Firefox
+      </a>
+    </p>
     <p>
       <a href="https://www.google.com/chrome/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
       <img
@@ -246,7 +264,9 @@ function walletLogos() {
 
   return `
     <p class="flex-row">
-      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${window.location.href}" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
+        window.location.href
+      }" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
       <img
         src="${trustLogo.src}" 
         alt="Chrome Logo" 
