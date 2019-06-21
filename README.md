@@ -280,11 +280,13 @@ The function that is defined on the `handleNotificationEvent` property of the co
 
 #### `eventCode`
 
-The list of event codes that are included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config except for one:
+The list of event codes that are included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config with one addition:
 
 ```javascript
   txConfirmedClient: String // called when a client confirmation is received from the provider
 ```
+
+This additional event is used to notify transaction confirmation if a `txConfirmed` was not already received. Whichever of `txConfirmed` and `txConfirmedClient` is received first should be used for notification.
 
 For documentation on the rest of the event codes see the documentation for the messages parameter of the config object.
 
