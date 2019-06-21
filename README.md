@@ -261,6 +261,7 @@ The function that is defined on the `handleNotificationEvent` property of the co
     parameters: Array, // the parameters the method was called with
   },
   inlineCustomMsgs: Object | Boolean, // the inline custom messages passed to the transaction
+  reason: String, // reason for error type notifications
   transaction: {
     id: String, // internal unique id for the transaction
     from: String, // the address the transaction was sent from
