@@ -58,6 +58,12 @@ import trustLogo2x from '../../../lib/images/trust@2x.png'
 import coinbaseLogo from '../../../lib/images/coinbase.png'
 import coinbaseLogo2x from '../../../lib/images/coinbase@2x.png'
 
+import braveLogo from '../../../lib/images/brave.png'
+import braveLogo2x from '../../../lib/images/brave@2x.png'
+
+import operaLogo from '../../../lib/images/opera.png'
+import operaLogo2x from '../../../lib/images/opera@2x.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -294,6 +300,14 @@ export const imageSrc = {
   coinbaseLogo: {
     src: coinbaseLogo,
     srcset: coinbaseLogo2x
+  },
+  braveLogo: {
+    src: braveLogo,
+    srcset: braveLogo2x
+  },
+  operaLogo: {
+    src: operaLogo,
+    srcset: operaLogo2x
   },
   mobileWallet: {
     src: mobileWallet,

@@ -218,7 +218,7 @@ export function notSupportedImage(type) {
 }
 
 export function browserLogos() {
-  const { chromeLogo, firefoxLogo } = imageSrc
+  const { chromeLogo, firefoxLogo, braveLogo, operaLogo } = imageSrc
   return `
     <p class="btn-row">
       <a href="https://www.google.com/chrome/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
@@ -239,21 +239,21 @@ export function browserLogos() {
       </a>
     </p>
     <p>
-      <a href="https://www.google.com/chrome/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
+      <a href="https://www.opera.com/download" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
       <img
-        src="${chromeLogo.src}" 
-        alt="Chrome Logo" 
-        srcset="${chromeLogo.srcset} 2x" />
+        src="${operaLogo.src}" 
+        alt="Opera Logo" 
+        srcset="${operaLogo.srcset} 2x" />
       <br>
-      Chrome
+      Opera
       </a>
-      <a href="https://www.mozilla.org/en-US/firefox/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
+      <a href="https://brave.com/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
       <img
-        src="${firefoxLogo.src}" 
-        alt="Firefox Logo" 
-        srcset="${firefoxLogo.srcset} 2x" />
+        src="${braveLogo.src}" 
+        alt="Brave Logo" 
+        srcset="${braveLogo.srcset} 2x" />
       <br>
-      Firefox
+      Brave
       </a>
     </p>
   `
