@@ -64,6 +64,9 @@ import braveLogo2x from '../../../lib/images/brave@2x.png'
 import operaLogo from '../../../lib/images/opera.png'
 import operaLogo2x from '../../../lib/images/opera@2x.png'
 
+import operaTouchLogo from '../../../lib/images/opera-touch.png'
+import operaTouchLogo2x from '../../../lib/images/opera-touch@2x.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -80,7 +83,7 @@ export const notSupported = {
   mobileWalletNotSupported: {
     heading: 'Install A Mobile Dapp Wallet',
     description: () =>
-      'A mobile ethereum wallet is needed to use this dapp. We recommend Trust or Coinbase wallet.'
+      'A mobile ethereum wallet is needed to use this dapp. We recommend one of the following mobile wallets.'
   }
 }
 
@@ -308,6 +311,10 @@ export const imageSrc = {
   operaLogo: {
     src: operaLogo,
     srcset: operaLogo2x
+  },
+  operaTouchLogo: {
+    src: operaTouchLogo,
+    srcset: operaTouchLogo2x
   },
   mobileWallet: {
     src: mobileWallet,
