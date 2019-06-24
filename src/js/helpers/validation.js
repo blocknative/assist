@@ -21,7 +21,7 @@ export function validateConfig(config) {
       web3: ow.optional.object,
       ethers: ow.optional.object,
       mobileBlocked: ow.optional.boolean,
-      minimumBalance: ow.optional.number,
+      minimumBalance: ow.optional.string,
       headlessMode: ow.optional.boolean,
       messages: ow.optional.object.exactShape({
         txRequest: ow.optional.function,

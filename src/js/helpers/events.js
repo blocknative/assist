@@ -44,7 +44,7 @@ export function handleEvent(eventObj, clickHandlers) {
         ? handleNotificationEvent(eventObj)
         : true
 
-    if (!showNotification) {
+    if (!showNotification && !headlessMode) {
       removeUnwantedNotifications(eventCode, transaction.id)
     }
   }

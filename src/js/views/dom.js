@@ -218,9 +218,9 @@ export function notSupportedImage(type) {
 }
 
 export function browserLogos() {
-  const { chromeLogo, firefoxLogo } = imageSrc
+  const { chromeLogo, firefoxLogo, braveLogo, operaLogo } = imageSrc
   return `
-    <p>
+    <p class="btn-row">
       <a href="https://www.google.com/chrome/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
       <img
         src="${chromeLogo.src}" 
@@ -238,18 +238,38 @@ export function browserLogos() {
       Firefox
       </a>
     </p>
+    <p>
+      <a href="https://www.opera.com/download" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
+      <img
+        src="${operaLogo.src}" 
+        alt="Opera Logo" 
+        srcset="${operaLogo.srcset} 2x" />
+      <br>
+      Opera
+      </a>
+      <a href="https://brave.com/" target="_blank" class="bn-btn bn-btn-primary bn-btn-outline text-center">
+      <img
+        src="${braveLogo.src}" 
+        alt="Brave Logo" 
+        srcset="${braveLogo.srcset} 2x" />
+      <br>
+      Brave
+      </a>
+    </p>
   `
 }
 
 function walletLogos() {
-  const { trustLogo, coinbaseLogo } = imageSrc
+  const { trustLogo, coinbaseLogo, operaTouchLogo } = imageSrc
 
   return `
-    <p class="flex-row">
-      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${window.location.href}" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+    <p class="flex-row btn-row">
+      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
+        window.location.href
+      }" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
       <img
         src="${trustLogo.src}" 
-        alt="Chrome Logo" 
+        alt="Trust Logo" 
         srcset="${trustLogo.srcset} 2x"
       />
       <br>
@@ -258,11 +278,22 @@ function walletLogos() {
       <a href="https://go.cb-w.com/" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
       <img
         src="${coinbaseLogo.src}" 
-        alt="Firefox Logo" 
+        alt="Coinbase Logo" 
         srcset="${coinbaseLogo.srcset} 2x"
       />
       <br>
       Coinbase
+      </a>
+    </p>
+    <p class="flex-row">
+      <a href="https://www.opera.com/mobile/touch" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <img
+        src="${operaTouchLogo.src}" 
+        alt="Opera Touch Logo" 
+        srcset="${operaTouchLogo.srcset} 2x"
+      />
+      <br>
+      Opera Touch
       </a>
     </p>
   `

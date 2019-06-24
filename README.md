@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.9.0.
+The current version is 0.9.1.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-9-0/assist.js"></script>
+<script src="https://assist.blocknative.com/0-9-1/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-9-0/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-9-1/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -261,6 +261,7 @@ The function that is defined on the `handleNotificationEvent` property of the co
     parameters: Array, // the parameters the method was called with
   },
   inlineCustomMsgs: Object | Boolean, // the inline custom messages passed to the transaction
+  reason: String, // reason for error type notifications
   transaction: {
     id: String, // internal unique id for the transaction
     from: String, // the address the transaction was sent from
