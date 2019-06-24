@@ -58,6 +58,15 @@ import trustLogo2x from '../../../lib/images/trust@2x.png'
 import coinbaseLogo from '../../../lib/images/coinbase.png'
 import coinbaseLogo2x from '../../../lib/images/coinbase@2x.png'
 
+import braveLogo from '../../../lib/images/brave.png'
+import braveLogo2x from '../../../lib/images/brave@2x.png'
+
+import operaLogo from '../../../lib/images/opera.png'
+import operaLogo2x from '../../../lib/images/opera@2x.png'
+
+import operaTouchLogo from '../../../lib/images/opera-touch.png'
+import operaTouchLogo2x from '../../../lib/images/opera-touch@2x.png'
+
 export const notSupported = {
   mobileNotSupported: {
     heading: 'Mobile Not Supported',
@@ -67,12 +76,14 @@ export const notSupported = {
   browserNotSupported: {
     heading: 'This Browser is Not Supported',
     description: () =>
-      `This Dapp is not supported in ${state.userAgent.browser.name}. Please visit us in one of the following browsers. Thank You!`
+      `This Dapp is not supported in ${
+        state.userAgent.browser.name
+      }. Please visit us in one of the following browsers. Thank You!`
   },
   mobileWalletNotSupported: {
     heading: 'Install A Mobile Dapp Wallet',
     description: () =>
-      'A mobile ethereum wallet is needed to use this dapp. We recommend Trust or Coinbase wallet.'
+      'A mobile ethereum wallet is needed to use this dapp. We recommend one of the following mobile wallets.'
   }
 }
 
@@ -292,6 +303,18 @@ export const imageSrc = {
   coinbaseLogo: {
     src: coinbaseLogo,
     srcset: coinbaseLogo2x
+  },
+  braveLogo: {
+    src: braveLogo,
+    srcset: braveLogo2x
+  },
+  operaLogo: {
+    src: operaLogo,
+    srcset: operaLogo2x
+  },
+  operaTouchLogo: {
+    src: operaTouchLogo,
+    srcset: operaTouchLogo2x
   },
   mobileWallet: {
     src: mobileWallet,
