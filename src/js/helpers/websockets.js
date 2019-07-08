@@ -141,6 +141,20 @@ export function handleSocketMessage(msg) {
           inlineCustomMsgs: txObj.inlineCustomMsgs
         })
         break
+      case 'speedup':
+      case 'cancel':
+        txObj = updateTransactionInQueue(transaction.id, {
+          originalHash: transaction.originalHash || null
+        })
+
+        handleEvent({
+          eventCode,
+          categoryCode: 'activeTransaction',
+          transaction: txObj.transaction,
+          contract: txObj.contract,
+          inlineCustomMsgs: txObj.inlineCustomMsgs
+        })
+        break
       case 'confirmed':
         // have already dealt with txConfirmedClient event
         if (eventCode === 'txConfirmedClient') {
