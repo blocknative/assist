@@ -130,7 +130,9 @@ export function handleSocketMessage(msg) {
       case 'pending':
         txObj = updateTransactionInQueue(transaction.id, {
           status: 'pending',
-          nonce: transaction.nonce
+          nonce: transaction.nonce,
+          hash: transaction.hash,
+          originalHash: transaction.originalHash
         })
 
         handleEvent({
@@ -151,11 +153,13 @@ export function handleSocketMessage(msg) {
 
         if (txObj.transaction.status === 'confirmed') {
           txObj = updateTransactionInQueue(transaction.id, {
-            status: 'completed'
+            status: 'completed',
+            hash: transaction.hash
           })
         } else {
           txObj = updateTransactionInQueue(transaction.id, {
-            status: 'confirmed'
+            status: 'confirmed',
+            hash: transaction.hash
           })
         }
 
@@ -173,7 +177,10 @@ export function handleSocketMessage(msg) {
 
         break
       case 'failed':
-        txObj = updateTransactionInQueue(transaction.id, { status: 'failed' })
+        txObj = updateTransactionInQueue(transaction.id, {
+          status: 'failed',
+          hash: transaction.hash
+        })
 
         handleEvent({
           eventCode: 'txFailed',
