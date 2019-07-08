@@ -158,7 +158,8 @@ export function handleSocketMessage(msg) {
           })
         } else {
           txObj = updateTransactionInQueue(transaction.id, {
-            status: 'confirmed'
+            status: 'confirmed',
+            hash: transaction.hash
           })
         }
 
