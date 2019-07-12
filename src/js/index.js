@@ -17,15 +17,17 @@ import {
   modernCall,
   truffleSend
 } from './logic/contract-methods'
+import { addTransactionToQueue } from './helpers/transaction-queue'
 import { openWebsocketConnection } from './helpers/websockets'
 import { getUserAgent } from './helpers/browser'
 import { getUncheckedSigner } from './helpers/ethers-provider'
 import { checkUserEnvironment, prepareForTransaction } from './logic/user'
-import sendTransaction from './logic/send-transaction'
+import { sendTransaction, onTxHash } from './logic/send-transaction'
 import { configureWeb3 } from './helpers/web3'
 import {
   getOverloadedMethodKeys,
-  truffleContractUsesWeb3v1
+  truffleContractUsesWeb3v1,
+  createTransactionId
 } from './helpers/utilities'
 import { createIframe, updateStyle } from './helpers/iframe'
 import { validateConfig } from './helpers/validation'
@@ -510,7 +512,7 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txOptions, callback, inlineCustomMsgs = {}) {
+  function Transaction(txOptionsOrHash, callback, inlineCustomMsgs = {}) {
     const {
       validApiKey,
       supportedNetwork,
@@ -533,6 +535,29 @@ function init(config) {
       throw errorObj
     }
 
+    // if we are passed a transaction hash instead of an options object
+    // then we just track the already sent transaction
+    if (typeof txOptionsOrHash === 'string') {
+      if (!/^0x([A-Fa-f0-9]{64})$/.test(txOptionsOrHash)) {
+        throw new Error('invalid transaction hash')
+      }
+
+      // create id for transaction
+      const id = createTransactionId()
+
+      // add transaction to queue
+      addTransactionToQueue({
+        transaction: {
+          id,
+          status: 'signedTransaction'
+        },
+        inlineCustomMsgs
+      })
+
+      // handle txhash
+      return onTxHash(id, txOptionsOrHash, 'activeTransaction')
+    }
+
     // Check if we have an instance of web3
     if (!web3Instance && !ethers) {
       configureWeb3()
@@ -548,7 +573,7 @@ function init(config) {
       const promiEvent = new PromiEventLib.PromiEvent()
       sendTransaction({
         categoryCode: 'activeTransaction',
-        txOptions,
+        txOptionsOrHash,
         sendMethod,
         callback,
         inlineCustomMsgs: inlineCustomMsgs.messages,
@@ -560,7 +585,7 @@ function init(config) {
 
     return sendTransaction({
       categoryCode: 'activeTransaction',
-      txOptions,
+      txOptionsOrHash,
       sendMethod,
       callback,
       inlineCustomMsgs: inlineCustomMsgs.messages
