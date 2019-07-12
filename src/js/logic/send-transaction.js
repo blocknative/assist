@@ -23,7 +23,7 @@ import {
 
 import { prepareForTransaction } from './user'
 
-function sendTransaction({
+export function sendTransaction({
   categoryCode,
   txOptions = {},
   sendMethod,
@@ -55,7 +55,7 @@ function sendTransaction({
       truffleContract
     })
 
-    const contractEventObj = {
+    const contractEventObj = methodName && {
       methodName,
       parameters: methodArgs
     }
@@ -265,7 +265,7 @@ function sendTransaction({
   })
 }
 
-function onTxHash(id, hash, categoryCode) {
+export function onTxHash(id, hash, categoryCode) {
   const txObj = updateTransactionInQueue(id, {
     status: 'approved',
     hash,
@@ -378,5 +378,3 @@ function onTxError(id, error, categoryCode) {
 
   removeTransactionFromQueue(id)
 }
-
-export default sendTransaction
