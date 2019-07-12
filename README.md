@@ -534,11 +534,11 @@ var myContract = assistInstance.Contract(address, abi)
 myContract.myMethod().call()
 ```
 
-### `Transaction(txObject [, callback] [, inlineCustomMsgs])`
+### `Transaction(txObjectOrHash [, callback] [, inlineCustomMsgs])`
 
 #### Parameters
 
-`txObject` - `Object`: Transaction object (**Required**)
+`txObjectOrHash` - `Object` || `String`: Transaction object or transaction hash (**Required**)
 
 `callback` - `Function`: Optional error first style callback if you don't want to use promises
 
@@ -546,10 +546,10 @@ myContract.myMethod().call()
 
 #### Returns
 
-`Promise` or `PromiEvent` (`web3.js 1.0`)
+`Promise` or `PromiEvent` (`web3.js 1.0`) if passed a transaction object or `undefined` if passed a transaction hash
 
-- resolves with transaction hash
-- rejects with an error message
+- resolves with transaction hash if passed a transaction object
+- rejects with an error message if pass
 
 #### Example
 
@@ -561,6 +561,9 @@ assistInstance.Transaction(txObject)
   .catch(error => {
     console.log(error.message) // => 'User has insufficient funds'
   })
+
+  // you can alternatively pass in a transaction hash to get Assist's notifications for a transaction that has already been sent to the network
+  assistInstance.Transaction(hash)
 ```
 
 ### `getState()`
