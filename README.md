@@ -388,6 +388,7 @@ The available ids for the `networkId` property of the config object:
 - `1`: mainnet
 - `3`: ropsten testnet
 - `4`: rinkeby testnet
+- `5`: goerli testnet
 
 *The kovan testnet is not supported.*
 
