@@ -539,7 +539,7 @@ function init(config) {
     // then we just track the already sent transaction
     if (typeof txOptionsOrHash === 'string') {
       if (!/^0x([A-Fa-f0-9]{64})$/.test(txOptionsOrHash)) {
-        throw new Error('invalid transaction hash')
+        return false
       }
 
       // create id for transaction
@@ -555,7 +555,9 @@ function init(config) {
       })
 
       // handle txhash
-      return onTxHash(id, txOptionsOrHash, 'activeTransaction')
+      onTxHash(id, txOptionsOrHash, 'activeTransaction')
+
+      return true
     }
 
     // Check if we have an instance of web3

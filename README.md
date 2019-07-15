@@ -546,10 +546,10 @@ myContract.myMethod().call()
 
 #### Returns
 
-`Promise` or `PromiEvent` (`web3.js 1.0`) if passed a transaction object or `undefined` if passed a transaction hash
+`Promise` or `PromiEvent` (`web3.js 1.0`) if passed a transaction object or `true` if passed a valid transaction hash or `false` if hash is invalid
 
-- resolves with transaction hash if passed a transaction object
-- rejects with an error message if pass
+- resolves with transaction hash
+- rejects with an error message
 
 #### Example
 
