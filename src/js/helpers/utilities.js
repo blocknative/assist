@@ -140,7 +140,8 @@ export function eventCodeToType(eventCode) {
     case 'txRequest':
     case 'txPending':
     case 'txSent':
-    case 'txStall':
+    case 'txStallPending':
+    case 'txStallConfirmed':
     case 'txSpeedUp':
     case 'txCancel':
     case 'pending':
@@ -218,7 +219,8 @@ export const timeouts = {
   checkSocketConnection: 250,
   waitForResponse: 100,
   txConfirmReminder: 20000,
-  txStall: 30000,
+  txStallPending: 20000,
+  txStallConfirmed: 60000,
   changeUI: 305,
   localhostNetworkCheck: 300,
   removeElement: 300,

@@ -66,10 +66,16 @@ export function retryLogEvent(logFunc) {
 
 // Handle in coming socket messages
 export function handleSocketMessage(msg) {
-  const { status, reason, event, connectionId } = JSON.parse(msg.data)
+  const { status, reason, event, connectionId, nodeSynced } = JSON.parse(
+    msg.data
+  )
   const { validApiKey, supportedNetwork } = state
   if (!validApiKey || !supportedNetwork) {
     return
+  }
+
+  if (nodeSynced !== undefined) {
+    updateState({ nodeSynced })
   }
 
   // handle any errors from the server
