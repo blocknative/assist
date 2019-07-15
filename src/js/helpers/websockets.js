@@ -1,7 +1,7 @@
 import { state, updateState } from './state'
 import { handleEvent } from './events'
 import { storeItem, getItem } from './storage'
-import { timeouts } from './utilities'
+import { timeouts, networkName } from './utilities'
 import {
   updateTransactionInQueue,
   getTxObjFromQueue,
@@ -66,7 +66,7 @@ export function retryLogEvent(logFunc) {
 
 // Handle in coming socket messages
 export function handleSocketMessage(msg) {
-  const { status, reason, event, connectionId, nodeSynced } = JSON.parse(
+  const { status, reason, event, connectionId, nodeSyncStatus } = JSON.parse(
     msg.data
   )
   const { validApiKey, supportedNetwork } = state
@@ -74,8 +74,12 @@ export function handleSocketMessage(msg) {
     return
   }
 
-  if (nodeSynced !== undefined) {
-    updateState({ nodeSynced })
+  if (
+    nodeSyncStatus !== undefined &&
+    nodeSyncStatus.blockchain === 'ethereum' &&
+    nodeSyncStatus.network === networkName(state.config.networkId)
+  ) {
+    updateState({ nodeSynced: nodeSyncStatus.synced })
   }
 
   // handle any errors from the server
