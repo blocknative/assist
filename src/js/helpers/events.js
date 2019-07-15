@@ -7,7 +7,7 @@ import { checkForSocketConnection, retryLogEvent } from './websockets'
 import { getItem } from './storage'
 import { removeUnwantedNotifications } from '../views/dom'
 
-export function handleEvent(eventObj, clickHandlers) {
+export function handleEvent(eventObj, modalClickHandlers) {
   const { eventCode, categoryCode, transaction } = eventObj
   const { handleNotificationEvent, headlessMode } = state.config || {}
   const serverEvent =
@@ -62,7 +62,7 @@ export function handleEvent(eventObj, clickHandlers) {
   if (!headlessMode && showNotification) {
     eventToUI[categoryCode] &&
       eventToUI[categoryCode][eventCode] &&
-      eventToUI[categoryCode][eventCode](eventObj, clickHandlers)
+      eventToUI[categoryCode][eventCode](eventObj, modalClickHandlers)
   }
 }
 

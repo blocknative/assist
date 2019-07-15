@@ -510,7 +510,7 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txOptions, callback, inlineCustomMsgs = {}) {
+  function Transaction(txOptions, callback, notificationOptions = {}) {
     const {
       validApiKey,
       supportedNetwork,
@@ -551,7 +551,8 @@ function init(config) {
         txOptions,
         sendMethod,
         callback,
-        inlineCustomMsgs: inlineCustomMsgs.messages,
+        inlineCustomMsgs: notificationOptions.messages,
+        clickHandlers: notificationOptions.clickHandlers,
         promiEvent
       })
 
@@ -563,7 +564,8 @@ function init(config) {
       txOptions,
       sendMethod,
       callback,
-      inlineCustomMsgs: inlineCustomMsgs.messages
+      inlineCustomMsgs: notificationOptions.messages,
+      clickHandlers: notificationOptions.clickHandlers
     })
   }
 }
