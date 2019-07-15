@@ -6,7 +6,7 @@ import { separateArgs, handleError } from '~/js/helpers/utilities'
 import { getContractMethod } from '~/js/helpers/web3'
 import { checkNetwork, getCorrectNetwork } from '~/js/logic/user'
 
-import sendTransaction from './send-transaction'
+import { sendTransaction } from './send-transaction'
 
 export function modernCall({ contractObj, methodName, args, truffleContract }) {
   const originalReturnObject = getContractMethod({

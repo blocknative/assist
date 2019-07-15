@@ -402,6 +402,7 @@ The available ids for the `networkId` property of the config object:
 - `1`: mainnet
 - `3`: ropsten testnet
 - `4`: rinkeby testnet
+- `5`: goerli testnet
 
 *The kovan testnet is not supported.*
 
@@ -548,11 +549,11 @@ var myContract = assistInstance.Contract(address, abi)
 myContract.myMethod().call()
 ```
 
-### `Transaction(txObject [, callback] [, notificationOptions])`
+### `Transaction(txObjectOrHash [, callback] [, notificationOptions])`
 
 #### Parameters
 
-`txObject` - `Object`: Transaction object (**Required**)
+`txObjectOrHash` - `Object` || `String`: Transaction object or transaction hash (**Required**)
 
 `callback` - `Function`: Optional error first style callback if you don't want to use promises
 
@@ -571,7 +572,7 @@ const notificationOptions = {
 
 #### Returns
 
-`Promise` or `PromiEvent` (`web3.js 1.0`)
+`Promise` or `PromiEvent` (`web3.js 1.0`) if passed a transaction object or `true` if passed a valid transaction hash or `false` if hash is invalid
 
 - resolves with transaction hash
 - rejects with an error message
@@ -586,6 +587,9 @@ assistInstance.Transaction(txObject)
   .catch(error => {
     console.log(error.message) // => 'User has insufficient funds'
   })
+
+  // you can alternatively pass in a transaction hash to get Assist's notifications for a transaction that has already been sent to the network
+  assistInstance.Transaction(hash)
 ```
 
 ### `getState()`
