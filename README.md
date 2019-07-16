@@ -281,6 +281,8 @@ The function that is defined on the `handleNotificationEvent` property of the co
 }
 ```
 
+You can then decide whether you would like a notification to be shown for this event or not. Return `true` to show the notification or `false` to not show the notification.
+
 #### `eventCode`
 
 The list of event codes that are included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config with one addition:
