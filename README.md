@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.9.2.
+The current version is 0.9.3.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-9-2/assist.js"></script>
+<script src="https://assist.blocknative.com/0-9-3/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-9-2/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-9-3/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -281,6 +281,8 @@ The function that is defined on the `handleNotificationEvent` property of the co
 }
 ```
 
+You can then decide whether you would like a notification to be shown for this event or not. Return `true` to show the notification or `false` to not show the notification.
+
 #### `eventCode`
 
 The list of event codes that are included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config with one addition:
@@ -388,6 +390,7 @@ The available ids for the `networkId` property of the config object:
 - `1`: mainnet
 - `3`: ropsten testnet
 - `4`: rinkeby testnet
+- `5`: goerli testnet
 
 *The kovan testnet is not supported.*
 
@@ -534,11 +537,11 @@ var myContract = assistInstance.Contract(address, abi)
 myContract.myMethod().call()
 ```
 
-### `Transaction(txObject [, callback] [, inlineCustomMsgs])`
+### `Transaction(txObjectOrHash [, callback] [, inlineCustomMsgs])`
 
 #### Parameters
 
-`txObject` - `Object`: Transaction object (**Required**)
+`txObjectOrHash` - `Object` || `String`: Transaction object or transaction hash (**Required**)
 
 `callback` - `Function`: Optional error first style callback if you don't want to use promises
 
@@ -546,7 +549,7 @@ myContract.myMethod().call()
 
 #### Returns
 
-`Promise` or `PromiEvent` (`web3.js 1.0`)
+`Promise` or `PromiEvent` (`web3.js 1.0`) if passed a transaction object or `true` if passed a valid transaction hash or `false` if hash is invalid
 
 - resolves with transaction hash
 - rejects with an error message
@@ -561,6 +564,9 @@ assistInstance.Transaction(txObject)
   .catch(error => {
     console.log(error.message) // => 'User has insufficient funds'
   })
+
+  // you can alternatively pass in a transaction hash to get Assist's notifications for a transaction that has already been sent to the network
+  assistInstance.Transaction(hash)
 ```
 
 ### `getState()`
