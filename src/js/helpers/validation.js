@@ -61,8 +61,8 @@ export function validateConfig(config) {
         css: ow.optional.string
       }),
       timeouts: ow.optional.object.exactShape({
-        txStallPending: ow.number,
-        txStallConfirmed: ow.number
+        txStallPending: ow.optional.number,
+        txStallConfirmed: ow.optional.number
       })
     })
   )
