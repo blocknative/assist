@@ -29,7 +29,6 @@ export function sendTransaction({
   sendMethod,
   callback,
   inlineCustomMsgs,
-  clickHandlers,
   contractObj,
   methodName,
   overloadKey,
@@ -96,7 +95,6 @@ export function sendTransaction({
         transaction: transactionEventObj,
         contract: contractEventObj,
         inlineCustomMsgs,
-        clickHandlers,
         wallet: {
           provider: currentProvider,
           address: accountAddress,
@@ -126,7 +124,6 @@ export function sendTransaction({
         transaction: transactionEventObj,
         contract: contractEventObj,
         inlineCustomMsgs,
-        clickHandlers,
         wallet: {
           provider: currentProvider,
           address: accountAddress,
@@ -143,7 +140,6 @@ export function sendTransaction({
         transaction: transactionEventObj,
         contract: contractEventObj,
         inlineCustomMsgs,
-        clickHandlers,
         wallet: {
           provider: currentProvider,
           address: accountAddress,
@@ -171,7 +167,6 @@ export function sendTransaction({
       transaction: transactionEventObj,
       contract: contractEventObj,
       inlineCustomMsgs,
-      clickHandlers,
       wallet: {
         provider: currentProvider,
         address: accountAddress,
@@ -185,8 +180,7 @@ export function sendTransaction({
         status: 'awaitingApproval'
       }),
       contract: contractEventObj,
-      inlineCustomMsgs,
-      clickHandlers
+      inlineCustomMsgs
     })
 
     // Check if user has confirmed transaction after 20 seconds
@@ -198,7 +192,6 @@ export function sendTransaction({
           transaction: transactionEventObj,
           contract: contractEventObj,
           inlineCustomMsgs,
-          clickHandlers,
           wallet: {
             provider: currentProvider,
             address: accountAddress,
@@ -285,7 +278,6 @@ export function onTxHash(id, hash, categoryCode) {
     transaction: txObj.transaction,
     contract: txObj.contract,
     inlineCustomMsgs: txObj.inlineCustomMsgs,
-    clickHandlers: txObj.clickHandlers,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -315,7 +307,6 @@ export function onTxHash(id, hash, categoryCode) {
         transaction: txObj.transaction,
         contract: txObj.contract,
         inlineCustomMsgs: txObj.inlineCustomMsgs,
-        clickHandlers: txObj.clickHandlers,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -348,7 +339,6 @@ export function onTxHash(id, hash, categoryCode) {
         transaction: txObj.transaction,
         contract: txObj.contract,
         inlineCustomMsgs: txObj.inlineCustomMsgs,
-        clickHandlers: txObj.clickHandlers,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -375,7 +365,6 @@ async function onTxReceipt(id, categoryCode) {
     transaction: txObj.transaction,
     contract: txObj.contract,
     inlineCustomMsgs: txObj.inlineCustomMsgs,
-    clickHandlers: txObj.clickHandlers,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -407,7 +396,6 @@ function onTxError(id, error, categoryCode) {
     transaction: txObj.transaction,
     contract: txObj.contract,
     inlineCustomMsgs: txObj.inlineCustomMsgs,
-    clickHandlers: txObj.clickHandlers,
     reason: errorMsg,
     wallet: {
       provider: state.currentProvider,
