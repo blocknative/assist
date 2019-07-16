@@ -19,7 +19,9 @@ export function handleEvent(eventObj, modalClickHandlers) {
 
   const notificationEvent = eventCode.includes('tx') || eventCode === 'nsfFail'
 
-  let eventToLog = { ...eventObj }
+  const { inlineCustomMessages, clickHandlers, ...event } = eventObj
+
+  let eventToLog = { ...event }
 
   // If dealing with a custom notification the logged event
   // should have it's event and category code changed
