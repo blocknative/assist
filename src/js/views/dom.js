@@ -101,7 +101,10 @@ export function createElementString(type, className, innerHTML) {
 
 export function createElement(el, className, children, id) {
   const element = state.iframeDocument.createElement(el)
-  element.className = className || ''
+
+  if (className) {
+    element.className = className
+  }
 
   if (children && typeof children === 'string') {
     element.innerHTML = children
@@ -259,14 +262,56 @@ export function browserLogos() {
   `
 }
 
+function mobileButton(data) {
+  const link = createElement(
+    'A',
+    'bn-btn bn-btn-primary bn-btn-outline text-center flex-column'
+  )
+  link.style = 'margin: 0 10px;'
+  link.href = data.link
+  link.target = '_blank'
+  link.rel = 'noreferrer noopener'
+  link.style = 'margin: 0.25rem;'
+
+  const image = createElement('img')
+  image.src = data.icon
+  image.alt = data.name
+  image.style = 'width: 100%; height: auto;'
+
+  const imageContainer = createElement('span')
+  imageContainer.style = 'width: 79px;'
+  imageContainer.appendChild(image)
+
+  const br = createElement('br')
+  const span = createElement('span', null, data.name)
+
+  link.appendChild(imageContainer)
+  link.appendChild(br)
+  link.appendChild(span)
+
+  return link
+}
+
 function walletLogos() {
   const { trustLogo, coinbaseLogo, operaTouchLogo } = imageSrc
+  const { recommendedWallets } = state.config
+
+  const customButtons = recommendedWallets && recommendedWallets.mobile
+
+  if (customButtons) {
+    const container = createElement('div', 'flex-row btn-row')
+    container.style = 'flex-flow: row wrap;'
+
+    customButtons.forEach(item => {
+      container.appendChild(mobileButton(item))
+    })
+
+    return container.outerHTML
+  }
 
   return `
     <p class="flex-row btn-row">
-      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
-        window.location.href
-      }" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${window.location.href}" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
       <img
         src="${trustLogo.src}" 
         alt="Trust Logo" 
@@ -398,7 +443,7 @@ export function onboardMain(type, step) {
       : onboardButton[step][type]
 
   const {
-    config: { style },
+    config: { style, recommendedWallets, images },
     currentProvider
   } = state
 
@@ -408,7 +453,6 @@ export function onboardMain(type, step) {
   const defaultImages = imageSrc[step + variant] || imageSrc[step]
 
   const isMetaMask = currentProvider === 'metamask'
-  const { images } = state.config
   const stepKey = stepToImageKey(step)
   const devImages = images && images[stepKey]
   const onboardImages = {
@@ -419,6 +463,8 @@ export function onboardMain(type, step) {
       (devImages && devImages.srcset) ||
       ((isMetaMask || stepKey) && defaultImages && defaultImages.srcset)
   }
+
+  const customButtons = recommendedWallets && recommendedWallets.desktop
 
   return `
     ${
@@ -434,6 +480,7 @@ export function onboardMain(type, step) {
     <h1 class="h4">${heading}</h1>
     <p>${description}</p>
     <br>
+    ${customButtons && step === 1 ? createCustomButtons(customButtons) : ''}
     <br>
     <p class="bn-onboard-button-section">
       <a href="#"
@@ -441,6 +488,53 @@ export function onboardMain(type, step) {
       </a>
     </p>
   `
+}
+
+function createCustomButtons(dataArr) {
+  const container = createElement('div', 'custom-wallet-buttons')
+  container.appendChild(
+    createElement(
+      'p',
+      '',
+      'The following wallets are compatible with this dapp:'
+    )
+  )
+
+  const buttonContainer = createElement('div', 'wallet-buttons')
+
+  dataArr.forEach(item => {
+    buttonContainer.appendChild(button(item))
+  })
+
+  container.appendChild(buttonContainer)
+
+  container.appendChild(
+    createElement(
+      'p',
+      '',
+      'Only have a single wallet active at a time, as having multiple active wallets may result in unexpected behavior.'
+    )
+  )
+
+  return container.outerHTML
+}
+
+function button(data) {
+  const link = createElement('a', 'wallet-button')
+  link.href = data.link
+  link.target = '_blank'
+  link.rel = 'noreferrer noopener'
+
+  const logo = createElement('img')
+  logo.src = data.icon
+  logo.alt = data.name
+
+  const imageContainer = createElement('div', 'image-container', logo)
+
+  link.appendChild(imageContainer)
+  link.appendChild(createElement('span', 'wallet-name', data.name))
+
+  return link
 }
 
 export function onboardModal(type, step) {
@@ -771,8 +865,11 @@ export function removeTouchHandlers(element, type) {
 
 export function handleTouchStart(element) {
   return e => {
-    e.stopPropagation()
-    e.preventDefault()
+    if (e.target.tagName !== 'A') {
+      e.stopPropagation()
+      e.preventDefault()
+    }
+
     const touch = e.changedTouches[0]
     element.attributes['data-startY'] = touch.screenY
     element.attributes['data-startX'] = touch.screenX
@@ -801,8 +898,11 @@ export function handleTouchMove(element) {
 
 export function handleTouchEnd(element, type) {
   return e => {
-    e.stopPropagation()
-    e.preventDefault()
+    if (e.target.tagName !== 'A') {
+      e.stopPropagation()
+      e.preventDefault()
+    }
+
     const touch = e.changedTouches[0]
     const startY = element.attributes['data-startY']
     const startX = element.attributes['data-startX']
