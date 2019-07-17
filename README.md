@@ -207,6 +207,10 @@ var config = {
   handleNotificationEvent: Function // Called on every tx notification event with a transaction event object
   timeouts: {
     txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not confirmed in the blockchain
+  },
+  recommendedWallets: {
+    desktop: Array, // Array of Objects that define wallets this dapp supports on desktop to users that don't have a wallet
+    mobile: Array // Array of Objects that define wallets this dapp supports on mobile to users that don't have a wallet
   }
 }
 ```
@@ -470,6 +474,43 @@ By supplying an amount of wei to the `minimumBalance` option of the config, deve
 ### Repeat Transactions
 
 Assist will detect transactions which look to be repeated. We notify users of repeat transactions when we see sequential transactions with the same `to` address and the same `value`.
+
+### Recommended Wallets
+
+If you would like to define which wallets your dapp works with and recommends to users that don't currently have a wallet installed, you can define it in the config for desktop and mobile devices:
+
+```javascript
+{
+  recommendedWallets: {
+    desktop: [
+      {
+        name: 'MetaMask',
+        link: 'https://metamask.io/',
+        icon: 'https://metamask.io/img/metamask.png'
+      }
+      // other desktop wallets your dapp supports here
+    ],
+    mobile: [
+      {
+        name: 'Coinbase',
+        link: 'https://wallet.coinbase.com/',
+        icon: 'https://cdn-images-1.medium.com/max/1200/1*7ywNS48PnonfsvvMu1tTsA.png'
+      }
+      // other mobile wallets your dapp supports here
+    ]
+  }
+}
+```
+
+*NOTE - Assist currently only supports the following wallets:
+
+- MetaMask
+- Equal
+- Opera
+- Opera Touch
+- Coinbase
+- Trust
+- Status
 
 ## API
 
