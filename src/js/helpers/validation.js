@@ -61,22 +61,6 @@ export function validateConfig(config) {
       }),
       timeouts: ow.optional.object.exactShape({
         txStall: ow.number
-      }),
-      recommendedWallets: ow.optional.object.exactShape({
-        desktop: ow.optional.array.ofType(
-          ow.object.exactShape({
-            name: ow.string,
-            link: ow.string,
-            icon: ow.string
-          })
-        ).nonEmpty,
-        mobile: ow.optional.array.ofType(
-          ow.object.exactShape({
-            name: ow.string,
-            link: ow.string,
-            icon: ow.string
-          })
-        ).nonEmpty
       })
     })
   )
