@@ -504,13 +504,12 @@ If you would like to define which wallets your dapp works with and recommends to
 
 *NOTE - Assist currently only supports the following wallets:
 
-- MetaMask
-- Equal
-- Opera
-- Opera Touch
-- Coinbase
-- Trust
-- Status
+- MetaMask (icon: https://metamask.io/img/metamask.png)
+- Opera (icon: https://images-na.ssl-images-amazon.com/images/I/71Y2mhDkBNL.png)
+- Opera Touch (icon: https://apps.goodereader.com/wp-content/uploads/icons/1525044654.png)
+- Coinbase (icon: https://cdn-images-1.medium.com/max/1200/1*7ywNS48PnonfsvvMu1tTsA.png)
+- Trust (icon: https://uploads-ssl.webflow.com/5a88babea6e0f90001b39b0d/5a8cf5a81df25e0001d5c78d_logo_solid_square_blue%20(2).png)
+- Status (icon: https://cdn.investinblockchain.com/wp-content/uploads/2017/12/status-2-300x300.png?x88891)
 
 ## API
 
