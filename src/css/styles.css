@@ -402,6 +402,12 @@ img.bn-onboard-img {
   border: 1px solid #cccccc;
   border-radius: 5px;
   color: #333333;
+  transition: background 150ms ease-in-out, color 100ms ease-in-out;
+}
+
+.custom-wallet-buttons .wallet-button:hover {
+  background-color: #cccccc;
+  color: white;
 }
 
 .custom-wallet-buttons .wallet-button .image-container img {
