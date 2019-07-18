@@ -404,14 +404,10 @@ img.bn-onboard-img {
   color: #333333;
 }
 
-.custom-wallet-buttons .wallet-button .image-container {
-  width: 2rem;
-  margin-right: 1rem;
-}
-
 .custom-wallet-buttons .wallet-button .image-container img {
-  width: 100%;
-  height: auto;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
 }
 
 @media (max-width: 768px) {

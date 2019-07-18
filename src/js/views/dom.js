@@ -279,7 +279,7 @@ function mobileButton(data) {
   image.style = 'width: 100%; height: auto;'
 
   const imageContainer = createElement('span')
-  imageContainer.style = 'width: 79px;'
+  imageContainer.style = 'width: 79px; height: 79px;'
   imageContainer.appendChild(image)
 
   const br = createElement('br')
