@@ -380,6 +380,42 @@ img.bn-onboard-img {
   vertical-align: middle;
 }
 
+.custom-wallet-buttons {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.custom-wallet-buttons .wallet-buttons {
+  display: flex;
+  align-items: center;
+  flex-flow: row wrap;
+  margin: 0.5rem 0;
+}
+
+.custom-wallet-buttons .wallet-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0.5rem 0.25rem 0;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  color: #333333;
+  transition: background 150ms ease-in-out, color 100ms ease-in-out;
+}
+
+.custom-wallet-buttons .wallet-button:hover {
+  background-color: #cccccc;
+  color: white;
+}
+
+.custom-wallet-buttons .wallet-button .image-container img {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
+}
+
 @media (max-width: 768px) {
   .bn-onboard-basic .bn-onboard-sidebar {
     width: 34%;
