@@ -502,14 +502,31 @@ If you would like to define which wallets your dapp works with and recommends to
 }
 ```
 
-*NOTE - Assist currently only supports the following wallets:
+#### Assist currently only supports the following wallets:
 
-- MetaMask (icon: https://metamask.io/img/metamask.png)
-- Opera (icon: https://images-na.ssl-images-amazon.com/images/I/71Y2mhDkBNL.png)
-- Opera Touch (icon: https://apps.goodereader.com/wp-content/uploads/icons/1525044654.png)
-- Coinbase (icon: https://cdn-images-1.medium.com/max/1200/1*7ywNS48PnonfsvvMu1tTsA.png)
-- Trust (icon: https://uploads-ssl.webflow.com/5a88babea6e0f90001b39b0d/5a8cf5a81df25e0001d5c78d_logo_solid_square_blue%20(2).png)
-- Status (icon: https://cdn.investinblockchain.com/wp-content/uploads/2017/12/status-2-300x300.png?x88891)
+##### Desktop
+- MetaMask
+  - link: https://metamask.io/img/metamask.png
+  - icon: https://metamask.io/img/metamask.png
+- Opera
+  - link: https://www.opera.com/
+  - icon: https://images-na.ssl-images-amazon.com/images/I/71Y2mhDkBNL.png
+
+##### Mobile
+- Opera Touch
+  - link: https://www.opera.com/mobile/touch
+  - icon: https://apps.goodereader.com/wp-content/uploads/icons/1525044654.png
+- Coinbase
+  - link: https://wallet.coinbase.com/
+  - icon: https://cdn-images-1.medium.com/max/1200/1*7ywNS48PnonfsvvMu1tTsA.png
+- Trust
+  - link: https://trustwallet.com/
+  - icon: https://uploads-ssl.webflow.com/5a88babea6e0f90001b39b0d/5a8cf5a81df25e0001d5c78d_logo_solid_square_blue%20(2).png
+- Status
+  - link: https://dev.status.im/get/
+  - icon: https://cdn.investinblockchain.com/wp-content/uploads/2017/12/status-2-300x300.png?x88891
+
+NOTE: above links available at time of writing, but may change.
 
 ## API
 
