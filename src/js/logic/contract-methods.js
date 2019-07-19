@@ -225,7 +225,7 @@ export function legacyCall({
         categoryCode: 'activeContract',
         contract: {
           methodName,
-          parameters: args,
+          parameters: methodArgs,
           result: JSON.stringify(result)
         }
       })
