@@ -137,7 +137,7 @@ export function handleSocketMessage(msg) {
 
         handleEvent({
           eventCode: eventCode === 'txPool' ? 'txPending' : eventCode,
-          categoryCode: 'activeTransaction',
+          categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs,
@@ -166,7 +166,7 @@ export function handleSocketMessage(msg) {
 
         handleEvent({
           eventCode: 'txConfirmed',
-          categoryCode: 'activeTransaction',
+          categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs,
@@ -186,7 +186,7 @@ export function handleSocketMessage(msg) {
 
         handleEvent({
           eventCode: 'txFailed',
-          categoryCode: 'activeTransaction',
+          categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs,

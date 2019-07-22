@@ -165,6 +165,9 @@ export function sendTransaction({
       txPromise = sendMethod(txOptions)
     }
 
+    // to field doesn't get populated until after the transaction has been initiated
+    transactionEventObj.to = txOptions.to
+
     handleEvent({
       eventCode: 'txRequest',
       categoryCode,
