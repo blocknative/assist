@@ -371,6 +371,20 @@ Transaction(txObject, callback, {messages: {txPending: () => 'Sending ETH...'}})
 
 The `messages` object _must_ always be the _last_ argument provided to the send method for it to be recognized.
 
+### Click handlers for transaction notifications
+
+You can also add click handler functions to a transaction that will be executed when the user clicks on the notification.
+
+```javascript
+myContract.vote(param1, param2, options, callback, {
+  messages: {txPending: () => `Voting for ${param1} in progress`},
+  clickHandlers: {
+    txPending: () => route('./votes'), // can specify a click handler for specific event codes which takes precedence
+    onclick: () => console.log('this is the global click handler') // or you can specify a onclick function which will run for every event for this transaction that doesn't have a click handler specified
+  }
+})
+```
+
 ### Transaction Events
 
 By defining a function and including it in the config on the `handleNotificationEvent` property you can hook in to all of the transaction events within Assist. The function will be called with a transaction event object which has the following properties:
@@ -594,7 +608,7 @@ var myContract = assistInstance.Contract(address, abi)
 myContract.myMethod().call()
 ```
 
-### `Transaction(txObjectOrHash [, callback] [, inlineCustomMsgs])`
+### `Transaction(txObjectOrHash [, callback] [, notificationOptions])`
 
 #### Parameters
 
@@ -602,7 +616,18 @@ myContract.myMethod().call()
 
 `callback` - `Function`: Optional error first style callback if you don't want to use promises
 
-`inlineCustomMsgs` - `Object`: Optional notification message overrides
+`notificationOptions` - `Object`: Optional notification custom options
+
+```javascript
+const notificationOptions = {
+  messages: {
+    txPending: () => 'your bid is pending...
+  },
+  clickHandlers: {
+    txPending: () => route('./open-bids')
+  }
+}
+```
 
 #### Returns
 
@@ -692,7 +717,8 @@ Trigger a custom UI notification
 ```javascript
 options = {
   customTimeout: Number, // Specify how many ms the notification should exist. Set to -1 for no timeout.
-  customCode: String // An identifier for this notify call
+  customCode: String, // An identifier for this notify call
+  onclick: Function // Function to run when user clicks notification
 }
 ```
 

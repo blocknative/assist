@@ -223,6 +223,10 @@ body {
   clear: both;
 }
 
+.clickable:hover {
+  cursor: pointer;
+}
+
 /* Onboarding */
 
 .bn-onboard-modal-shade {

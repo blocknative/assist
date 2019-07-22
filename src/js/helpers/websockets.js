@@ -140,7 +140,8 @@ export function handleSocketMessage(msg) {
           categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
-          inlineCustomMsgs: txObj.inlineCustomMsgs
+          inlineCustomMsgs: txObj.inlineCustomMsgs,
+          clickHandlers: txObj.clickHandlers
         })
         break
       case 'confirmed':
@@ -168,7 +169,8 @@ export function handleSocketMessage(msg) {
           categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
-          inlineCustomMsgs: txObj.inlineCustomMsgs
+          inlineCustomMsgs: txObj.inlineCustomMsgs,
+          clickHandlers: txObj.clickHandlers
         })
 
         if (txObj.transaction.status === 'completed') {
@@ -187,7 +189,8 @@ export function handleSocketMessage(msg) {
           categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
-          inlineCustomMsgs: txObj.inlineCustomMsgs
+          inlineCustomMsgs: txObj.inlineCustomMsgs,
+          clickHandlers: txObj.clickHandlers
         })
 
         removeTransactionFromQueue(transaction.id)
