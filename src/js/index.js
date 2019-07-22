@@ -576,7 +576,7 @@ function init(config) {
       const promiEvent = new PromiEventLib.PromiEvent()
       sendTransaction({
         categoryCode: 'activeTransaction',
-        txOptionsOrHash,
+        txOptions: txOptionsOrHash,
         sendMethod,
         callback,
         inlineCustomMsgs: notificationOptions.messages,
@@ -589,7 +589,7 @@ function init(config) {
 
     return sendTransaction({
       categoryCode: 'activeTransaction',
-      txOptionsOrHash,
+      txOptions: txOptionsOrHash,
       sendMethod,
       callback,
       inlineCustomMsgs: notificationOptions.messages,
