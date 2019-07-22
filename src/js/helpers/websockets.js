@@ -137,10 +137,11 @@ export function handleSocketMessage(msg) {
 
         handleEvent({
           eventCode: eventCode === 'txPool' ? 'txPending' : eventCode,
-          categoryCode: 'activeTransaction',
+          categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
-          inlineCustomMsgs: txObj.inlineCustomMsgs
+          inlineCustomMsgs: txObj.inlineCustomMsgs,
+          clickHandlers: txObj.clickHandlers
         })
         break
       case 'confirmed':
@@ -165,10 +166,11 @@ export function handleSocketMessage(msg) {
 
         handleEvent({
           eventCode: 'txConfirmed',
-          categoryCode: 'activeTransaction',
+          categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
-          inlineCustomMsgs: txObj.inlineCustomMsgs
+          inlineCustomMsgs: txObj.inlineCustomMsgs,
+          clickHandlers: txObj.clickHandlers
         })
 
         if (txObj.transaction.status === 'completed') {
@@ -184,10 +186,11 @@ export function handleSocketMessage(msg) {
 
         handleEvent({
           eventCode: 'txFailed',
-          categoryCode: 'activeTransaction',
+          categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
           transaction: txObj.transaction,
           contract: txObj.contract,
-          inlineCustomMsgs: txObj.inlineCustomMsgs
+          inlineCustomMsgs: txObj.inlineCustomMsgs,
+          clickHandlers: txObj.clickHandlers
         })
 
         removeTransactionFromQueue(transaction.id)

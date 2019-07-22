@@ -192,7 +192,9 @@ describe('assist is connected to a websocket', () => {
     const transaction = {
       status: 'pending',
       nonce: 123,
-      id: 'some-id'
+      id: 'some-id',
+      hash: '0x',
+      originalHash: undefined
     }
     const txObj = {
       transaction,
@@ -221,7 +223,7 @@ describe('assist is connected to a websocket', () => {
     test('the expected event should be emitted', () => {
       expect(handleEventSpy).toHaveBeenCalledWith({
         eventCode: payload.eventCode,
-        categoryCode: 'activeTransaction',
+        categoryCode: 'activeContract',
         transaction: txObj.transaction,
         contract: txObj.contract,
         inlineCustomMsgs: txObj.inlineCustomMsgs
@@ -236,7 +238,7 @@ describe('assist is connected to a websocket', () => {
       test(`emitted event should have eventCode 'txPending'`, () => {
         expect(handleEventSpy).toHaveBeenCalledWith({
           eventCode: 'txPending',
-          categoryCode: 'activeTransaction',
+          categoryCode: 'activeContract',
           transaction: txObj.transaction,
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs
@@ -249,7 +251,8 @@ describe('assist is connected to a websocket', () => {
     const transaction = {
       status: 'confirmed',
       nonce: 123,
-      id: 'some-id'
+      id: 'some-id',
+      hash: '0x'
     }
     const txObj = {
       transaction,
@@ -290,7 +293,7 @@ describe('assist is connected to a websocket', () => {
       test(`correct event should be emitted with tx status 'completed'`, () => {
         expect(handleEventSpy).toHaveBeenCalledWith({
           eventCode: 'txConfirmed',
-          categoryCode: 'activeTransaction',
+          categoryCode: 'activeContract',
           transaction: { ...txObj.transaction, status: 'completed' },
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs
@@ -314,7 +317,7 @@ describe('assist is connected to a websocket', () => {
       test(`correct event should be emitted with tx status 'confirmed'`, () => {
         expect(handleEventSpy).toHaveBeenCalledWith({
           eventCode: 'txConfirmed',
-          categoryCode: 'activeTransaction',
+          categoryCode: 'activeContract',
           transaction: { ...txObj.transaction, status: 'confirmed' },
           contract: txObj.contract,
           inlineCustomMsgs: txObj.inlineCustomMsgs
@@ -328,7 +331,8 @@ describe('assist is connected to a websocket', () => {
     const transaction = {
       status: 'failed',
       nonce: 123,
-      id: 'some-id'
+      id: 'some-id',
+      hash: '0x'
     }
     const txObj = {
       transaction,
@@ -359,7 +363,7 @@ describe('assist is connected to a websocket', () => {
     test(`correct event should be emitted with tx status 'failed'`, () => {
       expect(handleEventSpy).toHaveBeenCalledWith({
         eventCode: 'txFailed',
-        categoryCode: 'activeTransaction',
+        categoryCode: 'activeContract',
         transaction: { ...txObj.transaction, status: 'failed' },
         contract: txObj.contract,
         inlineCustomMsgs: txObj.inlineCustomMsgs

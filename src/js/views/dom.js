@@ -99,7 +99,7 @@ export function createElementString(type, className, innerHTML) {
 	`
 }
 
-export function createElement(el, className, children, id) {
+export function createElement(el, className, children, id, onclick) {
   const element = state.iframeDocument.createElement(el)
 
   if (className) {
@@ -116,6 +116,11 @@ export function createElement(el, className, children, id) {
 
   if (id) {
     element.id = id
+  }
+
+  if (onclick && typeof onclick === 'function') {
+    element.onclick = onclick
+    element.classList.add('clickable')
   }
 
   return element
@@ -311,9 +316,7 @@ function walletLogos() {
 
   return `
     <p class="flex-row btn-row">
-      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${
-        window.location.href
-      }" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
+      <a href="https://links.trustwalletapp.com/a/key_live_lfvIpVeI9TFWxPCqwU8rZnogFqhnzs4D?&event=openURL&url=${window.location.href}" target="_blank" style="margin: 0 10px;" class="bn-btn bn-btn-primary bn-btn-outline text-center flex-column">
       <img
         src="${trustLogo.src}" 
         alt="Trust Logo" 
@@ -853,16 +856,24 @@ function setHeight(el, overflow, height) {
   }
 }
 
-export function addTouchHandlers(element, type) {
+export function addTouchHandlers(element, type, onclick) {
   element.addEventListener('touchstart', handleTouchStart(element), false)
   element.addEventListener('touchmove', handleTouchMove(element), false)
-  element.addEventListener('touchend', handleTouchEnd(element, type), false)
+  element.addEventListener(
+    'touchend',
+    handleTouchEnd(element, type, onclick),
+    false
+  )
 }
 
-export function removeTouchHandlers(element, type) {
+export function removeTouchHandlers(element, type, onclick) {
   element.removeEventListener('touchstart', handleTouchStart(element), false)
   element.removeEventListener('touchmove', handleTouchMove(element), false)
-  element.removeEventListener('touchend', handleTouchEnd(element, type), false)
+  element.removeEventListener(
+    'touchend',
+    handleTouchEnd(element, type, onclick),
+    false
+  )
 }
 
 export function handleTouchStart(element) {
@@ -898,7 +909,7 @@ export function handleTouchMove(element) {
   }
 }
 
-export function handleTouchEnd(element, type) {
+export function handleTouchEnd(element, type, onclick) {
   return e => {
     if (e.target.tagName !== 'A') {
       e.stopPropagation()
@@ -919,6 +930,7 @@ export function handleTouchEnd(element, type) {
     if (!validSwipe) {
       element.style.transform = 'translateY(0)'
       element.attributes['data-translateY'] = 0
+      onclick && typeof onclick === 'function' && onclick()
     } else {
       removeTouchHandlers(element)
       if (type === 'notification') {

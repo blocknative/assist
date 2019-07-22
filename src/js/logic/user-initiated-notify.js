@@ -15,7 +15,8 @@ export default function userInitiatedNotify(
   message,
   {
     customTimeout = defaultTimeout(eventCode),
-    customCode = `custom ${eventCode}`
+    customCode = `custom ${eventCode}`,
+    onclick
   } = {}
 ) {
   // Validate message
@@ -44,6 +45,7 @@ export default function userInitiatedNotify(
     categoryCode: 'userInitiatedNotify',
     transaction: { id, startTime: Date.now() },
     inlineCustomMsgs: { [eventCode]: () => message },
+    clickHandlers: { onclick },
     customTimeout: customTimeout !== -1 && customTimeout,
     customCode
   })
