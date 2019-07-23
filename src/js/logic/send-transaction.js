@@ -243,34 +243,28 @@ export function sendTransaction({
           handleError({ resolve, reject, callback })(errorObj)
         })
     } else {
-      new Promise(confirmed => {
-        /* In web3 v1 instead of resolving the promise returned by sendTransaction
-         * we need to setup the promiEvent argument to mirror the behavior of the
-         * promiEvent returned by web3 when we call .send on the contract method.
-         */
-
-        txPromise
-          .on('transactionHash', hash => {
-            promiEvent.emit('transactionHash', hash)
-            onTxHash(transactionId, hash, categoryCode)
-            callback && callback(null, hash)
-          })
-          .on('receipt', receipt => {
-            promiEvent.emit('receipt', receipt)
-            confirmed(receipt)
-          })
-          .once('confirmation', confirmed)
-          .on('confirmation', (confirmation, receipt) => {
-            promiEvent.emit('confirmation', confirmation, receipt)
-          })
-          .on('error', errorObj => {
-            promiEvent.emit('error', errorObj)
-            onTxError(transactionId, errorObj, categoryCode)
-            handleError({ resolve, reject, callback })(errorObj)
-          })
-          .then(promiEvent.resolve)
-          .catch(promiEvent.reject)
-      }).then(() => onTxReceipt(transactionId, categoryCode))
+      txPromise
+        .on('transactionHash', hash => {
+          promiEvent.emit('transactionHash', hash)
+          onTxHash(transactionId, hash, categoryCode)
+          callback && callback(null, hash)
+        })
+        .on('receipt', receipt => {
+          promiEvent.emit('receipt', receipt)
+          promiEvent.resolve(receipt)
+          resolve()
+          onTxReceipt(transactionId, categoryCode)
+        })
+        .on('confirmation', (confirmation, receipt) => {
+          promiEvent.emit('confirmation', confirmation, receipt)
+        })
+        .on('error', (errorObj, receipt) => {
+          onTxError(transactionId, errorObj, categoryCode)
+          handleError({ resolve, reject, callback, promiEvent })(
+            errorObj,
+            receipt
+          )
+        })
     }
   })
 }
