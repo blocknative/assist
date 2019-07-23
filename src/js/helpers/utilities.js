@@ -96,8 +96,9 @@ export function separateArgs(allArgs, argsLength) {
 
   const notificationOptions =
     typeof last(allArgsCopy) === 'object' &&
-    (last(allArgsCopy).messages || last(allArgsCopy).clickHandlers) &&
-    takeLast(allArgsCopy)
+    (last(allArgsCopy).messages || last(allArgsCopy).clickHandlers)
+      ? takeLast(allArgsCopy)
+      : {}
 
   const callback =
     typeof last(allArgsCopy) === 'function' && takeLast(allArgsCopy)
