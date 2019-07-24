@@ -274,7 +274,8 @@ The function that is defined on the `handleNotificationEvent` property of the co
     to: String, // the address the transaction was sent to
     value: String // the value of the transaction
     hash: String // the transaction hash (updated to a new hash if transaction is sped up or cancelled)
-    originalHash: String // if transaction was sped up or cancelled, the original transaction hash
+    originalHash: String, // if transaction was sped up or cancelled, the original transaction hash
+    receipt: Object || undefined // Will be an object on a txConfirmedClient event. Is the receipt object that is received from web3 or ethers
   },
   wallet: {
     address: String, // the account address of the wallet in use
@@ -325,7 +326,8 @@ Custom transaction messages can be set to override the default messages `Assist`
     gasPrice: String, // Gas price (wei)
     hash: String, // The transaction hash
     nonce: Number, // The transaction nonce
-    value: String // The value of the transaction (wei)
+    value: String, // The value of the transaction (wei)
+    receipt: Object || undefined // Will be an object on txConfirmedClient event
   },
   contract: {
     // This object will be undefined if it is not a contract transaction
