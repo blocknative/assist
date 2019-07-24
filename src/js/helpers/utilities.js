@@ -96,8 +96,9 @@ export function separateArgs(allArgs, argsLength) {
 
   const notificationOptions =
     typeof last(allArgsCopy) === 'object' &&
-    (last(allArgsCopy).messages || last(allArgsCopy).clickHandlers) &&
-    takeLast(allArgsCopy)
+    (last(allArgsCopy).messages || last(allArgsCopy).clickHandlers)
+      ? takeLast(allArgsCopy)
+      : {}
 
   const callback =
     typeof last(allArgsCopy) === 'function' && takeLast(allArgsCopy)
@@ -243,12 +244,14 @@ export function stepToImageKey(step) {
 }
 
 export function handleError(handlers = {}) {
-  return errorObj => {
+  return (errorObj, receipt) => {
     const { callback, reject, resolve, promiEvent } = handlers
 
     if (promiEvent) {
-      promiEvent.emit('error', errorObj)
+      promiEvent.emit('error', errorObj, receipt)
+      promiEvent.reject(errorObj)
       resolve()
+
       return
     }
 
