@@ -220,8 +220,8 @@ export function sendTransaction({
           resolve(hash)
           callback && callback(null, hash)
 
-          return waitForTransactionReceipt(hash).then(() => {
-            onTxReceipt(transactionId, categoryCode)
+          return waitForTransactionReceipt(hash).then(receipt => {
+            onTxReceipt(transactionId, categoryCode, receipt)
           })
         })
         .catch(async errorObj => {
@@ -235,8 +235,8 @@ export function sendTransaction({
           resolve(tx)
           callback && callback(null, tx)
 
-          await tx.wait()
-          onTxReceipt(transactionId, categoryCode)
+          const receipt = await tx.wait()
+          onTxReceipt(transactionId, categoryCode, receipt)
         })
         .catch(errorObj => {
           onTxError(transactionId, errorObj, categoryCode)
@@ -253,7 +253,7 @@ export function sendTransaction({
           promiEvent.emit('receipt', receipt)
           promiEvent.resolve(receipt)
           resolve()
-          onTxReceipt(transactionId, categoryCode)
+          onTxReceipt(transactionId, categoryCode, receipt)
         })
         .on('confirmation', (confirmation, receipt) => {
           promiEvent.emit('confirmation', confirmation, receipt)
@@ -327,13 +327,13 @@ export function onTxHash(id, hash, categoryCode) {
   }, customStallTimeout || timeouts.txStall)
 }
 
-async function onTxReceipt(id, categoryCode) {
+async function onTxReceipt(id, categoryCode, receipt) {
   let txObj = getTxObjFromQueue(id)
 
   if (txObj.transaction.status === 'confirmed') {
-    txObj = updateTransactionInQueue(id, { status: 'completed' })
+    txObj = updateTransactionInQueue(id, { status: 'completed', receipt })
   } else {
-    txObj = updateTransactionInQueue(id, { status: 'confirmed' })
+    txObj = updateTransactionInQueue(id, { status: 'confirmed', receipt })
   }
 
   handleEvent({
