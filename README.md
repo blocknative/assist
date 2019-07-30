@@ -159,6 +159,19 @@ Pass this instance in to the config (even if it is undefined). If the user didn'
 
 If you _don't_ include your instantiated Web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then your contracts won't be decorated correctly.
 
+### Truffle Contracts and minification
+
+For assist.js to work correctly with Truffle contracts, you must not minify function names (fnames) in your build.
+
+Instructions on how to disable minification of fnames:
+
+- [Terser](https://github.com/terser-js/terser#minify-options)
+- [Uglify](https://github.com/mishoo/UglifyJS2#minify-options)
+- [Webpack terser plugin](https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions)
+- [Webpack uglify plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin#uglifyoptions)
+- [Rollup terser plugin](https://github.com/TrySound/rollup-plugin-terser#options)
+- [Rollup uglify plugin](https://github.com/TrySound/rollup-plugin-uglify#options)
+
 ## API Reference
 
 ### Config
