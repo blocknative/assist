@@ -19,7 +19,7 @@ const zeroAddress = '0x0000000000000000000000000000000000000000'
 
 const initWeb3 = (simpleVersion, Web3) => {
   if (simpleVersion === '1.0') {
-    return new Web3(`ws://localhost:${port}`)
+    return new Web3(`http://localhost:${port}`)
   }
   const provider = new Web3.providers.HttpProvider(`http://localhost:${port}`)
   return new Web3(provider)
@@ -43,12 +43,6 @@ describe(`web3.js tests`, () => {
           web3 = initWeb3(simpleVersion, Web3)
           config = { dappId: '123', web3, networkId: 5 }
           da.init(config)
-        })
-        afterEach(() => {
-          // need to close any websocket connection
-          if (simpleVersion === '1.0') {
-            web3.currentProvider.connection.close()
-          }
         })
         describe('web3Functions', () => {
           describe('networkId', () => {

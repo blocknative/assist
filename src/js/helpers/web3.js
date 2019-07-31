@@ -162,6 +162,7 @@ export const web3Functions = {
 export function configureWeb3(web3) {
   if (!web3) {
     web3 = window.web3 // eslint-disable-line prefer-destructuring
+    if (!web3) return
   }
 
   // If web3 has been prefaced with the default property, re-assign it
@@ -201,30 +202,65 @@ export function configureWeb3(web3) {
   })
 }
 
-export function checkForWallet() {
-  if (window.ethereum) {
-    updateState({
-      currentProvider: getCurrentProvider(),
-      validBrowser: true,
-      web3Wallet: true,
-      legacyWallet: false,
-      modernWallet: true
-    })
-  } else if (window.web3 && window.web3.version) {
-    updateState({
-      currentProvider: getCurrentProvider(),
-      validBrowser: true,
-      web3Wallet: true,
-      legacyWallet: true,
-      modernWallet: false
-    })
+export async function checkForWallet() {
+  if (
+    state.web3Instance &&
+    state.web3Instance.currentProvider &&
+    typeof state.web3Instance.currentProvider.send === 'function'
+  ) {
+    if (typeof state.web3Instance.currentProvider.enable === 'function') {
+      updateState({
+        currentProvider: getCurrentProvider(),
+        validBrowser: true,
+        web3Wallet: true,
+        legacyWallet: false,
+        modernWallet: true
+      })
+    } else {
+      const accounts = await getAccounts().catch(handleWeb3Error)
+
+      if (accounts && accounts[0]) {
+        updateState({
+          currentProvider: getCurrentProvider(),
+          validBrowser: true,
+          web3Wallet: true,
+          legacyWallet: true,
+          modernWallet: false
+        })
+      } else {
+        updateState({
+          web3Wallet: false,
+          accessToAccounts: false,
+          walletLoggedIn: false,
+          walletEnabled: false
+        })
+      }
+    }
   } else {
-    updateState({
-      web3Wallet: false,
-      accessToAccounts: false,
-      walletLoggedIn: false,
-      walletEnabled: false
-    })
+    if (window.ethereum) {
+      updateState({
+        currentProvider: getCurrentProvider(),
+        validBrowser: true,
+        web3Wallet: true,
+        legacyWallet: false,
+        modernWallet: true
+      })
+    } else if (window.web3 && window.web3.version) {
+      updateState({
+        currentProvider: getCurrentProvider(),
+        validBrowser: true,
+        web3Wallet: true,
+        legacyWallet: true,
+        modernWallet: false
+      })
+    } else {
+      updateState({
+        web3Wallet: false,
+        accessToAccounts: false,
+        walletLoggedIn: false,
+        walletEnabled: false
+      })
+    }
   }
 }
 
@@ -342,6 +378,8 @@ export function getAccountBalance() {
   return new Promise(async resolve => {
     const accounts = await getAccounts().catch(handleWeb3Error)
 
+    if (!accounts || !accounts[0]) return
+
     updateState({ accountAddress: accounts && accounts[0] })
 
     const version = state.config.ethers
@@ -396,11 +434,11 @@ export function getCurrentProvider() {
   const web3 = state.web3Instance
 
   if (!web3) {
-    if (window.ethereum.isMetaMask) {
+    if (window.ethereum && window.ethereum.isMetaMask) {
       return 'metamask'
     }
 
-    if (window.ethereum.isDapper) {
+    if (window.ethereum && window.ethereum.isDapper) {
       return 'dapper'
     }
 
@@ -451,6 +489,10 @@ export function getCurrentProvider() {
 
   if (web3.currentProvider.connection) {
     return 'Infura Websocket'
+  }
+
+  if (web3.currentProvider.name === 'trezor') {
+    return 'trezor'
   }
 }
 
