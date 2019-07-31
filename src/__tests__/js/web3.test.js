@@ -25,7 +25,7 @@ const initWeb3 = (simpleVersion, Web3) => {
   return new Web3(provider)
 }
 
-describe(`web3.js tests`, () => {
+xdescribe(`web3.js tests`, () => {
   multidepRequire.forEachVersion('web3', (version, Web3) => {
     describe(`using web3 ${version}`, () => {
       describe('assist is initialised correctly', () => {
