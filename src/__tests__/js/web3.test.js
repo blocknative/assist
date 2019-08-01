@@ -1,5 +1,4 @@
 import truffleContract from 'truffle-contract'
-import da from '~/js'
 import abi from '~/__tests__/res/dstoken.json'
 import { initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
@@ -25,12 +24,11 @@ const initWeb3 = (simpleVersion, Web3) => {
   return new Web3(provider)
 }
 
-xdescribe(`web3.js tests`, () => {
+describe(`web3.js tests`, () => {
   multidepRequire.forEachVersion('web3', (version, Web3) => {
     describe(`using web3 ${version}`, () => {
       describe('assist is initialised correctly', () => {
         let web3
-        let config
         let simpleVersion
         beforeEach(() => {
           jest
@@ -41,8 +39,10 @@ xdescribe(`web3.js tests`, () => {
             .mockImplementation(() => Promise.resolve(true))
           simpleVersion = version.slice(0, 3)
           web3 = initWeb3(simpleVersion, Web3)
-          config = { dappId: '123', web3, networkId: 5 }
-          da.init(config)
+          updateState({
+            web3Instance: web3,
+            legacyWeb3: simpleVersion === '0.2'
+          })
         })
         describe('web3Functions', () => {
           describe('networkId', () => {
