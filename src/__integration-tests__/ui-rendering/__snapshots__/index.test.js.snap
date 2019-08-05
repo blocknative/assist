@@ -492,7 +492,7 @@ exports[`dom-rendering event activeContract-txStallPending should trigger correc
 			</div>
 		</span>
 		<div class=\\"bn-notification-info\\">
-			<p>Your transaction ID: 1235 has stalled and has not entered the transaction pool</p>
+			<p>Your transaction has stalled and has not entered the transaction pool</p>
 			<p class=\\"bn-notification-meta\\">
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
@@ -1642,7 +1642,7 @@ exports[`dom-rendering event activeTransaction-txStallPending should trigger cor
 			</div>
 		</span>
 		<div class=\\"bn-notification-info\\">
-			<p>Your transaction ID: 1235 has stalled and has not entered the transaction pool</p>
+			<p>Your transaction has stalled and has not entered the transaction pool</p>
 			<p class=\\"bn-notification-meta\\">
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
