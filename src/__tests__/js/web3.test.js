@@ -1,5 +1,4 @@
 import truffleContract from 'truffle-contract'
-import da from '~/js'
 import abi from '~/__tests__/res/dstoken.json'
 import { initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
@@ -19,7 +18,7 @@ const zeroAddress = '0x0000000000000000000000000000000000000000'
 
 const initWeb3 = (simpleVersion, Web3) => {
   if (simpleVersion === '1.') {
-    return new Web3(`ws://localhost:${port}`)
+    return new Web3(`http://localhost:${port}`)
   }
   const provider = new Web3.providers.HttpProvider(`http://localhost:${port}`)
   return new Web3(provider)
@@ -30,7 +29,6 @@ describe(`web3.js tests`, () => {
     describe(`using web3 ${version}`, () => {
       describe('assist is initialised correctly', () => {
         let web3
-        let config
         let simpleVersion
         beforeEach(() => {
           jest
@@ -41,15 +39,13 @@ describe(`web3.js tests`, () => {
             .mockImplementation(() => Promise.resolve(true))
           simpleVersion = version.slice(0, 2)
           web3 = initWeb3(simpleVersion, Web3)
-          config = { dappId: '123', web3, networkId: 5 }
-          da.init(config)
+
+          updateState({
+            web3Instance: web3,
+            legacyWeb3: simpleVersion === '0.'
+          })
         })
-        afterEach(() => {
-          // need to close any websocket connection
-          if (simpleVersion === '1.') {
-            web3.currentProvider.connection.close()
-          }
-        })
+
         describe('web3Functions', () => {
           describe('networkId', () => {
             test('should return the expected networkId', async () => {

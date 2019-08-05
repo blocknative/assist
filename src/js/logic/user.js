@@ -21,7 +21,7 @@ export function checkUserEnvironment() {
       checkValidBrowser()
     }
 
-    checkForWallet()
+    await checkForWallet()
 
     if (!state.web3Wallet) {
       if (!state.mobileDevice) {
