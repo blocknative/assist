@@ -452,6 +452,25 @@ function init(config) {
           // it only needs to be assigned once
           if (!seenMethods.includes(name)) {
             const method = contractObj.methods[name]
+
+            /* If the developer has minified constructor names, a truffle contract may
+             * have incorrectly been identified as a web3 contract and flow would incorrectly
+             * get here. In this case, 'method' would be undefined.
+             * Do a quick check to make sure it exists.
+             */
+            if (!method)
+              throw Error(
+                'It looks like some function names that assist.js relies on have been minified in this build, causing it to incorrectly identify a Truffle contract as a web3.js contract.' +
+                  "\nIf you wish to use Truffle contracts with assist.js, you need to disable minification of 'fnames' in your build." +
+                  '\nInstructions for:' +
+                  '\n  - Terser: https://github.com/terser-js/terser#minify-options' +
+                  '\n  - Uglify: https://github.com/mishoo/UglifyJS2#minify-options' +
+                  '\n  - Webpack terser plugin: https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions' +
+                  '\n  - Webpack uglify plugin: https://github.com/webpack-contrib/uglifyjs-webpack-plugin#uglifyoptions' +
+                  '\n  - Rollup terser plugin: https://github.com/TrySound/rollup-plugin-terser#options' +
+                  '\n  - Rollup uglify plugin: https://github.com/TrySound/rollup-plugin-uglify#options'
+              )
+
             methodsObj[name] = (...args) =>
               constant
                 ? call({ contractObj, methodName: name, args, truffleContract })
