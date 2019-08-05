@@ -94,10 +94,11 @@ export function separateArgs(allArgs, argsLength) {
   const allArgsCopy = [...allArgs]
   const methodArgs = argsLength ? allArgsCopy.splice(0, argsLength) : []
 
-  const inlineCustomMsgs =
+  const notificationOptions =
     typeof last(allArgsCopy) === 'object' &&
-    last(allArgsCopy).messages &&
-    takeLast(allArgsCopy).messages
+    (last(allArgsCopy).messages || last(allArgsCopy).clickHandlers)
+      ? takeLast(allArgsCopy)
+      : {}
 
   const callback =
     typeof last(allArgsCopy) === 'function' && takeLast(allArgsCopy)
@@ -114,7 +115,7 @@ export function separateArgs(allArgs, argsLength) {
     methodArgs,
     txOptions,
     defaultBlock,
-    inlineCustomMsgs
+    notificationOptions
   }
 }
 
@@ -245,12 +246,14 @@ export function stepToImageKey(step) {
 }
 
 export function handleError(handlers = {}) {
-  return errorObj => {
+  return (errorObj, receipt) => {
     const { callback, reject, resolve, promiEvent } = handlers
 
     if (promiEvent) {
-      promiEvent.emit('error', errorObj)
+      promiEvent.emit('error', errorObj, receipt)
+      promiEvent.reject(errorObj)
       resolve()
+
       return
     }
 

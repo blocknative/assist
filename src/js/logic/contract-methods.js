@@ -114,14 +114,18 @@ export function modernSend({ contractObj, methodName, args, truffleContract }) {
 
   returnObject.send = (...innerArgs) => {
     const promiEvent = new PromiEventLib.PromiEvent()
-    const { callback, txOptions, inlineCustomMsgs } = separateArgs(innerArgs, 0)
+    const { callback, txOptions, notificationOptions } = separateArgs(
+      innerArgs,
+      0
+    )
 
     sendTransaction({
       categoryCode: 'activeContract',
       txOptions,
       sendMethod: innerMethod,
       callback,
-      inlineCustomMsgs,
+      inlineCustomMsgs: notificationOptions.messages,
+      clickHandlers: notificationOptions.clickHandlers,
       contractObj,
       methodName,
       methodArgs: args,
@@ -225,7 +229,7 @@ export function legacyCall({
         categoryCode: 'activeContract',
         contract: {
           methodName,
-          parameters: args,
+          parameters: methodArgs,
           result: JSON.stringify(result)
         }
       })
@@ -244,7 +248,7 @@ export async function legacySend({
   argsLength,
   truffleContract
 }) {
-  const { callback, txOptions, methodArgs, inlineCustomMsgs } = separateArgs(
+  const { callback, txOptions, methodArgs, notificationOptions } = separateArgs(
     args,
     argsLength
   )
@@ -265,7 +269,8 @@ export async function legacySend({
     txOptions,
     sendMethod,
     callback,
-    inlineCustomMsgs,
+    inlineCustomMsgs: notificationOptions.messages,
+    clickHandlers: notificationOptions.clickHandlers,
     contractObj,
     methodName,
     overloadKey,
@@ -280,7 +285,7 @@ export function truffleSend({
   args,
   argsLength
 }) {
-  const { callback, txOptions, methodArgs, inlineCustomMsgs } = separateArgs(
+  const { callback, txOptions, methodArgs, notificationOptions } = separateArgs(
     args,
     argsLength
   )
@@ -298,7 +303,8 @@ export function truffleSend({
     txOptions,
     sendMethod,
     callback,
-    inlineCustomMsgs,
+    inlineCustomMsgs: notificationOptions.messages,
+    clickHandlers: notificationOptions.clickHandlers,
     contractObj,
     methodName,
     overloadKey,

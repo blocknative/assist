@@ -29,6 +29,7 @@ export function sendTransaction({
   sendMethod,
   callback,
   inlineCustomMsgs,
+  clickHandlers,
   contractObj,
   methodName,
   overloadKey,
@@ -95,6 +96,7 @@ export function sendTransaction({
         transaction: transactionEventObj,
         contract: contractEventObj,
         inlineCustomMsgs,
+        clickHandlers,
         wallet: {
           provider: currentProvider,
           address: accountAddress,
@@ -124,6 +126,7 @@ export function sendTransaction({
         transaction: transactionEventObj,
         contract: contractEventObj,
         inlineCustomMsgs,
+        clickHandlers,
         wallet: {
           provider: currentProvider,
           address: accountAddress,
@@ -140,6 +143,7 @@ export function sendTransaction({
         transaction: transactionEventObj,
         contract: contractEventObj,
         inlineCustomMsgs,
+        clickHandlers,
         wallet: {
           provider: currentProvider,
           address: accountAddress,
@@ -161,12 +165,16 @@ export function sendTransaction({
       txPromise = sendMethod(txOptions)
     }
 
+    // to field doesn't get populated until after the transaction has been initiated
+    transactionEventObj.to = txOptions.to
+
     handleEvent({
       eventCode: 'txRequest',
       categoryCode,
       transaction: transactionEventObj,
       contract: contractEventObj,
       inlineCustomMsgs,
+      clickHandlers,
       wallet: {
         provider: currentProvider,
         address: accountAddress,
@@ -180,7 +188,8 @@ export function sendTransaction({
         status: 'awaitingApproval'
       }),
       contract: contractEventObj,
-      inlineCustomMsgs
+      inlineCustomMsgs,
+      clickHandlers
     })
 
     // Check if user has confirmed transaction after 20 seconds
@@ -192,6 +201,7 @@ export function sendTransaction({
           transaction: transactionEventObj,
           contract: contractEventObj,
           inlineCustomMsgs,
+          clickHandlers,
           wallet: {
             provider: currentProvider,
             address: accountAddress,
@@ -210,8 +220,8 @@ export function sendTransaction({
           resolve(hash)
           callback && callback(null, hash)
 
-          return waitForTransactionReceipt(hash).then(() => {
-            onTxReceipt(transactionId, categoryCode)
+          return waitForTransactionReceipt(hash).then(receipt => {
+            onTxReceipt(transactionId, categoryCode, receipt)
           })
         })
         .catch(async errorObj => {
@@ -225,42 +235,36 @@ export function sendTransaction({
           resolve(tx)
           callback && callback(null, tx)
 
-          await tx.wait()
-          onTxReceipt(transactionId, categoryCode)
+          const receipt = await tx.wait()
+          onTxReceipt(transactionId, categoryCode, receipt)
         })
         .catch(errorObj => {
           onTxError(transactionId, errorObj, categoryCode)
           handleError({ resolve, reject, callback })(errorObj)
         })
     } else {
-      new Promise(confirmed => {
-        /* In web3 v1 instead of resolving the promise returned by sendTransaction
-         * we need to setup the promiEvent argument to mirror the behavior of the
-         * promiEvent returned by web3 when we call .send on the contract method.
-         */
-
-        txPromise
-          .on('transactionHash', hash => {
-            promiEvent.emit('transactionHash', hash)
-            onTxHash(transactionId, hash, categoryCode)
-            callback && callback(null, hash)
-          })
-          .on('receipt', receipt => {
-            promiEvent.emit('receipt', receipt)
-            confirmed(receipt)
-          })
-          .once('confirmation', confirmed)
-          .on('confirmation', (confirmation, receipt) => {
-            promiEvent.emit('confirmation', confirmation, receipt)
-          })
-          .on('error', errorObj => {
-            promiEvent.emit('error', errorObj)
-            onTxError(transactionId, errorObj, categoryCode)
-            handleError({ resolve, reject, callback })(errorObj)
-          })
-          .then(promiEvent.resolve)
-          .catch(promiEvent.reject)
-      }).then(() => onTxReceipt(transactionId, categoryCode))
+      txPromise
+        .on('transactionHash', hash => {
+          promiEvent.emit('transactionHash', hash)
+          onTxHash(transactionId, hash, categoryCode)
+          callback && callback(null, hash)
+        })
+        .on('receipt', receipt => {
+          promiEvent.emit('receipt', receipt)
+          promiEvent.resolve(receipt)
+          resolve()
+          onTxReceipt(transactionId, categoryCode, receipt)
+        })
+        .on('confirmation', (confirmation, receipt) => {
+          promiEvent.emit('confirmation', confirmation, receipt)
+        })
+        .on('error', (errorObj, receipt) => {
+          onTxError(transactionId, errorObj, categoryCode)
+          handleError({ resolve, reject, callback, promiEvent })(
+            errorObj,
+            receipt
+          )
+        })
     }
   })
 }
@@ -278,6 +282,7 @@ export function onTxHash(id, hash, categoryCode) {
     transaction: txObj.transaction,
     contract: txObj.contract,
     inlineCustomMsgs: txObj.inlineCustomMsgs,
+    clickHandlers: txObj.clickHandlers,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -307,6 +312,7 @@ export function onTxHash(id, hash, categoryCode) {
         transaction: txObj.transaction,
         contract: txObj.contract,
         inlineCustomMsgs: txObj.inlineCustomMsgs,
+        clickHandlers: txObj.clickHandlers,
         wallet: {
           provider: state.currentProvider,
           address: state.accountAddress,
@@ -350,13 +356,13 @@ export function onTxHash(id, hash, categoryCode) {
   }, customStallConfirmedTimeout || timeouts.txStallConfirmed)
 }
 
-async function onTxReceipt(id, categoryCode) {
+async function onTxReceipt(id, categoryCode, receipt) {
   let txObj = getTxObjFromQueue(id)
 
   if (txObj.transaction.status === 'confirmed') {
-    txObj = updateTransactionInQueue(id, { status: 'completed' })
+    txObj = updateTransactionInQueue(id, { status: 'completed', receipt })
   } else {
-    txObj = updateTransactionInQueue(id, { status: 'confirmed' })
+    txObj = updateTransactionInQueue(id, { status: 'confirmed', receipt })
   }
 
   handleEvent({
@@ -365,6 +371,7 @@ async function onTxReceipt(id, categoryCode) {
     transaction: txObj.transaction,
     contract: txObj.contract,
     inlineCustomMsgs: txObj.inlineCustomMsgs,
+    clickHandlers: txObj.clickHandlers,
     wallet: {
       provider: state.currentProvider,
       address: state.accountAddress,
@@ -396,6 +403,7 @@ function onTxError(id, error, categoryCode) {
     transaction: txObj.transaction,
     contract: txObj.contract,
     inlineCustomMsgs: txObj.inlineCustomMsgs,
+    clickHandlers: txObj.clickHandlers,
     reason: errorMsg,
     wallet: {
       provider: state.currentProvider,

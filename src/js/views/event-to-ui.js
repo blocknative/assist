@@ -183,6 +183,7 @@ function notificationsUI({
   transaction = {},
   contract = {},
   inlineCustomMsgs,
+  clickHandlers,
   eventCode,
   categoryCode,
   customTimeout
@@ -238,6 +239,9 @@ function notificationsUI({
     showIframe()
   }
 
+  const notificationClickHandler =
+    clickHandlers && (clickHandlers[eventCode] || clickHandlers.onclick)
+
   const notification = offsetElement(
     createElement(
       'li',
@@ -250,13 +254,15 @@ function notificationsUI({
           ? 'bn-right-border'
           : ''
       }`,
-      notificationContent(type, message, { startTime, showTime, timeStamp })
+      notificationContent(type, message, { startTime, showTime, timeStamp }),
+      null,
+      notificationClickHandler
     )
   )
 
   if (state.mobileDevice) {
     notification.appendChild(createTransactionBranding())
-    addTouchHandlers(notification, 'notification')
+    addTouchHandlers(notification, 'notification', notificationClickHandler)
   }
 
   notificationsList.appendChild(notification)

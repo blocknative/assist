@@ -512,7 +512,7 @@ function init(config) {
 
   // TRANSACTION FUNCTION //
 
-  function Transaction(txOptionsOrHash, callback, inlineCustomMsgs = {}) {
+  function Transaction(txOptionsOrHash, callback, notificationOptions = {}) {
     const {
       validApiKey,
       supportedNetwork,
@@ -551,7 +551,8 @@ function init(config) {
           id,
           status: 'signedTransaction'
         },
-        inlineCustomMsgs
+        inlineCustomMsgs: notificationOptions.messages,
+        clickHandlers: notificationOptions.clickHandlers
       })
 
       // handle txhash
@@ -575,10 +576,11 @@ function init(config) {
       const promiEvent = new PromiEventLib.PromiEvent()
       sendTransaction({
         categoryCode: 'activeTransaction',
-        txOptionsOrHash,
+        txOptions: txOptionsOrHash,
         sendMethod,
         callback,
-        inlineCustomMsgs: inlineCustomMsgs.messages,
+        inlineCustomMsgs: notificationOptions.messages,
+        clickHandlers: notificationOptions.clickHandlers,
         promiEvent
       })
 
@@ -587,10 +589,11 @@ function init(config) {
 
     return sendTransaction({
       categoryCode: 'activeTransaction',
-      txOptionsOrHash,
+      txOptions: txOptionsOrHash,
       sendMethod,
       callback,
-      inlineCustomMsgs: inlineCustomMsgs.messages
+      inlineCustomMsgs: notificationOptions.messages,
+      clickHandlers: notificationOptions.clickHandlers
     })
   }
 }
