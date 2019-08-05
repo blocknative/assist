@@ -357,32 +357,33 @@ async function onTxReceipt(id, categoryCode, receipt) {
 }
 
 function onTxError(id, error, categoryCode) {
-  const { message } = error
-  let errorMsg
-  try {
-    errorMsg = extractMessageFromError(message)
-  } catch (error) {
-    errorMsg = 'User denied transaction signature'
+  const { errorMsg, eventCode } = extractMessageFromError(error.message)
+
+  let txObj = getTxObjFromQueue(id)
+
+  if (
+    txObj &&
+    (txObj.transaction.status !== 'confirmed' ||
+      txObj.transaction.status !== 'completed')
+  ) {
+    txObj = updateTransactionInQueue(id, { status: 'error' })
+
+    handleEvent({
+      eventCode,
+      categoryCode,
+      transaction: txObj.transaction,
+      contract: txObj.contract,
+      inlineCustomMsgs: txObj.inlineCustomMsgs,
+      clickHandlers: txObj.clickHandlers,
+      reason: errorMsg,
+      wallet: {
+        provider: state.currentProvider,
+        address: state.accountAddress,
+        balance: state.accountBalance,
+        minimum: state.config.minimumBalance
+      }
+    })
   }
-
-  const txObj = updateTransactionInQueue(id, { status: 'rejected' })
-
-  handleEvent({
-    eventCode:
-      errorMsg === 'transaction underpriced' ? 'txUnderpriced' : 'txSendFail',
-    categoryCode,
-    transaction: txObj.transaction,
-    contract: txObj.contract,
-    inlineCustomMsgs: txObj.inlineCustomMsgs,
-    clickHandlers: txObj.clickHandlers,
-    reason: errorMsg,
-    wallet: {
-      provider: state.currentProvider,
-      address: state.accountAddress,
-      balance: state.accountBalance,
-      minimum: state.config.minimumBalance
-    }
-  })
 
   removeTransactionFromQueue(id)
 }
