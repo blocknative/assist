@@ -180,7 +180,8 @@ var config = {
     txSent: Function, // Transaction has been sent to the network
     txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
-    txStall: Function, // Transaction was sent but not confirmed in the blockchain after 30 secs
+    txStallPending: Function, // Transaction was sent to the network but has not been detected in the txPool
+    txStallConfirmed: Function, // Transaction has been detected in the mempool but hasn't been confirmed
     txFailed: Function, // Transaction failed
     nsfFail: Function, // User doesn't have enough funds to complete transaction
     txRepeat: Function, // Warning to user that they might be repeating a transaction
@@ -206,7 +207,8 @@ var config = {
   },
   handleNotificationEvent: Function // Called on every tx notification event with a transaction event object
   timeouts: {
-    txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not confirmed in the blockchain
+    txStallPending: Number // The number of milliseconds after a transaction has been sent before showing a stall notification detected in the mempool
+    txStallConfirmed: Number // The number of milliseconds after a transaction has been detected in the mempool before showing a stall notification if not confirmed
   },
   recommendedWallets: {
     desktop: Array, // Array of Objects that define wallets this dapp supports on desktop to users that don't have a wallet
@@ -365,11 +367,9 @@ myContract.vote(param1, param2, options, callback, {
 })
 
 // 1.0 style send
-myContract
-  .vote(param1, param2)
-  .send(options, {
-    messages: { txPending: () => `Voting for ${param1} in progress` }
-  })
+myContract.vote(param1, param2).send(options, {
+  messages: { txPending: () => `Voting for ${param1} in progress` }
+})
 
 // Transaction
 Transaction(txObject, callback, {

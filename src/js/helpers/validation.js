@@ -28,7 +28,8 @@ export function validateConfig(config) {
         txSent: ow.optional.function,
         txPending: ow.optional.function,
         txSendFail: ow.optional.function,
-        txStall: ow.optional.function,
+        txStallPending: ow.optional.function,
+        txStallConfirmed: ow.optional.function,
         txFailed: ow.optional.function,
         nsfFail: ow.optional.function,
         txRepeat: ow.optional.function,
@@ -60,7 +61,8 @@ export function validateConfig(config) {
         css: ow.optional.string
       }),
       timeouts: ow.optional.object.exactShape({
-        txStall: ow.number
+        txStallPending: ow.optional.number,
+        txStallConfirmed: ow.optional.number
       }),
       recommendedWallets: ow.optional.object.exactShape({
         desktop: ow.optional.array.ofType(

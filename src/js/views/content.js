@@ -362,8 +362,10 @@ export const transactionMsgs = {
     `Your transaction ID: ${transaction.nonce} has started`,
   txSent: () => `Your transaction has been sent to the network`,
   txSendFail: () => `You rejected the transaction`,
-  txStall: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has stalled`,
+  txStallPending: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} has stalled and has not entered the transaction pool`,
+  txStallConfirmed: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} has stalled and hasn't been confirmed`,
   txFailed: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has failed`,
   nsfFail: () => 'You have insufficient funds to complete this transaction',
