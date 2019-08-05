@@ -132,24 +132,8 @@ export function assistLog(log) {
 }
 
 export function extractMessageFromError(message) {
-  if (message.includes('User denied transaction signature')) {
-    return {
-      eventCode: 'txSendFail',
-      errorMsg: 'User denied transaction signature'
-    }
-  }
-
-  if (message.includes('transaction underpriced')) {
-    return {
-      eventCode: 'txUnderpriced',
-      errorMsg: 'Transaction is under priced'
-    }
-  }
-
-  return {
-    eventCode: 'txError',
-    errorMsg: message
-  }
+  const str = message.split('"message":')[1]
+  return str.split('"')[1]
 }
 
 export function eventCodeToType(eventCode) {
@@ -168,7 +152,6 @@ export function eventCodeToType(eventCode) {
     case 'txRepeat':
     case 'txAwaitingApproval':
     case 'txConfirmReminder':
-    case 'txUnderpriced':
     case 'error':
       return 'failed'
     case 'txConfirmed':
