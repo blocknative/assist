@@ -377,5 +377,7 @@ export const transactionMsgs = {
   txSpeedUp: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has been sped up`,
   txCancel: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} is being canceled`
+    `Your transaction ID: ${transaction.nonce} is being canceled`,
+  txUnderpriced: () =>
+    'The gas price for your transaction is too low, try again with a higher gas price'
 }
