@@ -27,7 +27,7 @@ const getTruffleContract = async () => {
 const getWeb3Contract = async web3 =>
   web3.eth.contract
     ? web3.eth.contract(abi).at(convertLibAddress) // 0.20
-    : new web3.eth.Contract(abi, convertLibAddress) // 1.0.0-beta
+    : new web3.eth.Contract(abi, convertLibAddress) // 1.x
 
 // multidep docs: https://github.com/joliss/node-multidep
 multidepRequire.forEachVersion('web3', (version, Web3) => {
@@ -49,7 +49,7 @@ multidepRequire.forEachVersion('web3', (version, Web3) => {
       })
       const provider = version.includes('0.20')
         ? new Web3.providers.HttpProvider(`http://localhost:${port}`) // 0.20
-        : `ws://localhost:${port}` // 1.0
+        : `http://localhost:${port}` // 1.x
       web3 = new Web3(provider)
       window.web3 = web3
       const config = { dappId: '123', web3, networkId: 5 }

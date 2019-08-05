@@ -9,9 +9,9 @@ errorObj.eventCode = 'initFail'
 export const web3Functions = {
   networkId: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.version.getNetwork)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.net.getId
       case 'ethers':
         return () =>
@@ -27,10 +27,10 @@ export const web3Functions = {
   },
   bigNumber: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return value =>
           Promise.resolve(state.web3Instance.toBigNumber(formatNumber(value)))
-      case '1.0':
+      case '1.':
         return value =>
           Promise.resolve(state.web3Instance.utils.toBN(formatNumber(value)))
       case 'ethers':
@@ -48,9 +48,9 @@ export const web3Functions = {
   },
   gasPrice: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.getGasPrice)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.getGasPrice
       case 'ethers':
         return () =>
@@ -66,7 +66,7 @@ export const web3Functions = {
   },
   contractGas: (version, truffleContract) => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return ({ contractObj, methodName, overloadKey, args }) => {
           const contractMethod = getContractMethod({
             contractObj,
@@ -80,7 +80,7 @@ export const web3Functions = {
             : promisify(contractMethod.estimateGas)(...args)
         }
 
-      case '1.0':
+      case '1.':
         return ({ contractObj, methodName, overloadKey, args, txOptions }) => {
           const contractMethod = getContractMethod({
             contractObj,
@@ -102,9 +102,9 @@ export const web3Functions = {
   },
   transactionGas: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.estimateGas)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.estimateGas
       case 'ethers':
         return txOptions =>
@@ -120,9 +120,9 @@ export const web3Functions = {
   },
   balance: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.getBalance)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.getBalance
       case 'ethers':
         return address =>
@@ -139,9 +139,9 @@ export const web3Functions = {
   },
   accounts: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.getAccounts)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.getAccounts
       case 'ethers':
         return () =>
@@ -231,7 +231,7 @@ export function checkForWallet() {
 export function getNetworkId() {
   const version = state.config.ethers
     ? 'ethers'
-    : state.web3Version && state.web3Version.slice(0, 3)
+    : state.web3Version && state.web3Version.slice(0, 2)
   return web3Functions
     .networkId(version)()
     .then(id => Number(id))
@@ -247,7 +247,7 @@ export function getTransactionParams({
   return new Promise(async resolve => {
     const version = state.config.ethers
       ? 'ethers'
-      : state.web3Version && state.web3Version.slice(0, 3)
+      : state.web3Version && state.web3Version.slice(0, 2)
 
     // Sometimes value is in exponent notation and needs to be formatted
     if (txOptions.value) {
@@ -314,7 +314,7 @@ export async function hasSufficientBalance({
   return new Promise(async resolve => {
     const version = state.config.ethers
       ? 'ethers'
-      : state.web3Version && state.web3Version.slice(0, 3)
+      : state.web3Version && state.web3Version.slice(0, 2)
 
     const gasCost = gas.mul(gasPrice)
 
@@ -346,7 +346,7 @@ export function getAccountBalance() {
 
     const version = state.config.ethers
       ? 'ethers'
-      : state.web3Version && state.web3Version.slice(0, 3)
+      : state.web3Version && state.web3Version.slice(0, 2)
     const balance = await web3Functions
       .balance(version)(accounts[0])
       .catch(handleWeb3Error)
@@ -377,7 +377,7 @@ export function getContractMethod({
 export function getAccounts() {
   const version = state.config.ethers
     ? 'ethers'
-    : state.web3Version && state.web3Version.slice(0, 3)
+    : state.web3Version && state.web3Version.slice(0, 2)
 
   return web3Functions.accounts(version)()
 }
