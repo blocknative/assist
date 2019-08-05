@@ -291,8 +291,8 @@ export function onTxHash(id, hash, categoryCode) {
     }
   })
 
-  const customStallTimeout =
-    state.config.timeouts && state.config.timeouts.txStall
+  const customStallPendingTimeout =
+    state.config.timeouts && state.config.timeouts.txStallPending
 
   // Check if transaction is in txPool after timeout
   setTimeout(() => {
@@ -303,14 +303,11 @@ export function onTxHash(id, hash, categoryCode) {
       transaction: { status }
     } = txObj
 
-    if (
-      state.socketConnection &&
-      (status === 'approved' || status === 'pending')
-    ) {
-      updateTransactionInQueue(id, { status: 'stalled' })
+    if (state.socketConnection && status === 'approved' && state.nodeSynced) {
+      updateTransactionInQueue(id, { status: 'stalledPending' })
 
       handleEvent({
-        eventCode: 'txStall',
+        eventCode: 'txStallPending',
         categoryCode,
         transaction: txObj.transaction,
         contract: txObj.contract,
@@ -324,7 +321,39 @@ export function onTxHash(id, hash, categoryCode) {
         }
       })
     }
-  }, customStallTimeout || timeouts.txStall)
+  }, customStallPendingTimeout || timeouts.txStallPending)
+
+  const customStallConfirmedTimeout =
+    state.config.timeouts && state.config.timeouts.txStallConfirmed
+
+  // Check if transaction is still in txPool after timeout
+  setTimeout(() => {
+    const txObj = getTxObjFromQueue(id)
+    if (!txObj) return
+
+    const {
+      transaction: { status, originalHash }
+    } = txObj
+
+    // check originalHash to make sure not speedup or cancel
+    if (state.socketConnection && status === 'pending' && !originalHash) {
+      updateTransactionInQueue(id, { status: 'stalledConfirmed' })
+
+      handleEvent({
+        eventCode: 'txStallConfirmed',
+        categoryCode,
+        transaction: txObj.transaction,
+        contract: txObj.contract,
+        inlineCustomMsgs: txObj.inlineCustomMsgs,
+        wallet: {
+          provider: state.currentProvider,
+          address: state.accountAddress,
+          balance: state.accountBalance,
+          minimum: state.config.minimumBalance
+        }
+      })
+    }
+  }, customStallConfirmedTimeout || timeouts.txStallConfirmed)
 }
 
 async function onTxReceipt(id, categoryCode, receipt) {
@@ -357,32 +386,33 @@ async function onTxReceipt(id, categoryCode, receipt) {
 }
 
 function onTxError(id, error, categoryCode) {
-  const { message } = error
-  let errorMsg
-  try {
-    errorMsg = extractMessageFromError(message)
-  } catch (error) {
-    errorMsg = 'User denied transaction signature'
+  const { errorMsg, eventCode } = extractMessageFromError(error.message)
+
+  let txObj = getTxObjFromQueue(id)
+
+  if (
+    txObj &&
+    (txObj.transaction.status !== 'confirmed' ||
+      txObj.transaction.status !== 'completed')
+  ) {
+    txObj = updateTransactionInQueue(id, { status: 'error' })
+
+    handleEvent({
+      eventCode,
+      categoryCode,
+      transaction: txObj.transaction,
+      contract: txObj.contract,
+      inlineCustomMsgs: txObj.inlineCustomMsgs,
+      clickHandlers: txObj.clickHandlers,
+      reason: errorMsg,
+      wallet: {
+        provider: state.currentProvider,
+        address: state.accountAddress,
+        balance: state.accountBalance,
+        minimum: state.config.minimumBalance
+      }
+    })
   }
-
-  const txObj = updateTransactionInQueue(id, { status: 'rejected' })
-
-  handleEvent({
-    eventCode:
-      errorMsg === 'transaction underpriced' ? 'txUnderpriced' : 'txSendFail',
-    categoryCode,
-    transaction: txObj.transaction,
-    contract: txObj.contract,
-    inlineCustomMsgs: txObj.inlineCustomMsgs,
-    clickHandlers: txObj.clickHandlers,
-    reason: errorMsg,
-    wallet: {
-      provider: state.currentProvider,
-      address: state.accountAddress,
-      balance: state.accountBalance,
-      minimum: state.config.minimumBalance
-    }
-  })
 
   removeTransactionFromQueue(id)
 }

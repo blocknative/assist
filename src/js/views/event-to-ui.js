@@ -74,10 +74,12 @@ const eventToUI = {
     txConfirmReminder: notificationsUI,
     txConfirmed: notificationsUI,
     txConfirmedClient: notificationsUI,
-    txStall: notificationsUI,
+    txStallPending: notificationsUI,
+    txStallConfirmed: notificationsUI,
     txFailed: notificationsUI,
     txSpeedUp: notificationsUI,
-    txCancel: notificationsUI
+    txCancel: notificationsUI,
+    txUnderpriced: notificationsUI
   },
   activeContract: {
     txAwaitingApproval: notificationsUI,
@@ -88,10 +90,12 @@ const eventToUI = {
     txConfirmReminder: notificationsUI,
     txConfirmed: notificationsUI,
     txConfirmedClient: notificationsUI,
-    txStall: notificationsUI,
+    txStallPending: notificationsUI,
+    txStallConfirmed: notificationsUI,
     txFailed: notificationsUI,
     txSpeedUp: notificationsUI,
-    txCancel: notificationsUI
+    txCancel: notificationsUI,
+    txUnderpriced: notificationsUI
   },
   userInitiatedNotify: {
     success: notificationsUI,
@@ -199,7 +203,8 @@ function notificationsUI({
   const hasTimer =
     eventCode === 'txPending' ||
     eventCode === 'txSent' ||
-    eventCode === 'txStall' ||
+    eventCode === 'txStallPending' ||
+    eventCode === 'txStallConfirmed' ||
     eventCode === 'txSpeedUp' ||
     eventCode === 'pending'
 

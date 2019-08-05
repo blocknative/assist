@@ -2,9 +2,9 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports `web3.js` versions `0.20` and `1.0`, `ethers.js` versions `^4.0.20` and `^5.0-beta-137`
+setup. Supports `web3.js` versions `0.20`, `1.0.0-beta`, `1.2.0`, `ethers.js` versions `^4.0.20` and `^5.0-beta-137`
 
-_note: `web3.js` 1.0.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
+_note: `web3.js` 1.0.0-beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
 ## Preview
 
@@ -159,6 +159,19 @@ Pass this instance in to the config (even if it is undefined). If the user didn'
 
 If you _don't_ include your instantiated Web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then your contracts won't be decorated correctly.
 
+### Truffle Contracts and minification
+
+For assist.js to work correctly with Truffle contracts, you must not minify function names (fnames) in your build.
+
+Instructions on how to disable minification of fnames:
+
+- [Terser](https://github.com/terser-js/terser#minify-options)
+- [Uglify](https://github.com/mishoo/UglifyJS2#minify-options)
+- [Webpack terser plugin](https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions)
+- [Webpack uglify plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin#uglifyoptions)
+- [Rollup terser plugin](https://github.com/TrySound/rollup-plugin-terser#options)
+- [Rollup uglify plugin](https://github.com/TrySound/rollup-plugin-uglify#options)
+
 ## API Reference
 
 ### Config
@@ -180,7 +193,8 @@ var config = {
     txSent: Function, // Transaction has been sent to the network
     txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
-    txStall: Function, // Transaction was sent but not confirmed in the blockchain after 30 secs
+    txStallPending: Function, // Transaction was sent to the network but has not been detected in the txPool
+    txStallConfirmed: Function, // Transaction has been detected in the mempool but hasn't been confirmed
     txFailed: Function, // Transaction failed
     nsfFail: Function, // User doesn't have enough funds to complete transaction
     txRepeat: Function, // Warning to user that they might be repeating a transaction
@@ -206,7 +220,8 @@ var config = {
   },
   handleNotificationEvent: Function // Called on every tx notification event with a transaction event object
   timeouts: {
-    txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not confirmed in the blockchain
+    txStallPending: Number // The number of milliseconds after a transaction has been sent before showing a stall notification detected in the mempool
+    txStallConfirmed: Number // The number of milliseconds after a transaction has been detected in the mempool before showing a stall notification if not confirmed
   },
   recommendedWallets: {
     desktop: Array, // Array of Objects that define wallets this dapp supports on desktop to users that don't have a wallet
@@ -274,7 +289,8 @@ The function that is defined on the `handleNotificationEvent` property of the co
     to: String, // the address the transaction was sent to
     value: String // the value of the transaction
     hash: String // the transaction hash (updated to a new hash if transaction is sped up or cancelled)
-    originalHash: String // if transaction was sped up or cancelled, the original transaction hash
+    originalHash: String, // if transaction was sped up or cancelled, the original transaction hash
+    receipt: Object || undefined // Will be an object on a txConfirmedClient event. Is the receipt object that is received from web3 or ethers
   },
   wallet: {
     address: String, // the account address of the wallet in use
@@ -325,7 +341,8 @@ Custom transaction messages can be set to override the default messages `Assist`
     gasPrice: String, // Gas price (wei)
     hash: String, // The transaction hash
     nonce: Number, // The transaction nonce
-    value: String // The value of the transaction (wei)
+    value: String, // The value of the transaction (wei)
+    receipt: Object || undefined // Will be an object on txConfirmedClient event
   },
   contract: {
     // This object will be undefined if it is not a contract transaction
@@ -365,11 +382,9 @@ myContract.vote(param1, param2, options, callback, {
 })
 
 // 1.0 style send
-myContract
-  .vote(param1, param2)
-  .send(options, {
-    messages: { txPending: () => `Voting for ${param1} in progress` }
-  })
+myContract.vote(param1, param2).send(options, {
+  messages: { txPending: () => `Voting for ${param1} in progress` }
+})
 
 // Transaction
 Transaction(txObject, callback, {
