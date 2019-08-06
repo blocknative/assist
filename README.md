@@ -43,7 +43,7 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.9.7.
+The current version is 0.10.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
