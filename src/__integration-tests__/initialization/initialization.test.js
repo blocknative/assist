@@ -260,7 +260,8 @@ describe('init is called', () => {
         txSent: () => {},
         txPending: () => {},
         txSendFail: () => {},
-        txStall: () => {},
+        txStallPending: () => {},
+        txStallConfirmed: () => {},
         txFailed: () => {},
         nsfFail: () => {},
         txRepeat: () => {},
@@ -285,7 +286,8 @@ describe('init is called', () => {
         css: '123'
       },
       timeouts: {
-        txStall: 1
+        txStallPending: 1,
+        txStallConfirmed: 1
       }
     }
     test(`should not throw`, () => {

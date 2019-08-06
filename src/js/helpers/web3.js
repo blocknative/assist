@@ -9,9 +9,9 @@ errorObj.eventCode = 'initFail'
 export const web3Functions = {
   networkId: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.version.getNetwork)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.net.getId
       case 'ethers':
         return () =>
@@ -27,10 +27,10 @@ export const web3Functions = {
   },
   bigNumber: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return value =>
           Promise.resolve(state.web3Instance.toBigNumber(formatNumber(value)))
-      case '1.0':
+      case '1.':
         return value =>
           Promise.resolve(state.web3Instance.utils.toBN(formatNumber(value)))
       case 'ethers':
@@ -48,9 +48,9 @@ export const web3Functions = {
   },
   gasPrice: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.getGasPrice)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.getGasPrice
       case 'ethers':
         return () =>
@@ -66,7 +66,7 @@ export const web3Functions = {
   },
   contractGas: (version, truffleContract) => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return ({ contractObj, methodName, overloadKey, args }) => {
           const contractMethod = getContractMethod({
             contractObj,
@@ -80,7 +80,7 @@ export const web3Functions = {
             : promisify(contractMethod.estimateGas)(...args)
         }
 
-      case '1.0':
+      case '1.':
         return ({ contractObj, methodName, overloadKey, args, txOptions }) => {
           const contractMethod = getContractMethod({
             contractObj,
@@ -102,9 +102,9 @@ export const web3Functions = {
   },
   transactionGas: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.estimateGas)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.estimateGas
       case 'ethers':
         return txOptions =>
@@ -120,9 +120,9 @@ export const web3Functions = {
   },
   balance: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.getBalance)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.getBalance
       case 'ethers':
         return address =>
@@ -139,9 +139,9 @@ export const web3Functions = {
   },
   accounts: version => {
     switch (version) {
-      case '0.2':
+      case '0.':
         return promisify(state.web3Instance.eth.getAccounts)
-      case '1.0':
+      case '1.':
         return state.web3Instance.eth.getAccounts
       case 'ethers':
         return () =>
@@ -162,6 +162,7 @@ export const web3Functions = {
 export function configureWeb3(web3) {
   if (!web3) {
     web3 = window.web3 // eslint-disable-line prefer-destructuring
+    if (!web3) return
   }
 
   // If web3 has been prefaced with the default property, re-assign it
@@ -201,37 +202,72 @@ export function configureWeb3(web3) {
   })
 }
 
-export function checkForWallet() {
-  if (window.ethereum) {
-    updateState({
-      currentProvider: getCurrentProvider(),
-      validBrowser: true,
-      web3Wallet: true,
-      legacyWallet: false,
-      modernWallet: true
-    })
-  } else if (window.web3 && window.web3.version) {
-    updateState({
-      currentProvider: getCurrentProvider(),
-      validBrowser: true,
-      web3Wallet: true,
-      legacyWallet: true,
-      modernWallet: false
-    })
+export async function checkForWallet() {
+  if (
+    state.web3Instance &&
+    state.web3Instance.currentProvider &&
+    typeof state.web3Instance.currentProvider.send === 'function'
+  ) {
+    if (typeof state.web3Instance.currentProvider.enable === 'function') {
+      updateState({
+        currentProvider: getCurrentProvider(),
+        validBrowser: true,
+        web3Wallet: true,
+        legacyWallet: false,
+        modernWallet: true
+      })
+    } else {
+      const accounts = await getAccounts().catch(handleWeb3Error)
+
+      if (accounts && accounts[0]) {
+        updateState({
+          currentProvider: getCurrentProvider(),
+          validBrowser: true,
+          web3Wallet: true,
+          legacyWallet: true,
+          modernWallet: false
+        })
+      } else {
+        updateState({
+          web3Wallet: false,
+          accessToAccounts: false,
+          walletLoggedIn: false,
+          walletEnabled: false
+        })
+      }
+    }
   } else {
-    updateState({
-      web3Wallet: false,
-      accessToAccounts: false,
-      walletLoggedIn: false,
-      walletEnabled: false
-    })
+    if (window.ethereum) {
+      updateState({
+        currentProvider: getCurrentProvider(),
+        validBrowser: true,
+        web3Wallet: true,
+        legacyWallet: false,
+        modernWallet: true
+      })
+    } else if (window.web3 && window.web3.version) {
+      updateState({
+        currentProvider: getCurrentProvider(),
+        validBrowser: true,
+        web3Wallet: true,
+        legacyWallet: true,
+        modernWallet: false
+      })
+    } else {
+      updateState({
+        web3Wallet: false,
+        accessToAccounts: false,
+        walletLoggedIn: false,
+        walletEnabled: false
+      })
+    }
   }
 }
 
 export function getNetworkId() {
   const version = state.config.ethers
     ? 'ethers'
-    : state.web3Version && state.web3Version.slice(0, 3)
+    : state.web3Version && state.web3Version.slice(0, 2)
   return web3Functions
     .networkId(version)()
     .then(id => Number(id))
@@ -247,7 +283,7 @@ export function getTransactionParams({
   return new Promise(async resolve => {
     const version = state.config.ethers
       ? 'ethers'
-      : state.web3Version && state.web3Version.slice(0, 3)
+      : state.web3Version && state.web3Version.slice(0, 2)
 
     // Sometimes value is in exponent notation and needs to be formatted
     if (txOptions.value) {
@@ -314,7 +350,7 @@ export async function hasSufficientBalance({
   return new Promise(async resolve => {
     const version = state.config.ethers
       ? 'ethers'
-      : state.web3Version && state.web3Version.slice(0, 3)
+      : state.web3Version && state.web3Version.slice(0, 2)
 
     const gasCost = gas.mul(gasPrice)
 
@@ -342,11 +378,13 @@ export function getAccountBalance() {
   return new Promise(async resolve => {
     const accounts = await getAccounts().catch(handleWeb3Error)
 
+    if (!accounts || !accounts[0]) return
+
     updateState({ accountAddress: accounts && accounts[0] })
 
     const version = state.config.ethers
       ? 'ethers'
-      : state.web3Version && state.web3Version.slice(0, 3)
+      : state.web3Version && state.web3Version.slice(0, 2)
     const balance = await web3Functions
       .balance(version)(accounts[0])
       .catch(handleWeb3Error)
@@ -377,7 +415,7 @@ export function getContractMethod({
 export function getAccounts() {
   const version = state.config.ethers
     ? 'ethers'
-    : state.web3Version && state.web3Version.slice(0, 3)
+    : state.web3Version && state.web3Version.slice(0, 2)
 
   return web3Functions.accounts(version)()
 }
@@ -396,11 +434,11 @@ export function getCurrentProvider() {
   const web3 = state.web3Instance
 
   if (!web3) {
-    if (window.ethereum.isMetaMask) {
+    if (window.ethereum && window.ethereum.isMetaMask) {
       return 'metamask'
     }
 
-    if (window.ethereum.isDapper) {
+    if (window.ethereum && window.ethereum.isDapper) {
       return 'dapper'
     }
 
@@ -451,6 +489,10 @@ export function getCurrentProvider() {
 
   if (web3.currentProvider.connection) {
     return 'Infura Websocket'
+  }
+
+  if (web3.currentProvider.name === 'trezor') {
+    return 'trezor'
   }
 }
 

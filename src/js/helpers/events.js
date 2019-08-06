@@ -23,6 +23,13 @@ export function handleEvent(eventObj, modalClickHandlers) {
 
   let eventToLog = { ...event }
 
+  // remove receipt from what is sent to the server as it causes errors
+  if (eventToLog.transaction && eventToLog.transaction.receipt) {
+    const { transaction, ...rest } = eventToLog
+    const { receipt, ...txDetails } = transaction
+    eventToLog = { ...rest, transaction: txDetails }
+  }
+
   // If dealing with a custom notification the logged event
   // should have it's event and category code changed
   if (categoryCode === 'userInitiatedNotify') {

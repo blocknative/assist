@@ -2,9 +2,9 @@
 
 Takes care of onboarding your users, keeping them informed about
 transaction status and comprehensive usage analytics with minimal
-setup. Supports `web3.js` versions `0.20` and `1.0`, `ethers.js` versions `^4.0.20` and `^5.0-beta-137`
+setup. Supports `web3.js` versions `0.20`, `1.0.0-beta`, `1.2.0`, `ethers.js` versions `^4.0.20` and `^5.0-beta-137`
 
-_note: `web3.js` 1.0.0 beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
+_note: `web3.js` 1.0.0-beta versions 38, 39, 40, 41, 42, 43, 44, 45 have bugs when interacting with MetaMask, we recommend you avoid these versions of `web3.js`_
 
 ## Preview
 
@@ -43,7 +43,7 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.9.6.
+The current version is 0.10.0.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
@@ -62,13 +62,13 @@ is as follows:
 
 ```javascript
 var bncAssistConfig = {
-  dappId: apiKey,       // [String] The API key created on https://account.blocknative.com
+  dappId: apiKey, // [String] The API key created on https://account.blocknative.com
 
-  networkId: networkId  // [Integer] The network ID of the Ethereum network your dapp is deployed on.
-                        //           See below for instructions on how to setup for local blockchains.
-};
+  networkId: networkId // [Integer] The network ID of the Ethereum network your dapp is deployed on.
+  //           See below for instructions on how to setup for local blockchains.
+}
 
-var assistInstance = assist.init(bncAssistConfig);
+var assistInstance = assist.init(bncAssistConfig)
 ```
 
 ### Call `onboard`
@@ -80,7 +80,8 @@ load. Others may wait until loading certain pages or until a certain button is c
 In any event, it is as simple as calling:
 
 ```javascript
-assistInstance.onboard()
+assistInstance
+  .onboard()
   .then(function(state) {
     // User has been successfully onboarded and is ready to transact
     // Will resolve with the current state of the user
@@ -120,7 +121,6 @@ var myDecoratedContract = assistInstance.Contract(myContract)
 // and then replace `myContract` with `myDecoratedContract`
 // throughout your app
 // ...
-
 ```
 
 You can then use `myDecoratedContract` instead of `myContract`.
@@ -159,6 +159,19 @@ Pass this instance in to the config (even if it is undefined). If the user didn'
 
 If you _don't_ include your instantiated Web3 instance in the config, Assist will grab `web3` from the window object if it is available. However this can cause issues as `web3` isn't always added to the window object (ie on some mobile wallets) and the version of `web3` that is usually attached to the window object is `0.20`. So if you happen to be using `1.0` but didn't pass it in, then your contracts won't be decorated correctly.
 
+### Truffle Contracts and minification
+
+For assist.js to work correctly with Truffle contracts, you must not minify function names (fnames) in your build.
+
+Instructions on how to disable minification of fnames:
+
+- [Terser](https://github.com/terser-js/terser#minify-options)
+- [Uglify](https://github.com/mishoo/UglifyJS2#minify-options)
+- [Webpack terser plugin](https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions)
+- [Webpack uglify plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin#uglifyoptions)
+- [Rollup terser plugin](https://github.com/TrySound/rollup-plugin-terser#options)
+- [Rollup uglify plugin](https://github.com/TrySound/rollup-plugin-uglify#options)
+
 ## API Reference
 
 ### Config
@@ -180,7 +193,8 @@ var config = {
     txSent: Function, // Transaction has been sent to the network
     txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
-    txStall: Function, // Transaction was sent but not confirmed in the blockchain after 30 secs
+    txStallPending: Function, // Transaction was sent to the network but has not been detected in the txPool
+    txStallConfirmed: Function, // Transaction has been detected in the mempool but hasn't been confirmed
     txFailed: Function, // Transaction failed
     nsfFail: Function, // User doesn't have enough funds to complete transaction
     txRepeat: Function, // Warning to user that they might be repeating a transaction
@@ -206,7 +220,8 @@ var config = {
   },
   handleNotificationEvent: Function // Called on every tx notification event with a transaction event object
   timeouts: {
-    txStall: Number // The number of milliseconds after a transaction has been sent before showing a stall notification if not confirmed in the blockchain
+    txStallPending: Number // The number of milliseconds after a transaction has been sent before showing a stall notification detected in the mempool
+    txStallConfirmed: Number // The number of milliseconds after a transaction has been detected in the mempool before showing a stall notification if not confirmed
   },
   recommendedWallets: {
     desktop: Array, // Array of Objects that define wallets this dapp supports on desktop to users that don't have a wallet
@@ -274,7 +289,8 @@ The function that is defined on the `handleNotificationEvent` property of the co
     to: String, // the address the transaction was sent to
     value: String // the value of the transaction
     hash: String // the transaction hash (updated to a new hash if transaction is sped up or cancelled)
-    originalHash: String // if transaction was sped up or cancelled, the original transaction hash
+    originalHash: String, // if transaction was sped up or cancelled, the original transaction hash
+    receipt: Object || undefined // Will be an object on a txConfirmedClient event. Is the receipt object that is received from web3 or ethers
   },
   wallet: {
     address: String, // the account address of the wallet in use
@@ -292,7 +308,7 @@ You can then decide whether you would like a notification to be shown for this e
 The list of event codes that are included in the object that `handleNotificationEvent` is called with are the same as the list included in the `messages` object that is passed to the config with one addition:
 
 ```javascript
-  txConfirmedClient: String // called when a client confirmation is received from the provider
+txConfirmedClient: String // called when a client confirmation is received from the provider
 ```
 
 This additional event is used to notify transaction confirmation if a `txConfirmed` was not already received. Whichever of `txConfirmed` and `txConfirmedClient` is received first should be used for notification.
@@ -325,7 +341,8 @@ Custom transaction messages can be set to override the default messages `Assist`
     gasPrice: String, // Gas price (wei)
     hash: String, // The transaction hash
     nonce: Number, // The transaction nonce
-    value: String // The value of the transaction (wei)
+    value: String, // The value of the transaction (wei)
+    receipt: Object || undefined // Will be an object on txConfirmedClient event
   },
   contract: {
     // This object will be undefined if it is not a contract transaction
@@ -360,13 +377,19 @@ Sometimes you want more granular control over the transaction messages and you h
 
 ```javascript
 // 0.2 style send
-myContract.vote(param1, param2, options, callback, {messages: {txPending: () => `Voting for ${param1} in progress`}})
+myContract.vote(param1, param2, options, callback, {
+  messages: { txPending: () => `Voting for ${param1} in progress` }
+})
 
 // 1.0 style send
-myContract.vote(param1, param2).send(options, {messages: {txPending: () => `Voting for ${param1} in progress`}})
+myContract.vote(param1, param2).send(options, {
+  messages: { txPending: () => `Voting for ${param1} in progress` }
+})
 
 // Transaction
-Transaction(txObject, callback, {messages: {txPending: () => 'Sending ETH...'}})
+Transaction(txObject, callback, {
+  messages: { txPending: () => 'Sending ETH...' }
+})
 ```
 
 The `messages` object _must_ always be the _last_ argument provided to the send method for it to be recognized.
@@ -377,7 +400,7 @@ You can also add click handler functions to a transaction that will be executed 
 
 ```javascript
 myContract.vote(param1, param2, options, callback, {
-  messages: {txPending: () => `Voting for ${param1} in progress`},
+  messages: { txPending: () => `Voting for ${param1} in progress` },
   clickHandlers: {
     txPending: () => route('./votes'), // can specify a click handler for specific event codes which takes precedence
     onclick: () => console.log('this is the global click handler') // or you can specify a onclick function which will run for every event for this transaction that doesn't have a click handler specified
@@ -410,7 +433,7 @@ The available ids for the `networkId` property of the config object:
 - `4`: rinkeby testnet
 - `5`: goerli testnet
 
-*The kovan testnet is not supported.*
+_The kovan testnet is not supported._
 
 #### Local Networks
 
@@ -433,11 +456,11 @@ state = {
   accountBalance: String, // User account balance
   minimumBalance: String, // User has the minimum balance specified in the config
   userCurrentNetworkId: Number, // Network id of the network the user is currently on
-  correctNetwork: Boolean, // User is on the network specified in the config
+  correctNetwork: Boolean // User is on the network specified in the config
 }
 ```
 
-The promises that are returned from calls to `getState` and  `onboard` resolve and reject with this `state` object.
+The promises that are returned from calls to `getState` and `onboard` resolve and reject with this `state` object.
 
 ### Errors
 
@@ -519,6 +542,7 @@ If you would like to define which wallets your dapp works with and recommends to
 #### Assist currently only supports the following wallets:
 
 ##### Desktop
+
 - MetaMask
   - link: https://metamask.io/img/metamask.png
   - icon: https://metamask.io/img/metamask.png
@@ -527,6 +551,7 @@ If you would like to define which wallets your dapp works with and recommends to
   - icon: https://images-na.ssl-images-amazon.com/images/I/71Y2mhDkBNL.png
 
 ##### Mobile
+
 - Opera Touch
   - link: https://www.opera.com/mobile/touch
   - icon: https://apps.goodereader.com/wp-content/uploads/icons/1525044654.png
@@ -572,7 +597,8 @@ var assistInstance = assist.init(assistConfig)
 #### Example
 
 ```javascript
-assistInstance.onboard()
+assistInstance
+  .onboard()
   .then(function(state) {
     // User has been successfully onboarded and is ready to transact
   })
@@ -639,7 +665,8 @@ const notificationOptions = {
 #### Example
 
 ```javascript
-assistInstance.Transaction(txObject)
+assistInstance
+  .Transaction(txObject)
   .then(txHash => {
     // Transaction has been sent to the network
   })
@@ -647,8 +674,8 @@ assistInstance.Transaction(txObject)
     console.log(error.message) // => 'User has insufficient funds'
   })
 
-  // you can alternatively pass in a transaction hash to get Assist's notifications for a transaction that has already been sent to the network
-  assistInstance.Transaction(hash)
+// you can alternatively pass in a transaction hash to get Assist's notifications for a transaction that has already been sent to the network
+assistInstance.Transaction(hash)
 ```
 
 ### `getState()`
@@ -662,12 +689,11 @@ assistInstance.Transaction(txObject)
 #### Example
 
 ```javascript
-assistInstance.getState()
-  .then(function(state) {
-    if (state.validBrowser) {
-      console.log('valid browser')
-    }
-  })
+assistInstance.getState().then(function(state) {
+  if (state.validBrowser) {
+    console.log('valid browser')
+  }
+})
 ```
 
 ### `updateStyle(style)`
@@ -678,9 +704,9 @@ assistInstance.getState()
 
 ```javascript
 var style = {
-    darkMode: Boolean, // Set Assist UI to dark mode
-    css: String, // Custom css string to overide Assist default styles
-    notificationsPosition: String || Object, // Defines which corner transaction notifications will be positioned. See 'Notification Positioning'
+  darkMode: Boolean, // Set Assist UI to dark mode
+  css: String, // Custom css string to overide Assist default styles
+  notificationsPosition: String || Object // Defines which corner transaction notifications will be positioned. See 'Notification Positioning'
 }
 ```
 
@@ -708,7 +734,7 @@ Trigger a custom UI notification
 
 #### Parameters
 
-`type` - `String`: One of: ['success', 'pending', 'error'] (**Required**)
+`type` - `String`: One of: ['success', 'pending', 'error'](**Required**)
 
 `message` - `String`: The message to display in the notification. HTML can be embedded in the string. (**Required**)
 
@@ -734,11 +760,17 @@ options.customTimeout defaults: { success: 2000, pending: 5000, error: 5000 }
 
 ```javascript
 // Display a success notification with an embedded link for 5000ms
-assistInstance.notify('success', 'Operation was a success! Click <a href="https://example.com" target="_blank">here</a> to view more', { customTimeout: 5000 });
+assistInstance.notify(
+  'success',
+  'Operation was a success! Click <a href="https://example.com" target="_blank">here</a> to view more',
+  { customTimeout: 5000 }
+)
 
 // Display a pending notification, load data from an imaginary backend
 // and dismiss the pending notification only when the data is loaded
-var dismiss = assistInstance.notify('pending', 'Loading data...', { customTimeout: -1 });
+var dismiss = assistInstance.notify('pending', 'Loading data...', {
+  customTimeout: -1
+})
 myEventEmitter.emit('fetch-data-from-backend')
 myEventEmitter.on('data-from-backend-loaded', () => {
   dismiss()

@@ -10721,3 +10721,1331 @@ Object {
   },
 }
 `;
+
+exports[`using web3 1.2.0 Contract is called with a truffle contract it doesn't fail and returns the expected decorated contract 1`] = `
+Object {
+  "BatchRequest": undefined,
+  "_jsonInterface": undefined,
+  "abiModel": undefined,
+  "events": Object {
+    "contract": null,
+  },
+  "givenProvider": undefined,
+  "methods": Object {
+    "convert(uint256,uint256)": [Function],
+    "subtract(uint256,uint256)": [Function],
+  },
+  "options": undefined,
+}
+`;
+
+exports[`using web3 1.2.0 Contract is called with a web3 contract it doesn't fail and returns the expected decorated contract 1`] = `
+Object {
+  "BatchRequest": [Function],
+  "_jsonInterface": Array [
+    Object {
+      "constant": true,
+      "inputs": Array [],
+      "name": "name",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bytes32",
+        },
+      ],
+      "payable": false,
+      "signature": "0x06fdde03",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [],
+      "name": "stop",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0x07da68f5",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "guy",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "approve",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0x095ea7b3",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "owner_",
+          "type": "address",
+        },
+      ],
+      "name": "setOwner",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0x13af4035",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [],
+      "name": "totalSupply",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0x18160ddd",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "src",
+          "type": "address",
+        },
+        Object {
+          "name": "dst",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "transferFrom",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0x23b872dd",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [],
+      "name": "decimals",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0x313ce567",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "guy",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "mint",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0x40c10f19",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "burn",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0x42966c68",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "name_",
+          "type": "bytes32",
+        },
+      ],
+      "name": "setName",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0x5ac801fe",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [
+        Object {
+          "name": "src",
+          "type": "address",
+        },
+      ],
+      "name": "balanceOf",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0x70a08231",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [],
+      "name": "stopped",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0x75f12b21",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "authority_",
+          "type": "address",
+        },
+      ],
+      "name": "setAuthority",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0x7a9e5e4b",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [],
+      "name": "owner",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "address",
+        },
+      ],
+      "payable": false,
+      "signature": "0x8da5cb5b",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [],
+      "name": "symbol",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bytes32",
+        },
+      ],
+      "payable": false,
+      "signature": "0x95d89b41",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "guy",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "burn",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0x9dc29fac",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "mint",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0xa0712d68",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "dst",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "transfer",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0xa9059cbb",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "dst",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "push",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0xb753a98c",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "src",
+          "type": "address",
+        },
+        Object {
+          "name": "dst",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "move",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0xbb35783b",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [],
+      "name": "start",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0xbe9a6555",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [],
+      "name": "authority",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "address",
+        },
+      ],
+      "payable": false,
+      "signature": "0xbf7e214f",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "guy",
+          "type": "address",
+        },
+      ],
+      "name": "approve",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "bool",
+        },
+      ],
+      "payable": false,
+      "signature": "0xdaea85c5",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": true,
+      "inputs": Array [
+        Object {
+          "name": "src",
+          "type": "address",
+        },
+        Object {
+          "name": "guy",
+          "type": "address",
+        },
+      ],
+      "name": "allowance",
+      "outputs": Array [
+        Object {
+          "name": "",
+          "type": "uint256",
+        },
+      ],
+      "payable": false,
+      "signature": "0xdd62ed3e",
+      "stateMutability": "view",
+      "type": "function",
+    },
+    Object {
+      "constant": false,
+      "inputs": Array [
+        Object {
+          "name": "src",
+          "type": "address",
+        },
+        Object {
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "pull",
+      "outputs": Array [],
+      "payable": false,
+      "signature": "0xf2d5d56b",
+      "stateMutability": "nonpayable",
+      "type": "function",
+    },
+    Object {
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "name": "symbol_",
+          "type": "bytes32",
+        },
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor",
+    },
+    Object {
+      "anonymous": false,
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "guy",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "Mint",
+      "payable": undefined,
+      "signature": "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885",
+      "type": "event",
+    },
+    Object {
+      "anonymous": false,
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "guy",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "Burn",
+      "payable": undefined,
+      "signature": "0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5",
+      "type": "event",
+    },
+    Object {
+      "anonymous": false,
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "authority",
+          "type": "address",
+        },
+      ],
+      "name": "LogSetAuthority",
+      "payable": undefined,
+      "signature": "0x1abebea81bfa2637f28358c371278fb15ede7ea8dd28d2e03b112ff6d936ada4",
+      "type": "event",
+    },
+    Object {
+      "anonymous": false,
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "owner",
+          "type": "address",
+        },
+      ],
+      "name": "LogSetOwner",
+      "payable": undefined,
+      "signature": "0xce241d7ca1f669fee44b6fc00b8eba2df3bb514eed0f6f668f8f89096e81ed94",
+      "type": "event",
+    },
+    Object {
+      "anonymous": true,
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "sig",
+          "type": "bytes4",
+        },
+        Object {
+          "indexed": true,
+          "name": "guy",
+          "type": "address",
+        },
+        Object {
+          "indexed": true,
+          "name": "foo",
+          "type": "bytes32",
+        },
+        Object {
+          "indexed": true,
+          "name": "bar",
+          "type": "bytes32",
+        },
+        Object {
+          "indexed": false,
+          "name": "wad",
+          "type": "uint256",
+        },
+        Object {
+          "indexed": false,
+          "name": "fax",
+          "type": "bytes",
+        },
+      ],
+      "name": "LogNote",
+      "payable": undefined,
+      "signature": "0x644843f351d3fba4abcd60109eaff9f54bac8fb8ccf0bab941009c21df21cf31",
+      "type": "event",
+    },
+    Object {
+      "anonymous": false,
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "src",
+          "type": "address",
+        },
+        Object {
+          "indexed": true,
+          "name": "guy",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "Approval",
+      "payable": undefined,
+      "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+      "type": "event",
+    },
+    Object {
+      "anonymous": false,
+      "constant": undefined,
+      "inputs": Array [
+        Object {
+          "indexed": true,
+          "name": "src",
+          "type": "address",
+        },
+        Object {
+          "indexed": true,
+          "name": "dst",
+          "type": "address",
+        },
+        Object {
+          "indexed": false,
+          "name": "wad",
+          "type": "uint256",
+        },
+      ],
+      "name": "Transfer",
+      "payable": undefined,
+      "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "type": "event",
+    },
+  ],
+  "abiModel": undefined,
+  "events": Object {
+    "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885": [Function],
+    "0x1abebea81bfa2637f28358c371278fb15ede7ea8dd28d2e03b112ff6d936ada4": [Function],
+    "0x644843f351d3fba4abcd60109eaff9f54bac8fb8ccf0bab941009c21df21cf31": [Function],
+    "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": [Function],
+    "0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5": [Function],
+    "0xce241d7ca1f669fee44b6fc00b8eba2df3bb514eed0f6f668f8f89096e81ed94": [Function],
+    "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": [Function],
+    "Approval": [Function],
+    "Approval(address,address,uint256)": [Function],
+    "Burn": [Function],
+    "Burn(address,uint256)": [Function],
+    "LogNote": [Function],
+    "LogNote(bytes4,address,bytes32,bytes32,uint256,bytes)": [Function],
+    "LogSetAuthority": [Function],
+    "LogSetAuthority(address)": [Function],
+    "LogSetOwner": [Function],
+    "LogSetOwner(address)": [Function],
+    "Mint": [Function],
+    "Mint(address,uint256)": [Function],
+    "Transfer": [Function],
+    "Transfer(address,address,uint256)": [Function],
+    "allEvents": [Function],
+    "contract": null,
+  },
+  "givenProvider": null,
+  "methods": Object {
+    "allowance": [Function],
+    "allowance(address,address)": [Function],
+    "approve": [Function],
+    "approve(address)": [Function],
+    "approve(address,uint256)": [Function],
+    "authority": [Function],
+    "authority()": [Function],
+    "balanceOf": [Function],
+    "balanceOf(address)": [Function],
+    "burn": [Function],
+    "burn(address,uint256)": [Function],
+    "burn(uint256)": [Function],
+    "decimals": [Function],
+    "decimals()": [Function],
+    "mint": [Function],
+    "mint(address,uint256)": [Function],
+    "mint(uint256)": [Function],
+    "move": [Function],
+    "move(address,address,uint256)": [Function],
+    "name": [Function],
+    "name()": [Function],
+    "owner": [Function],
+    "owner()": [Function],
+    "pull": [Function],
+    "pull(address,uint256)": [Function],
+    "push": [Function],
+    "push(address,uint256)": [Function],
+    "setAuthority": [Function],
+    "setAuthority(address)": [Function],
+    "setName": [Function],
+    "setName(bytes32)": [Function],
+    "setOwner": [Function],
+    "setOwner(address)": [Function],
+    "start": [Function],
+    "start()": [Function],
+    "stop": [Function],
+    "stop()": [Function],
+    "stopped": [Function],
+    "stopped()": [Function],
+    "symbol": [Function],
+    "symbol()": [Function],
+    "totalSupply": [Function],
+    "totalSupply()": [Function],
+    "transfer": [Function],
+    "transfer(address,uint256)": [Function],
+    "transferFrom": [Function],
+    "transferFrom(address,address,uint256)": [Function],
+  },
+  "options": Object {
+    "address": "0x0000000000000000000000000000000000000000",
+    "jsonInterface": Array [
+      Object {
+        "constant": true,
+        "inputs": Array [],
+        "name": "name",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bytes32",
+          },
+        ],
+        "payable": false,
+        "signature": "0x06fdde03",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [],
+        "name": "stop",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0x07da68f5",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "guy",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "approve",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0x095ea7b3",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "owner_",
+            "type": "address",
+          },
+        ],
+        "name": "setOwner",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0x13af4035",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [],
+        "name": "totalSupply",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "uint256",
+          },
+        ],
+        "payable": false,
+        "signature": "0x18160ddd",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "src",
+            "type": "address",
+          },
+          Object {
+            "name": "dst",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "transferFrom",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0x23b872dd",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [],
+        "name": "decimals",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "uint256",
+          },
+        ],
+        "payable": false,
+        "signature": "0x313ce567",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "guy",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "mint",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0x40c10f19",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "burn",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0x42966c68",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "name_",
+            "type": "bytes32",
+          },
+        ],
+        "name": "setName",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0x5ac801fe",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [
+          Object {
+            "name": "src",
+            "type": "address",
+          },
+        ],
+        "name": "balanceOf",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "uint256",
+          },
+        ],
+        "payable": false,
+        "signature": "0x70a08231",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [],
+        "name": "stopped",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0x75f12b21",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "authority_",
+            "type": "address",
+          },
+        ],
+        "name": "setAuthority",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0x7a9e5e4b",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [],
+        "name": "owner",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "address",
+          },
+        ],
+        "payable": false,
+        "signature": "0x8da5cb5b",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [],
+        "name": "symbol",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bytes32",
+          },
+        ],
+        "payable": false,
+        "signature": "0x95d89b41",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "guy",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "burn",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0x9dc29fac",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "mint",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0xa0712d68",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "dst",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "transfer",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0xa9059cbb",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "dst",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "push",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0xb753a98c",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "src",
+            "type": "address",
+          },
+          Object {
+            "name": "dst",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "move",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0xbb35783b",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [],
+        "name": "start",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0xbe9a6555",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [],
+        "name": "authority",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "address",
+          },
+        ],
+        "payable": false,
+        "signature": "0xbf7e214f",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "guy",
+            "type": "address",
+          },
+        ],
+        "name": "approve",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "bool",
+          },
+        ],
+        "payable": false,
+        "signature": "0xdaea85c5",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": true,
+        "inputs": Array [
+          Object {
+            "name": "src",
+            "type": "address",
+          },
+          Object {
+            "name": "guy",
+            "type": "address",
+          },
+        ],
+        "name": "allowance",
+        "outputs": Array [
+          Object {
+            "name": "",
+            "type": "uint256",
+          },
+        ],
+        "payable": false,
+        "signature": "0xdd62ed3e",
+        "stateMutability": "view",
+        "type": "function",
+      },
+      Object {
+        "constant": false,
+        "inputs": Array [
+          Object {
+            "name": "src",
+            "type": "address",
+          },
+          Object {
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "pull",
+        "outputs": Array [],
+        "payable": false,
+        "signature": "0xf2d5d56b",
+        "stateMutability": "nonpayable",
+        "type": "function",
+      },
+      Object {
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "name": "symbol_",
+            "type": "bytes32",
+          },
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor",
+      },
+      Object {
+        "anonymous": false,
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "guy",
+            "type": "address",
+          },
+          Object {
+            "indexed": false,
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "Mint",
+        "payable": undefined,
+        "signature": "0x0f6798a560793a54c3bcfe86a93cde1e73087d944c0ea20544137d4121396885",
+        "type": "event",
+      },
+      Object {
+        "anonymous": false,
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "guy",
+            "type": "address",
+          },
+          Object {
+            "indexed": false,
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "Burn",
+        "payable": undefined,
+        "signature": "0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5",
+        "type": "event",
+      },
+      Object {
+        "anonymous": false,
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "authority",
+            "type": "address",
+          },
+        ],
+        "name": "LogSetAuthority",
+        "payable": undefined,
+        "signature": "0x1abebea81bfa2637f28358c371278fb15ede7ea8dd28d2e03b112ff6d936ada4",
+        "type": "event",
+      },
+      Object {
+        "anonymous": false,
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "owner",
+            "type": "address",
+          },
+        ],
+        "name": "LogSetOwner",
+        "payable": undefined,
+        "signature": "0xce241d7ca1f669fee44b6fc00b8eba2df3bb514eed0f6f668f8f89096e81ed94",
+        "type": "event",
+      },
+      Object {
+        "anonymous": true,
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "sig",
+            "type": "bytes4",
+          },
+          Object {
+            "indexed": true,
+            "name": "guy",
+            "type": "address",
+          },
+          Object {
+            "indexed": true,
+            "name": "foo",
+            "type": "bytes32",
+          },
+          Object {
+            "indexed": true,
+            "name": "bar",
+            "type": "bytes32",
+          },
+          Object {
+            "indexed": false,
+            "name": "wad",
+            "type": "uint256",
+          },
+          Object {
+            "indexed": false,
+            "name": "fax",
+            "type": "bytes",
+          },
+        ],
+        "name": "LogNote",
+        "payable": undefined,
+        "signature": "0x644843f351d3fba4abcd60109eaff9f54bac8fb8ccf0bab941009c21df21cf31",
+        "type": "event",
+      },
+      Object {
+        "anonymous": false,
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "src",
+            "type": "address",
+          },
+          Object {
+            "indexed": true,
+            "name": "guy",
+            "type": "address",
+          },
+          Object {
+            "indexed": false,
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "Approval",
+        "payable": undefined,
+        "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+        "type": "event",
+      },
+      Object {
+        "anonymous": false,
+        "constant": undefined,
+        "inputs": Array [
+          Object {
+            "indexed": true,
+            "name": "src",
+            "type": "address",
+          },
+          Object {
+            "indexed": true,
+            "name": "dst",
+            "type": "address",
+          },
+          Object {
+            "indexed": false,
+            "name": "wad",
+            "type": "uint256",
+          },
+        ],
+        "name": "Transfer",
+        "payable": undefined,
+        "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+        "type": "event",
+      },
+    ],
+  },
+}
+`;

@@ -225,13 +225,29 @@ export default {
       { config: { messages: { txSent: () => 'txSent custom msg' }, style: {} } }
     ]
   },
-  txStall: {
+  txStallPending: {
     categories: ['activeTransaction', 'activeContract'],
     params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
     customStates: [
       initialState,
       {
-        config: { messages: { txStall: () => 'txStall custom msg' }, style: {} }
+        config: {
+          messages: { txStallPending: () => 'txStall custom msg' },
+          style: {}
+        }
+      }
+    ]
+  },
+  txStallConfirmed: {
+    categories: ['activeTransaction', 'activeContract'],
+    params: { transaction: mockTxFactory({ nonce: true, startTime: true }) },
+    customStates: [
+      initialState,
+      {
+        config: {
+          messages: { txStallConfirmed: () => 'txStall custom msg' },
+          style: {}
+        }
       }
     ]
   },
