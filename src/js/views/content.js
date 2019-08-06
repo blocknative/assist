@@ -362,8 +362,10 @@ export const transactionMsgs = {
     `Your transaction ID: ${transaction.nonce} has started`,
   txSent: () => `Your transaction has been sent to the network`,
   txSendFail: () => `You rejected the transaction`,
-  txStall: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} has stalled`,
+  txStallPending: () =>
+    'Your transaction has stalled and has not entered the transaction pool',
+  txStallConfirmed: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} has stalled and hasn't been confirmed`,
   txFailed: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has failed`,
   nsfFail: () => 'You have insufficient funds to complete this transaction',
@@ -377,5 +379,7 @@ export const transactionMsgs = {
   txSpeedUp: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has been sped up`,
   txCancel: ({ transaction }) =>
-    `Your transaction ID: ${transaction.nonce} is being canceled`
+    `Your transaction ID: ${transaction.nonce} is being canceled`,
+  txUnderpriced: () =>
+    'The gas price for your transaction is too low, try again with a higher gas price'
 }

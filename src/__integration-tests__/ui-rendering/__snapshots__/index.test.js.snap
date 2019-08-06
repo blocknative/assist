@@ -432,10 +432,10 @@ exports[`dom-rendering event activeContract-txSpeedUp should trigger correct DOM
 	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
 `;
 
-exports[`dom-rendering event activeContract-txStall should trigger correct DOM render [Custom state 0] 1`] = `
+exports[`dom-rendering event activeContract-txStallConfirmed should trigger correct DOM render [Custom state 0] 1`] = `
 "
     
-  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
 		<span class=\\"bn-status-icon \\">
       <div class=\\"progress-tooltip \\">
 				<div class=\\"progress-tooltip-inner\\">
@@ -444,7 +444,7 @@ exports[`dom-rendering event activeContract-txStall should trigger correct DOM r
 			</div>
 		</span>
 		<div class=\\"bn-notification-info\\">
-			<p>Your transaction ID: 1235 has stalled</p>
+			<p>Your transaction ID: 1235 has stalled and hasn't been confirmed</p>
 			<p class=\\"bn-notification-meta\\">
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
@@ -456,10 +456,58 @@ exports[`dom-rendering event activeContract-txStall should trigger correct DOM r
 	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
 `;
 
-exports[`dom-rendering event activeContract-txStall should trigger correct DOM render [Custom state 1] 1`] = `
+exports[`dom-rendering event activeContract-txStallConfirmed should trigger correct DOM render [Custom state 1] 1`] = `
 "
     
-  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      <div class=\\"progress-tooltip \\">
+				<div class=\\"progress-tooltip-inner\\">
+					You will be notified when this transaction is completed.
+				</div>
+			</div>
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>txStall custom msg</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">606 min</span>
+				</span>
+      </p>
+		</div>
+	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
+`;
+
+exports[`dom-rendering event activeContract-txStallPending should trigger correct DOM render [Custom state 0] 1`] = `
+"
+    
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      <div class=\\"progress-tooltip \\">
+				<div class=\\"progress-tooltip-inner\\">
+					You will be notified when this transaction is completed.
+				</div>
+			</div>
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>Your transaction has stalled and has not entered the transaction pool</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">606 min</span>
+				</span>
+      </p>
+		</div>
+	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
+`;
+
+exports[`dom-rendering event activeContract-txStallPending should trigger correct DOM render [Custom state 1] 1`] = `
+"
+    
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
 		<span class=\\"bn-status-icon \\">
       <div class=\\"progress-tooltip \\">
 				<div class=\\"progress-tooltip-inner\\">
@@ -1534,10 +1582,10 @@ exports[`dom-rendering event activeTransaction-txSpeedUp should trigger correct 
 	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
 `;
 
-exports[`dom-rendering event activeTransaction-txStall should trigger correct DOM render [Custom state 0] 1`] = `
+exports[`dom-rendering event activeTransaction-txStallConfirmed should trigger correct DOM render [Custom state 0] 1`] = `
 "
     
-  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
 		<span class=\\"bn-status-icon \\">
       <div class=\\"progress-tooltip \\">
 				<div class=\\"progress-tooltip-inner\\">
@@ -1546,7 +1594,7 @@ exports[`dom-rendering event activeTransaction-txStall should trigger correct DO
 			</div>
 		</span>
 		<div class=\\"bn-notification-info\\">
-			<p>Your transaction ID: 1235 has stalled</p>
+			<p>Your transaction ID: 1235 has stalled and hasn't been confirmed</p>
 			<p class=\\"bn-notification-meta\\">
 				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
 				<span class=\\"bn-duration\\"> - 
@@ -1558,10 +1606,58 @@ exports[`dom-rendering event activeTransaction-txStall should trigger correct DO
 	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
 `;
 
-exports[`dom-rendering event activeTransaction-txStall should trigger correct DOM render [Custom state 1] 1`] = `
+exports[`dom-rendering event activeTransaction-txStallConfirmed should trigger correct DOM render [Custom state 1] 1`] = `
 "
     
-  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStall bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallConfirmed bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      <div class=\\"progress-tooltip \\">
+				<div class=\\"progress-tooltip-inner\\">
+					You will be notified when this transaction is completed.
+				</div>
+			</div>
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>txStall custom msg</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">606 min</span>
+				</span>
+      </p>
+		</div>
+	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
+`;
+
+exports[`dom-rendering event activeTransaction-txStallPending should trigger correct DOM render [Custom state 0] 1`] = `
+"
+    
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
+		<span class=\\"bn-status-icon \\">
+      <div class=\\"progress-tooltip \\">
+				<div class=\\"progress-tooltip-inner\\">
+					You will be notified when this transaction is completed.
+				</div>
+			</div>
+		</span>
+		<div class=\\"bn-notification-info\\">
+			<p>Your transaction has stalled and has not entered the transaction pool</p>
+			<p class=\\"bn-notification-meta\\">
+				<a href=\\"#\\" class=\\"bn-timestamp\\">12:00 AM</a>
+				<span class=\\"bn-duration\\"> - 
+					<i class=\\"bn-clock\\"></i>
+					<span class=\\"bn-duration-time\\">606 min</span>
+				</span>
+      </p>
+		</div>
+	</li></ul></div><a id=\\"bn-transaction-branding\\" href=\\"https://www.blocknative.com/\\" target=\\"_blank\\"></a></div>"
+`;
+
+exports[`dom-rendering event activeTransaction-txStallPending should trigger correct DOM render [Custom state 1] 1`] = `
+"
+    
+  <div id=\\"blocknative-notifications\\" style=\\"transform: translateX(600px); right: 0px; bottom: 0px;\\"><div class=\\"bn-notifications-scroll\\" style=\\"overflow-y: initial; height: auto;\\"><ul class=\\"bn-notifications\\"><li class=\\"bn-notification bn-progress bn-txStallPending bn-cf7fc5a7-1498-419e-8bf9-654d06af5534 \\" style=\\"transform: translateX(600px);\\">
 		<span class=\\"bn-status-icon \\">
       <div class=\\"progress-tooltip \\">
 				<div class=\\"progress-tooltip-inner\\">

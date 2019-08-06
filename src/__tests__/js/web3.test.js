@@ -1,5 +1,4 @@
 import truffleContract from 'truffle-contract'
-import da from '~/js'
 import abi from '~/__tests__/res/dstoken.json'
 import { initialState, updateState } from '~/js/helpers/state'
 import * as websockets from '~/js/helpers/websockets'
@@ -18,8 +17,8 @@ const Web3v0p20 = multidepRequire('web3', '0.20.6')
 const zeroAddress = '0x0000000000000000000000000000000000000000'
 
 const initWeb3 = (simpleVersion, Web3) => {
-  if (simpleVersion === '1.0') {
-    return new Web3(`ws://localhost:${port}`)
+  if (simpleVersion === '1.') {
+    return new Web3(`http://localhost:${port}`)
   }
   const provider = new Web3.providers.HttpProvider(`http://localhost:${port}`)
   return new Web3(provider)
@@ -30,7 +29,6 @@ describe(`web3.js tests`, () => {
     describe(`using web3 ${version}`, () => {
       describe('assist is initialised correctly', () => {
         let web3
-        let config
         let simpleVersion
         beforeEach(() => {
           jest
@@ -39,22 +37,20 @@ describe(`web3.js tests`, () => {
           jest
             .spyOn(websockets, 'checkForSocketConnection')
             .mockImplementation(() => Promise.resolve(true))
-          simpleVersion = version.slice(0, 3)
+          simpleVersion = version.slice(0, 2)
           web3 = initWeb3(simpleVersion, Web3)
-          config = { dappId: '123', web3, networkId: 5 }
-          da.init(config)
+
+          updateState({
+            web3Instance: web3,
+            legacyWeb3: simpleVersion === '0.'
+          })
         })
-        afterEach(() => {
-          // need to close any websocket connection
-          if (simpleVersion === '1.0') {
-            web3.currentProvider.connection.close()
-          }
-        })
+
         describe('web3Functions', () => {
           describe('networkId', () => {
             test('should return the expected networkId', async () => {
               const networkId = await web3Functions.networkId(simpleVersion)()
-              if (simpleVersion === '1.0') expect(networkId).toEqual(5)
+              if (simpleVersion === '1.') expect(networkId).toEqual(5)
               else expect(networkId).toEqual('5') // 0.20 returns networkId as a string
             })
           })
@@ -145,7 +141,7 @@ describe(`web3.js tests`, () => {
           describe('accounts', () => {
             test(`should return the correct list of accounts`, async () => {
               const expected =
-                simpleVersion === '1.0'
+                simpleVersion === '1.'
                   ? accounts
                   : accounts.map(a => a.toLowerCase())
               const res = await web3Functions.accounts(simpleVersion)()
@@ -155,7 +151,7 @@ describe(`web3.js tests`, () => {
           describe('txReceipt', () => {
             test(`should return the correct receipt`, async () => {
               const hash = await new Promise(resolve => {
-                if (simpleVersion === '1.0') {
+                if (simpleVersion === '1.') {
                   web3.eth
                     .sendTransaction({
                       from: accounts[0],

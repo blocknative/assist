@@ -132,8 +132,24 @@ export function assistLog(log) {
 }
 
 export function extractMessageFromError(message) {
-  const str = message.split('"message":')[1]
-  return str.split('"')[1]
+  if (message.includes('User denied transaction signature')) {
+    return {
+      eventCode: 'txSendFail',
+      errorMsg: 'User denied transaction signature'
+    }
+  }
+
+  if (message.includes('transaction underpriced')) {
+    return {
+      eventCode: 'txUnderpriced',
+      errorMsg: 'Transaction is under priced'
+    }
+  }
+
+  return {
+    eventCode: 'txError',
+    errorMsg: message
+  }
 }
 
 export function eventCodeToType(eventCode) {
@@ -141,7 +157,8 @@ export function eventCodeToType(eventCode) {
     case 'txRequest':
     case 'txPending':
     case 'txSent':
-    case 'txStall':
+    case 'txStallPending':
+    case 'txStallConfirmed':
     case 'txSpeedUp':
     case 'txCancel':
     case 'pending':
@@ -152,6 +169,7 @@ export function eventCodeToType(eventCode) {
     case 'txRepeat':
     case 'txAwaitingApproval':
     case 'txConfirmReminder':
+    case 'txUnderpriced':
     case 'error':
       return 'failed'
     case 'txConfirmed':
@@ -219,7 +237,8 @@ export const timeouts = {
   checkSocketConnection: 250,
   waitForResponse: 100,
   txConfirmReminder: 20000,
-  txStall: 30000,
+  txStallPending: 20000,
+  txStallConfirmed: 60000,
   changeUI: 305,
   localhostNetworkCheck: 300,
   removeElement: 300,

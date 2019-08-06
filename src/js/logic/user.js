@@ -21,7 +21,7 @@ export function checkUserEnvironment() {
       checkValidBrowser()
     }
 
-    checkForWallet()
+    await checkForWallet()
 
     if (!state.web3Wallet) {
       if (!state.mobileDevice) {
@@ -271,7 +271,7 @@ function checkMinimumBalance() {
     const { web3Version } = state
     const version = state.config.ethers
       ? 'ethers'
-      : web3Version && web3Version.slice(0, 3)
+      : web3Version && web3Version.slice(0, 2)
 
     const minimum = state.config.minimumBalance || 0
     const balance = await getAccountBalance().catch(resolve)
