@@ -368,6 +368,8 @@ export const transactionMsgs = {
     `Your transaction ID: ${transaction.nonce} has stalled and hasn't been confirmed`,
   txFailed: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} has failed`,
+  txDropped: ({ transaction }) =>
+    `Your transaction ID: ${transaction.nonce} has been dropped from the transaction pool`,
   nsfFail: () => 'You have insufficient funds to complete this transaction',
   txRepeat: () => 'This could be a repeat transaction',
   txAwaitingApproval: () =>

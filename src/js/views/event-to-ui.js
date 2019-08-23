@@ -77,6 +77,7 @@ const eventToUI = {
     txStallPending: notificationsUI,
     txStallConfirmed: notificationsUI,
     txFailed: notificationsUI,
+    txDropped: notificationsUI,
     txSpeedUp: notificationsUI,
     txCancel: notificationsUI,
     txUnderpriced: notificationsUI
@@ -93,6 +94,7 @@ const eventToUI = {
     txStallPending: notificationsUI,
     txStallConfirmed: notificationsUI,
     txFailed: notificationsUI,
+    txDropped: notificationsUI,
     txSpeedUp: notificationsUI,
     txCancel: notificationsUI,
     txUnderpriced: notificationsUI
@@ -209,7 +211,10 @@ function notificationsUI({
     eventCode === 'pending'
 
   const showTime =
-    hasTimer || eventCode === 'txConfirmed' || eventCode === 'txFailed'
+    hasTimer ||
+    eventCode === 'txConfirmed' ||
+    eventCode === 'txFailed' ||
+    eventCode === 'txFailed'
 
   let blockNativeBrand
   let existingNotifications

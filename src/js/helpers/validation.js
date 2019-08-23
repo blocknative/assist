@@ -33,6 +33,7 @@ export function validateConfig(config) {
           txStallPending: ow.optional.function,
           txStallConfirmed: ow.optional.function,
           txFailed: ow.optional.function,
+          txDropped: ow.optional.function,
           nsfFail: ow.optional.function,
           txRepeat: ow.optional.function,
           txAwaitingApproval: ow.optional.function,

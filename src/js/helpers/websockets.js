@@ -205,6 +205,22 @@ export function handleSocketMessage(msg) {
 
         removeTransactionFromQueue(transaction.id)
         break
+      case 'dropped':
+        txObj = updateTransactionInQueue(transaction.id, {
+          status: 'dropped',
+          hash: transaction.hash
+        })
+
+        handleEvent({
+          eventCode: 'txDropped',
+          categoryCode: txObj.contract ? 'activeContract' : 'activeTransaction',
+          transaction: txObj.transaction,
+          contract: txObj.contract,
+          inlineCustomMsgs: txObj.inlineCustomMsgs,
+          clickHandlers: txObj.clickHandlers
+        })
+
+        break
       default:
     }
   }

@@ -18,6 +18,7 @@ const serverEvents = [
   'txPending',
   'txConfirmed',
   'txFailed',
+  'txDropped',
   'txSpeedUp',
   'txCancel'
 ]

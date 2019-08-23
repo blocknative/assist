@@ -14,6 +14,7 @@ export function handleEvent(eventObj, modalClickHandlers) {
     eventCode === 'txPending' ||
     eventCode === 'txConfirmed' ||
     eventCode === 'txFailed' ||
+    eventCode === 'txDropped' ||
     eventCode === 'txSpeedUp' ||
     eventCode === 'txCancel'
 

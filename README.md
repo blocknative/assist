@@ -196,6 +196,7 @@ var config = {
     txStallPending: Function, // Transaction was sent to the network but has not been detected in the txPool
     txStallConfirmed: Function, // Transaction has been detected in the mempool but hasn't been confirmed
     txFailed: Function, // Transaction failed
+    txDropped: Function, // Transaction has dropped out of the txPool of the Blocknative node although could still exist in other node's txPool
     nsfFail: Function, // User doesn't have enough funds to complete transaction
     txRepeat: Function, // Warning to user that they might be repeating a transaction
     txAwaitingApproval: Function, // Warning to the user that they have a previous transaction awaiting approval

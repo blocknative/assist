@@ -165,6 +165,7 @@ export function eventCodeToType(eventCode) {
       return 'progress'
     case 'txSendFail':
     case 'txFailed':
+    case 'txDropped':
     case 'nsfFail':
     case 'txRepeat':
     case 'txAwaitingApproval':
