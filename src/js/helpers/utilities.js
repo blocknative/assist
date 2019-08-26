@@ -135,7 +135,7 @@ export function extractMessageFromError(message) {
   if (!message) {
     return {
       eventCode: 'txError',
-      errorMsg: 'Unknown error'
+      errorMsg: undefined
     }
   }
 

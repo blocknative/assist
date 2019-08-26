@@ -404,7 +404,7 @@ function onTxError(id, error, categoryCode) {
       contract: txObj.contract,
       inlineCustomMsgs: txObj.inlineCustomMsgs,
       clickHandlers: txObj.clickHandlers,
-      reason: errorMsg,
+      reason: errorMsg || JSON.stringify(error),
       wallet: {
         provider: state.currentProvider,
         address: state.accountAddress,
