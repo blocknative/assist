@@ -132,6 +132,13 @@ export function assistLog(log) {
 }
 
 export function extractMessageFromError(message) {
+  if (!message) {
+    return {
+      eventCode: 'txError',
+      errorMsg: 'Unknown error'
+    }
+  }
+
   if (message.includes('User denied transaction signature')) {
     return {
       eventCode: 'txSendFail',
