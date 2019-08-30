@@ -69,7 +69,11 @@ export function prepareForTransaction(categoryCode, originalResolve) {
     }
 
     if (getItem('_assist_newUser') === 'true') {
-      if (!state.validBrowser && !state.mobileDevice) {
+      if (
+        !state.validBrowser &&
+        !state.mobileDevice &&
+        state.config.browserCheck !== false
+      ) {
         handleEvent(
           {
             eventCode: 'browserFail',
