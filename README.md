@@ -187,6 +187,7 @@ var config = {
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile [false]
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp [0]
   headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
+  browserCheck: Boolean, // Check if the user is on a browser that supports extension wallets during onboarding [true]
   messages: {
     // See custom transaction messages section below for more details
     txRequest: Function, // Transaction request has been initiated and is awaiting user approval
