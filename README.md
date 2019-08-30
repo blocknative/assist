@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.10.1.
+The current version is 0.10.2.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-10-1/assist.js"></script>
+<script src="https://assist.blocknative.com/0-10-2/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-10-1/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-10-2/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -187,6 +187,7 @@ var config = {
   mobileBlocked: Boolean, // Defines if the Dapp works on mobile [false]
   minimumBalance: String, // Defines the minimum balance in Wei that a user needs to have to use the Dapp [0]
   headlessMode: Boolean, // Turn off Assist UI, but still retain analytics collection [false]
+  browserCheck: Boolean, // Check if the user is on a browser that supports extension wallets during onboarding [true]
   messages: {
     // See custom transaction messages section below for more details
     txRequest: Function, // Transaction request has been initiated and is awaiting user approval

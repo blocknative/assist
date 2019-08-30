@@ -25,6 +25,7 @@ export function validateConfig(config) {
         mobileBlocked: ow.optional.boolean,
         minimumBalance: ow.optional.string,
         headlessMode: ow.optional.boolean,
+        browserCheck: ow.optional.boolean,
         messages: ow.optional.object.exactShape({
           txRequest: ow.optional.function,
           txSent: ow.optional.function,
