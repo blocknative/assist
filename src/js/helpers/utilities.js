@@ -131,13 +131,15 @@ export function assistLog(log) {
   console.log('Assist:', log) // eslint-disable-line no-console
 }
 
-export function extractMessageFromError(message) {
-  if (!message) {
+export function extractMessageFromError(error) {
+  if (!error.stack || !error.message) {
     return {
       eventCode: 'txError',
       errorMsg: undefined
     }
   }
+
+  const message = error.stack || error.message
 
   if (message.includes('User denied transaction signature')) {
     return {
@@ -177,6 +179,7 @@ export function eventCodeToType(eventCode) {
     case 'txAwaitingApproval':
     case 'txConfirmReminder':
     case 'txUnderpriced':
+    case 'txError':
     case 'error':
       return 'failed'
     case 'txConfirmed':
