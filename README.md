@@ -43,16 +43,16 @@ yarn add bnc-assist
 #### Script Tag
 
 The library uses [semantic versioning](https://semver.org/spec/v2.0.0.html).
-The current version is 0.10.2.
+The current version is 0.10.3.
 There are minified and non-minified versions.
 Put this script at the top of your `<head>`
 
 ```html
-<script src="https://assist.blocknative.com/0-10-2/assist.js"></script>
+<script src="https://assist.blocknative.com/0-10-3/assist.js"></script>
 
 <!-- OR... -->
 
-<script src="https://assist.blocknative.com/0-10-2/assist.min.js"></script>
+<script src="https://assist.blocknative.com/0-10-3/assist.min.js"></script>
 ```
 
 ### Initialize the Library
@@ -194,6 +194,8 @@ var config = {
     txSent: Function, // Transaction has been sent to the network
     txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
+    txUnderpriced: Function, // Transaction gas limit was set too low
+    txError: Function, // An unknown MetaMask / JSON RPC error occurred when trying to send the transaction
     txStallPending: Function, // Transaction was sent to the network but has not been detected in the txPool
     txStallConfirmed: Function, // Transaction has been detected in the mempool but hasn't been confirmed
     txFailed: Function, // Transaction failed

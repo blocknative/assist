@@ -386,7 +386,7 @@ async function onTxReceipt(id, categoryCode, receipt) {
 }
 
 function onTxError(id, error, categoryCode) {
-  const { errorMsg, eventCode } = extractMessageFromError(error.message)
+  const { errorMsg, eventCode } = extractMessageFromError(error)
 
   let txObj = getTxObjFromQueue(id)
 
