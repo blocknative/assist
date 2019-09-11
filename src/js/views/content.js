@@ -381,5 +381,7 @@ export const transactionMsgs = {
   txCancel: ({ transaction }) =>
     `Your transaction ID: ${transaction.nonce} is being canceled`,
   txUnderpriced: () =>
-    'The gas price for your transaction is too low, try again with a higher gas price'
+    'The gas price for your transaction is too low, try again with a higher gas price',
+  txError: () =>
+    'An unknown error has occurred with your transaction, please try again'
 }
