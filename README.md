@@ -194,6 +194,8 @@ var config = {
     txSent: Function, // Transaction has been sent to the network
     txPending: Function, // Transaction is pending and has been detected in the mempool
     txSendFail: Function, // Transaction failed to be sent to the network
+    txUnderpriced: Function, // Transaction gas limit was set too low
+    txError: Function, // An unknown MetaMask / JSON RPC error occurred when trying to send the transaction
     txStallPending: Function, // Transaction was sent to the network but has not been detected in the txPool
     txStallConfirmed: Function, // Transaction has been detected in the mempool but hasn't been confirmed
     txFailed: Function, // Transaction failed
